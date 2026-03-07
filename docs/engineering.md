@@ -40,11 +40,20 @@
 - Playwright for smoke E2E flows
 - Visual regression stays narrow and runs on Chromium only at first
 
+## Pre-commit Hooks
+
+Configured via Husky + lint-staged. Runs automatically on `git commit`:
+
+- `*.{js,mjs,cjs,ts,mts,cts,jsx,tsx,astro}` → ESLint fix + Prettier format
+- `*.{json,md,css,yml,yaml}` → Prettier format only
+
+Prevents lint and format regressions from reaching CI.
+
 ## CI/CD Baseline
 
 - Required checks: `quality`, `e2e-smoke`, `visual-regression`
 - PRs run lint, typecheck, unit tests, build, smoke E2E, focused visual regression
-- `main` deploys only after checks pass
+- Deploy is currently disabled
 
 ## Dependency Hygiene
 

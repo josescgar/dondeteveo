@@ -30,11 +30,3 @@
 ## Update Rule
 
 - Update docs only for material changes to product behavior, scope, architecture, workflow, standards, security/privacy posture, or data model.
-
-## ADR Index
-
-- `docs/adr/0001-astro-preact-islands.md`
-- `docs/adr/0002-github-pages-cloudflare.md`
-- `docs/adr/0003-leaflet-geojson.md`
-- `docs/adr/0004-fragment-share-state.md`
-- `docs/adr/0005-localized-public-urls.md`

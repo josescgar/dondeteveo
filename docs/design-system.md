@@ -9,18 +9,19 @@ Colors and logo are drawn from the brand mark: a location pin split between a ri
 ## Color Tokens
 
 ```css
---color-bg: #f4f7fb /* light blue-tinted off-white — page background */
-  --color-surface: #ffffff /* card / panel surface */
-  --color-surface-raised: #e6eff7 /* elevated elements, badges */
-  --color-accent: #1e6fa0 /* primary brand blue — logo blue */
-  --color-accent-dim: rgba(30, 111, 160, 0.15) /* muted blue tint */
-  --color-coral: #f26419 /* CTA / action buttons — logo orange */
-  --color-coral-deep: #d6560e /* CTA hover state */ --color-text: #1a2e3b
-  /* primary text (rich dark navy) */ --color-muted: #6b7e8c
-  /* secondary / label text */ --color-line: rgba(30, 111, 160, 0.14)
-  /* borders/dividers (blue-tinted) */ --color-line-solid: #ccd8e4
-  /* neutral light structural borders */ --shadow-sm: 0 1px 4px
-  rgba(30, 111, 160, 0.08) --shadow-md: 0 4px 16px rgba(30, 111, 160, 0.12);
+--color-bg: #f4f7fb; /* light blue-tinted off-white — page background */
+--color-surface: #ffffff; /* card / panel surface */
+--color-surface-raised: #e6eff7; /* elevated elements, badges */
+--color-accent: #1e6fa0; /* primary brand blue — logo blue */
+--color-accent-dim: rgba(30, 111, 160, 0.15); /* muted blue tint */
+--color-coral: #f26419; /* CTA / action buttons — logo orange */
+--color-coral-deep: #d6560e; /* CTA hover state */
+--color-text: #1a2e3b; /* primary text (rich dark navy) */
+--color-muted: #6b7e8c; /* secondary / label text */
+--color-line: rgba(30, 111, 160, 0.14); /* borders/dividers (blue-tinted) */
+--color-line-solid: #ccd8e4; /* neutral light structural borders */
+--shadow-sm: 0 1px 4px rgba(30, 111, 160, 0.08);
+--shadow-md: 0 4px 16px rgba(30, 111, 160, 0.12);
 ```
 
 ### Color Roles
@@ -33,9 +34,8 @@ Colors and logo are drawn from the brand mark: a location pin split between a ri
 ## Typography
 
 ```css
---font-display:
-  "Barlow Condensed", "Arial Narrow", sans-serif --font-mono: "IBM Plex Mono",
-  "Courier New", monospace;
+--font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+--font-mono: "IBM Plex Mono", "Courier New", monospace;
 ```
 
 Google Fonts `<link rel="stylesheet">` (loaded in `BaseLayout.astro` head — not `@import`):
@@ -87,8 +87,10 @@ Shadows are replaced by `1px solid var(--color-line)` borders on all containers.
 ## Motion
 
 ```css
---duration-fast: 150ms --duration-base: 250ms --duration-slow: 400ms
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+--duration-fast: 150ms;
+--duration-base: 250ms;
+--duration-slow: 400ms;
+--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 ```
 
 ### Keyframes
