@@ -1,0 +1,34 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+import { type Locale, SUPPORTED_LOCALES } from "../../lib/config";
+import { getDictionary } from "../../lib/i18n";
+
+export const getStaticPaths = () =>
+  SUPPORTED_LOCALES.map((locale) => ({ params: { locale } }));
+
+const locale = Astro.params.locale as Locale;
+const dictionary = getDictionary(locale);
+---
+
+<BaseLayout
+  locale={locale}
+  pathname={`/${locale}/about`}
+  title={`Dondeteveo | ${dictionary.about}`}
+  description={dictionary.contactIntro}
+  eyebrow={dictionary.about}
+>
+  <div
+    class="max-w-3xl rounded-[1.8rem] border border-[var(--line)] bg-white/90 p-6 shadow-[var(--shadow-card)]"
+  >
+    <h1 class="font-display text-4xl text-[var(--ink)]">{dictionary.about}</h1>
+    <p class="mt-4 text-base leading-8 text-[var(--muted)]">
+      {dictionary.contactIntro}
+    </p>
+    <a
+      href="https://jerna.digital"
+      class="mt-6 inline-flex text-sm font-semibold text-[var(--ember)]"
+      >jerna.digital</a
+    >
+  </div>
+</BaseLayout>

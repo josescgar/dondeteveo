@@ -1,0 +1,101 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+
+import { type Locale, SUPPORTED_LOCALES } from "../../../../lib/config";
+import { getDictionary } from "../../../../lib/i18n";
+import {
+  getAllRaceEditions,
+  getDistinctRaces,
+} from "../../../../lib/races/catalog";
+
+export const getStaticPaths = async () => {
+  const races = await getDistinctRaces();
+
+  return SUPPORTED_LOCALES.flatMap((locale) =>
+    races.map((race) => ({
+      params: {
+        locale,
+        race,
+      },
+    })),
+  );
+};
+
+const locale = Astro.params.locale as Locale;
+const raceSlug = Astro.params.race ?? "";
+const dictionary = getDictionary(locale);
+const editions = (await getAllRaceEditions())
+  .filter((edition) => edition.raceSlug === raceSlug)
+  .map((edition) => ({
+    year: edition.year,
+    date: edition.meta.date,
+    timezone: edition.meta.timezone,
+  }));
+
+if (editions.length === 0) {
+  throw new Error(`Unknown race slug: ${raceSlug}`);
+}
+
+const fallbackEditions = editions.toSorted((left, right) =>
+  right.date.localeCompare(left.date),
+);
+---
+
+<BaseLayout
+  locale={locale}
+  pathname={`/${locale}/races/${raceSlug}`}
+  title={`Dondeteveo | ${raceSlug}`}
+  description={dictionary.latestEditionRedirect}
+  noindex={true}
+>
+  <script is:inline define:vars={{ editions, locale, raceSlug }}>
+    const getTodayInTimeZone = (timeZone) => {
+      const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).formatToParts(new Date());
+
+      const year = parts.find((part) => part.type === "year")?.value;
+      const month = parts.find((part) => part.type === "month")?.value;
+      const day = parts.find((part) => part.type === "day")?.value;
+
+      return `${year}-${month}-${day}`;
+    };
+
+    const upcomingEdition = editions.find(
+      (edition) => edition.date >= getTodayInTimeZone(edition.timezone),
+    );
+    const targetEdition =
+      upcomingEdition ??
+      [...editions].sort((left, right) =>
+        right.date.localeCompare(left.date),
+      )[0];
+
+    if (targetEdition) {
+      window.location.replace(
+        `/${locale}/races/${raceSlug}/${targetEdition.year}`,
+      );
+    }
+  </script>
+  <div
+    class="max-w-xl rounded-[1.8rem] border border-[var(--line)] bg-white/80 p-6 shadow-[var(--shadow-card)]"
+  >
+    <p class="text-sm leading-7 text-[var(--muted)]">
+      {dictionary.latestEditionRedirect}
+    </p>
+    <div class="mt-4 flex flex-wrap gap-3">
+      {
+        fallbackEditions.map((edition) => (
+          <a
+            href={`/${locale}/races/${raceSlug}/${edition.year}`}
+            class="inline-flex rounded-full border border-[var(--line)] px-4 py-2 text-sm font-semibold text-[var(--ember)] transition hover:border-[var(--ember)]"
+          >
+            {edition.year}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

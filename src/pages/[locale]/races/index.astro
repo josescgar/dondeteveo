@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import DiscoveryListIsland from "../../../features/race-discovery/DiscoveryListIsland";
+
+import { type Locale, SUPPORTED_LOCALES } from "../../../lib/config";
+import { getDictionary } from "../../../lib/i18n";
+import { getRaceSummaries } from "../../../lib/races/catalog";
+import { localizeRaceSummary } from "../../../lib/races/localized";
+
+export const getStaticPaths = () =>
+  SUPPORTED_LOCALES.map((locale) => ({ params: { locale } }));
+
+const locale = Astro.params.locale as Locale;
+const dictionary = getDictionary(locale);
+const races = (await getRaceSummaries()).map((race) =>
+  localizeRaceSummary(race, locale),
+);
+---
+
+<BaseLayout
+  locale={locale}
+  pathname={`/${locale}/races`}
+  title={`Dondeteveo | ${dictionary.discoverTitle}`}
+  description={dictionary.discoverIntro}
+  eyebrow={dictionary.discoverTitle}
+>
+  <div class="max-w-3xl space-y-4">
+    <h1
+      class="font-display text-4xl leading-none text-[var(--ink)] sm:text-5xl"
+    >
+      {dictionary.discoverTitle}
+    </h1>
+    <p class="text-lg leading-8 text-[var(--muted)]">
+      {dictionary.discoverIntro}
+    </p>
+  </div>
+
+  <section class="mt-10">
+    <DiscoveryListIsland locale={locale} races={races} client:load />
+  </section>
+</BaseLayout>

@@ -1,13 +1,16 @@
 # ADRs
 
 ## Purpose
+
 - ADRs capture major architectural decisions that are expensive or confusing to revisit later.
 
 ## When To Add One
+
 - Add an ADR for major stack, hosting, routing, sharing, or data-model decisions.
 - Do not add ADRs for routine implementation details.
 
 ## Format
+
 - Title
 - Status
 - Context
@@ -15,6 +18,7 @@
 - Consequences
 
 ## Index
+
 - `0001-astro-preact-islands.md`
 - `0002-github-pages-cloudflare.md`
 - `0003-leaflet-geojson.md`
