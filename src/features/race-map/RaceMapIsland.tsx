@@ -40,7 +40,7 @@ export default function RaceMapIsland({ route, points, pointDetails }: Props) {
       const routeCoordinates = getRouteCoordinates(route);
       const polyline = leaflet
         .polyline(routeCoordinates, {
-          color: "#d04c28",
+          color: "#f26419",
           weight: 5,
         })
         .addTo(map);
@@ -48,9 +48,9 @@ export default function RaceMapIsland({ route, points, pointDetails }: Props) {
       const markers = getMapMarkers(points, pointDetails);
       markers.forEach((marker) => {
         const circle = leaflet.circleMarker(marker.coordinates, {
-          radius: marker.kind === "cheer-point" ? 7 : 5,
-          color: marker.kind === "cheer-point" ? "#11383a" : "#d04c28",
-          fillColor: marker.kind === "cheer-point" ? "#11383a" : "#f4b63c",
+          radius: marker.kind === "cheer-point" ? 8 : 5,
+          color: marker.kind === "cheer-point" ? "#1e6fa0" : "#f26419",
+          fillColor: marker.kind === "cheer-point" ? "#f26419" : "#ffffff",
           fillOpacity: 1,
           weight: 2,
         });
@@ -83,7 +83,8 @@ export default function RaceMapIsland({ route, points, pointDetails }: Props) {
   return (
     <div
       ref={containerRef}
-      class="h-[24rem] w-full overflow-hidden rounded-[1.8rem] border border-[var(--line)] shadow-[var(--shadow-card)]"
+      class="h-[24rem] w-full overflow-hidden"
+      style="border: 1px solid var(--color-line);"
     />
   );
 }

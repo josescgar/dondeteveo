@@ -80,9 +80,10 @@ const fallbackEditions = editions.toSorted((left, right) =>
     }
   </script>
   <div
-    class="max-w-xl rounded-[1.8rem] border border-[var(--line)] bg-white/80 p-6 shadow-[var(--shadow-card)]"
+    class="max-w-xl rounded-xl border bg-white p-6 shadow-[var(--shadow-sm)]"
+    style="border-color: var(--color-line);"
   >
-    <p class="text-sm leading-7 text-[var(--muted)]">
+    <p class="text-sm leading-7 text-[var(--color-muted)]">
       {dictionary.latestEditionRedirect}
     </p>
     <div class="mt-4 flex flex-wrap gap-3">
@@ -90,7 +91,10 @@ const fallbackEditions = editions.toSorted((left, right) =>
         fallbackEditions.map((edition) => (
           <a
             href={`/${locale}/races/${raceSlug}/${edition.year}`}
-            class="inline-flex rounded-full border border-[var(--line)] px-4 py-2 text-sm font-semibold text-[var(--ember)] transition hover:border-[var(--ember)]"
+            class="inline-flex rounded-lg border px-4 py-2 text-sm font-bold transition"
+            style="border-color: rgba(242,100,25,0.3); color: var(--color-orange);"
+            onmouseover="this.style.borderColor='var(--color-orange)'; this.style.backgroundColor='var(--color-amber)';"
+            onmouseout="this.style.borderColor='rgba(242,100,25,0.3)'; this.style.backgroundColor='';"
           >
             {edition.year}
           </a>

@@ -22,90 +22,132 @@ const races = (await getRaceSummaries()).map((race) =>
   pathname={`/${locale}`}
   title={`Dondeteveo | ${dictionary.directRaceSearch}`}
   description={dictionary.heroBody}
-  eyebrow={dictionary.raceDiscovery}
 >
-  <section class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
-    <div class="space-y-6">
-      <h1
-        class="font-display max-w-3xl text-4xl leading-none text-[var(--ink)] sm:text-6xl"
+  <!-- Section 1: Hero -->
+  <section class="pb-14" style="border-bottom: 1px solid var(--color-line);">
+    <div
+      class="font-mono text-[10px] tracking-[0.32em] uppercase"
+      style="color: var(--color-muted);"
+    >
+      // {dictionary.siteTagline}
+    </div>
+    <div
+      class="font-display mt-3 leading-none font-bold uppercase"
+      style="font-size: clamp(3.5rem, 14vw, 9rem); color: var(--color-text);"
+    >
+      DONDETEVEO
+    </div>
+    <h1
+      class="font-display mt-4 font-bold uppercase sm:text-5xl"
+      style="font-size: clamp(1.5rem, 5vw, 3rem); color: var(--color-accent);"
+    >
+      {dictionary.heroTitle}
+    </h1>
+    <p
+      class="mt-4 max-w-lg font-mono text-base leading-8"
+      style="color: var(--color-muted);"
+    >
+      {dictionary.heroBody}
+    </p>
+    <div class="mt-7 flex flex-wrap items-center gap-5">
+      <a
+        href="#race-search"
+        class="inline-flex px-5 py-2.5 font-mono text-sm tracking-[0.18em] uppercase transition"
+        style="background-color: var(--color-coral); color: var(--color-text);"
+        onmouseover="this.style.backgroundColor='var(--color-coral-deep)'"
+        onmouseout="this.style.backgroundColor='var(--color-coral)'"
       >
-        {dictionary.heroTitle}
-      </h1>
-      <p class="max-w-2xl text-lg leading-8 text-[var(--muted)]">
-        {dictionary.heroBody}
-      </p>
-      <div class="grid gap-4 sm:grid-cols-3">
+        {dictionary.directRaceSearch}
+      </a>
+      <a
+        href={`/${locale}/races`}
+        class="font-mono text-sm transition"
+        style="color: var(--color-muted);"
+        onmouseover="this.style.color='var(--color-accent)'"
+        onmouseout="this.style.color='var(--color-muted)'"
+      >
+        {dictionary.browseRaces} →
+      </a>
+    </div>
+  </section>
+
+  <!-- Section 2: Feature row -->
+  <section class="py-14" style="border-bottom: 1px solid var(--color-line);">
+    <div class="grid gap-8 sm:grid-cols-3">
+      <div class="flex gap-4">
         <div
-          class="rounded-[1.6rem] border border-[var(--line)] bg-white/80 p-4 shadow-[var(--shadow-card)]"
+          class="w-0.5 self-stretch"
+          style="background-color: var(--color-accent);"
         >
+        </div>
+        <div>
           <div
-            class="text-xs font-semibold tracking-[0.24em] text-[var(--muted)] uppercase"
+            class="font-display text-base font-bold uppercase"
+            style="color: var(--color-accent);"
           >
             {dictionary.searchFirstTitle}
           </div>
-          <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
+          <p
+            class="mt-2 font-mono text-sm leading-7"
+            style="color: var(--color-muted);"
+          >
             {dictionary.searchFirstBody}
           </p>
         </div>
+      </div>
+      <div class="flex gap-4">
         <div
-          class="rounded-[1.6rem] border border-[var(--line)] bg-white/80 p-4 shadow-[var(--shadow-card)]"
+          class="w-0.5 self-stretch"
+          style="background-color: var(--color-accent);"
         >
+        </div>
+        <div>
           <div
-            class="text-xs font-semibold tracking-[0.24em] text-[var(--muted)] uppercase"
+            class="font-display text-base font-bold uppercase"
+            style="color: var(--color-accent);"
           >
             {dictionary.raceLocalTime}
           </div>
-          <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
+          <p
+            class="mt-2 font-mono text-sm leading-7"
+            style="color: var(--color-muted);"
+          >
             {dictionary.allTimesRaceLocal}
           </p>
         </div>
+      </div>
+      <div class="flex gap-4">
         <div
-          class="rounded-[1.6rem] border border-[var(--line)] bg-white/80 p-4 shadow-[var(--shadow-card)]"
+          class="w-0.5 self-stretch"
+          style="background-color: var(--color-accent);"
         >
+        </div>
+        <div>
           <div
-            class="text-xs font-semibold tracking-[0.24em] text-[var(--muted)] uppercase"
+            class="font-display text-base font-bold uppercase"
+            style="color: var(--color-accent);"
           >
             {dictionary.shareReadyTitle}
           </div>
-          <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
+          <p
+            class="mt-2 font-mono text-sm leading-7"
+            style="color: var(--color-muted);"
+          >
             {dictionary.shareReadyBody}
           </p>
         </div>
       </div>
     </div>
-
-    <div
-      class="rounded-[2rem] border border-[var(--line)] bg-[var(--ink)] p-5 text-white shadow-[var(--shadow-card)]"
-    >
-      <div
-        class="text-xs font-semibold tracking-[0.24em] text-white/50 uppercase"
-      >
-        {dictionary.directRaceSearch}
-      </div>
-      <p class="mt-3 text-lg leading-8 text-white/80">
-        {dictionary.discoverIntro}
-      </p>
-      <div class="mt-5 rounded-[1.4rem] bg-white/10 p-3 backdrop-blur">
-        <div class="text-sm font-medium text-white/70">
-          {dictionary.shareIntro}
-        </div>
-        <a
-          href="#race-search"
-          class="mt-4 inline-flex rounded-full bg-[var(--sun)] px-5 py-3 text-sm font-semibold text-[var(--ink)] transition hover:bg-[var(--sun-deep)]"
-        >
-          {dictionary.directRaceSearch}
-        </a>
-        <a
-          href={`/${locale}/races`}
-          class="mt-4 ml-4 inline-flex text-sm font-semibold text-white/80 transition hover:text-white"
-        >
-          {dictionary.browseRaces}
-        </a>
-      </div>
-    </div>
   </section>
 
-  <section id="race-search" class="mt-12 scroll-mt-8">
+  <!-- Section 3: Race search -->
+  <section id="race-search" class="mt-14 scroll-mt-8">
+    <div
+      class="mb-5 font-mono text-[10px] tracking-[0.32em] uppercase"
+      style="color: var(--color-muted);"
+    >
+      // {dictionary.directRaceSearch}
+    </div>
     <DiscoveryListIsland locale={locale} races={races} client:load />
   </section>
 </BaseLayout>

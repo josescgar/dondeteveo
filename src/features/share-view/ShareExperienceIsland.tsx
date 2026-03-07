@@ -43,11 +43,23 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
 
   if (!shareState || paceMinutesPerKm === null) {
     return (
-      <div class="rounded-[1.8rem] border border-[var(--line)] bg-white/90 p-6 shadow-[var(--shadow-card)]">
-        <h2 class="font-display text-3xl text-[var(--ink)]">
+      <div style="background-color: var(--color-surface); border: 1px solid var(--color-line); padding: 1.5rem;">
+        <div
+          class="font-mono text-[10px] tracking-[0.3em] uppercase"
+          style="color: var(--color-muted);"
+        >
+          {dictionary.spectatorReady}
+        </div>
+        <h2
+          class="font-display mt-2 text-4xl font-bold uppercase"
+          style="color: var(--color-text);"
+        >
           {dictionary.sharePageTitle}
         </h2>
-        <p class="mt-3 max-w-2xl text-base leading-7 text-[var(--muted)]">
+        <p
+          class="mt-3 max-w-2xl font-mono text-base leading-7"
+          style="color: var(--color-muted);"
+        >
           {dictionary.invalidShareState}
         </p>
       </div>
@@ -55,74 +67,88 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
   }
 
   return (
-    <div class="space-y-6">
-      <div class="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <RaceMapIsland
-          route={edition.route}
-          points={edition.points}
-          pointDetails={pointDetails}
-        />
-        <div class="rounded-[1.8rem] border border-[var(--line)] bg-white/90 p-6 shadow-[var(--shadow-card)]">
-          <div class="text-xs font-semibold tracking-[0.22em] text-[var(--muted)] uppercase">
-            {dictionary.spectatorReady}
+    <div class="space-y-8">
+      {/* Runner header band */}
+      <div style="background-color: var(--color-surface); border: 1px solid var(--color-line); padding: 1.25rem 1.5rem;">
+        <h2
+          class="font-display text-4xl font-bold uppercase"
+          style="color: var(--color-text);"
+        >
+          {edition.meta.name}{" "}
+          <span style="color: var(--color-accent);">· {edition.year}</span>
+        </h2>
+        {shareState.name && (
+          <div
+            class="mt-3 inline-block px-4 py-1.5 font-mono text-xs tracking-[0.2em] uppercase"
+            style="background-color: var(--color-surface-raised); color: var(--color-accent); border: 1px solid var(--color-line);"
+          >
+            {dictionary.runnerLabel}: {shareState.name}
           </div>
-          <h2 class="font-display mt-2 text-3xl text-[var(--ink)]">
-            {edition.meta.name}
-          </h2>
-          <p class="mt-3 text-sm leading-7 text-[var(--muted)]">
-            {dictionary.allTimesRaceLocal}
-          </p>
-          <div class="mt-5 rounded-[1.4rem] bg-[var(--cream)] p-4 text-sm leading-7 text-[var(--muted)]">
-            <div>
-              <strong class="text-[var(--ink)]">
-                {dictionary.localTimeLabel}:
-              </strong>{" "}
-              {edition.meta.timezone}
-            </div>
-            <div>
-              <strong class="text-[var(--ink)]">{dictionary.startTime}:</strong>{" "}
-              {edition.meta.startTime}
-            </div>
-            {shareState.name && (
-              <div>
-                <strong class="text-[var(--ink)]">
-                  {dictionary.runnerLabel}:
-                </strong>{" "}
-                {shareState.name}
-              </div>
-            )}
-          </div>
+        )}
+        <div class="mt-3 font-mono text-sm" style="color: var(--color-muted);">
+          <span style="color: var(--color-text);">{dictionary.startTime}:</span>{" "}
+          {edition.meta.startTime}
+          <span class="ml-2">({edition.meta.timezone})</span>
         </div>
       </div>
 
-      <div class="rounded-[1.8rem] border border-[var(--line)] bg-white/90 p-6 shadow-[var(--shadow-card)]">
-        <h3 class="font-display text-3xl text-[var(--ink)]">
+      {/* Timing cards — hero */}
+      <div>
+        <div
+          class="mb-1 font-mono text-[10px] tracking-[0.3em] uppercase"
+          style="color: var(--color-muted);"
+        >
           {dictionary.predictedTimes}
-        </h3>
-        <p class="mt-2 text-sm leading-7 text-[var(--muted)]">
+        </div>
+        <p
+          class="mb-4 font-mono text-xs leading-6"
+          style="color: var(--color-muted);"
+        >
           {dictionary.allTimesRaceLocal}
         </p>
-        <div class="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           {predictedPoints.map((point) => (
-            <article class="rounded-[1.5rem] border border-[var(--line)] bg-[var(--cream)] p-4">
-              <div class="text-xs font-semibold tracking-[0.22em] text-[var(--muted)] uppercase">
+            <article
+              class="timing-card"
+              style="background-color: var(--color-surface); border: 1px solid var(--color-line); padding: 1.5rem;"
+            >
+              <div
+                class="font-mono text-[9px] tracking-[0.32em] uppercase"
+                style="color: var(--color-muted);"
+              >
                 {point.kind === "split"
                   ? dictionary.splitLabel
                   : dictionary.cheerPointLabel}
               </div>
-              <h4 class="mt-2 text-lg font-semibold text-[var(--ink)]">
+              <h4
+                class="font-display mt-1 text-xl leading-tight font-bold uppercase"
+                style="color: var(--color-text);"
+              >
                 {point.label}
               </h4>
-              <div class="mt-2 text-sm text-[var(--muted)]">
+              <div
+                class="mt-1 font-mono text-xs"
+                style="color: var(--color-muted);"
+              >
                 {formatDistance(point.distanceKm, locale)}
               </div>
-              <div class="font-display mt-4 text-3xl text-[var(--ember)]">
+              <div
+                class="mt-4 font-mono leading-none font-medium"
+                style={`font-size: clamp(2.8rem, 8vw, 4rem); color: var(--color-coral); letter-spacing: -0.02em;`}
+              >
                 {point.predictedTime}
               </div>
             </article>
           ))}
         </div>
       </div>
+
+      {/* Map — secondary */}
+      <RaceMapIsland
+        route={edition.route}
+        points={edition.points}
+        pointDetails={pointDetails}
+      />
     </div>
   );
 }

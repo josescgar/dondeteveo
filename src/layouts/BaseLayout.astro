@@ -43,59 +43,69 @@ const seo = buildSeo({ locale, title, description, pathname, noindex });
     {seo.noindex && <meta name="robots" content="noindex,follow" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    />
   </head>
-  <body class="bg-[var(--sand)] text-[var(--ink)] antialiased">
-    <div class="relative min-h-screen overflow-x-hidden">
+  <body class="antialiased">
+    <header
+      style="background-color: var(--color-surface); border-bottom: 1px solid var(--color-line);"
+    >
       <div
-        class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(208,76,40,0.18),_transparent_42%),radial-gradient(circle_at_right,_rgba(17,56,58,0.18),_transparent_34%)]"
+        class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-3 sm:px-8"
       >
-      </div>
-      <header
-        class="relative z-10 border-b border-[var(--line)] bg-[var(--ink)] text-white"
-      >
-        <div
-          class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 sm:px-8"
-        >
-          <a href={`/${locale}`} class="space-y-1">
+        <a href={`/${locale}`} class="flex items-center gap-3">
+          <img src="/logo.png" alt="Dondeteveo" class="h-9 w-auto" />
+          <div>
             <div
-              class="font-display text-xl tracking-[0.08em] text-[var(--sun)]"
+              class="font-display text-2xl leading-none font-bold uppercase"
+              style="color: var(--color-accent);"
             >
-              Dondeteveo
+              DONDETEVEO
             </div>
-            <div class="text-[11px] tracking-[0.24em] text-white/60 uppercase">
+            <div
+              class="mt-0.5 font-mono text-[9px] tracking-[0.28em] uppercase"
+              style="color: var(--color-muted);"
+            >
               {dictionary.siteTagline}
             </div>
-          </a>
-          <div class="flex items-center gap-3">
-            <a
-              href={`/${locale}/races`}
-              class="hidden text-sm font-medium text-white/75 transition hover:text-white sm:inline"
-            >
-              {dictionary.raceDiscovery}
-            </a>
-            <a
-              href={`/${locale}/about`}
-              class="hidden text-sm font-medium text-white/75 transition hover:text-white sm:inline"
-            >
-              {dictionary.about}
-            </a>
-            <LanguageSwitch currentLocale={locale} pathname={pathname} />
           </div>
-        </div>
-      </header>
+        </a>
+        <nav class="flex items-center gap-5">
+          <a
+            href={`/${locale}/races`}
+            class="nav-link hidden font-mono text-xs tracking-[0.18em] uppercase transition-colors sm:inline"
+            style="color: var(--color-muted);"
+          >
+            {dictionary.raceDiscovery}
+          </a>
+          <a
+            href={`/${locale}/about`}
+            class="nav-link hidden font-mono text-xs tracking-[0.18em] uppercase transition-colors sm:inline"
+            style="color: var(--color-muted);"
+          >
+            {dictionary.about}
+          </a>
+          <LanguageSwitch currentLocale={locale} pathname={pathname} />
+        </nav>
+      </div>
+    </header>
 
-      <main class="relative z-10">
-        <div class="mx-auto max-w-6xl px-5 py-8 sm:px-8 sm:py-10">
-          {
-            eyebrow && (
-              <div class="mb-4 text-xs font-semibold tracking-[0.28em] text-[var(--muted)] uppercase">
-                {eyebrow}
-              </div>
-            )
-          }
-          <slot />
-        </div>
-      </main>
-    </div>
+    <main class="fade-in">
+      <div class="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
+        {
+          eyebrow && (
+            <div
+              class="mb-4 font-mono text-[10px] tracking-[0.3em] uppercase"
+              style="color: var(--color-muted);"
+            >
+              // {eyebrow}
+            </div>
+          )
+        }
+        <slot />
+      </div>
+    </main>
   </body>
 </html>

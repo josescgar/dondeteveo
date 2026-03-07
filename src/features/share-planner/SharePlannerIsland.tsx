@@ -11,6 +11,11 @@ type Props = {
   year: string;
 };
 
+const fieldInputClass =
+  "w-full border-b bg-transparent px-0 py-2 font-mono text-sm outline-none transition";
+const fieldInputStyle =
+  "border-color: var(--color-line-solid); color: var(--color-text);";
+
 export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
   const dictionary = getDictionary(locale);
   const [mode, setMode] = useState<ShareMode>("pace");
@@ -25,16 +30,25 @@ export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
   const href = buildShareHref({ locale, raceSlug, year, mode, value, name });
 
   return (
-    <div class="rounded-[2rem] border border-[var(--line)] bg-[var(--ink)] p-5 text-white shadow-[var(--shadow-card)]">
-      <div class="text-xs font-semibold tracking-[0.22em] text-white/50 uppercase">
+    <div style="background-color: var(--color-surface); border: 1px solid var(--color-line); padding: 1.5rem;">
+      <div
+        class="font-mono text-[10px] tracking-[0.3em] uppercase"
+        style="color: var(--color-accent);"
+      >
         {dictionary.share}
       </div>
-      <p class="mt-3 text-sm leading-7 text-white/75">
+      <p
+        class="mt-2 font-mono text-sm leading-7"
+        style="color: var(--color-muted);"
+      >
         {dictionary.shareIntro}
       </p>
       <div class="mt-5 grid gap-4 md:grid-cols-2">
-        <label class="space-y-2">
-          <span class="text-xs font-semibold tracking-[0.22em] text-white/60 uppercase">
+        <label class="flex flex-col gap-1.5">
+          <span
+            class="font-mono text-[10px] tracking-[0.26em] uppercase"
+            style="color: var(--color-muted);"
+          >
             {dictionary.plannerMode}
           </span>
           <select
@@ -42,14 +56,24 @@ export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
             onInput={(event) =>
               handleModeChange(event.currentTarget.value as ShareMode)
             }
-            class="w-full rounded-full border border-white/15 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-[var(--sun)]"
+            class={fieldInputClass}
+            style={fieldInputStyle}
+            onFocus={(e) =>
+              (e.currentTarget.style.borderColor = "var(--color-accent)")
+            }
+            onBlur={(e) =>
+              (e.currentTarget.style.borderColor = "var(--color-line-solid)")
+            }
           >
             <option value="pace">{dictionary.pace}</option>
             <option value="finish">{dictionary.finishTime}</option>
           </select>
         </label>
-        <label class="space-y-2">
-          <span class="text-xs font-semibold tracking-[0.22em] text-white/60 uppercase">
+        <label class="flex flex-col gap-1.5">
+          <span
+            class="font-mono text-[10px] tracking-[0.26em] uppercase"
+            style="color: var(--color-muted);"
+          >
             {mode === "pace" ? dictionary.pacePerKm : dictionary.finishTime}
           </span>
           <input
@@ -61,24 +85,44 @@ export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
             pattern={
               mode === "pace" ? "\\d{1,2}:\\d{2}" : "\\d{1,2}:\\d{2}:\\d{2}"
             }
-            class="w-full rounded-full border border-white/15 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-[var(--sun)]"
+            class={fieldInputClass}
+            style={fieldInputStyle}
+            onFocus={(e) =>
+              (e.currentTarget.style.borderColor = "var(--color-accent)")
+            }
+            onBlur={(e) =>
+              (e.currentTarget.style.borderColor = "var(--color-line-solid)")
+            }
           />
         </label>
       </div>
-      <label class="mt-4 block space-y-2">
-        <span class="text-xs font-semibold tracking-[0.22em] text-white/60 uppercase">
+      <label class="mt-4 flex flex-col gap-1.5">
+        <span
+          class="font-mono text-[10px] tracking-[0.26em] uppercase"
+          style="color: var(--color-muted);"
+        >
           {dictionary.optionalNickname}
         </span>
         <input
           type="text"
           value={name}
           onInput={(event) => setName(event.currentTarget.value)}
-          class="w-full rounded-full border border-white/15 bg-white/10 px-4 py-3 text-sm text-white outline-none focus:border-[var(--sun)]"
+          class={fieldInputClass}
+          style={fieldInputStyle}
+          onFocus={(e) =>
+            (e.currentTarget.style.borderColor = "var(--color-accent)")
+          }
+          onBlur={(e) =>
+            (e.currentTarget.style.borderColor = "var(--color-line-solid)")
+          }
         />
       </label>
       <a
         href={href}
-        class="mt-5 inline-flex rounded-full bg-[var(--sun)] px-5 py-3 text-sm font-semibold text-[var(--ink)] transition hover:bg-[var(--sun-deep)]"
+        class="mt-6 inline-flex px-5 py-2.5 font-mono text-sm tracking-[0.18em] uppercase transition"
+        style="background-color: var(--color-coral); color: var(--color-text);"
+        onmouseover="this.style.backgroundColor='var(--color-coral-deep)'"
+        onmouseout="this.style.backgroundColor='var(--color-coral)'"
       >
         {dictionary.generateShareLink}
       </a>

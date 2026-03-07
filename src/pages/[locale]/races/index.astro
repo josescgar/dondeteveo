@@ -24,13 +24,17 @@ const races = (await getRaceSummaries()).map((race) =>
   description={dictionary.discoverIntro}
   eyebrow={dictionary.discoverTitle}
 >
-  <div class="max-w-3xl space-y-4">
+  <div class="max-w-3xl">
     <h1
-      class="font-display text-4xl leading-none text-[var(--ink)] sm:text-5xl"
+      class="font-display leading-none font-bold uppercase"
+      style={`font-size: clamp(2.5rem, 8vw, 4rem); color: var(--color-text);`}
     >
       {dictionary.discoverTitle}
     </h1>
-    <p class="text-lg leading-8 text-[var(--muted)]">
+    <p
+      class="mt-4 font-mono text-base leading-7"
+      style="color: var(--color-muted);"
+    >
       {dictionary.discoverIntro}
     </p>
   </div>

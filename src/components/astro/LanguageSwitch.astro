@@ -19,11 +19,15 @@ const alternatePath = switchLocalePath(pathname, alternateLocale);
 <a
   href={alternatePath}
   data-preserve-hash-link
-  class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-2 text-xs font-semibold tracking-[0.22em] text-white uppercase transition hover:border-white/40 hover:bg-white/15"
+  class="inline-flex items-center gap-1.5 border px-3 py-1.5 text-[10px] font-bold tracking-[0.24em] uppercase transition"
+  style="border-color: rgba(30,111,160,0.25); background-color: rgba(30,111,160,0.07); color: var(--color-accent);"
+  onmouseover="this.style.backgroundColor='rgba(30,111,160,0.14)'; this.style.borderColor='rgba(30,111,160,0.5)';"
+  onmouseout="this.style.backgroundColor='rgba(30,111,160,0.07)'; this.style.borderColor='rgba(30,111,160,0.25)';"
 >
   <span>{LOCALE_LABELS[currentLocale].slice(0, 2)}</span>
-  <span class="text-white/50">/</span>
-  <span class="text-white/75">{LOCALE_LABELS[alternateLocale].slice(0, 2)}</span
+  <span style="color: rgba(30,111,160,0.35);">/</span>
+  <span style="color: rgba(30,111,160,0.55);"
+    >{LOCALE_LABELS[alternateLocale].slice(0, 2)}</span
   >
 </a>
 

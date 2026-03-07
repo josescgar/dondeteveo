@@ -19,16 +19,27 @@ const dictionary = getDictionary(locale);
   eyebrow={dictionary.about}
 >
   <div
-    class="max-w-3xl rounded-[1.8rem] border border-[var(--line)] bg-white/90 p-6 shadow-[var(--shadow-card)]"
+    class="max-w-3xl"
+    style="background-color: var(--color-surface); border: 1px solid var(--color-line); padding: 1.5rem;"
   >
-    <h1 class="font-display text-4xl text-[var(--ink)]">{dictionary.about}</h1>
-    <p class="mt-4 text-base leading-8 text-[var(--muted)]">
+    <h1
+      class="font-display text-5xl font-bold uppercase"
+      style="color: var(--color-accent);"
+    >
+      {dictionary.about}
+    </h1>
+    <p
+      class="mt-4 font-mono text-base leading-8"
+      style="color: var(--color-muted);"
+    >
       {dictionary.contactIntro}
     </p>
     <a
       href="https://jerna.digital"
-      class="mt-6 inline-flex text-sm font-semibold text-[var(--ember)]"
-      >jerna.digital</a
+      class="mt-6 inline-flex font-mono text-sm transition"
+      style="color: var(--color-muted);"
+      onmouseover="this.style.color='var(--color-accent)'"
+      onmouseout="this.style.color='var(--color-muted)'">jerna.digital →</a
     >
   </div>
 </BaseLayout>
