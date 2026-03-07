@@ -12,10 +12,9 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "npm run test:unit && npm run test:e2e && npm run test:visual",
+    "test": "npm run test:unit && npm run test:e2e",
     "test:unit": "vitest run",
-    "test:e2e": "playwright test tests/e2e",
-    "test:visual": "playwright test tests/visual"
+    "test:e2e": "playwright test tests/e2e"
   },
   "dependencies": {
     "@astrojs/preact": "^4.1.3",

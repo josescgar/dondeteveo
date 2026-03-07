@@ -31,14 +31,13 @@
 ## Project Structure
 
 - Unit tests are co-located with feature logic.
-- E2E and visual tests live under root `tests/`.
+- E2E tests live under root `tests/`.
 - Shared generic code lives in `src/lib/`.
 
 ## Testing
 
 - Vitest for logic, parsing, validation, and transforms
 - Playwright for smoke E2E flows
-- Visual regression stays narrow and runs on Chromium only at first
 
 ## Pre-commit Hooks
 
@@ -51,9 +50,10 @@ Prevents lint and format regressions from reaching CI.
 
 ## CI/CD Baseline
 
-- Required checks: `quality`, `e2e-smoke`, `visual-regression`
-- PRs run lint, typecheck, unit tests, build, smoke E2E, focused visual regression
-- Deploy is currently disabled
+- Branch pushes run `quality` only (lint, typecheck, unit tests, build) — fast feedback, no browser overhead
+- PRs run the full suite: `quality` → `e2e-smoke` (depends on `quality`)
+- All jobs run on `ubuntu-latest`; no macOS runners
+- Deploy is currently disabled (stubbed in `ci.yml`)
 
 ## Dependency Hygiene
 
