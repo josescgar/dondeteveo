@@ -6,6 +6,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `Dondeteveo` ("where do I see you") is a race-day cheering planner. Runners share a link so spectators know where and when to cheer during a race. No GPS, live tracking, accounts, or user-generated routes — intentionally low-tech MVP.
 
+## Core Product Rules
+
+- Race discovery is part of MVP.
+- Primary homepage action is direct race search.
+- Every race edition has a dedicated SEO page.
+- Share pages are public by URL and always `noindex`.
+- Only race local time is shown. Never show viewer local time.
+
 ## Commands
 
 ```bash
@@ -104,11 +112,25 @@ Internal paths include the ISO country; public URLs do not. Preserve past editio
 
 ## Docs
 
-Read only what's needed for your task:
+Read only the smallest relevant set for your task. Do not read all docs by default.
 
-- `docs/architecture.md` — routing, SEO, rendering boundaries
-- `docs/data-race-catalog.md` — race data model and curation workflow
-- `docs/engineering.md` — code standards, testing, CI/CD
-- `docs/github-workflow.md` — PR/issue/release process
+- `docs/architecture.md` — routing, SEO, rendering boundaries; read for routing or SEO work
+- `docs/data-race-catalog.md` — race data model and curation workflow; read for race data work
+- `docs/engineering.md` — code standards, testing, CI/CD; read for code structure, testing, or CI work
+- `docs/github-workflow.md` — PR/issue/release process; read for issue, PR, or release workflow
 - `docs/security-privacy.md` — threat model and privacy rules
 - `docs/adr/` — architecture decision records
+
+## Doc Update Rule
+
+Update docs only for material changes to product behavior, scope, architecture, workflow, standards, security/privacy posture, or data model. If no material change happened, note `no docs needed` in the PR summary.
+
+## Done Check
+
+Before marking work complete:
+
+- Scope complete and acceptance criteria met
+- Validations run (lint, typecheck, tests as applicable)
+- Docs updated or explicitly noted as not needed
+- Code review completed when applicable
+- Ready for human review
