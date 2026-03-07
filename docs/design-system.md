@@ -4,74 +4,85 @@
 
 **Sporty but human.** Warm and community-first — friendly, location-forward, "See you at km 10!" energy. Inspired by Strava and Nike Run Club but prioritising spectator warmth over performance aggression. Not cold, corporate, or generic SaaS.
 
+Colors and logo are drawn from the brand mark: a location pin split between a rich medium blue and an energetic orange, with a white runner silhouette.
+
 ## Color Tokens
 
 ```css
---color-bg: #f5f1eb /* warm sand — page background */ --color-surface: #ffffff
-  /* card / panel surface */ --color-navy: #0d3b5e /* primary brand navy */
-  --color-navy-dark: #082a44 /* header background */ --color-orange: #f26419
-  /* accent, CTAs, upcoming highlights */ --color-orange-deep: #d6560e
-  /* hover state for orange */ --color-amber: #fff3e0
-  /* warm highlight tint — year badges, info panels */ --color-text: #1a2e3b
-  /* rich dark body text (not pure navy) */ --color-muted: #7a8e99
-  /* secondary / label text */ --color-line: rgba(13, 59, 94, 0.1) /* borders */;
+--color-bg: #f4f7fb /* light blue-tinted off-white — page background */
+  --color-surface: #ffffff /* card / panel surface */
+  --color-surface-raised: #e6eff7 /* elevated elements, badges */
+  --color-accent: #1e6fa0 /* primary brand blue — logo blue */
+  --color-accent-dim: rgba(30, 111, 160, 0.15) /* muted blue tint */
+  --color-coral: #f26419 /* CTA / action buttons — logo orange */
+  --color-coral-deep: #d6560e /* CTA hover state */ --color-text: #1a2e3b
+  /* primary text (rich dark navy) */ --color-muted: #6b7e8c
+  /* secondary / label text */ --color-line: rgba(30, 111, 160, 0.14)
+  /* borders/dividers (blue-tinted) */ --color-line-solid: #ccd8e4
+  /* neutral light structural borders */ --shadow-sm: 0 1px 4px
+  rgba(30, 111, 160, 0.08) --shadow-md: 0 4px 16px rgba(30, 111, 160, 0.12);
 ```
 
 ### Color Roles
 
-- **Orange** — primary CTA buttons, key data (predicted arrival times), upcoming race highlights, active focus rings. Use sparingly so it retains impact.
-- **Navy** — headings, race names, prominent data labels, card borders.
-- **Amber** — warm tint for year badges and info sub-panels. Never for text-heavy content.
-- **Muted** — eyebrow labels, secondary metadata, distance/pace labels, filter dropdowns. Keeps hierarchy clear so orange CTAs stand out.
-- **Navy Dark** — site header only.
+- **Accent (blue `#1e6fa0`)** — race names, section headings, data labels, accent bars, eyebrow highlights, nav wordmark. Primary structural brand color.
+- **Coral (orange `#f26419`)** — CTA buttons, predicted arrival times, action links. Use sparingly so it retains impact.
+- **Muted** — eyebrow labels, secondary metadata, distance/pace labels, filter controls.
+- **Surface** — white card backgrounds; `surface-raised` for badges and inline highlights.
 
 ## Typography
 
 ```css
 --font-display:
-  "Oswald", "Arial Narrow", sans-serif --font-body: "Lato", "Helvetica Neue",
-  Helvetica, Arial, sans-serif;
+  "Barlow Condensed", "Arial Narrow", sans-serif --font-mono: "IBM Plex Mono",
+  "Courier New", monospace;
 ```
 
-Google Fonts load string:
+Google Fonts `<link rel="stylesheet">` (loaded in `BaseLayout.astro` head — not `@import`):
 
 ```
-Oswald:wght@500;600;700
-Lato:ital,wght@0,400;0,700;1,400
+Barlow+Condensed:wght@700;800
+IBM+Plex+Mono:wght@400;500
 ```
+
+`html { font-family: var(--font-mono); color: var(--color-text); }`
 
 ### Usage
 
-- `font-display` (Oswald) — race names, section headings, large predicted times, nav brand name. Condensed, sporty.
-- `font-body` (Lato) — all body copy, labels, metadata. Humanist, warm, excellent mobile legibility.
+- `font-display` (Barlow Condensed) — race names, section headings, large predicted times, nav brand wordmark. Compressed and athletic.
+- `font-mono` (IBM Plex Mono) — all body copy, labels, metadata, inputs, buttons. Tabular and precise — dashboard aesthetic.
 
 ### Scale (px)
 
-11 / 13 / 14 / 16 / 18 / 20 / 24 / 30 / 36 / 48 / 60
+9 / 10 / 12 / 13 / 14 / 16 / 20 / 24 / 32 / 48+clamp
 
 ### Eyebrow Labels
 
-Small uppercase labels preceding headings: `text-[10px] font-bold tracking-[0.3em] uppercase`, colored `--color-muted`. Do **not** use orange for eyebrows — orange is reserved for CTAs and key data only. Exception: eyebrows inside dark navy panels may use orange for contrast.
+Small uppercase labels preceding headings: `font-mono text-[10px] tracking-[0.3em] uppercase`, colored `--color-muted`, prefixed with `//` (code-comment aesthetic).
+
+```html
+<div
+  class="font-mono text-[10px] tracking-[0.3em] uppercase"
+  style="color: var(--color-muted);"
+>
+  // Race discovery
+</div>
+```
 
 ## Radius
 
-```
---radius-sm:   6px     tags, chips
---radius-md:   10px    inputs, small cards
---radius-lg:   16px    main cards
---radius-xl:   24px    panels, map container
---radius-full: 9999px  pills
-```
+Sharp rectangles on all major containers. No `rounded-xl` / `rounded-lg` on cards, panels, or buttons.
 
-In Tailwind terms: `rounded` (6px), `rounded-lg` (10px), `rounded-xl` (16px).
+```
+inputs/selects: border-bottom only (no box)
+badges:         no radius (sharp)
+CTA buttons:    no radius (sharp)
+map container:  no radius (sharp)
+```
 
 ## Shadows
 
-```css
---shadow-sm: 0 1px 4px rgba(13, 59, 94, 0.06) /* default cards */ --shadow-md: 0
-  4px 16px rgba(13, 59, 94, 0.1) /* hover state, timing cards */ --shadow-lg: 0
-  12px 40px rgba(13, 59, 94, 0.14) /* elevated panels */;
-```
+Shadows are replaced by `1px solid var(--color-line)` borders on all containers. `--shadow-sm` / `--shadow-md` tokens are defined but used only where elevation is semantically meaningful (e.g. Leaflet map popups).
 
 ## Motion
 
@@ -80,36 +91,68 @@ In Tailwind terms: `rounded` (6px), `rounded-lg` (10px), `rounded-xl` (16px).
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 ```
 
-Race card stagger animation: `slideUp 0.38s ease` with per-child delays from 0.04s to 0.36s.
+### Keyframes
+
+```css
+@keyframes raceReveal   /* opacity 0→1, Y 10px→0, used on .fade-in and .race-row */
+@keyframes boardFlip; /* scaleY 0.85→1 + Y -4px→0, transform-origin: top — used on .timing-card */
+```
+
+### Animation Classes
+
+| Class          | Keyframe     | Duration | Used on                |
+| -------------- | ------------ | -------- | ---------------------- |
+| `.fade-in`     | `raceReveal` | 450ms    | `<main>` in BaseLayout |
+| `.race-row`    | `raceReveal` | 320ms    | Discovery list rows    |
+| `.timing-card` | `boardFlip`  | 280ms    | Share timing cards     |
+
+Stagger: `.race-row` 0.04s per child (9 entries); `.timing-card` 0.05s per child (6 entries).
+
+`@media (prefers-reduced-motion: reduce)` disables all animations.
 
 ## Spacing
 
 Standard 4px grid: 4 / 8 / 12 / 16 / 20 / 24 / 32 / 40 / 48 / 64px
 
+## Background Pattern
+
+`body` uses a dot-grid radial gradient with brand-blue tint at 26×26px:
+
+```css
+background-image: radial-gradient(
+  circle,
+  rgba(30, 111, 160, 0.06) 1px,
+  transparent 1px
+);
+background-size: 26px 26px;
+```
+
 ## Component Patterns
 
-### Race Cards (DiscoveryListIsland)
+### Race Rows (DiscoveryListIsland)
 
-- White surface, `shadow-sm`, left border 4px: orange for upcoming, muted rgba for past
-- Year badge: amber tint bg (`--color-amber`) with navy text — warm, not harsh
-- Race name: `font-display text-2xl font-bold`, navy
-- Metadata row: `text-xs`, muted
-- Hover: `hover:-translate-y-0.5 hover:shadow-md`
-- Stagger animation via `.race-card` class
+Full-width table-style rows, no cards:
+
+- `border-bottom: 1px solid var(--color-line)`, hover bg → `--color-surface`
+- Left: 2px vertical bar — `--color-accent` if upcoming, `--color-line-solid` if past
+- Race name: `font-display text-xl font-bold uppercase`, `--color-text`
+- City: `font-mono text-xs`, `--color-muted`
+- Right: status badge on `--color-surface-raised`, date (hidden md:), distance (hidden lg:), year, accent `→`
+- Stagger animation via `.race-row` class
 
 ### Filter Bar
 
-- White surface, border `--color-line`, `shadow-sm`
-- Input focus: border flips to `--color-orange`
-- Label: `text-[10px] font-bold tracking-[0.26em] uppercase`, muted
+- Bottom-border-only inputs (`border-b bg-transparent`)
+- Focus: border flips to `--color-accent` (blue); blur: `--color-line-solid`
+- Label: `font-mono text-[10px] tracking-[0.26em] uppercase`, `--color-muted`
 
 ### Share Planner Panel
 
-Dark navy panel (`--color-navy`) with:
+Surface panel with `border: 1px solid var(--color-line)`:
 
-- Orange eyebrow label (exception to muted rule — on dark bg for contrast)
-- Input fields: semi-transparent white border, white text
-- CTA button: orange bg, navy text, `--color-orange-deep` on hover
+- Eyebrow: `--color-accent` (blue)
+- Inputs: bottom-border only, focus → `--color-accent`
+- CTA button: `--color-coral` bg, `--color-text` color, no rounded corners
 
 ### Predicted Arrival Cards (ShareExperienceIsland)
 
@@ -117,36 +160,30 @@ Hero section — timing cards come **first**, map is secondary.
 
 Layout:
 
-1. Runner header band (full width, navy bg): race name · year, optional runner name in amber pill, start time
-2. Timing cards grid (`md:grid-cols-2 xl:grid-cols-4`): each card has kind label (muted), location name (Oswald xl, navy), distance (xs muted), predicted time (**Oswald text-5xl, orange**)
+1. Runner header band: `--color-surface` bg, `border: 1px solid var(--color-line)`, race name in `--color-text` with year in `--color-accent`
+2. Timing cards grid (`sm:grid-cols-2 xl:grid-cols-4`, `gap-3`): each card has kind label (muted), location name (`font-display text-xl`, `--color-text`), distance (xs muted), predicted time (`font-mono font-medium`, `clamp(2.8rem…4rem)`, **`--color-coral`**, `letter-spacing: -0.02em`, `boardFlip` entrance)
 3. Map below the fold
-
-### Year Badges
-
-`rounded px-2 py-0.5 text-[10px] font-bold tracking-wider` with `background-color: var(--color-amber); color: var(--color-navy)`.
-
-Never dark navy with white text — amber tint is warmer.
 
 ### CTA Buttons
 
-`rounded-lg px-5 py-2.5 text-sm font-bold uppercase tracking-wider`
-Background: `--color-orange`, text: `--color-navy`. Hover background: `--color-orange-deep`.
+`px-5 py-2.5 font-mono text-sm uppercase tracking-[0.18em]` — no `rounded-*`.
+Background: `--color-coral`, text: `--color-text`. Hover background: `--color-coral-deep`.
 
-### Info DL (Race Detail Page)
+### Info Row (Race Detail Page)
 
-`dt` labels: `text-[10px] font-bold tracking-[0.26em] uppercase`, orange — data labels within an info panel use orange to draw the eye to key facts.
+Inline horizontal data row with amber-tinted top/bottom borders and `border-left` separators between items. Labels inline in `--color-accent`, values in `--color-text` monospace.
 
-## Background Pattern
+### Header
 
-`body` uses a dot-grid radial gradient (`rgba(13,59,94,0.07)` on `--color-bg`) at 26×26px, giving a subtle athletic texture without being distracting.
+White (`--color-surface`) background, `border-bottom: 1px solid var(--color-line)`. Logo PNG + "DONDETEVEO" wordmark in `--color-accent` (blue). Nav links `font-mono text-xs tracking-[0.18em] uppercase --color-muted`, hover → `--color-accent`.
 
 ## Accessibility Baseline
 
-- Semantic HTML first (`article`, `h1-h4`, `dl/dt/dd`, `nav`, `label`)
-- Visible focus states: orange border on inputs when focused
+- Semantic HTML first (`article`, `h1-h4`, `nav`, `label`)
+- Visible focus states: `--color-accent` border on inputs when focused
 - Clear `label` elements for all form controls
 - Keyboard-friendly controls throughout
-- Do not rely on color alone for meaning (upcoming vs past race also uses left border thickness)
+- Do not rely on color alone for meaning (upcoming vs past race also uses left bar color + status badge)
 - Minimum contrast: 4.5:1 for body text, 3:1 for large text and UI components
 
 ## Time UX Rules
