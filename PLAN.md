@@ -13,6 +13,7 @@ Current phase: pre-implementation planning. A temporary planning snapshot exists
 Dondeteveo helps amateur runners generate an easily shareable web link so family and friends can know where and approximately when to cheer during a race.
 
 The app is intentionally low-tech for MVP:
+
 - no GPS
 - no live tracking
 - no user accounts
@@ -24,6 +25,7 @@ The main user is the amateur runner.
 The secondary audience is family and friends, often on mobile and potentially non-technical.
 
 Core job-to-be-done:
+
 - choose a race
 - enter target pace or finish time
 - generate a shareable link
@@ -34,6 +36,7 @@ Core job-to-be-done:
 ## MVP Scope
 
 ### In Scope
+
 - curated catalog of races
 - race discovery as an MVP feature
 - discovery via browse, text search, and filters
@@ -50,6 +53,7 @@ Core job-to-be-done:
 - lightweight Privacy Policy page
 
 ### Out of Scope
+
 - live tracking
 - GPS/device integration
 - user accounts or roles
@@ -61,6 +65,7 @@ Core job-to-be-done:
 - heavy back-office tooling in MVP
 
 ### Discovery and SEO Scope
+
 - optimize discovery primarily for runners who already know the race they want
 - homepage prioritizes direct race search
 - every race edition has a dedicated SEO-friendly detail page
@@ -76,14 +81,17 @@ Race discovery is part of MVP, not a secondary feature.
 The product should optimize for runners who already know the race they want, while still supporting browsing.
 
 Primary homepage action:
+
 - direct race search
 
 Discovery modes:
+
 - direct search
 - browse catalog
 - basic filters
 
 SEO implications:
+
 - race discovery pages and race detail pages are strategic and indexable
 - personalized share pages are public but always noindex
 - past race editions should remain indexable
@@ -105,6 +113,7 @@ SEO implications:
 ## Locked Technical Decisions
 
 ### App Stack
+
 - Astro with islands architecture
 - Preact for interactive islands only
 - TypeScript with strict mode
@@ -112,6 +121,7 @@ SEO implications:
 - npm as package manager
 
 ### Maps and Data
+
 - Leaflet for map rendering
 - GeoJSON for route and point data
 - pluggable free basemap provider
@@ -120,6 +130,7 @@ SEO implications:
 - route authoring via lightweight browser-based tracing workflow when official GPX/KML is unavailable
 
 ### Hosting and Delivery
+
 - GitHub Pages for hosting
 - Cloudflare in front of GitHub Pages
 - canonical production domain: `dondeteveo.com`
@@ -129,6 +140,7 @@ SEO implications:
 - Git tags and GitHub Releases with curated changelogs
 
 ### Sharing and Privacy
+
 - no backend persistence in MVP
 - share state encoded in URL fragment
 - fragment contains minimal share state only
@@ -137,6 +149,7 @@ SEO implications:
 - all fragment input treated as untrusted input
 
 ### Localization and Routing
+
 - all real content lives under `/en/...` and `/es/...`
 - `/` redirects by browser language to `/en` or `/es`
 - browser-language fallback is `/en`
@@ -148,7 +161,9 @@ SEO implications:
 ## Architecture Overview
 
 ### Rendering Model
+
 Use Astro for:
+
 - routes
 - layouts
 - SEO metadata
@@ -158,25 +173,31 @@ Use Astro for:
 - legal and informational pages
 
 Use Preact only for:
+
 - interactive form controls
 - share interactions
 - map controls and panels
 - small browser-only widgets
 
 Rule:
+
 - Astro first
 - Preact only for islands
 - avoid building full pages in Preact
 
 ### Hydration Strategy
+
 Use the lightest hydration directive that works:
+
 - `client:load` only for immediately interactive critical UI
 - `client:idle` for non-critical widgets
 - `client:visible` for below-the-fold widgets
 - avoid `client:only` unless SSR is impossible
 
 ### SEO Strategy
+
 Indexable:
+
 - `/en` and `/es` localized homepages
 - `/en/races` and `/es/races` listing pages
 - race detail pages
@@ -184,16 +205,19 @@ Indexable:
 - Privacy Policy
 
 Not indexable:
+
 - personalized share pages
 - listing search and filter states
 
 Routing and canonical rules:
+
 - `/` is a UX entry point only, not a primary SEO page
 - canonical pages live under locale-prefixed routes
 - convenience race URLs redirect to explicit year-based race pages
 - past race editions remain public and indexable
 
 Canonical domain:
+
 - `https://dondeteveo.com`
 
 ---
@@ -201,6 +225,7 @@ Canonical domain:
 ## Information Architecture and Page Model
 
 ### Top-Level Pages
+
 - localized homepage
 - race discovery page
 - race detail pages
@@ -209,15 +234,19 @@ Canonical domain:
 - Privacy Policy
 
 ### Language Strategy
+
 Use explicit language prefixes:
+
 - `/es/...`
 - `/en/...`
 
 Root behavior:
+
 - `/` redirects to `/es` or `/en` based on browser language
 - fallback is `/en`
 
 ### Core Page Intent
+
 1. Homepage
    - clear value proposition
    - primary direct race search
@@ -255,7 +284,9 @@ Root behavior:
    - lightweight Privacy Policy
 
 ### Route Model
+
 Real content routes:
+
 - `/en`
 - `/es`
 - `/en/races`
@@ -268,6 +299,7 @@ Real content routes:
 - `/es/share/<race>/<year>#...`
 
 Behavior rules:
+
 - `/en/races/<race>` and `/es/races/<race>` redirect to the next upcoming edition if one exists, otherwise the most recent past edition
 - `/en/races/<race>/<year>` and `/es/races/<race>/<year>` are the canonical race edition pages
 - race slugs must be globally unique across the full catalog
@@ -279,43 +311,53 @@ Behavior rules:
 Race data is curated and stored in-repo.
 
 ### Folder Structure
+
 Use ISO country codes:
 
 - `data/<iso-country>/<race>/<year>/`
 
 Examples:
+
 - `data/es/sevilla-half-marathon/2026/`
 - `data/es/madrid-marathon/2026/`
 
 ### Files Per Race Edition
+
 Each race edition should contain:
+
 - metadata JSON
 - route GeoJSON
 - points GeoJSON
 - source and provenance JSON
 
 Recommended shape:
+
 - `data/es/<race>/<year>/meta.json`
 - `data/es/<race>/<year>/route.geojson`
 - `data/es/<race>/<year>/points.geojson`
 - `data/es/<race>/<year>/source.json`
 
 ### Race Entity Model
+
 Race identity is edition-specific:
+
 - race + year
 
 This avoids ambiguity when courses change between years.
 
 Race slug rules:
+
 - race slugs must be globally unique across the full catalog
 - public URLs do not include the country segment even though internal data paths do
 
 ### Timing Model
+
 MVP uses constant pace.
 Arrival times are derived from route geometry and checkpoint positions.
 All predicted times are shown only in race local time.
 
 Required race metadata:
+
 - `name`
 - `date`
 - `distance`
@@ -325,7 +367,9 @@ Required race metadata:
 - `officialWebsiteUrl`
 
 ### Provenance
+
 Every race edition must store source notes:
+
 - official site
 - official PDF
 - official course map
@@ -369,9 +413,11 @@ Every race edition must store source notes:
 ```
 
 ### Feature Co-Location Rule
+
 Feature-specific UI and logic should be co-located.
 
 Example:
+
 ```text
 src/features/race-planner/
   RacePlannerIsland.tsx
@@ -382,6 +428,7 @@ src/features/race-planner/
 ```
 
 ### Test Placement
+
 - unit tests are co-located with feature logic
 - e2e and visual tests live in root `tests/`
 
@@ -390,6 +437,7 @@ src/features/race-planner/
 ## Coding Standards
 
 ### General
+
 - prefer simple, explicit code
 - optimize for readability and maintainability
 - one module, one clear responsibility
@@ -397,19 +445,23 @@ src/features/race-planner/
 - keep functions and components small
 
 ### Naming
+
 - use descriptive names
 - avoid vague names like `data`, `value`, `item` when domain names are available
 - booleans should read like predicates: `isLoading`, `hasError`, `canShare`
 
 ### No Magic Values
+
 - no unexplained magic numbers
 - no repeated hardcoded domain strings
 - extract repeated literals into named constants
 
 ### Shared Domain Values
+
 Use constants plus literal union types rather than TypeScript enums by default.
 
 ### TypeScript
+
 - strict mode on
 - no `any` unless strongly justified
 - validate external input at boundaries
@@ -417,16 +469,19 @@ Use constants plus literal union types rather than TypeScript enums by default.
 - prefer discriminated unions for variant states
 
 ### Exports
+
 - named exports by default for app code
 - default exports only where framework conventions naturally expect them
 
 ### UI and Logic Separation
+
 - component files focus on rendering and event wiring
 - business logic lives outside JSX in sibling logic files
 - validation and parsing lives in schema or validation files
 - no business rules buried in component templates
 
 ### Astro and Preact
+
 - Astro by default
 - Preact only for interactive islands
 - avoid `preact/compat` unless required by a dependency
@@ -434,12 +489,14 @@ Use constants plus literal union types rather than TypeScript enums by default.
 - avoid effects unless syncing with external or browser systems
 
 ### Tailwind
+
 - token-driven usage
 - avoid ad hoc arbitrary design choices
 - extract repeated patterns when readability suffers
 - keep component styling intentional and consistent
 
 ### Comments
+
 - explain why, not what
 - avoid stale or redundant comments
 - no commented-out dead code
@@ -449,7 +506,9 @@ Use constants plus literal union types rather than TypeScript enums by default.
 ## Testing Strategy
 
 ### Unit Tests
+
 Use Vitest for:
+
 - pace calculations
 - share state parsing and serialization
 - validation
@@ -459,7 +518,9 @@ Use Vitest for:
 - route and checkpoint calculations
 
 ### E2E Tests
+
 Use Playwright for:
+
 - homepage search flow
 - discovery flow
 - race detail to share generation flow
@@ -468,12 +529,15 @@ Use Playwright for:
 - privacy and noindex expectations
 
 ### Visual Regression
+
 Use focused visual tests only:
+
 - homepage
 - race detail page
 - share result page
 
 Initial browser coverage:
+
 - Chromium only
 
 ---
@@ -481,7 +545,9 @@ Initial browser coverage:
 ## CI/CD Plan
 
 ### PR Workflow
+
 Run on pull requests:
+
 - install with `npm ci`
 - lint
 - typecheck
@@ -492,19 +558,24 @@ Run on pull requests:
 - upload reports and artifacts on failure
 
 ### Main Workflow
+
 Run on push to `main`:
+
 - rerun verification
 - deploy only if all checks pass
 - deploy to GitHub Pages environment
 
 ### Release Workflow
+
 Run on release or tag flow:
+
 - validate released commit or tag
 - propose or confirm SemVer bump
 - prepare curated release notes
 - publish Git tag and GitHub Release
 
 ### CI/CD Practices
+
 - use stable unique job names
 - use reusable verification workflow where helpful
 - no PR previews for MVP workflow
@@ -517,6 +588,7 @@ Run on release or tag flow:
 ## GitHub Workflow Plan
 
 ### Work Model
+
 - single milestone: `Initial project planning`
 - flat planning task list only
 - no GitHub Projects
@@ -525,6 +597,7 @@ Run on release or tag flow:
 - no GitHub Phases
 
 ### Initial Planning Tasks
+
 - `Task: Documentation bootstrapping`
 - `Task: Define product scope, discovery, user flows, and UX baseline`
 - `Task: Define architecture, routing, SEO, share URLs, and page model`
@@ -533,11 +606,13 @@ Run on release or tag flow:
 - `Task: Define GitHub workflow, templates, branch protection, release rules, and implementation-ready backlog`
 
 ### Branching
+
 - one task issue -> one branch -> one PR when possible
 - branch naming follows the Conventional Branch specification:
   - `<type>/<description>`
 
 Standard branch types:
+
 - `feat`
 - `fix`
 - `hotfix`
@@ -545,18 +620,22 @@ Standard branch types:
 - `chore`
 
 Examples:
+
 - `feat/race-search-homepage`
 - `chore/documentation-bootstrapping`
 - `fix/timezone-labels`
 - `release/v0.1.0`
 
 ### Commits and Merging
+
 - conventional commits
 - squash merge to `main`
 - never merge directly to `main`
 
 ### Done Criteria
+
 An issue is done when:
+
 - scope is complete
 - acceptance criteria are met
 - validations are green
@@ -565,7 +644,9 @@ An issue is done when:
 - PR is merged
 
 ### Reviews
+
 Policy direction:
+
 - PRs required
 - at least one human approval
 - required checks pass
@@ -573,17 +654,21 @@ Policy direction:
 - no direct pushes to `main`
 
 ### Templates
+
 Prepare these templates from the start:
+
 - Task issue template
 - Bug issue template
 - Pull Request template
 
 Issue-writing rule:
+
 - every GitHub issue must be self-contained enough to be worked on without reopening `PLAN.md`
 - each issue should include the relevant locked context, expected outputs, acceptance criteria, dependencies, validation expectations, and docs impact
 - issues should still stay concise, but not at the expense of missing execution context
 
 ### Lean Label Taxonomy
+
 - `type/task`
 - `type/bug`
 - `area/docs`
@@ -611,6 +696,7 @@ Long-lived docs live in `docs/`.
 Ephemeral execution and task tracking live in GitHub issues and PRs.
 
 ### Planned Docs
+
 - `AGENTS.md`
 - `docs/README.md`
 - `docs/product.md`
@@ -623,13 +709,16 @@ Ephemeral execution and task tracking live in GitHub issues and PRs.
 - `docs/adr/`
 
 Documentation style rules:
+
 - keep docs concise and decision-first
 - avoid duplication across documents
 - prefer bullets, checklists, and short sections over long prose
 - make docs easy to scan for both humans and agents
 
 ### AGENTS.md Principles
+
 `AGENTS.md` should:
+
 - be concise
 - act as the operational quick reference for AI agents
 - explicitly tell agents not to read all docs every time
@@ -637,7 +726,9 @@ Documentation style rules:
 - require checking whether material doc updates are needed before closing work
 
 ### Material Doc Update Rule
+
 Update long-lived docs only when there is a material change to:
+
 - product behavior
 - scope
 - architecture
@@ -647,6 +738,7 @@ Update long-lived docs only when there is a material change to:
 - data model
 
 PRs should explicitly state either:
+
 - docs updated
 - or no docs needed because there was no material change
 
@@ -655,6 +747,7 @@ PRs should explicitly state either:
 ## Security and Privacy Posture
 
 ### Main Risks
+
 - untrusted fragment input
 - XSS
 - privacy leakage via shared links
@@ -663,6 +756,7 @@ PRs should explicitly state either:
 - inaccurate or malformed curated race data
 
 ### Mitigations
+
 - strict parse, validate, normalize boundaries
 - never render user input as raw HTML
 - nickname-first identity policy
@@ -673,6 +767,7 @@ PRs should explicitly state either:
 - Cloudflare used for edge hardening and headers
 
 ### Privacy Notes
+
 - there is no account system in MVP
 - third-party services may still receive IP and referrer data
 - privacy disclosures should cover Cloudflare and map providers
@@ -695,14 +790,18 @@ PRs should explicitly state either:
 These workstreams organize planning in this document and conversation only. They are not GitHub issue types.
 
 ### Documentation Bootstrapping
+
 Define:
+
 - docs structure
 - AGENTS.md approach
 - ADR usage
 - doc update rules
 
 ### Product and UX Definition
+
 Define:
+
 - product scope
 - user flows
 - discovery model
@@ -712,7 +811,9 @@ Define:
 - non-goals
 
 ### Architecture and Information Architecture
+
 Define:
+
 - route model
 - page model
 - rendering boundaries
@@ -722,7 +823,9 @@ Define:
 - custom domain and deployment behavior
 
 ### Engineering, Security, and Delivery
+
 Define:
+
 - repo layout
 - feature structure
 - data layout
@@ -733,7 +836,9 @@ Define:
 - branch protection configuration
 
 ### Execution Readiness
+
 Convert final approved planning into:
+
 - the six flat GitHub planning tasks
 - templates
 - workflow automation tasks
@@ -756,6 +861,7 @@ This is the recommended first execution wave after the planning tasks are comple
 8. `Task: Implement CI/CD, templates, and branch protection configuration`
 
 Recommended first execution order:
+
 - documentation and agent guidance
 - Astro/tooling/bootstrap
 - OpenCode workflow skills
@@ -772,6 +878,7 @@ Recommended first execution order:
 These are documentation and specification targets first, not yet implemented assets.
 
 ### issue-intake
+
 - normalize incoming task issue
 - confirm scope and acceptance criteria
 - identify relevant docs and validation needs
@@ -779,6 +886,7 @@ These are documentation and specification targets first, not yet implemented ass
 - ensure the issue is agent-ready before implementation starts
 
 ### implementation
+
 - read the issue, `AGENTS.md`, and only the minimum relevant docs
 - derive a Conventional Branch-compliant branch name
 - produce an implementation plan
@@ -790,6 +898,7 @@ These are documentation and specification targets first, not yet implemented ass
 - hand off the PR for mandatory human review before merge
 
 ### release
+
 - inspect merged PRs since the last tag
 - propose the SemVer bump
 - draft curated changelog and GitHub Release notes
@@ -797,6 +906,7 @@ These are documentation and specification targets first, not yet implemented ass
 - verify the release checklist before publishing
 
 Skill design rules:
+
 - keep the skill set limited to `issue-intake`, `implementation`, and `release`
 - docs-only changes may skip separate-agent code review
 - any code, config, CI/CD, or data-logic change must include separate-agent code review before human review
@@ -816,6 +926,7 @@ Skill design rules:
 No major information architecture or routing decisions are currently open.
 
 Current source of truth:
+
 - `/` redirects by browser language to `/en` or `/es`, fallback `/en`
 - `/en` and `/es` are canonical localized homepages
 - `/en/races` and `/es/races` are the indexable listing pages

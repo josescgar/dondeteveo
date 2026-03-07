@@ -137,3 +137,9 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Astro and test output
+.astro/
+playwright-report/
+test-results/
+.DS_Store

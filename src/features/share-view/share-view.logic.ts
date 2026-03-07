@@ -1,0 +1,54 @@
+import type { RacePointFeature } from "../../lib/races/schemas";
+import {
+  formatMinutesAsClock,
+  parseFinishTimeToMinutes,
+  parsePaceToMinutesPerKm,
+  type ShareState,
+} from "../../lib/share/share-state";
+
+export type PredictedPoint = {
+  id: string;
+  label: string;
+  kind: "split" | "cheer-point";
+  distanceKm: number;
+  predictedTime: string;
+};
+
+export const resolvePaceMinutesPerKm = (
+  state: ShareState,
+  raceDistanceKm: number,
+): number | null => {
+  if (state.mode === "pace") {
+    return parsePaceToMinutesPerKm(state.value);
+  }
+
+  const finishMinutes = parseFinishTimeToMinutes(state.value);
+  if (finishMinutes === null) {
+    return null;
+  }
+
+  return finishMinutes / raceDistanceKm;
+};
+
+const startClockMinutes = (startTime: string): number => {
+  const [hours, minutes] = startTime.split(":").map(Number);
+  return hours * 60 + minutes;
+};
+
+export const buildPredictedPoints = (
+  points: RacePointFeature[],
+  paceMinutesPerKm: number,
+  raceStartTime: string,
+): PredictedPoint[] => {
+  const baseMinutes = startClockMinutes(raceStartTime);
+
+  return points.map((point) => ({
+    id: point.properties.id,
+    label: point.properties.label,
+    kind: point.properties.kind,
+    distanceKm: point.properties.distanceKm,
+    predictedTime: formatMinutesAsClock(
+      baseMinutes + point.properties.distanceKm * paceMinutesPerKm,
+    ),
+  }));
+};

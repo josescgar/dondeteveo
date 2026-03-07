@@ -1,0 +1,37 @@
+---
+import {
+  DEFAULT_LOCALE,
+  ROOT_REDIRECT_DELAY_MS,
+  SUPPORTED_LOCALES,
+} from "../lib/config";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex,follow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dondeteveo</title>
+    <script
+      is:inline
+      define:vars={{
+        fallbackLocale: DEFAULT_LOCALE,
+        redirectDelayMs: ROOT_REDIRECT_DELAY_MS,
+        supportedLocales: SUPPORTED_LOCALES,
+      }}
+    >
+      const preferredLocale = navigator.languages
+        .map((value) => value.slice(0, 2).toLowerCase())
+        .find((value) => supportedLocales.includes(value));
+
+      window.setTimeout(() => {
+        window.location.replace(`/${preferredLocale ?? fallbackLocale}`);
+      }, redirectDelayMs);
+    </script>
+  </head>
+  <body>
+    <p>Redirecting...</p>
+    <p><a href={`/${DEFAULT_LOCALE}`}>Continue in English</a></p>
+  </body>
+</html>

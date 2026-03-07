@@ -1,0 +1,68 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import ShareExperienceIsland from "../../../../features/share-view/ShareExperienceIsland";
+
+import { type Locale, SUPPORTED_LOCALES } from "../../../../lib/config";
+import { getDictionary } from "../../../../lib/i18n";
+import { getAllRaceEditions } from "../../../../lib/races/catalog";
+import { localizeRaceEdition } from "../../../../lib/races/localized";
+
+export const getStaticPaths = async () => {
+  const editions = await getAllRaceEditions();
+  return SUPPORTED_LOCALES.flatMap((locale) =>
+    editions.map((edition) => ({
+      params: {
+        locale,
+        race: edition.raceSlug,
+        year: edition.year,
+      },
+      props: {
+        edition,
+      },
+    })),
+  );
+};
+
+const locale = Astro.params.locale as Locale;
+const dictionary = getDictionary(locale);
+const { edition: rawEdition } = Astro.props;
+const edition = localizeRaceEdition(rawEdition, locale);
+const pathname = `/${locale}/share/${edition.raceSlug}/${edition.year}`;
+---
+
+<BaseLayout
+  locale={locale}
+  pathname={pathname}
+  title={`${edition.meta.name} ${edition.year} | ${dictionary.sharePageTitle}`}
+  description={dictionary.shareIntro}
+  noindex={true}
+  eyebrow={dictionary.share}
+>
+  <div class="max-w-3xl space-y-4">
+    <h1
+      class="font-display text-4xl leading-none text-[var(--ink)] sm:text-5xl"
+    >
+      {dictionary.sharePageTitle}
+    </h1>
+    <p class="text-lg leading-8 text-[var(--muted)]">
+      {dictionary.allTimesRaceLocal}
+    </p>
+  </div>
+
+  <section class="mt-10">
+    <noscript>
+      <div
+        class="rounded-[1.8rem] border border-[var(--line)] bg-white/90 p-6 shadow-[var(--shadow-card)]"
+      >
+        <p class="text-base leading-7 text-[var(--muted)]">
+          {dictionary.shareNeedsJavaScript}
+        </p>
+      </div>
+    </noscript>
+    <ShareExperienceIsland
+      locale={locale}
+      edition={edition}
+      client:only="preact"
+    />
+  </section>
+</BaseLayout>

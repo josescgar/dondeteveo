@@ -1,0 +1,111 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import DiscoveryListIsland from "../../features/race-discovery/DiscoveryListIsland";
+
+import { type Locale, SUPPORTED_LOCALES } from "../../lib/config";
+import { getDictionary } from "../../lib/i18n";
+import { localizeRaceSummary } from "../../lib/races/localized";
+import { getRaceSummaries } from "../../lib/races/catalog";
+
+export const getStaticPaths = () =>
+  SUPPORTED_LOCALES.map((locale) => ({ params: { locale } }));
+
+const locale = Astro.params.locale as Locale;
+const dictionary = getDictionary(locale);
+const races = (await getRaceSummaries()).map((race) =>
+  localizeRaceSummary(race, locale),
+);
+---
+
+<BaseLayout
+  locale={locale}
+  pathname={`/${locale}`}
+  title={`Dondeteveo | ${dictionary.directRaceSearch}`}
+  description={dictionary.heroBody}
+  eyebrow={dictionary.raceDiscovery}
+>
+  <section class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+    <div class="space-y-6">
+      <h1
+        class="font-display max-w-3xl text-4xl leading-none text-[var(--ink)] sm:text-6xl"
+      >
+        {dictionary.heroTitle}
+      </h1>
+      <p class="max-w-2xl text-lg leading-8 text-[var(--muted)]">
+        {dictionary.heroBody}
+      </p>
+      <div class="grid gap-4 sm:grid-cols-3">
+        <div
+          class="rounded-[1.6rem] border border-[var(--line)] bg-white/80 p-4 shadow-[var(--shadow-card)]"
+        >
+          <div
+            class="text-xs font-semibold tracking-[0.24em] text-[var(--muted)] uppercase"
+          >
+            {dictionary.searchFirstTitle}
+          </div>
+          <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
+            {dictionary.searchFirstBody}
+          </p>
+        </div>
+        <div
+          class="rounded-[1.6rem] border border-[var(--line)] bg-white/80 p-4 shadow-[var(--shadow-card)]"
+        >
+          <div
+            class="text-xs font-semibold tracking-[0.24em] text-[var(--muted)] uppercase"
+          >
+            {dictionary.raceLocalTime}
+          </div>
+          <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
+            {dictionary.allTimesRaceLocal}
+          </p>
+        </div>
+        <div
+          class="rounded-[1.6rem] border border-[var(--line)] bg-white/80 p-4 shadow-[var(--shadow-card)]"
+        >
+          <div
+            class="text-xs font-semibold tracking-[0.24em] text-[var(--muted)] uppercase"
+          >
+            {dictionary.shareReadyTitle}
+          </div>
+          <p class="mt-2 text-sm leading-6 text-[var(--muted)]">
+            {dictionary.shareReadyBody}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="rounded-[2rem] border border-[var(--line)] bg-[var(--ink)] p-5 text-white shadow-[var(--shadow-card)]"
+    >
+      <div
+        class="text-xs font-semibold tracking-[0.24em] text-white/50 uppercase"
+      >
+        {dictionary.directRaceSearch}
+      </div>
+      <p class="mt-3 text-lg leading-8 text-white/80">
+        {dictionary.discoverIntro}
+      </p>
+      <div class="mt-5 rounded-[1.4rem] bg-white/10 p-3 backdrop-blur">
+        <div class="text-sm font-medium text-white/70">
+          {dictionary.shareIntro}
+        </div>
+        <a
+          href="#race-search"
+          class="mt-4 inline-flex rounded-full bg-[var(--sun)] px-5 py-3 text-sm font-semibold text-[var(--ink)] transition hover:bg-[var(--sun-deep)]"
+        >
+          {dictionary.directRaceSearch}
+        </a>
+        <a
+          href={`/${locale}/races`}
+          class="mt-4 ml-4 inline-flex text-sm font-semibold text-white/80 transition hover:text-white"
+        >
+          {dictionary.browseRaces}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="race-search" class="mt-12 scroll-mt-8">
+    <DiscoveryListIsland locale={locale} races={races} client:load />
+  </section>
+</BaseLayout>

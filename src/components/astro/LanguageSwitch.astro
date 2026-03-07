@@ -1,0 +1,41 @@
+---
+import {
+  LOCALE_ALTERNATES,
+  LOCALE_LABELS,
+  type Locale,
+} from "../../lib/config";
+import { switchLocalePath } from "../../lib/format";
+
+type Props = {
+  currentLocale: Locale;
+  pathname: string;
+};
+
+const { currentLocale, pathname } = Astro.props;
+const alternateLocale = LOCALE_ALTERNATES[currentLocale];
+const alternatePath = switchLocalePath(pathname, alternateLocale);
+---
+
+<a
+  href={alternatePath}
+  data-preserve-hash-link
+  class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-2 text-xs font-semibold tracking-[0.22em] text-white uppercase transition hover:border-white/40 hover:bg-white/15"
+>
+  <span>{LOCALE_LABELS[currentLocale].slice(0, 2)}</span>
+  <span class="text-white/50">/</span>
+  <span class="text-white/75">{LOCALE_LABELS[alternateLocale].slice(0, 2)}</span
+  >
+</a>
+
+<script is:inline>
+  document.querySelectorAll("[data-preserve-hash-link]").forEach((element) => {
+    element.addEventListener("click", (event) => {
+      const link = event.currentTarget;
+      if (!(link instanceof HTMLAnchorElement) || !window.location.hash) {
+        return;
+      }
+
+      link.href = `${link.href}${window.location.hash}`;
+    });
+  });
+</script>

@@ -1,0 +1,101 @@
+---
+import LanguageSwitch from "../components/astro/LanguageSwitch.astro";
+import "../styles/global.css";
+
+import { getDictionary } from "../lib/i18n";
+import { buildSeo, type SeoInput } from "../lib/seo";
+import type { Locale } from "../lib/config";
+
+type Props = SeoInput & {
+  eyebrow?: string;
+};
+
+const {
+  locale,
+  title,
+  description,
+  pathname,
+  noindex = false,
+  eyebrow,
+} = Astro.props;
+const dictionary = getDictionary(locale as Locale);
+const seo = buildSeo({ locale, title, description, pathname, noindex });
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={seo.description} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{seo.title}</title>
+    <link rel="canonical" href={seo.canonical} />
+    {
+      seo.alternates.map((alternate) => (
+        <link
+          rel="alternate"
+          hreflang={alternate.hrefLang}
+          href={alternate.href}
+        />
+      ))
+    }
+    {seo.noindex && <meta name="robots" content="noindex,follow" />}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+  </head>
+  <body class="bg-[var(--sand)] text-[var(--ink)] antialiased">
+    <div class="relative min-h-screen overflow-x-hidden">
+      <div
+        class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(208,76,40,0.18),_transparent_42%),radial-gradient(circle_at_right,_rgba(17,56,58,0.18),_transparent_34%)]"
+      >
+      </div>
+      <header
+        class="relative z-10 border-b border-[var(--line)] bg-[var(--ink)] text-white"
+      >
+        <div
+          class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 sm:px-8"
+        >
+          <a href={`/${locale}`} class="space-y-1">
+            <div
+              class="font-display text-xl tracking-[0.08em] text-[var(--sun)]"
+            >
+              Dondeteveo
+            </div>
+            <div class="text-[11px] tracking-[0.24em] text-white/60 uppercase">
+              {dictionary.siteTagline}
+            </div>
+          </a>
+          <div class="flex items-center gap-3">
+            <a
+              href={`/${locale}/races`}
+              class="hidden text-sm font-medium text-white/75 transition hover:text-white sm:inline"
+            >
+              {dictionary.raceDiscovery}
+            </a>
+            <a
+              href={`/${locale}/about`}
+              class="hidden text-sm font-medium text-white/75 transition hover:text-white sm:inline"
+            >
+              {dictionary.about}
+            </a>
+            <LanguageSwitch currentLocale={locale} pathname={pathname} />
+          </div>
+        </div>
+      </header>
+
+      <main class="relative z-10">
+        <div class="mx-auto max-w-6xl px-5 py-8 sm:px-8 sm:py-10">
+          {
+            eyebrow && (
+              <div class="mb-4 text-xs font-semibold tracking-[0.28em] text-[var(--muted)] uppercase">
+                {eyebrow}
+              </div>
+            )
+          }
+          <slot />
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
