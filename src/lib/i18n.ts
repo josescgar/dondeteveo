@@ -8,6 +8,7 @@ type Dictionary = {
   cheerPoints: string;
   city: string;
   contactIntro: string;
+  contactLabel: string;
   country: string;
   date: string;
   directRaceSearch: string;
@@ -66,6 +67,7 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     city: "City",
     contactIntro:
       "Made by Jerna Digital for simple, spectator-friendly race planning.",
+    contactLabel: "Contact",
     country: "Country",
     date: "Date",
     directRaceSearch: "Search your race directly",
@@ -131,6 +133,7 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     city: "Ciudad",
     contactIntro:
       "Creado por Jerna Digital para planificar mejor donde animar en carrera.",
+    contactLabel: "Contacto",
     country: "Pais",
     date: "Fecha",
     directRaceSearch: "Busca tu carrera directamente",

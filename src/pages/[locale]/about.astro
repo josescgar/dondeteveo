@@ -9,6 +9,8 @@ export const getStaticPaths = () =>
 
 const locale = Astro.params.locale as Locale;
 const dictionary = getDictionary(locale);
+
+const CONTACT_EMAIL = "jose.escobar.dev@gmail.com";
 ---
 
 <BaseLayout
@@ -23,21 +25,38 @@ const dictionary = getDictionary(locale);
     style="background-color: var(--color-surface); border: 1px solid var(--color-line); padding: 1.5rem;"
   >
     <h1
-      class="font-display text-5xl font-bold uppercase"
-      style="color: var(--color-accent);"
+      class="fade-in font-display text-5xl font-bold uppercase"
+      style="color: var(--color-accent); animation-delay: 0ms;"
     >
       {dictionary.about}
     </h1>
     <p
-      class="mt-4 font-mono text-base leading-8"
-      style="color: var(--color-muted);"
+      class="fade-in mt-4 font-mono text-base leading-8"
+      style="color: var(--color-muted); animation-delay: 100ms;"
     >
       {dictionary.contactIntro}
     </p>
+    <div class="fade-in mt-6" style="animation-delay: 220ms;">
+      <p
+        class="font-mono text-xs tracking-widest uppercase"
+        style="color: var(--color-muted); opacity: 0.5;"
+      >
+        {dictionary.contactLabel}
+      </p>
+      <a
+        href={`mailto:${CONTACT_EMAIL}`}
+        class="mt-1 inline-flex font-mono text-sm transition"
+        style="color: var(--color-muted);"
+        onmouseover="this.style.color='var(--color-accent)'"
+        onmouseout="this.style.color='var(--color-muted)'">{CONTACT_EMAIL}</a
+      >
+    </div>
     <a
       href="https://jerna.digital"
-      class="mt-6 inline-flex font-mono text-sm transition"
-      style="color: var(--color-muted);"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="fade-in mt-6 inline-flex font-mono text-sm transition"
+      style="color: var(--color-muted); animation-delay: 340ms;"
       onmouseover="this.style.color='var(--color-accent)'"
       onmouseout="this.style.color='var(--color-muted)'">jerna.digital →</a
     >
