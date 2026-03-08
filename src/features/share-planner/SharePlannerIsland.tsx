@@ -121,8 +121,14 @@ export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
         href={href}
         class="mt-6 inline-flex px-5 py-2.5 font-mono text-sm tracking-[0.18em] uppercase transition"
         style="background-color: var(--color-coral); color: var(--color-text);"
-        onmouseover="this.style.backgroundColor='var(--color-coral-deep)'"
-        onmouseout="this.style.backgroundColor='var(--color-coral)'"
+        onMouseOver={(e) => {
+          (e.currentTarget as HTMLAnchorElement).style.backgroundColor =
+            "var(--color-coral-deep)";
+        }}
+        onMouseOut={(e) => {
+          (e.currentTarget as HTMLAnchorElement).style.backgroundColor =
+            "var(--color-coral)";
+        }}
       >
         {dictionary.generateShareLink}
       </a>
