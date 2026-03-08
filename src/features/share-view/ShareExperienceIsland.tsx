@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "preact/hooks";
 
+import { Tooltip } from "../../components/Tooltip";
 import type { Locale } from "../../lib/config";
 import { formatDistance } from "../../lib/format";
 import { getDictionary } from "../../lib/i18n";
@@ -20,14 +21,30 @@ type Props = {
 export default function ShareExperienceIsland({ locale, edition }: Props) {
   const dictionary = getDictionary(locale);
   const [fragment, setFragment] = useState("");
+  const [copied, setCopied] = useState(false);
+  const [currentHref, setCurrentHref] = useState("");
 
   useEffect(() => {
-    const syncFragment = () => setFragment(window.location.hash);
+    const syncFragment = () => {
+      setFragment(window.location.hash);
+      setCurrentHref(window.location.href);
+    };
     syncFragment();
     window.addEventListener("hashchange", syncFragment);
 
     return () => window.removeEventListener("hashchange", syncFragment);
   }, []);
+
+  useEffect(() => {
+    setCopied(false);
+  }, [fragment]);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
 
   const shareState = useMemo(() => parseShareState(fragment), [fragment]);
   const points = getPointSummaries(edition.points);
@@ -68,6 +85,71 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
 
   return (
     <div class="space-y-8">
+      {/* Share URL box */}
+      <div>
+        <div
+          class="mb-1 font-mono text-[10px] tracking-[0.3em] uppercase"
+          style="color: var(--color-muted);"
+        >
+          {dictionary.shareLinkTitle}
+        </div>
+        <div
+          class="flex items-center gap-2"
+          style="background-color: var(--color-surface-raised); border: 1px solid var(--color-line); padding: 0.5rem 0.75rem;"
+        >
+          <input
+            type="text"
+            readOnly
+            value={currentHref}
+            class="min-w-0 flex-1 overflow-hidden border-none bg-transparent font-mono text-xs text-ellipsis outline-none"
+            style="color: var(--color-text);"
+          />
+          <Tooltip
+            text={dictionary.copiedToClipboard}
+            visible={copied}
+            class="shrink-0"
+          >
+            <button
+              type="button"
+              onClick={handleCopy}
+              style="color: var(--color-accent); background: none; border: none; cursor: pointer; padding: 0.25rem;"
+              aria-label={dictionary.copyLink}
+            >
+              {copied ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                </svg>
+              )}
+            </button>
+          </Tooltip>
+        </div>
+      </div>
+
       {/* Runner header band */}
       <div style="background-color: var(--color-surface); border: 1px solid var(--color-line); padding: 1.25rem 1.5rem;">
         <h2

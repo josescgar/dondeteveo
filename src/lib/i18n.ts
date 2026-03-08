@@ -58,6 +58,10 @@ type Dictionary = {
   viewRacePage: string;
   websiteLabel: string;
   cheerPointLabel: string;
+  copiedToClipboard: string;
+  copyLink: string;
+  copiedLink: string;
+  shareLinkTitle: string;
 };
 
 const DICTIONARIES: Record<Locale, Dictionary> = {
@@ -129,6 +133,10 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     viewRacePage: "View race page",
     websiteLabel: "Website",
     cheerPointLabel: "Cheer point",
+    copiedToClipboard: "Copied to the clipboard",
+    copyLink: "Copy link",
+    copiedLink: "Copied!",
+    shareLinkTitle: "Share this page",
   },
   es: {
     about: "Acerca de",
@@ -200,6 +208,10 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     viewRacePage: "Ver página de la carrera",
     websiteLabel: "Sitio web",
     cheerPointLabel: "Punto para animar",
+    copiedToClipboard: "Copiado al portapapeles",
+    copyLink: "Copiar enlace",
+    copiedLink: "¡Copiado!",
+    shareLinkTitle: "Comparte esta página",
   },
 };
 
