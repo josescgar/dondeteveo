@@ -2,6 +2,7 @@ import { DEFAULT_LOCALE, SUPPORTED_LOCALES, type Locale } from "./config";
 
 type Dictionary = {
   about: string;
+  closeMenu: string;
   allFilter: string;
   allTimesRaceLocal: string;
   justOpenTitle: string;
@@ -30,10 +31,12 @@ type Dictionary = {
   noMatch: string;
   officialWebsite: string;
   optionalNickname: string;
+  openMenu: string;
   pace: string;
   pacePerKm: string;
   pastEdition: string;
   plannerMode: string;
+  primaryNavigation: string;
   predictedTimes: string;
   privacy: string;
   privacyBody: string;
@@ -70,6 +73,7 @@ type Dictionary = {
 const DICTIONARIES: Record<Locale, Dictionary> = {
   en: {
     about: "About",
+    closeMenu: "Close menu",
     allFilter: "All",
     allTimesRaceLocal: "All times are in the race\u2019s local timezone.",
     justOpenTitle: "Just open the link",
@@ -103,10 +107,12 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     noMatch: "No races match your filters yet.",
     officialWebsite: "Official website",
     optionalNickname: "Optional nickname",
+    openMenu: "Open menu",
     pace: "Pace",
     pacePerKm: "Pace per km",
     pastEdition: "Past edition",
     plannerMode: "Mode",
+    primaryNavigation: "Primary navigation",
     predictedTimes: "Predicted times",
     privacy: "Privacy",
     privacyBody:
@@ -146,6 +152,7 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
   },
   es: {
     about: "Acerca de",
+    closeMenu: "Cerrar menú",
     allFilter: "Todas",
     allTimesRaceLocal:
       "Todos los horarios están en la zona horaria de la carrera.",
@@ -181,10 +188,12 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     noMatch: "Todavía no hay carreras que coincidan con los filtros.",
     officialWebsite: "Web oficial",
     optionalNickname: "Apodo (opcional)",
+    openMenu: "Abrir menú",
     pace: "Ritmo",
     pacePerKm: "Ritmo por km",
     pastEdition: "Edición pasada",
     plannerMode: "Modo",
+    primaryNavigation: "Navegación principal",
     predictedTimes: "Horarios estimados",
     privacy: "Privacidad",
     privacyBody:

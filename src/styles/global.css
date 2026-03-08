@@ -90,6 +90,112 @@ button {
   color: var(--color-accent);
 }
 
+.mobile-nav-toggle {
+  width: 2.625rem;
+  height: 2.625rem;
+  border: 1px solid var(--color-line-solid);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-accent);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.mobile-nav-toggle::marker,
+.mobile-nav-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.mobile-nav-toggle:hover {
+  border-color: rgba(30, 111, 160, 0.4);
+  background-color: rgba(30, 111, 160, 0.08);
+}
+
+.mobile-nav-toggle:focus-visible {
+  outline: 2px solid var(--color-coral);
+  outline-offset: 2px;
+}
+
+.mobile-nav-toggle-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.mobile-nav-toggle-line {
+  width: 1rem;
+  height: 2px;
+  background-color: currentColor;
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    opacity var(--duration-fast) var(--ease-out);
+}
+
+.mobile-nav[open] .mobile-nav-toggle {
+  border-color: rgba(30, 111, 160, 0.42);
+  background-color: rgba(30, 111, 160, 0.12);
+}
+
+.mobile-nav[open] .mobile-nav-toggle-line:nth-child(1) {
+  transform: translateY(5.8px) rotate(45deg);
+}
+
+.mobile-nav[open] .mobile-nav-toggle-line:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-nav[open] .mobile-nav-toggle-line:nth-child(3) {
+  transform: translateY(-5.8px) rotate(-45deg);
+}
+
+.mobile-nav-panel {
+  position: absolute;
+  top: calc(100% + 0.75rem);
+  right: 0;
+  z-index: 20;
+  width: min(18rem, calc(100vw - 2rem));
+  padding: 1rem;
+  border: 1px solid var(--color-line-solid);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.98),
+    rgba(230, 239, 247, 0.98)
+  );
+  box-shadow: var(--shadow-md);
+  animation: boardFlip 220ms var(--ease-out) both;
+}
+
+.mobile-nav-link {
+  display: block;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--color-line);
+  background-color: rgba(30, 111, 160, 0.04);
+  color: var(--color-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+
+.mobile-nav-link:hover {
+  border-color: rgba(30, 111, 160, 0.35);
+  background-color: rgba(30, 111, 160, 0.1);
+  color: var(--color-accent);
+}
+
+.mobile-nav-link:focus-visible {
+  outline: 2px solid var(--color-coral);
+  outline-offset: 2px;
+}
+
 .fade-in {
   animation: raceReveal 450ms var(--ease-out) both;
 }

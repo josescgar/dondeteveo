@@ -24,13 +24,15 @@ npm run lint         # ESLint
 npm run format       # Prettier write
 npm run format:check # Prettier check
 
-npm run test:unit    # Vitest (unit tests only)
+npm run test:unit    # Vitest unit tests
 npm run test:e2e     # Playwright e2e smoke tests
-npm run test:visual  # Playwright visual regression
-npm run test         # All three above
+npm run test         # Unit tests + Playwright e2e smoke tests
 
 # Run a single unit test file
 npx vitest run src/features/share-planner/share-planner.test.ts
+
+# Run the mobile e2e project
+npx playwright test --project mobile-chromium
 ```
 
 ## Architecture
