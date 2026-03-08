@@ -51,14 +51,23 @@ const CONTACT_EMAIL = "jose.escobar.dev@gmail.com";
         onmouseout="this.style.color='var(--color-muted)'">{CONTACT_EMAIL}</a
       >
     </div>
-    <a
-      href="https://jerna.digital"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="fade-in mt-6 inline-flex font-mono text-sm transition"
-      style="color: var(--color-muted); animation-delay: 340ms;"
-      onmouseover="this.style.color='var(--color-accent)'"
-      onmouseout="this.style.color='var(--color-muted)'">jerna.digital →</a
-    >
+    <div class="fade-in mt-6" style="animation-delay: 340ms;">
+      <p
+        class="font-mono text-xs tracking-widest uppercase"
+        style="color: var(--color-muted); opacity: 0.5;"
+      >
+        {dictionary.websiteLabel}
+      </p>
+      <a
+        href="https://jerna.digital"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-1 inline-flex font-mono text-sm transition"
+        style="color: var(--color-muted);"
+        onmouseover="this.style.color='var(--color-accent)'"
+        onmouseout="this.style.color='var(--color-muted)'"
+        >https://jerna.digital →</a
+      >
+    </div>
   </div>
 </BaseLayout>

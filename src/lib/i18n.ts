@@ -54,6 +54,7 @@ type Dictionary = {
   timezone: string;
   upcomingEdition: string;
   viewRacePage: string;
+  websiteLabel: string;
   cheerPointLabel: string;
 };
 
@@ -121,6 +122,7 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     timezone: "Timezone",
     upcomingEdition: "Upcoming edition",
     viewRacePage: "View race page",
+    websiteLabel: "Website",
     cheerPointLabel: "Cheer point",
   },
   es: {
@@ -188,6 +190,7 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     timezone: "Zona horaria",
     upcomingEdition: "Edicion proxima",
     viewRacePage: "Ver pagina de carrera",
+    websiteLabel: "Sitio web",
     cheerPointLabel: "Punto para animar",
   },
 };
