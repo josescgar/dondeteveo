@@ -17,7 +17,7 @@ test("race discovery reaches a race page and share flow", async ({ page }) => {
   await page.getByRole("link", { name: /Generate share link/i }).click();
   await expect(page).toHaveURL(/\/en\/share\/sevilla-half-marathon\/2026#/);
   await expect(
-    page.getByText(/All times are shown in the race timezone only\./i),
+    page.getByText(/All times are in the race.s local timezone\./i),
   ).toBeVisible();
 });
 
