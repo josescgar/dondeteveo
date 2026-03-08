@@ -82,6 +82,8 @@ type Dictionary = {
   copyLink: string;
   copiedLink: string;
   footerPunchline: string;
+  invalidFinishTimeFormat: string;
+  invalidPaceFormat: string;
   shareLinkTitle: string;
 };
 
@@ -184,6 +186,8 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     copyLink: "Copy link",
     copiedLink: "Copied!",
     footerPunchline: "Made by a runner, for runners",
+    invalidFinishTimeFormat: "Enter a valid finish time (HH:MM:SS)",
+    invalidPaceFormat: "Enter a valid pace (MM:SS)",
     shareLinkTitle: "Share this page",
   },
   es: {
@@ -287,6 +291,8 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     copyLink: "Copiar enlace",
     copiedLink: "¡Copiado!",
     footerPunchline: "Hecho por un corredor, para corredores",
+    invalidFinishTimeFormat: "Introduce un tiempo válido (HH:MM:SS)",
+    invalidPaceFormat: "Introduce un ritmo válido (MM:SS)",
     shareLinkTitle: "Comparte esta página",
   },
 };
