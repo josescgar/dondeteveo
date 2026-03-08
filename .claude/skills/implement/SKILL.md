@@ -129,3 +129,25 @@ Work on a GitHub issue from setup through implementation to a PR, following the 
 
 5. **Report** the PR URL and remind the user:
    > Merge it with `/release <pr-number>`
+
+---
+
+## Phase 5: Code Review
+
+> **Required** for all PRs that change app code, config, CI/CD, or data logic (see CLAUDE.md).
+> Runs in the background so it does not block the user after the PR URL is reported.
+
+1. **Run the code review skill** on the newly created PR using the `Skill` tool,
+   invoking `code-review` with the PR number as the argument.
+   Launch it with `run_in_background: true` (Agent tool) so the user is not blocked.
+
+2. **The code review must be posted to the PR on GitHub** — not just reported in the conversation.
+   Use `gh pr review <pr-number> --repo escobeitor/dondeteveo --comment --body "<review>"` to post the
+   overall review summary. Add inline comments via the GitHub API (`gh api`) where relevant.
+
+3. **Review behaviour — act as a team developer peer reviewer:**
+   - Focus on: correctness, edge cases, adherence to project conventions (CLAUDE.md, commit-conventions.md),
+     security, and code quality.
+   - Use a constructive, direct tone. Raise only high-confidence issues.
+   - Do NOT approve or request-changes — leave as a `COMMENT` review so the human reviewer decides.
+   - Do NOT repeat issues already caught by the CI validation step (lint, typecheck, tests).
