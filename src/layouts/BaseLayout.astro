@@ -20,6 +20,17 @@ const {
 } = Astro.props;
 const dictionary = getDictionary(locale as Locale);
 const seo = buildSeo({ locale, title, description, pathname, noindex });
+const navLinks = [
+  {
+    href: `/${locale}/races`,
+    label: dictionary.raceDiscovery,
+  },
+  {
+    href: `/${locale}/about`,
+    label: dictionary.about,
+  },
+];
+const mobileNavId = "site-mobile-nav";
 ---
 
 <!doctype html>
@@ -53,42 +64,89 @@ const seo = buildSeo({ locale, title, description, pathname, noindex });
       style="background-color: var(--color-surface); border-bottom: 1px solid var(--color-line);"
     >
       <div
-        class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-3 sm:px-8"
+        class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:gap-6 sm:px-8"
       >
-        <a href={`/${locale}`} class="flex items-center gap-3">
-          <img src="/logo.png" alt="Dondeteveo" class="h-9 w-auto" />
-          <div>
+        <a
+          href={`/${locale}`}
+          class="flex min-w-0 items-center gap-2.5 sm:gap-3"
+        >
+          <img src="/logo.png" alt="Dondeteveo" class="h-8 w-auto sm:h-9" />
+          <div class="min-w-0">
             <div
-              class="font-display text-2xl leading-none font-bold uppercase"
+              class="font-display text-xl leading-none font-bold uppercase sm:text-2xl"
               style="color: var(--color-accent);"
             >
               DONDETEVEO
             </div>
             <div
-              class="mt-0.5 font-mono text-[9px] tracking-[0.28em] uppercase"
+              class="mt-0.5 hidden font-mono text-[9px] tracking-[0.28em] uppercase sm:block"
               style="color: var(--color-muted);"
             >
               {dictionary.siteTagline}
             </div>
           </div>
         </a>
-        <nav class="flex items-center gap-5">
-          <a
-            href={`/${locale}/races`}
-            class="nav-link hidden font-mono text-xs tracking-[0.18em] uppercase transition-colors sm:inline"
-            style="color: var(--color-muted);"
+        <div class="flex items-center gap-2 sm:gap-5">
+          <nav
+            class="hidden items-center gap-5 sm:flex"
+            aria-label={dictionary.primaryNavigation}
           >
-            {dictionary.raceDiscovery}
-          </a>
-          <a
-            href={`/${locale}/about`}
-            class="nav-link hidden font-mono text-xs tracking-[0.18em] uppercase transition-colors sm:inline"
-            style="color: var(--color-muted);"
-          >
-            {dictionary.about}
-          </a>
+            {
+              navLinks.map((link) => (
+                <a
+                  href={link.href}
+                  class="nav-link font-mono text-xs tracking-[0.18em] uppercase transition-colors"
+                  style="color: var(--color-muted);"
+                >
+                  {link.label}
+                </a>
+              ))
+            }
+          </nav>
           <LanguageSwitch currentLocale={locale} pathname={pathname} />
-        </nav>
+          <details class="mobile-nav relative sm:hidden" data-mobile-nav>
+            <summary
+              class="mobile-nav-toggle flex list-none items-center justify-center"
+              aria-controls={mobileNavId}
+              aria-expanded="false"
+              aria-label={dictionary.openMenu}
+              data-mobile-nav-toggle
+              data-open-label={dictionary.openMenu}
+              data-close-label={dictionary.closeMenu}
+            >
+              <span class="sr-only" data-mobile-nav-toggle-text
+                >{dictionary.openMenu}</span
+              >
+              <span class="mobile-nav-toggle-lines" aria-hidden="true">
+                <span class="mobile-nav-toggle-line"></span>
+                <span class="mobile-nav-toggle-line"></span>
+                <span class="mobile-nav-toggle-line"></span>
+              </span>
+            </summary>
+            <div
+              id={mobileNavId}
+              class="mobile-nav-panel"
+              data-mobile-nav-panel
+            >
+              <nav
+                class="flex flex-col gap-2"
+                aria-label={dictionary.primaryNavigation}
+              >
+                {
+                  navLinks.map((link) => (
+                    <a
+                      href={link.href}
+                      class="mobile-nav-link"
+                      data-mobile-nav-link
+                    >
+                      {link.label}
+                    </a>
+                  ))
+                }
+              </nav>
+            </div>
+          </details>
+        </div>
       </div>
     </header>
 
@@ -107,5 +165,65 @@ const seo = buildSeo({ locale, title, description, pathname, noindex });
         <slot />
       </div>
     </main>
+    <script is:inline>
+      const mobileNav = document.querySelector("[data-mobile-nav]");
+      const mobileNavToggle = document.querySelector(
+        "[data-mobile-nav-toggle]",
+      );
+
+      if (
+        mobileNav instanceof HTMLDetailsElement &&
+        mobileNavToggle instanceof HTMLElement
+      ) {
+        const mobileNavToggleText = mobileNavToggle.querySelector(
+          "[data-mobile-nav-toggle-text]",
+        );
+
+        const syncMobileNavState = () => {
+          const isOpen = mobileNav.open;
+          const label = isOpen
+            ? mobileNavToggle.dataset.closeLabel
+            : mobileNavToggle.dataset.openLabel;
+
+          mobileNavToggle.setAttribute("aria-expanded", String(isOpen));
+
+          if (label) {
+            mobileNavToggle.setAttribute("aria-label", label);
+
+            if (mobileNavToggleText instanceof HTMLElement) {
+              mobileNavToggleText.textContent = label;
+            }
+          }
+        };
+
+        const closeMobileNav = () => {
+          mobileNav.open = false;
+          syncMobileNavState();
+        };
+
+        mobileNav.addEventListener("toggle", syncMobileNavState);
+
+        mobileNav
+          .querySelectorAll("[data-mobile-nav-link]")
+          .forEach((link) => link.addEventListener("click", closeMobileNav));
+
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && mobileNav.open) {
+            closeMobileNav();
+            mobileNavToggle.focus();
+          }
+        });
+
+        window
+          .matchMedia("(min-width: 640px)")
+          .addEventListener("change", (event) => {
+            if (event.matches && mobileNav.open) {
+              closeMobileNav();
+            }
+          });
+
+        syncMobileNavState();
+      }
+    </script>
   </body>
 </html>
