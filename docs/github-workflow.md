@@ -9,7 +9,7 @@
 
 ## Labels
 
-- `type/task`, `type/bug`
+- `type/feature`, `type/fix`, `type/hotfix`, `type/chore`, `type/docs`, `type/refactor`
 - `area/docs`, `area/product`, `area/architecture`, `area/data`, `area/engineering`, `area/workflow`, `area/security`
 - `priority/p0`, `priority/p1`, `priority/p2`
 - `status/planned`, `status/ready`, `status/in-progress`, `status/blocked`, `status/in-review`, `status/done`
@@ -22,7 +22,7 @@
 ## Branching
 
 - Conventional Branch format: `<type>/<description>`
-- Standard types: `feat`, `fix`, `hotfix`, `release`, `chore`
+- Standard types: `feature`, `fix`, `hotfix`, `chore`, `docs`, `refactor`, `release`
 
 ## Pull Requests
 
@@ -49,8 +49,7 @@
 
 ## Templates
 
-- Task issue template
-- Bug issue template
+- Issue templates (feature, fix, hotfix, chore, docs, refactor)
 - Pull Request template
 
 ## Required Checks
@@ -67,6 +66,6 @@
 
 ## Skills
 
-- `issue-intake`
+- `create-issue`
 - `implementation`
 - `release`
