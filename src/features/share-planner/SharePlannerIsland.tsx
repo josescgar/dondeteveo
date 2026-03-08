@@ -3,7 +3,12 @@ import { useState } from "preact/hooks";
 import type { Locale } from "../../lib/config";
 import { getDictionary } from "../../lib/i18n";
 import type { ShareMode } from "../../lib/share/share-state";
-import { buildShareHref, getDefaultShareValue } from "./share-planner.logic";
+import {
+  buildShareHref,
+  getDefaultShareValue,
+  isValidShareValue,
+  maskTimeInput,
+} from "./share-planner.logic";
 
 type Props = {
   locale: Locale;
@@ -21,10 +26,42 @@ export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
   const [mode, setMode] = useState<ShareMode>("pace");
   const [value, setValue] = useState(getDefaultShareValue("pace"));
   const [name, setName] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   const handleModeChange = (nextMode: ShareMode) => {
     setMode(nextMode);
     setValue(getDefaultShareValue(nextMode));
+    setError(null);
+  };
+
+  const handleValueFocus = (event: Event) => {
+    const input = event.currentTarget as HTMLInputElement;
+    input.value = "";
+    setValue("");
+    setError(null);
+  };
+
+  const handleValueInput = (event: Event) => {
+    const input = event.currentTarget as HTMLInputElement;
+    const masked = maskTimeInput(input.value, mode);
+    input.value = masked;
+    setValue(masked);
+    if (error && isValidShareValue(mode, masked)) {
+      setError(null);
+    }
+  };
+
+  const handleLinkClick = (event: Event) => {
+    if (isValidShareValue(mode, value)) {
+      setError(null);
+      return;
+    }
+    event.preventDefault();
+    setError(
+      mode === "pace"
+        ? dictionary.invalidPaceFormat
+        : dictionary.invalidFinishTimeFormat,
+    );
   };
 
   const href = buildShareHref({ locale, raceSlug, year, mode, value, name });
@@ -79,21 +116,28 @@ export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
           <input
             type="text"
             value={value}
-            onInput={(event) => setValue(event.currentTarget.value)}
+            onInput={handleValueInput}
             placeholder={getDefaultShareValue(mode)}
             inputMode="numeric"
-            pattern={
-              mode === "pace" ? "\\d{1,2}:\\d{2}" : "\\d{1,2}:\\d{2}:\\d{2}"
-            }
             class={fieldInputClass}
             style={fieldInputStyle}
-            onFocus={(e) =>
-              (e.currentTarget.style.borderColor = "var(--color-accent)")
-            }
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = "var(--color-accent)";
+              handleValueFocus(e);
+            }}
             onBlur={(e) =>
               (e.currentTarget.style.borderColor = "var(--color-line-solid)")
             }
           />
+          {error && (
+            <span
+              class="font-mono text-xs"
+              style="color: var(--color-coral-deep);"
+              role="alert"
+            >
+              {error}
+            </span>
+          )}
         </label>
       </div>
       <label class="mt-4 flex flex-col gap-1.5">
@@ -119,6 +163,7 @@ export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
       </label>
       <a
         href={href}
+        onClick={handleLinkClick}
         class="mt-6 inline-flex px-5 py-2.5 font-mono text-sm tracking-[0.18em] uppercase transition"
         style="background-color: var(--color-coral); color: var(--color-text);"
         onMouseOver={(e) => {

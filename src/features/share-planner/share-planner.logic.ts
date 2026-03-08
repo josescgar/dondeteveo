@@ -1,5 +1,7 @@
 import { buildSharePath } from "../../lib/format";
 import {
+  parseFinishTimeToMinutes,
+  parsePaceToMinutesPerKm,
   serializeShareState,
   type ShareMode,
 } from "../../lib/share/share-state";
@@ -32,4 +34,22 @@ export const buildShareHref = ({
   });
 
   return `${buildSharePath(locale, raceSlug, year)}#${fragment}`;
+};
+
+export const isValidShareValue = (mode: ShareMode, value: string): boolean =>
+  mode === "pace"
+    ? parsePaceToMinutesPerKm(value) !== null
+    : parseFinishTimeToMinutes(value) !== null;
+
+export const maskTimeInput = (raw: string, mode: ShareMode): string => {
+  const digits = raw.replace(/\D/g, "");
+  const maxDigits = mode === "pace" ? 4 : 6;
+  const truncated = digits.slice(0, maxDigits);
+
+  // Auto-insert colons after every 2-digit group.
+  const parts: string[] = [];
+  for (let i = 0; i < truncated.length; i += 2) {
+    parts.push(truncated.slice(i, i + 2));
+  }
+  return parts.join(":");
 };
