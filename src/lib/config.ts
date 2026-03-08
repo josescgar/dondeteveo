@@ -1,8 +1,7 @@
 export const SUPPORTED_LOCALES = ["en", "es"] as const;
-export const DEFAULT_LOCALE = "en";
+export const DEFAULT_LOCALE = "es";
 export const INDEXABLE_SITE_ORIGIN = "https://dondeteveo.com";
 export const GITHUB_REPOSITORY_URL = "https://github.com/josescgar/dondeteveo";
-export const ROOT_REDIRECT_DELAY_MS = 10;
 export const REQUIRED_CHECK_NAMES = [
   "quality",
   "e2e-smoke",
@@ -23,6 +22,8 @@ export const LOCALE_ALTERNATES: Record<Locale, Locale> = {
   en: "es",
   es: "en",
 };
+
+export const LOCALE_STORAGE_KEY = "dtv-locale";
 
 export const SHARE_FRAGMENT_KEYS = {
   mode: "mode",

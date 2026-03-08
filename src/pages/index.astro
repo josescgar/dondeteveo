@@ -1,37 +1,172 @@
 ---
-import {
-  DEFAULT_LOCALE,
-  ROOT_REDIRECT_DELAY_MS,
-  SUPPORTED_LOCALES,
-} from "../lib/config";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import DiscoveryListIsland from "../features/race-discovery/DiscoveryListIsland";
+
+import { LOCALE_STORAGE_KEY, SUPPORTED_LOCALES } from "../lib/config";
+import { getDictionary } from "../lib/i18n";
+import { localizeRaceSummary } from "../lib/races/localized";
+import { getRaceSummaries } from "../lib/races/catalog";
+
+const locale = "es" as const;
+const dictionary = getDictionary(locale);
+const races = (await getRaceSummaries()).map((race) =>
+  localizeRaceSummary(race, locale),
+);
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="robots" content="noindex,follow" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Dondeteveo</title>
-    <script
-      is:inline
-      define:vars={{
-        fallbackLocale: DEFAULT_LOCALE,
-        redirectDelayMs: ROOT_REDIRECT_DELAY_MS,
-        supportedLocales: SUPPORTED_LOCALES,
-      }}
+<BaseLayout
+  locale={locale}
+  pathname={`/${locale}`}
+  title={`Dondeteveo | ${dictionary.directRaceSearch}`}
+  description={dictionary.heroBody}
+>
+  <!-- Section 1: Hero -->
+  <section class="pb-14" style="border-bottom: 1px solid var(--color-line);">
+    <div
+      class="font-mono text-[10px] tracking-[0.32em] uppercase"
+      style="color: var(--color-muted);"
     >
-      const preferredLocale = navigator.languages
-        .map((value) => value.slice(0, 2).toLowerCase())
-        .find((value) => supportedLocales.includes(value));
+      // {dictionary.siteTagline}
+    </div>
+    <div
+      class="font-display mt-3 leading-none font-bold uppercase"
+      style="font-size: clamp(3.5rem, 14vw, 9rem); color: var(--color-text);"
+    >
+      DONDETEVEO
+    </div>
+    <h1
+      class="font-display mt-4 font-bold uppercase sm:text-5xl"
+      style="font-size: clamp(1.5rem, 5vw, 3rem); color: var(--color-accent);"
+    >
+      {dictionary.heroTitle}
+    </h1>
+    <p
+      class="mt-4 max-w-lg font-mono text-base leading-8"
+      style="color: var(--color-muted);"
+    >
+      {dictionary.heroBody}
+    </p>
+    <div class="mt-7">
+      <a
+        href={`/${locale}/races`}
+        class="inline-flex px-5 py-2.5 font-mono text-sm tracking-[0.18em] uppercase transition"
+        style="background-color: var(--color-coral); color: var(--color-text);"
+        onmouseover="this.style.backgroundColor='var(--color-coral-deep)'"
+        onmouseout="this.style.backgroundColor='var(--color-coral)'"
+      >
+        {dictionary.directRaceSearch}
+      </a>
+    </div>
+  </section>
 
-      window.setTimeout(() => {
-        window.location.replace(`/${preferredLocale ?? fallbackLocale}`);
-      }, redirectDelayMs);
-    </script>
-  </head>
-  <body>
-    <p>Redirecting...</p>
-    <p><a href={`/${DEFAULT_LOCALE}`}>Continue in English</a></p>
-  </body>
-</html>
+  <!-- Section 2: Feature row -->
+  <section class="py-14" style="border-bottom: 1px solid var(--color-line);">
+    <div class="grid gap-8 sm:grid-cols-3">
+      <div class="flex gap-4">
+        <div
+          class="w-0.5 self-stretch"
+          style="background-color: var(--color-accent);"
+        >
+        </div>
+        <div>
+          <div
+            class="font-display text-base font-bold uppercase"
+            style="color: var(--color-accent);"
+          >
+            {dictionary.searchFirstTitle}
+          </div>
+          <p
+            class="mt-2 font-mono text-sm leading-7"
+            style="color: var(--color-muted);"
+          >
+            {dictionary.searchFirstBody}
+          </p>
+        </div>
+      </div>
+      <div class="flex gap-4">
+        <div
+          class="w-0.5 self-stretch"
+          style="background-color: var(--color-accent);"
+        >
+        </div>
+        <div>
+          <div
+            class="font-display text-base font-bold uppercase"
+            style="color: var(--color-accent);"
+          >
+            {dictionary.justOpenTitle}
+          </div>
+          <p
+            class="mt-2 font-mono text-sm leading-7"
+            style="color: var(--color-muted);"
+          >
+            {dictionary.justOpenBody}
+          </p>
+        </div>
+      </div>
+      <div class="flex gap-4">
+        <div
+          class="w-0.5 self-stretch"
+          style="background-color: var(--color-accent);"
+        >
+        </div>
+        <div>
+          <div
+            class="font-display text-base font-bold uppercase"
+            style="color: var(--color-accent);"
+          >
+            {dictionary.shareReadyTitle}
+          </div>
+          <p
+            class="mt-2 font-mono text-sm leading-7"
+            style="color: var(--color-muted);"
+          >
+            {dictionary.shareReadyBody}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Race search -->
+  <section id="race-search" class="mt-14 scroll-mt-8">
+    <div
+      class="mb-5 font-mono text-[10px] tracking-[0.32em] uppercase"
+      style="color: var(--color-muted);"
+    >
+      // {dictionary.directRaceSearch}
+    </div>
+    <DiscoveryListIsland locale={locale} races={races} client:load />
+  </section>
+
+  <script
+    is:inline
+    define:vars={{
+      supportedLocales: SUPPORTED_LOCALES,
+      storageKey: LOCALE_STORAGE_KEY,
+    }}
+  >
+    let saved;
+    try {
+      saved = localStorage.getItem(storageKey);
+    } catch {
+      // localStorage may be unavailable
+    }
+
+    if (saved && supportedLocales.includes(saved)) {
+      if (saved !== "es") {
+        window.location.replace(`/${saved}`);
+      }
+    } else {
+      const isSpanish = navigator.languages.some(
+        (lang) => lang.slice(0, 2).toLowerCase() === "es",
+      );
+      if (!isSpanish) {
+        const preferred = navigator.languages
+          .map((lang) => lang.slice(0, 2).toLowerCase())
+          .find((code) => supportedLocales.includes(code));
+        window.location.replace(`/${preferred ?? "en"}`);
+      }
+    }
+  </script>
+</BaseLayout>
