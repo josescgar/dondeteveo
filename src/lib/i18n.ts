@@ -51,6 +51,7 @@ type Dictionary = {
   share: string;
   shareIntro: string;
   shareNeedsJavaScript: string;
+  sharePageForThe: string;
   sharePageTitle: string;
   shareReadyBody: string;
   shareReadyTitle: string;
@@ -131,7 +132,8 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
       "Enter your target pace or finish time and generate a spectator-ready link.",
     shareNeedsJavaScript:
       "This share page needs JavaScript enabled to read the shared plan from the URL.",
-    sharePageTitle: "Share page",
+    sharePageForThe: "for the",
+    sharePageTitle: "Where to cheer",
     shareReadyBody:
       "Set a target pace or finish time, get a link your supporters can actually use.",
     shareReadyTitle: "Share-ready",
@@ -212,7 +214,8 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
       "Escribe tu ritmo objetivo o tiempo de llegada y crea un enlace listo para tus animadores.",
     shareNeedsJavaScript:
       "Esta página necesita JavaScript para leer el plan compartido desde la URL.",
-    sharePageTitle: "Página para compartir",
+    sharePageForThe: "en el",
+    sharePageTitle: "Dónde animar",
     shareReadyBody:
       "Pon tu ritmo o tiempo de llegada y obtén un enlace que tus animadores pueden usar de verdad.",
     shareReadyTitle: "Listo para compartir",

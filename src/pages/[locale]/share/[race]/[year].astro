@@ -40,10 +40,15 @@ const pathname = `/${locale}/share/${edition.raceSlug}/${edition.year}`;
 >
   <div class="max-w-3xl">
     <h1
+      id="share-h1-static"
       class="font-display leading-none font-bold uppercase"
       style={`font-size: clamp(2.5rem, 10vw, 5rem); color: var(--color-text);`}
     >
-      {dictionary.sharePageTitle}
+      {dictionary.sharePageTitle}{" "}<span
+        id="share-h1-name-anchor"
+        style="display:contents;"></span>{dictionary.sharePageForThe}{" "}{
+        edition.meta.name
+      }
     </h1>
     <p
       class="mt-4 font-mono text-sm leading-7"
