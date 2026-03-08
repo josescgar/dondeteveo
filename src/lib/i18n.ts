@@ -4,6 +4,8 @@ type Dictionary = {
   about: string;
   allFilter: string;
   allTimesRaceLocal: string;
+  justOpenTitle: string;
+  justOpenBody: string;
   browseRaces: string;
   cheerPoints: string;
   city: string;
@@ -62,7 +64,10 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
   en: {
     about: "About",
     allFilter: "All",
-    allTimesRaceLocal: "All times are shown in the race timezone only.",
+    allTimesRaceLocal: "All times are in the race\u2019s local timezone.",
+    justOpenTitle: "Just open the link",
+    justOpenBody:
+      "No apps, no logins, no downloads. Share a link and your crew has everything they need.",
     browseRaces: "Browse races",
     cheerPoints: "Cheer points",
     city: "City",
@@ -70,8 +75,8 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
       "Made by Jerna Digital for simple, spectator-friendly race planning.",
     contactLabel: "Contact",
     country: "Country",
-    date: "Date",
-    directRaceSearch: "Search your race directly",
+    date: "Edition",
+    directRaceSearch: "Find your race",
     discoverIntro:
       "Browse a curated catalog of races and open the exact edition you plan to run.",
     discoverTitle: "Race discovery",
@@ -79,8 +84,8 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     finishTime: "Finish time",
     generateShareLink: "Generate share link",
     heroBody:
-      "Create a simple share page so friends and family know where to cheer and when to expect you on race day.",
-    heroTitle: "The easy way to answer “Where should I see you?”",
+      "Share your race plan in one link — your crew will know exactly where to cheer and when to expect you.",
+    heroTitle: "So, where should I see you?",
     invalidShareState:
       "This share page needs a valid race target in the URL fragment. Generate it from the race page first.",
     language: "Language",
@@ -104,8 +109,8 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     routeOverview: "Route overview",
     search: "Search",
     searchFirstBody:
-      "Open the exact race edition quickly and skip hunting through logistics pages.",
-    searchFirstTitle: "Search-first",
+      "Jump straight to your exact race edition. No digging through listings.",
+    searchFirstTitle: "Fast search",
     share: "Share",
     shareIntro:
       "Enter your target pace or finish time and generate a spectator-ready link.",
@@ -113,11 +118,11 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
       "This share page needs JavaScript enabled to read the shared plan from the URL.",
     sharePageTitle: "Share page",
     shareReadyBody:
-      "Turn one target pace or finish time into a spectator-ready link.",
+      "Set a target pace or finish time, get a link your supporters can actually use.",
     shareReadyTitle: "Share-ready",
     splitLabel: "Split",
     spectatorReady: "Spectator-ready timing plan",
-    siteTagline: "Race-day cheering planner",
+    siteTagline: "Your crew, at every km",
     startTime: "Start time",
     timezone: "Timezone",
     upcomingEdition: "Upcoming edition",
@@ -129,67 +134,70 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     about: "Acerca de",
     allFilter: "Todas",
     allTimesRaceLocal:
-      "Todos los horarios se muestran solo en la zona horaria de la carrera.",
+      "Todos los horarios están en la zona horaria de la carrera.",
+    justOpenTitle: "Solo abre el enlace",
+    justOpenBody:
+      "Sin apps, sin registros, sin descargas. Comparte un enlace y tu gente tiene todo lo que necesita.",
     browseRaces: "Explorar carreras",
     cheerPoints: "Puntos para animar",
     city: "Ciudad",
     contactIntro:
-      "Creado por Jerna Digital para planificar mejor donde animar en carrera.",
+      "Hecho por Jerna Digital para que animar sea tan fácil como correr.",
     contactLabel: "Contacto",
-    country: "Pais",
-    date: "Fecha",
-    directRaceSearch: "Busca tu carrera directamente",
+    country: "País",
+    date: "Edición",
+    directRaceSearch: "Encuentra tu carrera",
     discoverIntro:
-      "Explora un catalogo curado de carreras y abre la edicion exacta que vas a correr.",
-    discoverTitle: "Descubrimiento de carreras",
+      "Explora un catálogo de carreras y abre la edición exacta que vas a correr.",
+    discoverTitle: "Encontrar carreras",
     distance: "Distancia",
-    finishTime: "Tiempo final",
-    generateShareLink: "Generar enlace para compartir",
+    finishTime: "Tiempo de llegada",
+    generateShareLink: "Crear enlace para compartir",
     heroBody:
-      "Crea una pagina simple para compartir y que familia y amigos sepan donde animarte y a que hora esperarte el dia de la carrera.",
-    heroTitle: "La forma facil de responder “donde te veo?”",
+      "Comparte tu plan de carrera en un enlace: tu gente sabrá exactamente dónde animarte y cuándo esperarte.",
+    heroTitle: "Entonces\u2026 ¿dónde te veo?",
     invalidShareState:
-      "Esta pagina necesita un objetivo valido en el fragmento de la URL. Generala primero desde la pagina de la carrera.",
+      "Esta página necesita un objetivo válido en la URL. Genérala primero desde la página de la carrera.",
     language: "Idioma",
     latestEditionRedirect:
-      "Abriendo la edicion mas relevante de esta carrera...",
+      "Abriendo la edición más reciente de esta carrera...",
     localTimeLabel: "Hora local de la carrera",
-    noMatch: "No hay carreras que coincidan con los filtros todavia.",
+    noMatch: "Todavía no hay carreras que coincidan con los filtros.",
     officialWebsite: "Web oficial",
-    optionalNickname: "Apodo opcional",
+    optionalNickname: "Apodo (opcional)",
     pace: "Ritmo",
     pacePerKm: "Ritmo por km",
-    pastEdition: "Edicion pasada",
+    pastEdition: "Edición pasada",
     plannerMode: "Modo",
     predictedTimes: "Horarios estimados",
     privacy: "Privacidad",
     privacyBody:
-      "Este MVP mantiene el proceso simple. Las paginas personalizadas son publicas por URL, nunca se indexan y pueden implicar servicios de terceros como Cloudflare y proveedores de mapas.",
-    raceDiscovery: "Descubrimiento de carreras",
+      "Hemos querido mantenerlo simple. Las páginas personalizadas son públicas por URL, nunca se indexan y pueden pasar por servicios de terceros como Cloudflare y proveedores de mapas.",
+    raceDiscovery: "Encontrar carreras",
     raceLocalTime: "Hora local de la carrera",
     raceSearchPlaceholder: "Busca por nombre de carrera",
     runnerLabel: "Corredor",
     routeOverview: "Vista general del recorrido",
     search: "Buscar",
     searchFirstBody:
-      "Abre rapidamente la edicion exacta de tu carrera sin perder tiempo entre paginas logisticas.",
-    searchFirstTitle: "Busqueda directa",
+      "Ve directo a la edición exacta de tu carrera. Sin rodeos.",
+    searchFirstTitle: "Búsqueda rápida",
     share: "Compartir",
     shareIntro:
-      "Introduce tu ritmo objetivo o tiempo final y genera un enlace listo para espectadores.",
+      "Escribe tu ritmo objetivo o tiempo de llegada y crea un enlace listo para tus animadores.",
     shareNeedsJavaScript:
-      "Esta pagina necesita JavaScript para leer el plan compartido desde la URL.",
-    sharePageTitle: "Pagina para compartir",
+      "Esta página necesita JavaScript para leer el plan compartido desde la URL.",
+    sharePageTitle: "Página para compartir",
     shareReadyBody:
-      "Convierte un ritmo objetivo o tiempo final en un enlace listo para espectadores.",
+      "Pon tu ritmo o tiempo de llegada y obtén un enlace que tus animadores pueden usar de verdad.",
     shareReadyTitle: "Listo para compartir",
     splitLabel: "Punto oficial",
-    spectatorReady: "Plan de horarios para espectadores",
-    siteTagline: "Planificador para animar en carrera",
+    spectatorReady: "Plan de horarios para tus animadores",
+    siteTagline: "Tu gente, en cada km",
     startTime: "Hora de salida",
     timezone: "Zona horaria",
-    upcomingEdition: "Edicion proxima",
-    viewRacePage: "Ver pagina de carrera",
+    upcomingEdition: "Próxima edición",
+    viewRacePage: "Ver página de la carrera",
     websiteLabel: "Sitio web",
     cheerPointLabel: "Punto para animar",
   },
