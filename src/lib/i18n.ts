@@ -19,6 +19,8 @@ type Dictionary = {
   distance: string;
   finishTime: string;
   generateShareLink: string;
+  githubFooterLink: string;
+  githubLabel: string;
   heroBody: string;
   heroTitle: string;
   invalidShareState: string;
@@ -61,6 +63,7 @@ type Dictionary = {
   copiedToClipboard: string;
   copyLink: string;
   copiedLink: string;
+  footerPunchline: string;
   shareLinkTitle: string;
 };
 
@@ -87,6 +90,8 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     distance: "Distance",
     finishTime: "Finish time",
     generateShareLink: "Generate share link",
+    githubFooterLink: "View source on GitHub",
+    githubLabel: "GitHub",
     heroBody:
       "Share your race plan in one link — your crew will know exactly where to cheer and when to expect you.",
     heroTitle: "So, where should I see you?",
@@ -136,6 +141,7 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     copiedToClipboard: "Copied to the clipboard",
     copyLink: "Copy link",
     copiedLink: "Copied!",
+    footerPunchline: "Made by a runner, for runners",
     shareLinkTitle: "Share this page",
   },
   es: {
@@ -161,6 +167,8 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     distance: "Distancia",
     finishTime: "Tiempo de llegada",
     generateShareLink: "Crear enlace para compartir",
+    githubFooterLink: "Ver código en GitHub",
+    githubLabel: "GitHub",
     heroBody:
       "Comparte tu plan de carrera en un enlace: tu gente sabrá exactamente dónde animarte y cuándo esperarte.",
     heroTitle: "Entonces\u2026 ¿dónde te veo?",
@@ -211,6 +219,7 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     copiedToClipboard: "Copiado al portapapeles",
     copyLink: "Copiar enlace",
     copiedLink: "¡Copiado!",
+    footerPunchline: "Hecho por un corredor, para corredores",
     shareLinkTitle: "Comparte esta página",
   },
 };

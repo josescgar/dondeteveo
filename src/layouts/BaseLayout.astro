@@ -2,9 +2,9 @@
 import LanguageSwitch from "../components/astro/LanguageSwitch.astro";
 import "../styles/global.css";
 
+import { GITHUB_REPOSITORY_URL, type Locale } from "../lib/config";
 import { getDictionary } from "../lib/i18n";
 import { buildSeo, type SeoInput } from "../lib/seo";
-import type { Locale } from "../lib/config";
 
 type Props = SeoInput & {
   eyebrow?: string;
@@ -48,7 +48,7 @@ const seo = buildSeo({ locale, title, description, pathname, noindex });
       href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap"
     />
   </head>
-  <body class="antialiased">
+  <body class="flex min-h-screen flex-col antialiased">
     <header
       style="background-color: var(--color-surface); border-bottom: 1px solid var(--color-line);"
     >
@@ -92,7 +92,7 @@ const seo = buildSeo({ locale, title, description, pathname, noindex });
       </div>
     </header>
 
-    <main class="fade-in">
+    <main class="fade-in flex-1">
       <div class="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
         {
           eyebrow && (
@@ -107,5 +107,48 @@ const seo = buildSeo({ locale, title, description, pathname, noindex });
         <slot />
       </div>
     </main>
+
+    <footer
+      style="background-color: var(--color-surface); border-top: 1px solid var(--color-line);"
+    >
+      <div
+        class="mx-auto flex max-w-6xl flex-col gap-3 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8"
+      >
+        <div>
+          <p
+            class="font-mono text-[10px] tracking-[0.24em] uppercase"
+            style="color: var(--color-muted);"
+          >
+            {dictionary.siteTagline}
+          </p>
+          <p
+            class="mt-1 font-mono text-xs"
+            style="color: var(--color-muted); opacity: 0.8;"
+          >
+            {dictionary.footerPunchline}
+          </p>
+        </div>
+        <a
+          href={GITHUB_REPOSITORY_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="nav-link inline-flex items-center gap-2 font-mono text-xs tracking-[0.18em] uppercase transition-colors"
+          style="color: var(--color-muted);"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="h-4 w-4 shrink-0"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 .5C5.65.5.5 5.65.5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2.18c-3.2.7-3.88-1.35-3.88-1.35-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.78 1.2 1.78 1.2 1.03 1.76 2.7 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.56-.29-5.25-1.28-5.25-5.72 0-1.26.45-2.3 1.19-3.11-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.19a10.97 10.97 0 0 1 5.79 0c2.21-1.5 3.18-1.19 3.18-1.19.63 1.59.23 2.77.11 3.06.74.81 1.19 1.85 1.19 3.11 0 4.45-2.7 5.42-5.27 5.71.42.36.78 1.07.78 2.16v3.2c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"
+            ></path>
+          </svg>
+          {dictionary.githubFooterLink}
+        </a>
+      </div>
+    </footer>
   </body>
 </html>

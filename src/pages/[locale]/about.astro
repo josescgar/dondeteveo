@@ -1,7 +1,11 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-import { type Locale, SUPPORTED_LOCALES } from "../../lib/config";
+import {
+  GITHUB_REPOSITORY_URL,
+  type Locale,
+  SUPPORTED_LOCALES,
+} from "../../lib/config";
 import { getDictionary } from "../../lib/i18n";
 
 export const getStaticPaths = () =>
@@ -67,6 +71,24 @@ const CONTACT_EMAIL = "jose.escobar.dev@gmail.com";
         onmouseover="this.style.color='var(--color-accent)'"
         onmouseout="this.style.color='var(--color-muted)'"
         >https://jerna.digital →</a
+      >
+    </div>
+    <div class="fade-in mt-6" style="animation-delay: 460ms;">
+      <p
+        class="font-mono text-xs tracking-widest uppercase"
+        style="color: var(--color-muted); opacity: 0.5;"
+      >
+        {dictionary.githubLabel}
+      </p>
+      <a
+        href={GITHUB_REPOSITORY_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-1 inline-flex font-mono text-sm transition"
+        style="color: var(--color-muted);"
+        onmouseover="this.style.color='var(--color-accent)'"
+        onmouseout="this.style.color='var(--color-muted)'"
+        >github.com/josescgar/dondeteveo →</a
       >
     </div>
   </div>
