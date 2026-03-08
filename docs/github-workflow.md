@@ -67,5 +67,5 @@
 ## Skills
 
 - `create-issue`
-- `implementation`
+- `implement`
 - `release`
