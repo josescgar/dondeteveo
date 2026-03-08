@@ -49,24 +49,15 @@ const races = (await getRaceSummaries()).map((race) =>
     >
       {dictionary.heroBody}
     </p>
-    <div class="mt-7 flex flex-wrap items-center gap-5">
+    <div class="mt-7">
       <a
-        href="#race-search"
+        href={`/${locale}/races`}
         class="inline-flex px-5 py-2.5 font-mono text-sm tracking-[0.18em] uppercase transition"
         style="background-color: var(--color-coral); color: var(--color-text);"
         onmouseover="this.style.backgroundColor='var(--color-coral-deep)'"
         onmouseout="this.style.backgroundColor='var(--color-coral)'"
       >
         {dictionary.directRaceSearch}
-      </a>
-      <a
-        href={`/${locale}/races`}
-        class="font-mono text-sm transition"
-        style="color: var(--color-muted);"
-        onmouseover="this.style.color='var(--color-accent)'"
-        onmouseout="this.style.color='var(--color-muted)'"
-      >
-        {dictionary.browseRaces} →
       </a>
     </div>
   </section>
@@ -106,13 +97,13 @@ const races = (await getRaceSummaries()).map((race) =>
             class="font-display text-base font-bold uppercase"
             style="color: var(--color-accent);"
           >
-            {dictionary.raceLocalTime}
+            {dictionary.justOpenTitle}
           </div>
           <p
             class="mt-2 font-mono text-sm leading-7"
             style="color: var(--color-muted);"
           >
-            {dictionary.allTimesRaceLocal}
+            {dictionary.justOpenBody}
           </p>
         </div>
       </div>
