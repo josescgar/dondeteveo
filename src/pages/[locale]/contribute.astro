@@ -1,0 +1,164 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+import {
+  GITHUB_REPOSITORY_URL,
+  type Locale,
+  SUPPORTED_LOCALES,
+} from "../../lib/config";
+import { getDictionary } from "../../lib/i18n";
+
+export const getStaticPaths = () =>
+  SUPPORTED_LOCALES.map((locale) => ({ params: { locale } }));
+
+const locale = Astro.params.locale as Locale;
+const dictionary = getDictionary(locale);
+
+const CONTACT_EMAIL = "jose.escobar.dev@gmail.com";
+const CONTRIBUTING_URL = `${GITHUB_REPOSITORY_URL}/blob/main/CONTRIBUTING.md`;
+const NEW_ISSUE_URL = `${GITHUB_REPOSITORY_URL}/issues/new`;
+---
+
+<BaseLayout
+  locale={locale}
+  pathname={`/${locale}/contribute`}
+  title={`Dondeteveo | ${dictionary.contributeTitle}`}
+  description={dictionary.contributeIntro}
+  eyebrow={dictionary.contributeTitle}
+>
+  <div
+    class="max-w-3xl space-y-8"
+    style="background-color: var(--color-surface); border: 1px solid var(--color-line); padding: 1.5rem;"
+  >
+    <div>
+      <h1
+        class="fade-in font-display text-5xl font-bold uppercase"
+        style="color: var(--color-accent); animation-delay: 0ms;"
+      >
+        {dictionary.contributeTitle}
+      </h1>
+      <p
+        class="fade-in mt-4 font-mono text-base leading-8"
+        style="color: var(--color-muted); animation-delay: 100ms;"
+      >
+        {dictionary.contributeIntro}
+      </p>
+    </div>
+
+    <div class="fade-in" style="animation-delay: 220ms;">
+      <h2
+        class="font-display text-2xl font-bold uppercase"
+        style="color: var(--color-text);"
+      >
+        {dictionary.contributeViaGithub}
+      </h2>
+      <p
+        class="mt-2 font-mono text-sm leading-7"
+        style="color: var(--color-muted);"
+      >
+        {dictionary.contributeViaGithubBody}
+      </p>
+      <a
+        href={CONTRIBUTING_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-3 inline-flex font-mono text-sm transition"
+        style="color: var(--color-accent);"
+        onmouseover="this.style.opacity='0.7'"
+        onmouseout="this.style.opacity='1'"
+      >
+        CONTRIBUTING.md &rarr;
+      </a>
+    </div>
+
+    <div class="fade-in" style="animation-delay: 340ms;">
+      <h2
+        class="font-display text-2xl font-bold uppercase"
+        style="color: var(--color-text);"
+      >
+        {dictionary.contributeTools}
+      </h2>
+      <p
+        class="mt-2 font-mono text-sm leading-7"
+        style="color: var(--color-muted);"
+      >
+        {dictionary.contributeToolsBody}
+      </p>
+      <ul
+        class="mt-3 space-y-2 font-mono text-sm"
+        style="color: var(--color-muted);"
+      >
+        <li>
+          <a
+            href="https://geojson.io"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="transition"
+            style="color: var(--color-accent);"
+            onmouseover="this.style.opacity='0.7'"
+            onmouseout="this.style.opacity='1'">geojson.io</a
+          > — {dictionary.contributeToolGeojsonio}
+        </li>
+        <li>
+          <a
+            href="https://www.plotaroute.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="transition"
+            style="color: var(--color-accent);"
+            onmouseover="this.style.opacity='0.7'"
+            onmouseout="this.style.opacity='1'">plotaroute.com</a
+          > — {dictionary.contributeToolPlotaroute}
+        </li>
+        <li>
+          <a
+            href="https://mapstogpx.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="transition"
+            style="color: var(--color-accent);"
+            onmouseover="this.style.opacity='0.7'"
+            onmouseout="this.style.opacity='1'">mapstogpx.com</a
+          > — {dictionary.contributeToolMapstogpx}
+        </li>
+      </ul>
+    </div>
+
+    <div class="fade-in" style="animation-delay: 460ms;">
+      <h2
+        class="font-display text-2xl font-bold uppercase"
+        style="color: var(--color-text);"
+      >
+        {dictionary.contributeRequest}
+      </h2>
+      <p
+        class="mt-2 font-mono text-sm leading-7"
+        style="color: var(--color-muted);"
+      >
+        {dictionary.contributeRequestBody}
+      </p>
+      <div class="mt-3 flex flex-col gap-2 sm:flex-row sm:gap-4">
+        <a
+          href={NEW_ISSUE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex font-mono text-sm transition"
+          style="color: var(--color-accent);"
+          onmouseover="this.style.opacity='0.7'"
+          onmouseout="this.style.opacity='1'"
+        >
+          {dictionary.contributeGithubIssue} &rarr;
+        </a>
+        <a
+          href={`mailto:${CONTACT_EMAIL}`}
+          class="inline-flex font-mono text-sm transition"
+          style="color: var(--color-accent);"
+          onmouseover="this.style.opacity='0.7'"
+          onmouseout="this.style.opacity='1'"
+        >
+          {dictionary.contributeEmail} &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
