@@ -11,7 +11,7 @@
 
 ## Public Routing
 
-- `/` redirects by browser language to `/en` or `/es`, fallback `/en`
+- `/` serves the Spanish homepage directly; non-Spanish browsers are redirected to `/en` via a client-side script
 - Canonical localized homepages: `/en`, `/es`
 - Listing pages: `/en/races`, `/es/races`
 - Convenience race URLs: `/en/races/<race>`, `/es/races/<race>`

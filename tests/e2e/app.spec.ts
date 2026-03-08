@@ -10,11 +10,46 @@ const expectNoHorizontalOverflow = async (
   expect(hasOverflow).toBe(false);
 };
 
-test("root redirects to a localized homepage", async ({ page }) => {
+test("root serves the Spanish homepage for Spanish browsers", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({ locale: "es-ES" });
+  const page = await context.newPage();
+
   await page.goto("/");
-  await page.waitForURL(/\/(en|es)$/);
 
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page).toHaveURL("/");
+
+  await context.close();
+});
+
+test("root redirects to /en for English browsers", async ({ browser }) => {
+  const context = await browser.newContext({ locale: "en-US" });
+  const page = await context.newPage();
+
+  await page.goto("/");
+  await page.waitForURL(/\/en$/);
+
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+
+  await context.close();
+});
+
+test("root stays on / for English browser with saved Spanish preference", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({ locale: "en-US" });
+  const page = await context.newPage();
+
+  await page.goto("/en");
+  await page.evaluate(() => localStorage.setItem("dtv-locale", "es"));
+
+  await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page).toHaveURL("/");
+
+  await context.close();
 });
 
 test("race discovery reaches a race page and share flow", async ({ page }) => {

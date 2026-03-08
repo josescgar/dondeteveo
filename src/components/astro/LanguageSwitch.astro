@@ -2,6 +2,7 @@
 import {
   LOCALE_ALTERNATES,
   LOCALE_LABELS,
+  LOCALE_STORAGE_KEY,
   type Locale,
 } from "../../lib/config";
 import { switchLocalePath } from "../../lib/format";
@@ -31,15 +32,24 @@ const alternatePath = switchLocalePath(pathname, alternateLocale);
   >
 </a>
 
-<script is:inline>
+<script is:inline define:vars={{ storageKey: LOCALE_STORAGE_KEY }}>
   document.querySelectorAll("[data-preserve-hash-link]").forEach((element) => {
     element.addEventListener("click", (event) => {
       const link = event.currentTarget;
-      if (!(link instanceof HTMLAnchorElement) || !window.location.hash) {
-        return;
+      if (!(link instanceof HTMLAnchorElement)) return;
+
+      const match = link.getAttribute("href")?.match(/^\/(en|es)/);
+      if (match) {
+        try {
+          localStorage.setItem(storageKey, match[1]);
+        } catch {
+          // localStorage may be unavailable
+        }
       }
 
-      link.href = `${link.href}${window.location.hash}`;
+      if (window.location.hash) {
+        link.href = `${link.href}${window.location.hash}`;
+      }
     });
   });
 </script>
