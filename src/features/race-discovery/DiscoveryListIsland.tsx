@@ -197,8 +197,33 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
             style="border-color: var(--color-line); color: var(--color-muted);"
           >
             {dictionary.noMatch}
+            <a
+              href={`/${locale}/contribute`}
+              class="mt-2 block text-sm transition"
+              style="color: var(--color-accent);"
+            >
+              {dictionary.cantFindRace} →
+            </a>
           </div>
         )}
+      </div>
+
+      <div class="mt-6 text-center">
+        <a
+          href={`/${locale}/contribute`}
+          class="font-mono text-sm transition"
+          style="color: var(--color-muted);"
+          onMouseOver={(e) => {
+            (e.currentTarget as HTMLAnchorElement).style.color =
+              "var(--color-accent)";
+          }}
+          onMouseOut={(e) => {
+            (e.currentTarget as HTMLAnchorElement).style.color =
+              "var(--color-muted)";
+          }}
+        >
+          {dictionary.cantFindRace} →
+        </a>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import { DEFAULT_LOCALE, SUPPORTED_LOCALES, type Locale } from "./config";
 
 type Dictionary = {
   about: string;
+  cantFindRace: string;
   closeMenu: string;
   allFilter: string;
   allTimesRaceLocal: string;
@@ -12,6 +13,19 @@ type Dictionary = {
   city: string;
   contactIntro: string;
   contactLabel: string;
+  contributeEmail: string;
+  contributeGithubIssue: string;
+  contributeIntro: string;
+  contributeRequest: string;
+  contributeRequestBody: string;
+  contributeTitle: string;
+  contributeTools: string;
+  contributeToolsBody: string;
+  contributeToolGeojsonio: string;
+  contributeToolPlotaroute: string;
+  contributeToolMapstogpx: string;
+  contributeViaGithub: string;
+  contributeViaGithubBody: string;
   country: string;
   date: string;
   directRaceSearch: string;
@@ -74,6 +88,7 @@ type Dictionary = {
 const DICTIONARIES: Record<Locale, Dictionary> = {
   en: {
     about: "About",
+    cantFindRace: "Can't find your race?",
     closeMenu: "Close menu",
     allFilter: "All",
     allTimesRaceLocal: "All times are in the race\u2019s local timezone.",
@@ -86,6 +101,25 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     contactIntro:
       "Made by Jerna Digital for simple, spectator-friendly race planning.",
     contactLabel: "Contact",
+    contributeEmail: "Send an email",
+    contributeGithubIssue: "Open a GitHub issue",
+    contributeIntro:
+      "We're building a curated catalog of races. You can help it grow — either by contributing race data directly or by requesting a race you'd like to see.",
+    contributeRequest: "Request a race",
+    contributeRequestBody:
+      "Don't have the data or not comfortable with GitHub? No problem — just let us know which race you'd like to see added.",
+    contributeTitle: "Contribute a race",
+    contributeTools: "Tools for creating route data",
+    contributeToolsBody:
+      "You don't need specialized software to create race routes. These free online tools let you draw routes on a map and export them as GeoJSON or GPX.",
+    contributeToolGeojsonio:
+      "draw routes and points directly on a map, export as GeoJSON",
+    contributeToolPlotaroute:
+      "trace a route along roads with snap-to-path, export as GPX",
+    contributeToolMapstogpx: "convert Google Maps directions into a GPX file",
+    contributeViaGithub: "Contribute via GitHub",
+    contributeViaGithubBody:
+      "If you have route and checkpoint data for a race, you can submit it as a pull request. Check the contribution guide for the full instructions.",
     country: "Country",
     date: "Edition",
     directRaceSearch: "Find your race",
@@ -154,6 +188,7 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
   },
   es: {
     about: "Acerca de",
+    cantFindRace: "¿No encuentras tu carrera?",
     closeMenu: "Cerrar menú",
     allFilter: "Todas",
     allTimesRaceLocal:
@@ -167,6 +202,26 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     contactIntro:
       "Hecho por Jerna Digital para que animar sea tan fácil como correr.",
     contactLabel: "Contacto",
+    contributeEmail: "Enviar un email",
+    contributeGithubIssue: "Abrir un issue en GitHub",
+    contributeIntro:
+      "Estamos construyendo un catálogo de carreras curado. Puedes ayudar a que crezca — contribuyendo datos de carreras directamente o pidiendo una que te gustaría ver.",
+    contributeRequest: "Solicitar una carrera",
+    contributeRequestBody:
+      "¿No tienes los datos o no te manejas con GitHub? Sin problema — simplemente dinos qué carrera te gustaría que añadiéramos.",
+    contributeTitle: "Contribuir una carrera",
+    contributeTools: "Herramientas para crear datos de ruta",
+    contributeToolsBody:
+      "No necesitas software especializado para crear rutas de carreras. Estas herramientas online gratuitas te permiten dibujar rutas sobre un mapa y exportarlas como GeoJSON o GPX.",
+    contributeToolGeojsonio:
+      "dibuja rutas y puntos directamente sobre un mapa, exporta como GeoJSON",
+    contributeToolPlotaroute:
+      "traza una ruta por carreteras con ajuste automático al camino, exporta como GPX",
+    contributeToolMapstogpx:
+      "convierte indicaciones de Google Maps en un archivo GPX",
+    contributeViaGithub: "Contribuir via GitHub",
+    contributeViaGithubBody:
+      "Si tienes datos de ruta y puntos de control de una carrera, puedes enviarlos como pull request. Consulta la guía de contribución para las instrucciones completas.",
     country: "País",
     date: "Edición",
     directRaceSearch: "Encuentra tu carrera",

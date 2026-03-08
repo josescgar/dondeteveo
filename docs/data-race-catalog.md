@@ -65,6 +65,10 @@
 - Record whether route data came from GPX/KML or manual tracing.
 - Record enough notes to audit or update the edition later.
 
+## Community Contributions
+
+Community members can contribute new races via pull request. See [`CONTRIBUTING.md`](../CONTRIBUTING.md) for the full guide, including data schemas, folder structure, and QA checklist.
+
 ## Curation Workflow
 
 - Add or update one edition at a time.
