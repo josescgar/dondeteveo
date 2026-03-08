@@ -47,6 +47,25 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
   };
 
   const shareState = useMemo(() => parseShareState(fragment), [fragment]);
+
+  useEffect(() => {
+    const staticH1 = document.getElementById("share-h1-static");
+    const anchor = document.getElementById("share-h1-name-anchor");
+    if (!staticH1 || !anchor || !shareState?.name) return;
+
+    const nameSpan = document.createElement("span");
+    nameSpan.textContent = `${shareState.name} `;
+    nameSpan.style.color = "var(--color-accent)";
+    nameSpan.style.opacity = "0";
+    nameSpan.style.transition = "opacity 600ms ease-out";
+
+    anchor.after(nameSpan);
+
+    requestAnimationFrame(() => {
+      nameSpan.style.opacity = "1";
+    });
+  }, [shareState?.name]);
+
   const points = getPointSummaries(edition.points);
   const paceMinutesPerKm = shareState
     ? resolvePaceMinutesPerKm(shareState, edition.meta.distanceKm)
