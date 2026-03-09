@@ -11,7 +11,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-6.0084, 37.3944]
+        "coordinates": [-6.007924, 37.395307]
       }
     },
     {
@@ -24,7 +24,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-6.0109, 37.392]
+        "coordinates": [-6.00999, 37.395431]
       }
     },
     {
@@ -33,11 +33,11 @@
         "id": "cheer-triana-entry",
         "label": "Cheer point: Triana entry",
         "kind": "cheer-point",
-        "distanceKm": 3.7
+        "distanceKm": 4.074
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-6.0094, 37.3815]
+        "coordinates": [-6.009697, 37.381775]
       }
     },
     {
@@ -50,7 +50,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-6.0105, 37.3732]
+        "coordinates": [-6.00721, 37.375187]
       }
     },
     {
@@ -63,7 +63,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-5.9976, 37.3771]
+        "coordinates": [-5.997667, 37.378141]
       }
     },
     {
@@ -72,11 +72,11 @@
         "id": "cheer-plaza-cuba",
         "label": "Cheer point: Plaza de Cuba",
         "kind": "cheer-point",
-        "distanceKm": 7.9
+        "distanceKm": 7.681
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-5.9994, 37.3792]
+        "coordinates": [-5.997748, 37.379787]
       }
     },
     {
@@ -85,11 +85,11 @@
         "id": "cheer-betis",
         "label": "Cheer point: Calle Betis",
         "kind": "cheer-point",
-        "distanceKm": 8.4
+        "distanceKm": 8.268
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-5.9997, 37.3833]
+        "coordinates": [-6.000509, 37.384027]
       }
     },
     {
@@ -102,7 +102,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-6.0084, 37.3944]
+        "coordinates": [-6.009027, 37.392153]
       }
     }
   ]
