@@ -28,6 +28,34 @@ const dictionary = getDictionary(locale);
 const { edition: rawEdition } = Astro.props;
 const edition = localizeRaceEdition(rawEdition, locale);
 const pathname = `/${locale}/share/${edition.raceSlug}/${edition.year}`;
+
+const getSpanishRaceConnector = (raceName: string): string => {
+  const normalized = raceName
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+
+  if (
+    normalized.startsWith("carrera") ||
+    normalized.startsWith("media maraton")
+  ) {
+    return "en la";
+  }
+
+  if (
+    normalized.startsWith("maraton") ||
+    normalized.startsWith("medio maraton")
+  ) {
+    return "en el";
+  }
+
+  return "en";
+};
+
+const sharePageRaceConnector =
+  locale === "es"
+    ? getSpanishRaceConnector(edition.meta.name)
+    : dictionary.sharePageForThe;
 ---
 
 <BaseLayout
@@ -44,11 +72,9 @@ const pathname = `/${locale}/share/${edition.raceSlug}/${edition.year}`;
       class="font-display leading-none font-bold uppercase"
       style={`font-size: clamp(2.5rem, 10vw, 5rem); color: var(--color-text);`}
     >
-      {dictionary.sharePageTitle}{" "}<span
-        id="share-h1-name-anchor"
-        style="display:contents;"></span>{dictionary.sharePageForThe}{" "}{
-        edition.meta.name
-      }
+      {dictionary.sharePageTitle}{" "}<span id="share-h1-name-slot"></span>
+      {sharePageRaceConnector}
+      {edition.meta.name}
     </h1>
     <p
       class="mt-4 font-mono text-sm leading-7"

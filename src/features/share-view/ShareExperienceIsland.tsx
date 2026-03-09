@@ -49,9 +49,8 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
   const shareState = useMemo(() => parseShareState(fragment), [fragment]);
 
   useEffect(() => {
-    const staticH1 = document.getElementById("share-h1-static");
     const nameSlot = document.getElementById("share-h1-name-slot");
-    if (!staticH1 || !nameSlot) return;
+    if (!nameSlot) return;
 
     if (!shareState?.name) {
       nameSlot.textContent = "";
