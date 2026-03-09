@@ -1,0 +1,6 @@
+{
+  "officialSourceName": "Instituto Municipal de Deportes de Sevilla official race page",
+  "officialSourceUrl": "https://imd.sevilla.org/programas-deportivos/circuito-carreras-sevilla10/calendario-del-circuito/carrera-popular-triana",
+  "routeSourceType": "manual-trace",
+  "notes": "Manually traced 5K route based on the official street-by-street description and linked course PDF on the IMD page. The official page lists the 5K start as approximately 09:30, but the actual departure is organizer-controlled once the tail of the 10K clears the intermediate point, so the live start may slip by a few minutes."
+}

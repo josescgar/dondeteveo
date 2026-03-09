@@ -5,104 +5,104 @@
       "type": "Feature",
       "properties": {
         "id": "start",
-        "label": "Start",
+        "label": "Start - Camino de los Descubrimientos",
         "kind": "split",
         "distanceKm": 0
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-5.9961, 37.3828]
+        "coordinates": [-6.007924, 37.395307]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-2-5",
+        "label": "2.5K split - Calle Inca Garcilaso",
+        "kind": "split",
+        "distanceKm": 2.5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.00999, 37.395431]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-triana-entry",
+        "label": "Cheer point - Ronda de Triana",
+        "kind": "cheer-point",
+        "distanceKm": 4.074
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.009697, 37.381775]
       }
     },
     {
       "type": "Feature",
       "properties": {
         "id": "km-5",
-        "label": "5K split",
+        "label": "5K split - Avenida Alfredo Kraus",
         "kind": "split",
         "distanceKm": 5
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-5.9796, 37.382]
+        "coordinates": [-6.00721, 37.375187]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "id": "cheer-plaza-nueva",
-        "label": "Cheer point: Plaza Nueva",
-        "kind": "cheer-point",
-        "distanceKm": 7.8
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [-5.9968, 37.3871]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "id": "km-10",
-        "label": "10K split",
+        "id": "km-7-5",
+        "label": "7.5K split - Calle Asuncion",
         "kind": "split",
-        "distanceKm": 10
+        "distanceKm": 7.5
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-5.9752, 37.3762]
+        "coordinates": [-5.997667, 37.378141]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "id": "cheer-maria-luisa",
-        "label": "Cheer point: Maria Luisa Park",
+        "id": "cheer-plaza-cuba",
+        "label": "Cheer point - Plaza de Cuba",
         "kind": "cheer-point",
-        "distanceKm": 12.6
+        "distanceKm": 7.681
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-5.9815, 37.3712]
+        "coordinates": [-5.997748, 37.379787]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "id": "km-15",
-        "label": "15K split",
-        "kind": "split",
-        "distanceKm": 15
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [-5.9891, 37.3685]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "id": "cheer-alameda",
-        "label": "Cheer point: Alameda",
+        "id": "cheer-betis",
+        "label": "Cheer point - Calle Betis",
         "kind": "cheer-point",
-        "distanceKm": 18.2
+        "distanceKm": 8.268
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-6.0006, 37.3768]
+        "coordinates": [-6.000509, 37.384027]
       }
     },
     {
       "type": "Feature",
       "properties": {
         "id": "finish",
-        "label": "Finish",
+        "label": "Finish - Torre Sevilla",
         "kind": "split",
-        "distanceKm": 21.0975
+        "distanceKm": 10
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-5.9961, 37.3828]
+        "coordinates": [-6.009027, 37.392153]
       }
     }
   ]

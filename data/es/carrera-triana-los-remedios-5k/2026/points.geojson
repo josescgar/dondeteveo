@@ -1,0 +1,83 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "start",
+        "label": "Start - Avenida Alfredo Kraus",
+        "kind": "split",
+        "distanceKm": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.007253, 37.375173]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-cigarreras",
+        "label": "Cheer point - Glorieta de las Cigarreras",
+        "kind": "cheer-point",
+        "distanceKm": 1.861
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.994545, 37.374521]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-2-5",
+        "label": "2.5K split - Calle Asuncion",
+        "kind": "split",
+        "distanceKm": 2.5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.997652, 37.377938]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-betis",
+        "label": "Cheer point - Calle Betis",
+        "kind": "cheer-point",
+        "distanceKm": 3.292
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.000509, 37.384027]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-paseo-o",
+        "label": "Cheer point - Paseo Nuestra Senora de la O",
+        "kind": "cheer-point",
+        "distanceKm": 3.947
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.004631, 37.387127]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "finish",
+        "label": "Finish - Torre Sevilla",
+        "kind": "split",
+        "distanceKm": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.00898, 37.392328]
+      }
+    }
+  ]
+}

@@ -15,10 +15,12 @@ data/<iso-country>/<race-slug>/<year>/
 ```
 
 - `<iso-country>` — lowercase ISO 3166-1 alpha-2 code (e.g. `es`, `us`, `gb`)
-- `<race-slug>` — kebab-case, globally unique across the catalog (e.g. `sevilla-half-marathon`)
+- `<race-slug>` — kebab-case, globally unique across the catalog (e.g. `carrera-triana-los-remedios-10k`)
 - `<year>` — edition year (e.g. `2026`)
+- Each race edition represents exactly one distance, one route, and one points file.
+- If an official event offers multiple distances, add each distance as its own race slug and edition folder.
 
-See `data/es/sevilla-half-marathon/2026/` for a complete working example.
+See `data/es/carrera-triana-los-remedios-10k/2026/` for a complete working example.
 
 ## Required Files
 
@@ -33,22 +35,22 @@ See `data/es/sevilla-half-marathon/2026/` for a complete working example.
 | `startTime`          | string `HH:MM`      | yes      | Gun start in race local timezone        |
 | `timezone`           | string (IANA)       | yes      | e.g. `"Europe/Madrid"`                  |
 | `officialWebsiteUrl` | string (URL)        | yes      | Link to the official race website       |
-| `summary`            | string              | no       | 1–2 sentence description for race pages |
-| `heroNote`           | string              | no       | Spectator-specific note for share pages |
+| `summary`            | string              | yes      | 1–2 sentence description for race pages |
+| `heroNote`           | string              | yes      | Spectator-specific note for share pages |
 
 Example:
 
 ```json
 {
-  "name": "Zurich Seville Half Marathon",
-  "date": "2026-01-25",
-  "distanceKm": 21.0975,
+  "name": "Triana - Los Remedios 10K \"Torre Sevilla\"",
+  "date": "2026-03-15",
+  "distanceKm": 10,
   "city": "Seville",
   "startTime": "09:00",
   "timezone": "Europe/Madrid",
-  "officialWebsiteUrl": "https://www.zurichmaratonsevilla.es/media-maraton/",
-  "summary": "Fast winter half marathon in the center of Seville.",
-  "heroNote": "A spectator-friendly course with multiple central cheering opportunities."
+  "officialWebsiteUrl": "https://imd.sevilla.org/programas-deportivos/circuito-carreras-sevilla10/calendario-del-circuito/carrera-popular-triana",
+  "summary": "Urban 10K across La Cartuja, Triana, and Los Remedios with a river-facing finish back at Torre Sevilla.",
+  "heroNote": "The course comes back through several central spectator zones, with strong cheering spots around Plaza de Cuba, Calle Betis, and the Triana riverfront."
 }
 ```
 
@@ -71,12 +73,12 @@ Include at minimum: `start`, key kilometer splits, and `finish`.
 
 ### `source.json`
 
-| Field                | Notes                                 |
-| -------------------- | ------------------------------------- |
-| `officialSourceName` | Human-readable source name            |
-| `officialSourceUrl`  | URL to the official source            |
-| `routeSourceType`    | `"gpx"`, `"kml"`, or `"manual-trace"` |
-| `notes`              | Free-text audit notes                 |
+| Field                | Notes                                               |
+| -------------------- | --------------------------------------------------- |
+| `officialSourceName` | Human-readable source name                          |
+| `officialSourceUrl`  | URL to the official source                          |
+| `routeSourceType`    | `"gpx-import"`, `"kml-import"`, or `"manual-trace"` |
+| `notes`              | Free-text audit notes                               |
 
 ## Tools for Creating Route Data
 

@@ -11,25 +11,45 @@ const LOCALIZED_EDITIONS: Record<
   string,
   Partial<Record<Locale, LocalizedEditionOverride>>
 > = {
-  "sevilla-half-marathon/2026": {
+  "carrera-triana-los-remedios-10k/2026": {
     es: {
       meta: {
-        name: "Zurich Media Maraton de Sevilla",
+        name: 'Carrera Triana - Los Remedios "Torre Sevilla" 10K',
         city: "Sevilla",
         summary:
-          "Media maraton invernal y rapida por el centro de Sevilla, con avenidas amplias y un recorrido favorable para llevar ritmo constante.",
+          "10K urbano por La Cartuja, Triana y Los Remedios, con regreso junto al rio hasta la zona de Torre Sevilla.",
         heroNote:
-          "Un recorrido comodo para espectadores, con varios puntos centricos para animar durante la carrera.",
+          "El recorrido vuelve por varios puntos muy comodos para animar, con buenas opciones alrededor de Plaza de Cuba, Calle Betis y la ribera de Triana.",
       },
       pointLabels: {
-        start: "Salida",
-        "km-5": "Punto 5K",
-        "cheer-plaza-nueva": "Punto para animar: Plaza Nueva",
-        "km-10": "Punto 10K",
-        "cheer-maria-luisa": "Punto para animar: Parque de Maria Luisa",
-        "km-15": "Punto 15K",
-        "cheer-alameda": "Punto para animar: Alameda",
-        finish: "Meta",
+        start: "Salida - Camino de los Descubrimientos",
+        "km-2-5": "Punto 2.5K - Calle Inca Garcilaso",
+        "cheer-triana-entry": "Punto para animar - Ronda de Triana",
+        "km-5": "Punto 5K - Avenida Alfredo Kraus",
+        "km-7-5": "Punto 7.5K - Calle Asuncion",
+        "cheer-plaza-cuba": "Punto para animar - Plaza de Cuba",
+        "cheer-betis": "Punto para animar - Calle Betis",
+        finish: "Meta - Torre Sevilla",
+      },
+    },
+  },
+  "carrera-triana-los-remedios-5k/2026": {
+    es: {
+      meta: {
+        name: 'Carrera Triana - Los Remedios "Torre Sevilla" 5K',
+        city: "Sevilla",
+        summary:
+          "5K compacto que comparte la segunda mitad del recorrido Triana - Los Remedios, desde Blas Infante hasta Torre Sevilla.",
+        heroNote:
+          "Se puede seguir bien desde Plaza de Cuba, Calle Betis y el tramo final junto al rio sin alejarse del corazon del recorrido.",
+      },
+      pointLabels: {
+        start: "Salida - Avenida Alfredo Kraus",
+        "cheer-cigarreras": "Punto para animar - Glorieta de las Cigarreras",
+        "km-2-5": "Punto 2.5K - Calle Asuncion",
+        "cheer-betis": "Punto para animar - Calle Betis",
+        "cheer-paseo-o": "Punto para animar - Paseo Nuestra Senora de la O",
+        finish: "Meta - Torre Sevilla",
       },
     },
   },

@@ -7,6 +7,8 @@
 ## Folder Structure
 
 - `data/<iso-country>/<race>/<year>/`
+- One race edition represents one distance, one route, and one point set.
+- Multi-distance events must be split into separate race slugs and edition folders.
 
 ## Public vs Internal Paths
 
@@ -32,17 +34,17 @@
 | `startTime`          | string `HH:MM`      | required | Gun start in race local timezone        |
 | `timezone`           | string (IANA)       | required | e.g. `"Europe/Madrid"`                  |
 | `officialWebsiteUrl` | string (URL)        | required |                                         |
-| `summary`            | string              | optional | 1–2 sentence description for race pages |
-| `heroNote`           | string              | optional | Spectator-specific note for share pages |
+| `summary`            | string              | required | 1–2 sentence description for race pages |
+| `heroNote`           | string              | required | Spectator-specific note for share pages |
 
 ## `source.json` Schema
 
-| Field                | Notes                                  |
-| -------------------- | -------------------------------------- |
-| `officialSourceName` | Human-readable source name             |
-| `officialSourceUrl`  | URL to the official source             |
-| `routeSourceType`    | `"gpx"` \| `"kml"` \| `"manual-trace"` |
-| `notes`              | Free-text audit notes                  |
+| Field                | Notes                                                |
+| -------------------- | ---------------------------------------------------- |
+| `officialSourceName` | Human-readable source name                           |
+| `officialSourceUrl`  | URL to the official source                           |
+| `routeSourceType`    | `"gpx-import"` \| `"kml-import"` \| `"manual-trace"` |
+| `notes`              | Free-text audit notes                                |
 
 ## `points.geojson` Feature Properties
 

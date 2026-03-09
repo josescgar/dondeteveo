@@ -11,14 +11,14 @@ describe("share planner logic", () => {
   it("builds a share href with fragment state", () => {
     const href = buildShareHref({
       locale: "en",
-      raceSlug: "sevilla-half-marathon",
+      raceSlug: "carrera-triana-los-remedios-10k",
       year: "2026",
       mode: "pace",
       value: "05:00",
       name: "Pepe",
     });
 
-    expect(href).toContain("/en/share/sevilla-half-marathon/2026#");
+    expect(href).toContain("/en/share/carrera-triana-los-remedios-10k/2026#");
     expect(href).toContain("mode=pace");
   });
 

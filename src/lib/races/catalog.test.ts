@@ -8,10 +8,15 @@ import {
 } from "./catalog";
 
 describe("race catalog", () => {
-  it("loads the sample race edition", async () => {
-    const edition = await getRaceEdition("sevilla-half-marathon", "2026");
+  it("loads a real race edition", async () => {
+    const edition = await getRaceEdition(
+      "carrera-triana-los-remedios-10k",
+      "2026",
+    );
 
-    expect(edition?.meta.name).toBe("Zurich Seville Half Marathon");
+    expect(edition?.meta.name).toBe(
+      'Triana - Los Remedios 10K "Torre Sevilla"',
+    );
     expect(edition?.meta.timezone).toBe("Europe/Madrid");
   });
 
@@ -26,7 +31,9 @@ describe("race catalog", () => {
   });
 
   it("returns the most relevant edition for a race", async () => {
-    const edition = await getMostRelevantEdition("sevilla-half-marathon");
+    const edition = await getMostRelevantEdition(
+      "carrera-triana-los-remedios-10k",
+    );
 
     expect(edition?.year).toBe("2026");
   });
