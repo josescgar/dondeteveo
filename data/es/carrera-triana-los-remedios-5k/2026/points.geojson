@@ -5,78 +5,78 @@
       "type": "Feature",
       "properties": {
         "id": "start",
-        "label": "Start",
+        "label": "Start - Avenida Alfredo Kraus",
         "kind": "split",
         "distanceKm": 0
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-6.0105, 37.3732]
+        "coordinates": [-6.007253, 37.375173]
       }
     },
     {
       "type": "Feature",
       "properties": {
         "id": "cheer-cigarreras",
-        "label": "Cheer point: Glorieta de las Cigarreras",
+        "label": "Cheer point - Glorieta de las Cigarreras",
         "kind": "cheer-point",
-        "distanceKm": 2
+        "distanceKm": 1.861
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-5.9944, 37.3749]
+        "coordinates": [-5.994545, 37.374521]
       }
     },
     {
       "type": "Feature",
       "properties": {
         "id": "km-2-5",
-        "label": "2.5K split",
+        "label": "2.5K split - Calle Asuncion",
         "kind": "split",
         "distanceKm": 2.5
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-5.9977, 37.376]
+        "coordinates": [-5.997652, 37.377938]
       }
     },
     {
       "type": "Feature",
       "properties": {
         "id": "cheer-betis",
-        "label": "Cheer point: Calle Betis",
+        "label": "Cheer point - Calle Betis",
         "kind": "cheer-point",
-        "distanceKm": 3.5
+        "distanceKm": 3.292
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-5.9997, 37.3833]
+        "coordinates": [-6.000509, 37.384027]
       }
     },
     {
       "type": "Feature",
       "properties": {
         "id": "cheer-paseo-o",
-        "label": "Cheer point: Paseo de la O",
+        "label": "Cheer point - Paseo Nuestra Senora de la O",
         "kind": "cheer-point",
-        "distanceKm": 4.2
+        "distanceKm": 3.947
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-6.0053, 37.3877]
+        "coordinates": [-6.004631, 37.387127]
       }
     },
     {
       "type": "Feature",
       "properties": {
         "id": "finish",
-        "label": "Finish",
+        "label": "Finish - Torre Sevilla",
         "kind": "split",
         "distanceKm": 5
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-6.0084, 37.3944]
+        "coordinates": [-6.00898, 37.392328]
       }
     }
   ]

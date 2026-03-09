@@ -5,7 +5,7 @@
       "type": "Feature",
       "properties": {
         "id": "start",
-        "label": "Start",
+        "label": "Start - Camino de los Descubrimientos",
         "kind": "split",
         "distanceKm": 0
       },
@@ -18,7 +18,7 @@
       "type": "Feature",
       "properties": {
         "id": "km-2-5",
-        "label": "2.5K split",
+        "label": "2.5K split - Calle Inca Garcilaso",
         "kind": "split",
         "distanceKm": 2.5
       },
@@ -31,7 +31,7 @@
       "type": "Feature",
       "properties": {
         "id": "cheer-triana-entry",
-        "label": "Cheer point: Triana entry",
+        "label": "Cheer point - Ronda de Triana",
         "kind": "cheer-point",
         "distanceKm": 4.074
       },
@@ -44,7 +44,7 @@
       "type": "Feature",
       "properties": {
         "id": "km-5",
-        "label": "5K split",
+        "label": "5K split - Avenida Alfredo Kraus",
         "kind": "split",
         "distanceKm": 5
       },
@@ -57,7 +57,7 @@
       "type": "Feature",
       "properties": {
         "id": "km-7-5",
-        "label": "7.5K split",
+        "label": "7.5K split - Calle Asuncion",
         "kind": "split",
         "distanceKm": 7.5
       },
@@ -70,7 +70,7 @@
       "type": "Feature",
       "properties": {
         "id": "cheer-plaza-cuba",
-        "label": "Cheer point: Plaza de Cuba",
+        "label": "Cheer point - Plaza de Cuba",
         "kind": "cheer-point",
         "distanceKm": 7.681
       },
@@ -83,7 +83,7 @@
       "type": "Feature",
       "properties": {
         "id": "cheer-betis",
-        "label": "Cheer point: Calle Betis",
+        "label": "Cheer point - Calle Betis",
         "kind": "cheer-point",
         "distanceKm": 8.268
       },
@@ -96,7 +96,7 @@
       "type": "Feature",
       "properties": {
         "id": "finish",
-        "label": "Finish",
+        "label": "Finish - Torre Sevilla",
         "kind": "split",
         "distanceKm": 10
       },
