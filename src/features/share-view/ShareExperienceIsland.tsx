@@ -73,8 +73,15 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
   const predictedPoints = paceMinutesPerKm
     ? buildPredictedPoints(points, paceMinutesPerKm, edition.meta.startTime)
     : [];
+  const formatDayOffset = (n: number) =>
+    dictionary.dayOffsetLabel.replace("{n}", String(n));
   const pointDetails = Object.fromEntries(
-    predictedPoints.map((point) => [point.id, point.predictedTime]),
+    predictedPoints.map((point) => [
+      point.id,
+      point.dayOffset > 0
+        ? `${point.predictedTime} (${formatDayOffset(point.dayOffset)})`
+        : point.predictedTime,
+    ]),
   );
 
   if (!shareState || paceMinutesPerKm === null) {
@@ -234,10 +241,18 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
                 {formatDistance(point.distanceKm, locale)}
               </div>
               <div
-                class="mt-4 font-mono leading-none font-medium"
+                class="mt-4 flex items-baseline gap-2 font-mono leading-none font-medium"
                 style={`font-size: clamp(2.8rem, 8vw, 4rem); color: var(--color-coral); letter-spacing: -0.02em;`}
               >
                 {point.predictedTime}
+                {point.dayOffset > 0 && (
+                  <span
+                    class="font-mono text-xs font-normal tracking-wide"
+                    style="color: var(--color-muted);"
+                  >
+                    {formatDayOffset(point.dayOffset)}
+                  </span>
+                )}
               </div>
             </article>
           ))}

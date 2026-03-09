@@ -81,6 +81,7 @@ type Dictionary = {
   copiedToClipboard: string;
   copyLink: string;
   copiedLink: string;
+  dayOffsetLabel: string;
   footerPunchline: string;
   invalidFinishTimeFormat: string;
   invalidPaceFormat: string;
@@ -185,6 +186,7 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     copiedToClipboard: "Copied to the clipboard",
     copyLink: "Copy link",
     copiedLink: "Copied!",
+    dayOffsetLabel: "D+{n}",
     footerPunchline: "Made by a runner, for runners",
     invalidFinishTimeFormat: "Enter a valid finish time (HH:MM:SS)",
     invalidPaceFormat: "Enter a valid pace (MM:SS)",
@@ -290,6 +292,7 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     copiedToClipboard: "Copiado al portapapeles",
     copyLink: "Copiar enlace",
     copiedLink: "¡Copiado!",
+    dayOffsetLabel: "D+{n}",
     footerPunchline: "Hecho por un corredor, para corredores",
     invalidFinishTimeFormat: "Introduce un tiempo válido (HH:MM:SS)",
     invalidPaceFormat: "Introduce un ritmo válido (MM:SS)",
