@@ -50,21 +50,29 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
 
   useEffect(() => {
     const staticH1 = document.getElementById("share-h1-static");
-    const anchor = document.getElementById("share-h1-name-anchor");
-    if (!staticH1 || !anchor || !shareState?.name) return;
+    const nameSlot = document.getElementById("share-h1-name-slot");
+    if (!staticH1 || !nameSlot) return;
 
-    const nameSpan = document.createElement("span");
-    nameSpan.textContent = `${shareState.name} `;
-    nameSpan.style.color = "var(--color-accent)";
-    nameSpan.style.opacity = "0";
-    nameSpan.style.transition = "opacity 600ms ease-out";
+    if (!shareState?.name) {
+      nameSlot.textContent = "";
+      nameSlot.setAttribute("style", "");
+      return;
+    }
 
-    anchor.after(nameSpan);
+    nameSlot.textContent =
+      locale === "es" ? `a ${shareState.name} ` : `${shareState.name} `;
+    nameSlot.setAttribute(
+      "style",
+      "color: var(--color-accent); opacity: 0; transition: opacity 600ms ease-out;",
+    );
 
     requestAnimationFrame(() => {
-      nameSpan.style.opacity = "1";
+      nameSlot.setAttribute(
+        "style",
+        "color: var(--color-accent); opacity: 1; transition: opacity 600ms ease-out;",
+      );
     });
-  }, [shareState?.name]);
+  }, [locale, shareState?.name]);
 
   const points = getPointSummaries(edition.points);
   const paceMinutesPerKm = shareState

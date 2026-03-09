@@ -97,6 +97,8 @@ data/<iso-country>/<race-slug>/<year>/
 
 Internal paths include the ISO country; public URLs do not. Preserve past editions — never overwrite them.
 
+Each race edition represents one distance, one route, and one points file. If an official event has multiple distances, add each distance as its own race slug and edition folder.
+
 ## Coding Rules
 
 - Keep Preact island components thin; business logic belongs in co-located `*.logic.ts` files.

@@ -11,6 +11,48 @@ const LOCALIZED_EDITIONS: Record<
   string,
   Partial<Record<Locale, LocalizedEditionOverride>>
 > = {
+  "carrera-triana-los-remedios-10k/2026": {
+    es: {
+      meta: {
+        name: 'Carrera Triana - Los Remedios "Torre Sevilla" 10K',
+        city: "Sevilla",
+        summary:
+          "10K urbano por La Cartuja, Triana y Los Remedios, con regreso junto al rio hasta la zona de Torre Sevilla.",
+        heroNote:
+          "El recorrido vuelve por varios puntos muy comodos para animar, con buenas opciones alrededor de Plaza de Cuba, Calle Betis y la ribera de Triana.",
+      },
+      pointLabels: {
+        start: "Salida",
+        "km-2-5": "Punto 2.5K",
+        "cheer-triana-entry": "Punto para animar: entrada a Triana",
+        "km-5": "Punto 5K",
+        "km-7-5": "Punto 7.5K",
+        "cheer-plaza-cuba": "Punto para animar: Plaza de Cuba",
+        "cheer-betis": "Punto para animar: Calle Betis",
+        finish: "Meta",
+      },
+    },
+  },
+  "carrera-triana-los-remedios-5k/2026": {
+    es: {
+      meta: {
+        name: 'Carrera Triana - Los Remedios "Torre Sevilla" 5K',
+        city: "Sevilla",
+        summary:
+          "5K compacto que comparte la segunda mitad del recorrido Triana - Los Remedios, desde Blas Infante hasta Torre Sevilla.",
+        heroNote:
+          "Se puede seguir bien desde Plaza de Cuba, Calle Betis y el tramo final junto al rio sin alejarse del corazon del recorrido.",
+      },
+      pointLabels: {
+        start: "Salida",
+        "cheer-cigarreras": "Punto para animar: Glorieta de las Cigarreras",
+        "km-2-5": "Punto 2.5K",
+        "cheer-betis": "Punto para animar: Calle Betis",
+        "cheer-paseo-o": "Punto para animar: Paseo de la O",
+        finish: "Meta",
+      },
+    },
+  },
   "sevilla-half-marathon/2026": {
     es: {
       meta: {

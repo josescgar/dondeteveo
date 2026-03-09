@@ -1,0 +1,109 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "start",
+        "label": "Start",
+        "kind": "split",
+        "distanceKm": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.0084, 37.3944]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-2-5",
+        "label": "2.5K split",
+        "kind": "split",
+        "distanceKm": 2.5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.0109, 37.392]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-triana-entry",
+        "label": "Cheer point: Triana entry",
+        "kind": "cheer-point",
+        "distanceKm": 3.7
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.0094, 37.3815]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-5",
+        "label": "5K split",
+        "kind": "split",
+        "distanceKm": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.0105, 37.3732]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-7-5",
+        "label": "7.5K split",
+        "kind": "split",
+        "distanceKm": 7.5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.9976, 37.3771]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-plaza-cuba",
+        "label": "Cheer point: Plaza de Cuba",
+        "kind": "cheer-point",
+        "distanceKm": 7.9
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.9994, 37.3792]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-betis",
+        "label": "Cheer point: Calle Betis",
+        "kind": "cheer-point",
+        "distanceKm": 8.4
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.9997, 37.3833]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "finish",
+        "label": "Finish",
+        "kind": "split",
+        "distanceKm": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.0084, 37.3944]
+      }
+    }
+  ]
+}

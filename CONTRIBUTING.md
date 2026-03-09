@@ -17,6 +17,8 @@ data/<iso-country>/<race-slug>/<year>/
 - `<iso-country>` — lowercase ISO 3166-1 alpha-2 code (e.g. `es`, `us`, `gb`)
 - `<race-slug>` — kebab-case, globally unique across the catalog (e.g. `sevilla-half-marathon`)
 - `<year>` — edition year (e.g. `2026`)
+- Each race edition represents exactly one distance, one route, and one points file.
+- If an official event offers multiple distances, add each distance as its own race slug and edition folder.
 
 See `data/es/sevilla-half-marathon/2026/` for a complete working example.
 
@@ -33,8 +35,8 @@ See `data/es/sevilla-half-marathon/2026/` for a complete working example.
 | `startTime`          | string `HH:MM`      | yes      | Gun start in race local timezone        |
 | `timezone`           | string (IANA)       | yes      | e.g. `"Europe/Madrid"`                  |
 | `officialWebsiteUrl` | string (URL)        | yes      | Link to the official race website       |
-| `summary`            | string              | no       | 1–2 sentence description for race pages |
-| `heroNote`           | string              | no       | Spectator-specific note for share pages |
+| `summary`            | string              | yes      | 1–2 sentence description for race pages |
+| `heroNote`           | string              | yes      | Spectator-specific note for share pages |
 
 Example:
 
@@ -71,12 +73,12 @@ Include at minimum: `start`, key kilometer splits, and `finish`.
 
 ### `source.json`
 
-| Field                | Notes                                 |
-| -------------------- | ------------------------------------- |
-| `officialSourceName` | Human-readable source name            |
-| `officialSourceUrl`  | URL to the official source            |
-| `routeSourceType`    | `"gpx"`, `"kml"`, or `"manual-trace"` |
-| `notes`              | Free-text audit notes                 |
+| Field                | Notes                                               |
+| -------------------- | --------------------------------------------------- |
+| `officialSourceName` | Human-readable source name                          |
+| `officialSourceUrl`  | URL to the official source                          |
+| `routeSourceType`    | `"gpx-import"`, `"kml-import"`, or `"manual-trace"` |
+| `notes`              | Free-text audit notes                               |
 
 ## Tools for Creating Route Data
 
