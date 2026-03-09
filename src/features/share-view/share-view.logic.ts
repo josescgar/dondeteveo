@@ -1,5 +1,6 @@
 import type { RacePointFeature } from "../../lib/races/schemas";
 import {
+  dayOffsetFromMinutes,
   formatMinutesAsClock,
   parseFinishTimeToMinutes,
   parsePaceToMinutesPerKm,
@@ -12,6 +13,7 @@ export type PredictedPoint = {
   kind: "split" | "cheer-point";
   distanceKm: number;
   predictedTime: string;
+  dayOffset: number;
 };
 
 export const resolvePaceMinutesPerKm = (
@@ -42,13 +44,16 @@ export const buildPredictedPoints = (
 ): PredictedPoint[] => {
   const baseMinutes = startClockMinutes(raceStartTime);
 
-  return points.map((point) => ({
-    id: point.properties.id,
-    label: point.properties.label,
-    kind: point.properties.kind,
-    distanceKm: point.properties.distanceKm,
-    predictedTime: formatMinutesAsClock(
-      baseMinutes + point.properties.distanceKm * paceMinutesPerKm,
-    ),
-  }));
+  return points.map((point) => {
+    const clockMinutes =
+      baseMinutes + point.properties.distanceKm * paceMinutesPerKm;
+    return {
+      id: point.properties.id,
+      label: point.properties.label,
+      kind: point.properties.kind,
+      distanceKm: point.properties.distanceKm,
+      predictedTime: formatMinutesAsClock(clockMinutes),
+      dayOffset: dayOffsetFromMinutes(clockMinutes),
+    };
+  });
 };

@@ -99,11 +99,14 @@ export const parsePaceToMinutesPerKm = (value: string): number | null => {
 };
 
 export const formatMinutesAsClock = (value: number): string => {
-  const roundedMinutes = Math.floor(value);
-  const hours = Math.floor(roundedMinutes / 60)
+  const wrappedMinutes = Math.floor(value) % 1440;
+  const hours = Math.floor(wrappedMinutes / 60)
     .toString()
     .padStart(2, "0");
-  const minutes = (roundedMinutes % 60).toString().padStart(2, "0");
+  const minutes = (wrappedMinutes % 60).toString().padStart(2, "0");
 
   return `${hours}:${minutes}`;
 };
+
+export const dayOffsetFromMinutes = (value: number): number =>
+  Math.floor(value / 1440);

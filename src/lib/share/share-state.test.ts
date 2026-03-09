@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  dayOffsetFromMinutes,
   formatMinutesAsClock,
   parseFinishTimeToMinutes,
   parsePaceToMinutesPerKm,
@@ -40,5 +41,17 @@ describe("share state helpers", () => {
 
   it("formats minutes as a clock string", () => {
     expect(formatMinutesAsClock(612)).toBe("10:12");
+  });
+
+  it("wraps clock times past midnight", () => {
+    expect(formatMinutesAsClock(1500)).toBe("01:00");
+    expect(formatMinutesAsClock(2880)).toBe("00:00");
+  });
+
+  it("computes day offset from minutes", () => {
+    expect(dayOffsetFromMinutes(600)).toBe(0);
+    expect(dayOffsetFromMinutes(1440)).toBe(1);
+    expect(dayOffsetFromMinutes(1500)).toBe(1);
+    expect(dayOffsetFromMinutes(2880)).toBe(2);
   });
 });
