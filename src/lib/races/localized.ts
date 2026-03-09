@@ -53,28 +53,6 @@ const LOCALIZED_EDITIONS: Record<
       },
     },
   },
-  "sevilla-half-marathon/2026": {
-    es: {
-      meta: {
-        name: "Zurich Media Maraton de Sevilla",
-        city: "Sevilla",
-        summary:
-          "Media maraton invernal y rapida por el centro de Sevilla, con avenidas amplias y un recorrido favorable para llevar ritmo constante.",
-        heroNote:
-          "Un recorrido comodo para espectadores, con varios puntos centricos para animar durante la carrera.",
-      },
-      pointLabels: {
-        start: "Salida",
-        "km-5": "Punto 5K",
-        "cheer-plaza-nueva": "Punto para animar: Plaza Nueva",
-        "km-10": "Punto 10K",
-        "cheer-maria-luisa": "Punto para animar: Parque de Maria Luisa",
-        "km-15": "Punto 15K",
-        "cheer-alameda": "Punto para animar: Alameda",
-        finish: "Meta",
-      },
-    },
-  },
 };
 
 const getEditionOverride = (

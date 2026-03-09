@@ -55,20 +55,24 @@ test("root stays on / for English browser with saved Spanish preference", async 
 test("race discovery reaches a race page and share flow", async ({ page }) => {
   await page.goto("/en/races");
   await page
-    .getByRole("link", { name: /Zurich Seville Half Marathon/i })
+    .getByRole("link", { name: /Triana - Los Remedios .*10K/i })
     .click();
-  await expect(page).toHaveURL(/\/en\/races\/sevilla-half-marathon\/2026/);
+  await expect(page).toHaveURL(
+    /\/en\/races\/carrera-triana-los-remedios-10k\/2026/,
+  );
 
   await page.getByRole("link", { name: /Generate share link/i }).click();
-  await expect(page).toHaveURL(/\/en\/share\/sevilla-half-marathon\/2026#/);
+  await expect(page).toHaveURL(
+    /\/en\/share\/carrera-triana-los-remedios-10k\/2026#/,
+  );
   await expect(
-    page.getByText(/All times are in the race.s local timezone\./i),
+    page.getByText(/All times are in the race.s local timezone\./i).first(),
   ).toBeVisible();
 });
 
 test("share page stays noindex", async ({ page }) => {
   await page.goto(
-    "/en/share/sevilla-half-marathon/2026#mode=pace&value=05%3A00&name=Pepe",
+    "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=05%3A00&name=Pepe",
   );
 
   const robotsContent = await page
