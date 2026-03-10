@@ -88,6 +88,10 @@ type Dictionary = {
   invalidFinishTimeFormat: string;
   invalidPaceFormat: string;
   shareLinkTitle: string;
+  dismissRoutePoint: string;
+  enterFullscreenMap: string;
+  exitFullscreenMap: string;
+  selectedRoutePoint: string;
 };
 
 const DICTIONARIES: Record<Locale, Dictionary> = {
@@ -195,6 +199,10 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     invalidFinishTimeFormat: "Enter a valid finish time (HH:MM:SS)",
     invalidPaceFormat: "Enter a valid pace (MM:SS)",
     shareLinkTitle: "Share this page",
+    dismissRoutePoint: "Dismiss selected point",
+    enterFullscreenMap: "Enter fullscreen map",
+    exitFullscreenMap: "Exit fullscreen map",
+    selectedRoutePoint: "Selected route point",
   },
   es: {
     about: "Acerca de",
@@ -303,6 +311,10 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     invalidFinishTimeFormat: "Introduce un tiempo válido (HH:MM:SS)",
     invalidPaceFormat: "Introduce un ritmo válido (MM:SS)",
     shareLinkTitle: "Comparte esta página",
+    dismissRoutePoint: "Cerrar punto seleccionado",
+    enterFullscreenMap: "Abrir mapa a pantalla completa",
+    exitFullscreenMap: "Salir del mapa a pantalla completa",
+    selectedRoutePoint: "Punto seleccionado del recorrido",
   },
 };
 

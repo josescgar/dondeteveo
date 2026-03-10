@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "preact/hooks";
+import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
 
 import { Tooltip } from "../../components/Tooltip";
 import type { Locale } from "../../lib/config";
@@ -10,6 +10,7 @@ import { parseShareState } from "../../lib/share/share-state";
 import RaceMapIsland from "../race-map/RaceMapIsland";
 import {
   buildPredictedPoints,
+  buildPredictedRouteSelection,
   resolvePaceMinutesPerKm,
 } from "./share-view.logic";
 
@@ -73,13 +74,24 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
     });
   }, [locale, shareState?.name]);
 
-  const points = getPointSummaries(edition.points);
-  const paceMinutesPerKm = shareState
-    ? resolvePaceMinutesPerKm(shareState, edition.meta.distanceKm)
-    : null;
-  const predictedPoints = paceMinutesPerKm
-    ? buildPredictedPoints(points, paceMinutesPerKm, edition.meta.startTime)
-    : [];
+  const points = useMemo(
+    () => getPointSummaries(edition.points),
+    [edition.points],
+  );
+  const paceMinutesPerKm = useMemo(
+    () =>
+      shareState
+        ? resolvePaceMinutesPerKm(shareState, edition.meta.distanceKm)
+        : null,
+    [edition.meta.distanceKm, shareState],
+  );
+  const predictedPoints = useMemo(
+    () =>
+      paceMinutesPerKm
+        ? buildPredictedPoints(points, paceMinutesPerKm, edition.meta.startTime)
+        : [],
+    [edition.meta.startTime, paceMinutesPerKm, points],
+  );
   const formatDayOffset = (n: number) => {
     if (n < 0) {
       return `D${n}`;
@@ -94,11 +106,43 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
       .replace("{minutes}", String(point.safetyMarginMinutes))
       .replace("{start}", point.earliestTime)
       .replace("{end}", point.latestTime);
-  const pointDetails = Object.fromEntries(
-    predictedPoints.map((point) => [
-      point.id,
-      `${formatPointTime(point.predictedTime, point.dayOffset)} · ${formatSafetyMargin(point)}`,
-    ]),
+  const formatPredictedRouteTime = useCallback(
+    (distanceKm: number) => {
+      if (paceMinutesPerKm === null) {
+        return null;
+      }
+
+      const predicted = buildPredictedRouteSelection(
+        distanceKm,
+        paceMinutesPerKm,
+        edition.meta.startTime,
+      );
+
+      return `${formatPointTime(predicted.predictedTime, predicted.dayOffset)} · ${dictionary.checkpointSafetyMargin
+        .replace("{minutes}", String(predicted.safetyMarginMinutes))
+        .replace("{start}", predicted.earliestTime)
+        .replace("{end}", predicted.latestTime)}`;
+    },
+    [
+      dictionary.checkpointSafetyMargin,
+      dictionary.dayOffsetLabel,
+      edition.meta.startTime,
+      paceMinutesPerKm,
+    ],
+  );
+  const pointDetails = useMemo(
+    () =>
+      Object.fromEntries(
+        predictedPoints.map((point) => [
+          point.id,
+          `${formatPointTime(point.predictedTime, point.dayOffset)} · ${formatSafetyMargin(point)}`,
+        ]),
+      ),
+    [
+      dictionary.checkpointSafetyMargin,
+      dictionary.dayOffsetLabel,
+      predictedPoints,
+    ],
   );
 
   if (!shareState || paceMinutesPerKm === null) {
@@ -303,9 +347,13 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
 
       {/* Map — secondary */}
       <RaceMapIsland
+        locale={locale}
         route={edition.route}
         points={edition.points}
+        raceDistanceKm={edition.meta.distanceKm}
         pointDetails={pointDetails}
+        mode="spectator"
+        selectionTimeFormatter={formatPredictedRouteTime}
       />
     </div>
   );

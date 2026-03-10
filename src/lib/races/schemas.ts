@@ -27,20 +27,23 @@ export const pointPropertiesSchema = z.object({
   distanceKm: z.number().min(0),
 });
 
+export const routeFeatureSchema = z.object({
+  type: z.literal("Feature"),
+  properties: z
+    .object({
+      id: z.string().min(1).optional(),
+      name: z.string().min(1).optional(),
+    })
+    .catchall(z.unknown()),
+  geometry: z.object({
+    type: z.literal("LineString"),
+    coordinates: z.array(z.tuple([z.number(), z.number()])).min(2),
+  }),
+});
+
 export const routeFeatureCollectionSchema = z.object({
   type: z.literal("FeatureCollection"),
-  features: z
-    .array(
-      z.object({
-        type: z.literal("Feature"),
-        properties: z.record(z.unknown()),
-        geometry: z.object({
-          type: z.literal("LineString"),
-          coordinates: z.array(z.tuple([z.number(), z.number()])).min(2),
-        }),
-      }),
-    )
-    .min(1),
+  features: z.array(routeFeatureSchema).min(1),
 });
 
 export const pointsFeatureCollectionSchema = z.object({
@@ -61,6 +64,7 @@ export const pointsFeatureCollectionSchema = z.object({
 
 export type RaceMeta = z.infer<typeof metaSchema>;
 export type RaceSource = z.infer<typeof sourceSchema>;
+export type RaceRouteFeature = z.infer<typeof routeFeatureSchema>;
 export type RacePointFeature = z.infer<
   typeof pointsFeatureCollectionSchema
 >["features"][number];

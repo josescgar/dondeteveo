@@ -142,8 +142,11 @@ const pathname = `/${locale}/races/${edition.raceSlug}/${edition.year}`;
 
   <section class="mt-10 grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
     <RaceMapIsland
+      locale={locale}
       route={edition.route}
       points={edition.points}
+      raceDistanceKm={edition.meta.distanceKm}
+      mode="distance-only"
       client:visible
     />
     <div>
