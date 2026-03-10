@@ -223,6 +223,10 @@ test("share page time cards focus the matching map marker", async ({
   );
   await expect(page.locator("[data-point-selection-detail]")).toBeVisible();
   await expect(page.locator("[data-route-selection-distance]")).toHaveCount(0);
+
+  await page.locator("[data-route-selection-dismiss]").click();
+  await expect(page.locator("[data-route-selection-panel]")).toHaveCount(0);
+  await expect(firstCard).toHaveAttribute("data-selected", "false");
 });
 
 test("race detail map shows only distance for tapped route points", async ({

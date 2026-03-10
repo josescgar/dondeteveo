@@ -30,6 +30,17 @@ type Props = {
     id: string;
     nonce: number;
   };
+  onSelectionChange?: (
+    selection:
+      | {
+          kind: "route";
+        }
+      | {
+          kind: "marker";
+          id: string;
+        }
+      | null,
+  ) => void;
   selectionTimeFormatter?: (distanceKm: number) => string | null;
 };
 
@@ -57,6 +68,7 @@ export default function RaceMapIsland({
   pointDetails,
   mode = "static",
   focusedMarkerRequest,
+  onSelectionChange,
   selectionTimeFormatter,
 }: Props) {
   const dictionary = useMemo(() => getDictionary(locale), [locale]);
@@ -126,6 +138,7 @@ export default function RaceMapIsland({
       const applySelection = (lat: number, lng: number) => {
         const selection = getRouteSelection(route, [lng, lat], raceDistanceKm);
         setPanelState(selection ? { kind: "route", selection } : null);
+        onSelectionChange?.(selection ? { kind: "route" } : null);
       };
 
       hitArea.on("click", (event: { latlng: { lat: number; lng: number } }) => {
@@ -155,6 +168,7 @@ export default function RaceMapIsland({
         circle.on("click", (event) => {
           leaflet.DomEvent.stopPropagation(event);
           setPanelState({ kind: "marker", marker });
+          onSelectionChange?.({ kind: "marker", id: marker.id });
         });
         circle.addTo(mapRef.current!);
         markerLayerByIdRef.current.set(marker.id, circle);
@@ -181,7 +195,7 @@ export default function RaceMapIsland({
       mapRef.current = null;
       leafletRef.current = null;
     };
-  }, [pointDetails, points, raceDistanceKm, route]);
+  }, [onSelectionChange, pointDetails, points, raceDistanceKm, route]);
 
   useEffect(() => {
     if (!focusedMarkerRequest || mode === "static" || !isMapReady) {
@@ -260,6 +274,7 @@ export default function RaceMapIsland({
 
   const handleDismissSelection = () => {
     setPanelState(null);
+    onSelectionChange?.(null);
   };
 
   const handleToggleFullscreen = async () => {

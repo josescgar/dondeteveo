@@ -64,6 +64,23 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
     });
   }, []);
 
+  const handleMapSelectionChange = useCallback(
+    (
+      selection:
+        | {
+            kind: "route";
+          }
+        | {
+            kind: "marker";
+            id: string;
+          }
+        | null,
+    ) => {
+      setSelectedPointId(selection?.kind === "marker" ? selection.id : null);
+    },
+    [],
+  );
+
   const handleCopy = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
       setCopied(true);
@@ -397,6 +414,7 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
                 }
               : undefined
           }
+          onSelectionChange={handleMapSelectionChange}
           selectionTimeFormatter={formatPredictedRouteTime}
         />
       </section>
