@@ -26,6 +26,10 @@ type Props = {
   raceDistanceKm: number;
   pointDetails?: Record<string, string>;
   mode?: MapMode;
+  focusedMarkerRequest?: {
+    id: string;
+    nonce: number;
+  };
   selectionTimeFormatter?: (distanceKm: number) => string | null;
 };
 
@@ -52,6 +56,7 @@ export default function RaceMapIsland({
   raceDistanceKm,
   pointDetails,
   mode = "static",
+  focusedMarkerRequest,
   selectionTimeFormatter,
 }: Props) {
   const dictionary = useMemo(() => getDictionary(locale), [locale]);
@@ -60,9 +65,14 @@ export default function RaceMapIsland({
   const mapRef = useRef<import("leaflet").Map | null>(null);
   const leafletRef = useRef<typeof import("leaflet") | null>(null);
   const selectionLayerRef = useRef<import("leaflet").LayerGroup | null>(null);
+  const markerLayerByIdRef = useRef(
+    new Map<string, import("leaflet").CircleMarker>(),
+  );
+  const markerByIdRef = useRef(new Map<string, RaceMapMarker>());
   const [panelState, setPanelState] = useState<MapPanelState | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [canFullscreen, setCanFullscreen] = useState(false);
+  const [isMapReady, setIsMapReady] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -130,6 +140,8 @@ export default function RaceMapIsland({
       );
 
       const markers = getMapMarkers(points, pointDetails);
+      markerLayerByIdRef.current.clear();
+      markerByIdRef.current.clear();
       markers.forEach((marker) => {
         const circle = leaflet.circleMarker(marker.coordinates, {
           className: `dtv-point-marker dtv-point-marker--${marker.kind}`,
@@ -145,13 +157,17 @@ export default function RaceMapIsland({
           setPanelState({ kind: "marker", marker });
         });
         circle.addTo(mapRef.current!);
+        markerLayerByIdRef.current.set(marker.id, circle);
+        markerByIdRef.current.set(marker.id, marker);
       });
 
       selectionLayerRef.current = leaflet.layerGroup().addTo(mapRef.current);
       mapRef.current.fitBounds(polyline.getBounds(), { padding: [24, 24] });
+      setIsMapReady(true);
     };
 
     document.addEventListener("fullscreenchange", syncFullscreenState);
+    setIsMapReady(false);
     mountMap();
 
     return () => {
@@ -159,11 +175,34 @@ export default function RaceMapIsland({
       document.removeEventListener("fullscreenchange", syncFullscreenState);
       selectionLayerRef.current?.remove();
       selectionLayerRef.current = null;
+      markerLayerByIdRef.current.clear();
+      markerByIdRef.current.clear();
       mapRef.current?.remove();
       mapRef.current = null;
       leafletRef.current = null;
     };
   }, [pointDetails, points, raceDistanceKm, route]);
+
+  useEffect(() => {
+    if (!focusedMarkerRequest || mode === "static" || !isMapReady) {
+      return;
+    }
+
+    const map = mapRef.current;
+    const marker = markerByIdRef.current.get(focusedMarkerRequest.id);
+    const markerLayer = markerLayerByIdRef.current.get(focusedMarkerRequest.id);
+
+    if (!map || !marker || !markerLayer) {
+      return;
+    }
+
+    markerLayer.bringToFront();
+    setPanelState({ kind: "marker", marker });
+    map.flyTo(marker.coordinates, map.getZoom(), {
+      animate: !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+      duration: 0.5,
+    });
+  }, [focusedMarkerRequest, isMapReady, mode]);
 
   useEffect(() => {
     const leaflet = leafletRef.current;

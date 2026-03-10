@@ -62,8 +62,13 @@
 
 ## Glossary
 
-- `race`: recurring event brand or slug
-- `edition`: specific yearly instance of a race
-- `race page`: canonical SEO page for a race edition
-- `share page`: personalized prediction page generated from race + target input
-- `cheer point`: curated spectator-friendly point on the route
+- `race`: recurring event brand represented by a globally unique public slug
+- `race slug`: the public URL identifier for a race or distance variant; public URLs do not include the country code
+- `race edition`: one specific yearly instance of one race slug and one distance
+- `edition`: shorthand for `race edition`
+- `race page`: canonical SEO page for a race edition under `/[locale]/races/<race>/<year>`
+- `share planner`: the race-page flow where a runner enters a target pace or finish time and generates a link
+- `share state`: the untrusted runner plan encoded in the share-page URL fragment
+- `share page`: non-indexed spectator page generated from a race edition plus share state
+- `split`: official timing point shown in the prediction cards and on the map
+- `cheer point`: curated spectator-friendly point on the route shown alongside splits on share pages
