@@ -81,6 +81,20 @@ test("share page stays noindex", async ({ page }) => {
   expect(robotsContent).toBe("noindex,follow");
 });
 
+test("share page shows safety margin subtitles for pace and finish plans", async ({
+  page,
+}) => {
+  await page.goto(
+    "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=05%3A00&name=Pepe",
+  );
+  await expect(page.getByText(/Safety margin:/i).first()).toBeVisible();
+
+  await page.goto(
+    "/en/share/carrera-triana-los-remedios-10k/2026#mode=finish&value=00%3A50%3A00&name=Pepe",
+  );
+  await expect(page.getByText(/Safety margin:/i).first()).toBeVisible();
+});
+
 test("special race notes appear only for races that define them", async ({
   page,
 }) => {
