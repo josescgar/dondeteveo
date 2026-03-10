@@ -87,12 +87,16 @@ test("share page shows safety margin subtitles for pace and finish plans", async
   await page.goto(
     "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=05%3A00&name=Pepe",
   );
-  await expect(page.getByText(/Safety margin:/i).first()).toBeVisible();
+  await expect(
+    page.getByText(/^\(±5mins, \d{2}:\d{2} - \d{2}:\d{2}\)$/).first(),
+  ).toBeVisible();
 
   await page.goto(
     "/en/share/carrera-triana-los-remedios-10k/2026#mode=finish&value=00%3A50%3A00&name=Pepe",
   );
-  await expect(page.getByText(/Safety margin:/i).first()).toBeVisible();
+  await expect(
+    page.getByText(/^\(±5mins, \d{2}:\d{2} - \d{2}:\d{2}\)$/).first(),
+  ).toBeVisible();
 });
 
 test("special race notes appear only for races that define them", async ({

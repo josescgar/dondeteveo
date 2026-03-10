@@ -80,17 +80,20 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
   const predictedPoints = paceMinutesPerKm
     ? buildPredictedPoints(points, paceMinutesPerKm, edition.meta.startTime)
     : [];
-  const formatDayOffset = (n: number) =>
-    dictionary.dayOffsetLabel.replace("{n}", String(n));
+  const formatDayOffset = (n: number) => {
+    if (n < 0) {
+      return `D${n}`;
+    }
+
+    return dictionary.dayOffsetLabel.replace("{n}", String(n));
+  };
   const formatPointTime = (time: string, dayOffset: number) =>
-    dayOffset > 0 ? `${time} (${formatDayOffset(dayOffset)})` : time;
+    dayOffset !== 0 ? `${time} (${formatDayOffset(dayOffset)})` : time;
   const formatSafetyMargin = (point: (typeof predictedPoints)[number]) =>
     dictionary.checkpointSafetyMargin
-      .replace(
-        "{time}",
-        formatPointTime(point.bufferedTime, point.bufferedDayOffset),
-      )
-      .replace("{minutes}", String(point.safetyMarginMinutes));
+      .replace("{minutes}", String(point.safetyMarginMinutes))
+      .replace("{start}", point.earliestTime)
+      .replace("{end}", point.latestTime);
   const pointDetails = Object.fromEntries(
     predictedPoints.map((point) => [
       point.id,

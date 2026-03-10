@@ -15,8 +15,10 @@ export type PredictedPoint = {
   predictedTime: string;
   dayOffset: number;
   safetyMarginMinutes: number;
-  bufferedTime: string;
-  bufferedDayOffset: number;
+  earliestTime: string;
+  earliestDayOffset: number;
+  latestTime: string;
+  latestDayOffset: number;
 };
 
 export const CHECKPOINT_SAFETY_MARGIN_MINUTES = 5;
@@ -58,7 +60,10 @@ export const buildPredictedPoints = (
     const clockMinutes =
       baseMinutes + point.properties.distanceKm * paceMinutesPerKm;
     const predictedClock = buildClockPrediction(clockMinutes);
-    const bufferedClock = buildClockPrediction(
+    const earliestClock = buildClockPrediction(
+      clockMinutes - CHECKPOINT_SAFETY_MARGIN_MINUTES,
+    );
+    const latestClock = buildClockPrediction(
       clockMinutes + CHECKPOINT_SAFETY_MARGIN_MINUTES,
     );
 
@@ -70,8 +75,10 @@ export const buildPredictedPoints = (
       predictedTime: predictedClock.time,
       dayOffset: predictedClock.dayOffset,
       safetyMarginMinutes: CHECKPOINT_SAFETY_MARGIN_MINUTES,
-      bufferedTime: bufferedClock.time,
-      bufferedDayOffset: bufferedClock.dayOffset,
+      earliestTime: earliestClock.time,
+      earliestDayOffset: earliestClock.dayOffset,
+      latestTime: latestClock.time,
+      latestDayOffset: latestClock.dayOffset,
     };
   });
 };

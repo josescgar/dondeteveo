@@ -31,8 +31,10 @@ describe("share view logic", () => {
     const predicted = buildPredictedPoints(points, 5, "09:00");
     expect(predicted[0].predictedTime).toBe("09:25");
     expect(predicted[0].dayOffset).toBe(0);
-    expect(predicted[0].bufferedTime).toBe("09:30");
-    expect(predicted[0].bufferedDayOffset).toBe(0);
+    expect(predicted[0].earliestTime).toBe("09:20");
+    expect(predicted[0].earliestDayOffset).toBe(0);
+    expect(predicted[0].latestTime).toBe("09:30");
+    expect(predicted[0].latestDayOffset).toBe(0);
     expect(predicted[0].safetyMarginMinutes).toBe(
       CHECKPOINT_SAFETY_MARGIN_MINUTES,
     );
@@ -53,8 +55,10 @@ describe("share view logic", () => {
     const predicted = buildPredictedPoints(points, 5, "23:58");
     expect(predicted[0].predictedTime).toBe("23:58");
     expect(predicted[0].dayOffset).toBe(0);
-    expect(predicted[0].bufferedTime).toBe("00:03");
-    expect(predicted[0].bufferedDayOffset).toBe(1);
+    expect(predicted[0].earliestTime).toBe("23:53");
+    expect(predicted[0].earliestDayOffset).toBe(0);
+    expect(predicted[0].latestTime).toBe("00:03");
+    expect(predicted[0].latestDayOffset).toBe(1);
   });
 
   it("wraps times past midnight and sets dayOffset for overnight races", () => {
@@ -81,13 +85,17 @@ describe("share view logic", () => {
     const predicted = buildPredictedPoints(points, 12, "23:00");
     expect(predicted[0].predictedTime).toBe("15:00");
     expect(predicted[0].dayOffset).toBe(1);
-    expect(predicted[0].bufferedTime).toBe("15:05");
-    expect(predicted[0].bufferedDayOffset).toBe(1);
+    expect(predicted[0].earliestTime).toBe("14:55");
+    expect(predicted[0].earliestDayOffset).toBe(1);
+    expect(predicted[0].latestTime).toBe("15:05");
+    expect(predicted[0].latestDayOffset).toBe(1);
     // 160 km = 1920 min → clock = 23:00 + 32:00 = 55:00 → wraps to 07:00, dayOffset 2
     expect(predicted[1].predictedTime).toBe("07:00");
     expect(predicted[1].dayOffset).toBe(2);
-    expect(predicted[1].bufferedTime).toBe("07:05");
-    expect(predicted[1].bufferedDayOffset).toBe(2);
+    expect(predicted[1].earliestTime).toBe("06:55");
+    expect(predicted[1].earliestDayOffset).toBe(2);
+    expect(predicted[1].latestTime).toBe("07:05");
+    expect(predicted[1].latestDayOffset).toBe(2);
   });
 
   it("applies the same safety margin for finish-time shares", () => {
@@ -111,6 +119,7 @@ describe("share view logic", () => {
 
     const predicted = buildPredictedPoints(points, pace!, "09:00");
     expect(predicted[0].predictedTime).toBe("10:45");
-    expect(predicted[0].bufferedTime).toBe("10:50");
+    expect(predicted[0].earliestTime).toBe("10:40");
+    expect(predicted[0].latestTime).toBe("10:50");
   });
 });
