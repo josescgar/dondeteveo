@@ -364,9 +364,6 @@ export default function RaceMapIsland({
               class="mt-4 font-mono text-sm"
               style="color: var(--color-text);"
             >
-              <span style="color: var(--color-muted);">
-                {dictionary.predictedPassingTime}:
-              </span>{" "}
               <span data-route-selection-time>{predictedPassingTime}</span>
             </div>
           )}
