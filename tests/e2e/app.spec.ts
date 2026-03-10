@@ -10,6 +10,40 @@ const expectNoHorizontalOverflow = async (
   expect(hasOverflow).toBe(false);
 };
 
+const clickRouteLineCenter = async (
+  page: import("@playwright/test").Page,
+  selector: string,
+) => {
+  const routeLine = page.locator(selector);
+
+  await expect(routeLine).toHaveCount(1);
+
+  await routeLine.evaluate((element) => {
+    const path = element as SVGPathElement;
+    const matrix = path.getScreenCTM();
+
+    if (!matrix) {
+      return;
+    }
+
+    const midpoint = path.getPointAtLength(path.getTotalLength() / 2);
+    const screenPoint = new DOMPoint(midpoint.x, midpoint.y).matrixTransform(
+      matrix,
+    );
+    path.dispatchEvent(
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        clientX: screenPoint.x,
+        clientY: screenPoint.y,
+        screenX: screenPoint.x,
+        screenY: screenPoint.y,
+        view: window,
+      }),
+    );
+  });
+};
+
 test("root serves the Spanish homepage for Spanish browsers", async ({
   browser,
 }) => {
@@ -99,6 +133,81 @@ test("share page shows safety margin subtitles for pace and finish plans", async
   ).toBeVisible();
 });
 
+test("share page lets spectators inspect any tapped route point", async ({
+  page,
+}) => {
+  await page.goto(
+    "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=05%3A00&name=Pepe",
+  );
+
+  const map = page.locator('[data-map-mode="spectator"]');
+
+  await map.scrollIntoViewIfNeeded();
+  await clickRouteLineCenter(
+    page,
+    '[data-map-mode="spectator"] .dtv-route-hit-area',
+  );
+
+  await expect(page.locator("[data-route-selection-panel]")).toBeVisible();
+  await expect(page.locator("[data-route-selection-distance]")).toContainText(
+    "km",
+  );
+  await expect(page.locator("[data-route-selection-time]")).toHaveText(
+    /\d{2}:\d{2}/,
+  );
+  await expect(page.locator("[data-route-selection-street]")).not.toHaveText(
+    "",
+  );
+
+  await page.locator("[data-route-selection-dismiss]").click();
+  await expect(page.locator("[data-route-selection-panel]")).toHaveCount(0);
+
+  await clickRouteLineCenter(
+    page,
+    '[data-map-mode="spectator"] .dtv-route-hit-area',
+  );
+  await expect(page.locator("[data-route-selection-panel]")).toBeVisible();
+
+  const mapBox = await map.boundingBox();
+
+  if (!mapBox) {
+    throw new Error("Could not resolve spectator map bounds");
+  }
+
+  await map.click({ position: { x: mapBox.width - 12, y: 12 } });
+  await expect(page.locator("[data-route-selection-panel]")).toHaveCount(0);
+
+  await page.locator("[data-map-fullscreen-toggle]").click();
+  await expect
+    .poll(() => page.evaluate(() => Boolean(document.fullscreenElement)))
+    .toBe(true);
+  await page.locator("[data-map-fullscreen-toggle]").click();
+  await expect
+    .poll(() => page.evaluate(() => Boolean(document.fullscreenElement)))
+    .toBe(false);
+});
+
+test("race detail map shows only distance for tapped route points", async ({
+  page,
+}) => {
+  await page.goto("/en/races/carrera-triana-los-remedios-10k/2026");
+
+  const map = page.locator('[data-map-mode="distance-only"]');
+
+  await map.scrollIntoViewIfNeeded();
+  await clickRouteLineCenter(
+    page,
+    '[data-map-mode="distance-only"] .dtv-route-hit-area',
+  );
+
+  await expect(page.locator("[data-route-selection-panel]")).toBeVisible();
+  await expect(page.locator("[data-route-selection-distance]")).toContainText(
+    "km",
+  );
+  await expect(page.locator("[data-route-selection-time]")).toHaveCount(0);
+  await expect(page.locator("[data-route-selection-street]")).toHaveCount(0);
+});
+
 test("special race notes appear only for races that define them", async ({
   page,
 }) => {
@@ -159,5 +268,32 @@ test("mobile navigation opens and links work", async ({ page }, testInfo) => {
   await page.locator("[data-mobile-nav-toggle]").click();
   await page.getByRole("link", { name: /Race discovery/i }).click();
   await expect(page).toHaveURL(/\/en\/races$/);
+  await expectNoHorizontalOverflow(page);
+});
+
+test("mobile share map supports route taps", async ({ page }, testInfo) => {
+  test.skip(
+    !testInfo.project.name.includes("mobile"),
+    "Mobile-only route selection test",
+  );
+
+  await page.goto(
+    "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=05%3A00&name=Pepe",
+  );
+
+  const map = page.locator('[data-map-mode="spectator"]');
+
+  await map.scrollIntoViewIfNeeded();
+  await clickRouteLineCenter(
+    page,
+    '[data-map-mode="spectator"] .dtv-route-hit-area',
+  );
+  await expect(page.locator("[data-route-selection-panel]")).toBeVisible();
+  await expect(page.locator("[data-route-selection-distance]")).toContainText(
+    "km",
+  );
+  await expect(page.locator("[data-route-selection-time]")).toHaveText(
+    /\d{2}:\d{2}/,
+  );
   await expectNoHorizontalOverflow(page);
 });

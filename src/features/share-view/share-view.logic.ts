@@ -49,17 +49,31 @@ const buildClockPrediction = (clockMinutes: number) => ({
   dayOffset: dayOffsetFromMinutes(clockMinutes),
 });
 
+export const buildPredictedRouteSelection = (
+  distanceKm: number,
+  paceMinutesPerKm: number,
+  raceStartTime: string,
+) => {
+  const clockMinutes =
+    startClockMinutes(raceStartTime) + distanceKm * paceMinutesPerKm;
+
+  return buildClockPrediction(clockMinutes);
+};
+
 export const buildPredictedPoints = (
   points: RacePointFeature[],
   paceMinutesPerKm: number,
   raceStartTime: string,
 ): PredictedPoint[] => {
-  const baseMinutes = startClockMinutes(raceStartTime);
-
   return points.map((point) => {
+    const baseMinutes = startClockMinutes(raceStartTime);
+    const predictedClock = buildPredictedRouteSelection(
+      point.properties.distanceKm,
+      paceMinutesPerKm,
+      raceStartTime,
+    );
     const clockMinutes =
       baseMinutes + point.properties.distanceKm * paceMinutesPerKm;
-    const predictedClock = buildClockPrediction(clockMinutes);
     const earliestClock = buildClockPrediction(
       clockMinutes - CHECKPOINT_SAFETY_MARGIN_MINUTES,
     );

@@ -58,6 +58,14 @@
 | `kind`       | `"split"` \| `"cheer-point"` | `split` = timing splits shown in planner; `cheer-point` = spectator locations shown on share pages |
 | `distanceKm` | number                       | Distance from start along the route                                                                |
 
+## `route.geojson` Feature Properties
+
+Route features may include optional curated street metadata so the map can label arbitrary snapped points without third-party geocoding.
+
+| Property         | Type                                            | Notes                                                                                                   |
+| ---------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `streetSegments` | array of `{ startCoordinateIndex, streetName }` | Optional. Each entry starts at a coordinate index in the `LineString` and applies until the next entry. |
+
 ## Timing Rules
 
 - MVP uses constant pace.

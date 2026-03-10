@@ -5,7 +5,41 @@
       "type": "Feature",
       "properties": {
         "id": "triana-los-remedios-5k-2026-route",
-        "name": "Triana - Los Remedios 5K 2026 route"
+        "name": "Triana - Los Remedios 5K 2026 route",
+        "streetSegments": [
+          {
+            "startCoordinateIndex": 0,
+            "streetName": "Avenida Alfredo Kraus"
+          },
+          {
+            "startCoordinateIndex": 8,
+            "streetName": "Avenida de Blas Infante"
+          },
+          {
+            "startCoordinateIndex": 36,
+            "streetName": "Glorieta de las Cigarreras"
+          },
+          {
+            "startCoordinateIndex": 47,
+            "streetName": "Calle Asuncion"
+          },
+          {
+            "startCoordinateIndex": 61,
+            "streetName": "Plaza de Cuba"
+          },
+          {
+            "startCoordinateIndex": 70,
+            "streetName": "Calle Betis"
+          },
+          {
+            "startCoordinateIndex": 82,
+            "streetName": "Paseo Nuestra Senora de la O"
+          },
+          {
+            "startCoordinateIndex": 93,
+            "streetName": "Camino de los Descubrimientos"
+          }
+        ]
       },
       "geometry": {
         "type": "LineString",

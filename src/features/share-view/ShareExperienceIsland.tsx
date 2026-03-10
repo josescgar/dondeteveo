@@ -10,6 +10,7 @@ import { parseShareState } from "../../lib/share/share-state";
 import RaceMapIsland from "../race-map/RaceMapIsland";
 import {
   buildPredictedPoints,
+  buildPredictedRouteSelection,
   resolvePaceMinutesPerKm,
 } from "./share-view.logic";
 
@@ -94,6 +95,19 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
       .replace("{minutes}", String(point.safetyMarginMinutes))
       .replace("{start}", point.earliestTime)
       .replace("{end}", point.latestTime);
+  const formatPredictedRouteTime = (distanceKm: number) => {
+    if (paceMinutesPerKm === null) {
+      return null;
+    }
+
+    const predicted = buildPredictedRouteSelection(
+      distanceKm,
+      paceMinutesPerKm,
+      edition.meta.startTime,
+    );
+
+    return formatPointTime(predicted.time, predicted.dayOffset);
+  };
   const pointDetails = Object.fromEntries(
     predictedPoints.map((point) => [
       point.id,
@@ -303,9 +317,13 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
 
       {/* Map — secondary */}
       <RaceMapIsland
+        locale={locale}
         route={edition.route}
         points={edition.points}
+        raceDistanceKm={edition.meta.distanceKm}
         pointDetails={pointDetails}
+        mode="spectator"
+        selectionTimeFormatter={formatPredictedRouteTime}
       />
     </div>
   );
