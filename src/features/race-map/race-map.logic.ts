@@ -18,6 +18,11 @@ export type RouteSelection = {
   streetName?: string;
 };
 
+type RouteSelectionCandidate = RouteSelection & {
+  distanceFromRouteMeters: number;
+  rawDistanceKm: number;
+};
+
 type RouteSegment = {
   start: [number, number];
   end: [number, number];
@@ -27,6 +32,8 @@ type RouteSegment = {
 };
 
 const EARTH_RADIUS_METERS = 6_371_000;
+const ROUTE_SELECTION_TIE_TOLERANCE_METERS = 0.5;
+const AMBIGUOUS_SELECTION_DISTANCE_THRESHOLD_KM = 0.1;
 
 export const DEFAULT_ROUTE_SELECTION_TOLERANCE_METERS = 90;
 
@@ -189,8 +196,9 @@ export const getRouteSelection = (
     segments[segments.length - 1].lengthKm;
   const referenceLatitude = getRouteReferenceLatitude(route);
   const projectedCoordinate = projectCoordinate(coordinate, referenceLatitude);
-  let closestSelection: RouteSelection | null = null;
+  let closestSelection: RouteSelectionCandidate | null = null;
   let closestDistanceFromRouteMeters = Number.POSITIVE_INFINITY;
+  let hasAmbiguousMatch = false;
 
   for (const segment of segments) {
     const projectedStart = projectCoordinate(segment.start, referenceLatitude);
@@ -221,15 +229,31 @@ export const getRouteSelection = (
     const distanceFromRouteMeters =
       distanceBetweenCoordinatesKm(coordinate, snappedCoordinate) * 1000;
 
-    if (
-      closestSelection &&
-      distanceFromRouteMeters >= closestDistanceFromRouteMeters
-    ) {
-      continue;
-    }
-
     const rawDistanceKm =
       segment.distanceBeforeKm + segment.lengthKm * projectionRatio;
+
+    if (closestSelection) {
+      const distanceDelta = Math.abs(
+        distanceFromRouteMeters - closestDistanceFromRouteMeters,
+      );
+
+      if (distanceDelta <= ROUTE_SELECTION_TIE_TOLERANCE_METERS) {
+        if (
+          Math.abs(rawDistanceKm - closestSelection.rawDistanceKm) >
+          AMBIGUOUS_SELECTION_DISTANCE_THRESHOLD_KM
+        ) {
+          hasAmbiguousMatch = true;
+        }
+
+        continue;
+      }
+
+      if (distanceFromRouteMeters > closestDistanceFromRouteMeters) {
+        continue;
+      }
+    }
+
+    hasAmbiguousMatch = false;
 
     closestSelection = {
       coordinates: [snappedCoordinate[1], snappedCoordinate[0]],
@@ -239,12 +263,15 @@ export const getRouteSelection = (
         raceDistanceKm,
       ),
       streetName: segment.streetName,
+      distanceFromRouteMeters,
+      rawDistanceKm,
     };
     closestDistanceFromRouteMeters = distanceFromRouteMeters;
   }
 
   if (
     !closestSelection ||
+    hasAmbiguousMatch ||
     closestDistanceFromRouteMeters > maxSnapDistanceMeters
   ) {
     return null;

@@ -197,7 +197,7 @@ export default function RaceMapIsland({
         weight: 3,
       })
       .addTo(layerGroup);
-  }, [selection]);
+  }, [pointDetails, points, raceDistanceKm, route, selection]);
 
   const handleDismissSelection = () => {
     setSelection(null);

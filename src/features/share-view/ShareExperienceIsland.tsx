@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "preact/hooks";
+import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
 
 import { Tooltip } from "../../components/Tooltip";
 import type { Locale } from "../../lib/config";
@@ -74,13 +74,24 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
     });
   }, [locale, shareState?.name]);
 
-  const points = getPointSummaries(edition.points);
-  const paceMinutesPerKm = shareState
-    ? resolvePaceMinutesPerKm(shareState, edition.meta.distanceKm)
-    : null;
-  const predictedPoints = paceMinutesPerKm
-    ? buildPredictedPoints(points, paceMinutesPerKm, edition.meta.startTime)
-    : [];
+  const points = useMemo(
+    () => getPointSummaries(edition.points),
+    [edition.points],
+  );
+  const paceMinutesPerKm = useMemo(
+    () =>
+      shareState
+        ? resolvePaceMinutesPerKm(shareState, edition.meta.distanceKm)
+        : null,
+    [edition.meta.distanceKm, shareState],
+  );
+  const predictedPoints = useMemo(
+    () =>
+      paceMinutesPerKm
+        ? buildPredictedPoints(points, paceMinutesPerKm, edition.meta.startTime)
+        : [],
+    [edition.meta.startTime, paceMinutesPerKm, points],
+  );
   const formatDayOffset = (n: number) => {
     if (n < 0) {
       return `D${n}`;
@@ -95,24 +106,35 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
       .replace("{minutes}", String(point.safetyMarginMinutes))
       .replace("{start}", point.earliestTime)
       .replace("{end}", point.latestTime);
-  const formatPredictedRouteTime = (distanceKm: number) => {
-    if (paceMinutesPerKm === null) {
-      return null;
-    }
+  const formatPredictedRouteTime = useCallback(
+    (distanceKm: number) => {
+      if (paceMinutesPerKm === null) {
+        return null;
+      }
 
-    const predicted = buildPredictedRouteSelection(
-      distanceKm,
-      paceMinutesPerKm,
-      edition.meta.startTime,
-    );
+      const predicted = buildPredictedRouteSelection(
+        distanceKm,
+        paceMinutesPerKm,
+        edition.meta.startTime,
+      );
 
-    return formatPointTime(predicted.time, predicted.dayOffset);
-  };
-  const pointDetails = Object.fromEntries(
-    predictedPoints.map((point) => [
-      point.id,
-      `${formatPointTime(point.predictedTime, point.dayOffset)} · ${formatSafetyMargin(point)}`,
-    ]),
+      return formatPointTime(predicted.time, predicted.dayOffset);
+    },
+    [dictionary.dayOffsetLabel, edition.meta.startTime, paceMinutesPerKm],
+  );
+  const pointDetails = useMemo(
+    () =>
+      Object.fromEntries(
+        predictedPoints.map((point) => [
+          point.id,
+          `${formatPointTime(point.predictedTime, point.dayOffset)} · ${formatSafetyMargin(point)}`,
+        ]),
+      ),
+    [
+      dictionary.checkpointSafetyMargin,
+      dictionary.dayOffsetLabel,
+      predictedPoints,
+    ],
   );
 
   if (!shareState || paceMinutesPerKm === null) {
