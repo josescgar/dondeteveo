@@ -205,6 +205,25 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
           {edition.meta.startTime}
           <span class="ml-2">({edition.meta.timezone})</span>
         </div>
+        {edition.meta.specialNote && (
+          <div
+            class="mt-4"
+            style="background-color: var(--color-surface-warning); border: 1px solid var(--color-warning-line); padding: 1rem 1.25rem;"
+          >
+            <div
+              class="font-mono text-[10px] tracking-[0.28em] uppercase"
+              style="color: var(--color-warning);"
+            >
+              // {dictionary.importantRaceNote}
+            </div>
+            <p
+              class="mt-3 font-mono text-sm leading-6"
+              style="color: var(--color-text);"
+            >
+              {edition.meta.specialNote}
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Timing cards — hero */}

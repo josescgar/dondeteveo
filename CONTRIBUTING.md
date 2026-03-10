@@ -26,17 +26,18 @@ See `data/es/carrera-triana-los-remedios-10k/2026/` for a complete working examp
 
 ### `meta.json`
 
-| Field                | Type                | Required | Notes                                   |
-| -------------------- | ------------------- | -------- | --------------------------------------- |
-| `name`               | string              | yes      | Display name                            |
-| `date`               | string `YYYY-MM-DD` | yes      | Race day in local timezone              |
-| `distanceKm`         | number              | yes      | e.g. `21.0975`                          |
-| `city`               | string              | yes      | Host city display name                  |
-| `startTime`          | string `HH:MM`      | yes      | Gun start in race local timezone        |
-| `timezone`           | string (IANA)       | yes      | e.g. `"Europe/Madrid"`                  |
-| `officialWebsiteUrl` | string (URL)        | yes      | Link to the official race website       |
-| `summary`            | string              | yes      | 1–2 sentence description for race pages |
-| `heroNote`           | string              | yes      | Spectator-specific note for share pages |
+| Field                | Type                | Required | Notes                                                         |
+| -------------------- | ------------------- | -------- | ------------------------------------------------------------- |
+| `name`               | string              | yes      | Display name                                                  |
+| `date`               | string `YYYY-MM-DD` | yes      | Race day in local timezone                                    |
+| `distanceKm`         | number              | yes      | e.g. `21.0975`                                                |
+| `city`               | string              | yes      | Host city display name                                        |
+| `startTime`          | string `HH:MM`      | yes      | Gun start in race local timezone                              |
+| `timezone`           | string (IANA)       | yes      | e.g. `"Europe/Madrid"`                                        |
+| `officialWebsiteUrl` | string (URL)        | yes      | Link to the official race website                             |
+| `summary`            | string              | yes      | 1–2 sentence description for race pages                       |
+| `heroNote`           | string              | yes      | Spectator-specific note for share pages                       |
+| `specialNote`        | string              | no       | Prominent race-day note for important logistics or exceptions |
 
 Example:
 
@@ -53,6 +54,8 @@ Example:
   "heroNote": "The course comes back through several central spectator zones, with strong cheering spots around Plaza de Cuba, Calle Betis, and the Triana riverfront."
 }
 ```
+
+Add `specialNote` only when a race needs a separate high-visibility note on the race detail and share pages.
 
 ### `route.geojson`
 

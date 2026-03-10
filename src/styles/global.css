@@ -8,6 +8,9 @@
   --color-accent-dim: rgba(30, 111, 160, 0.15);
   --color-coral: #f26419;
   --color-coral-deep: #d6560e;
+  --color-warning: #8d6d1f;
+  --color-warning-line: rgba(173, 136, 39, 0.24);
+  --color-surface-warning: #f7f2e1;
   --color-text: #1a2e3b;
   --color-muted: #6b7e8c;
   --color-line: rgba(30, 111, 160, 0.14);
