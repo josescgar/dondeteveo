@@ -83,6 +83,7 @@ type Dictionary = {
   copiedLink: string;
   dayOffsetLabel: string;
   footerPunchline: string;
+  importantRaceNote: string;
   invalidFinishTimeFormat: string;
   invalidPaceFormat: string;
   shareLinkTitle: string;
@@ -188,6 +189,7 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     copiedLink: "Copied!",
     dayOffsetLabel: "D+{n}",
     footerPunchline: "Made by a runner, for runners",
+    importantRaceNote: "Important race note",
     invalidFinishTimeFormat: "Enter a valid finish time (HH:MM:SS)",
     invalidPaceFormat: "Enter a valid pace (MM:SS)",
     shareLinkTitle: "Share this page",
@@ -294,6 +296,7 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     copiedLink: "¡Copiado!",
     dayOffsetLabel: "D+{n}",
     footerPunchline: "Hecho por un corredor, para corredores",
+    importantRaceNote: "Nota importante",
     invalidFinishTimeFormat: "Introduce un tiempo válido (HH:MM:SS)",
     invalidPaceFormat: "Introduce un ritmo válido (MM:SS)",
     shareLinkTitle: "Comparte esta página",

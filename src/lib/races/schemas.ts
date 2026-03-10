@@ -10,6 +10,7 @@ export const metaSchema = z.object({
   officialWebsiteUrl: z.string().url(),
   summary: z.string().min(1),
   heroNote: z.string().min(1),
+  specialNote: z.string().min(1).optional(),
 });
 
 export const sourceSchema = z.object({

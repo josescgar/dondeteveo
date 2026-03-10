@@ -25,17 +25,20 @@
 
 ## `meta.json` Schema
 
-| Field                | Type                | Required | Notes                                   |
-| -------------------- | ------------------- | -------- | --------------------------------------- |
-| `name`               | string              | required | Display name                            |
-| `date`               | string `YYYY-MM-DD` | required | Race day in local timezone              |
-| `distanceKm`         | number              | required | e.g. `21.0975`                          |
-| `city`               | string              | required | Host city display name                  |
-| `startTime`          | string `HH:MM`      | required | Gun start in race local timezone        |
-| `timezone`           | string (IANA)       | required | e.g. `"Europe/Madrid"`                  |
-| `officialWebsiteUrl` | string (URL)        | required |                                         |
-| `summary`            | string              | required | 1–2 sentence description for race pages |
-| `heroNote`           | string              | required | Spectator-specific note for share pages |
+| Field                | Type                | Required | Notes                                                         |
+| -------------------- | ------------------- | -------- | ------------------------------------------------------------- |
+| `name`               | string              | required | Display name                                                  |
+| `date`               | string `YYYY-MM-DD` | required | Race day in local timezone                                    |
+| `distanceKm`         | number              | required | e.g. `21.0975`                                                |
+| `city`               | string              | required | Host city display name                                        |
+| `startTime`          | string `HH:MM`      | required | Gun start in race local timezone                              |
+| `timezone`           | string (IANA)       | required | e.g. `"Europe/Madrid"`                                        |
+| `officialWebsiteUrl` | string (URL)        | required |                                                               |
+| `summary`            | string              | required | 1–2 sentence description for race pages                       |
+| `heroNote`           | string              | required | Spectator-specific note for share pages                       |
+| `specialNote`        | string              | optional | Prominent race-day note for important logistics or exceptions |
+
+- Omit `specialNote` entirely when a race does not need an extra highlighted callout.
 
 ## `source.json` Schema
 

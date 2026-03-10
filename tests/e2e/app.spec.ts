@@ -81,6 +81,32 @@ test("share page stays noindex", async ({ page }) => {
   expect(robotsContent).toBe("noindex,follow");
 });
 
+test("special race notes appear only for races that define them", async ({
+  page,
+}) => {
+  await page.goto("/en/races/carrera-triana-los-remedios-5k/2026");
+  await expect(page.getByText(/Important race note/i)).toBeVisible();
+  await expect(
+    page.getByText(/The listed start time is approximate\./i).first(),
+  ).toBeVisible();
+
+  await page.goto(
+    "/en/share/carrera-triana-los-remedios-5k/2026#mode=pace&value=05%3A30&name=Pepe",
+  );
+  await expect(page.getByText(/Important race note/i)).toBeVisible();
+  await expect(
+    page.getByText(/The listed start time is approximate\./i).first(),
+  ).toBeVisible();
+
+  await page.goto("/en/races/carrera-triana-los-remedios-10k/2026");
+  await expect(page.getByText(/Important race note/i)).toHaveCount(0);
+
+  await page.goto(
+    "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=05%3A00&name=Pepe",
+  );
+  await expect(page.getByText(/Important race note/i)).toHaveCount(0);
+});
+
 test("mobile navigation opens and links work", async ({ page }, testInfo) => {
   test.skip(
     !testInfo.project.name.includes("mobile"),

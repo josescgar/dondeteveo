@@ -42,6 +42,8 @@ const LOCALIZED_EDITIONS: Record<
           "5K compacto que comparte la segunda mitad del recorrido Triana - Los Remedios, desde Blas Infante hasta Torre Sevilla.",
         heroNote:
           "Se puede seguir bien desde Plaza de Cuba, Calle Betis y el tramo final junto al rio sin alejarse del corazon del recorrido.",
+        specialNote:
+          "La hora de salida indicada es orientativa. Esta 5K empieza cuando la carrera de 10K pasa por el punto de 5K, asi que la salida exacta puede variar ligeramente el dia de la prueba.",
       },
       pointLabels: {
         start: "Salida - Avenida Alfredo Kraus",
