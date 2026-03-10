@@ -80,14 +80,24 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
   const predictedPoints = paceMinutesPerKm
     ? buildPredictedPoints(points, paceMinutesPerKm, edition.meta.startTime)
     : [];
-  const formatDayOffset = (n: number) =>
-    dictionary.dayOffsetLabel.replace("{n}", String(n));
+  const formatDayOffset = (n: number) => {
+    if (n < 0) {
+      return `D${n}`;
+    }
+
+    return dictionary.dayOffsetLabel.replace("{n}", String(n));
+  };
+  const formatPointTime = (time: string, dayOffset: number) =>
+    dayOffset !== 0 ? `${time} (${formatDayOffset(dayOffset)})` : time;
+  const formatSafetyMargin = (point: (typeof predictedPoints)[number]) =>
+    dictionary.checkpointSafetyMargin
+      .replace("{minutes}", String(point.safetyMarginMinutes))
+      .replace("{start}", point.earliestTime)
+      .replace("{end}", point.latestTime);
   const pointDetails = Object.fromEntries(
     predictedPoints.map((point) => [
       point.id,
-      point.dayOffset > 0
-        ? `${point.predictedTime} (${formatDayOffset(point.dayOffset)})`
-        : point.predictedTime,
+      `${formatPointTime(point.predictedTime, point.dayOffset)} · ${formatSafetyMargin(point)}`,
     ]),
   );
 
@@ -279,6 +289,12 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
                     {formatDayOffset(point.dayOffset)}
                   </span>
                 )}
+              </div>
+              <div
+                class="mt-3 font-mono text-xs leading-5"
+                style="color: var(--color-muted);"
+              >
+                {formatSafetyMargin(point)}
               </div>
             </article>
           ))}

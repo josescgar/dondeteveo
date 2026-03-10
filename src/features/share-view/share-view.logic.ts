@@ -14,7 +14,14 @@ export type PredictedPoint = {
   distanceKm: number;
   predictedTime: string;
   dayOffset: number;
+  safetyMarginMinutes: number;
+  earliestTime: string;
+  earliestDayOffset: number;
+  latestTime: string;
+  latestDayOffset: number;
 };
+
+export const CHECKPOINT_SAFETY_MARGIN_MINUTES = 5;
 
 export const resolvePaceMinutesPerKm = (
   state: ShareState,
@@ -37,6 +44,11 @@ const startClockMinutes = (startTime: string): number => {
   return hours * 60 + minutes;
 };
 
+const buildClockPrediction = (clockMinutes: number) => ({
+  time: formatMinutesAsClock(clockMinutes),
+  dayOffset: dayOffsetFromMinutes(clockMinutes),
+});
+
 export const buildPredictedPoints = (
   points: RacePointFeature[],
   paceMinutesPerKm: number,
@@ -47,13 +59,26 @@ export const buildPredictedPoints = (
   return points.map((point) => {
     const clockMinutes =
       baseMinutes + point.properties.distanceKm * paceMinutesPerKm;
+    const predictedClock = buildClockPrediction(clockMinutes);
+    const earliestClock = buildClockPrediction(
+      clockMinutes - CHECKPOINT_SAFETY_MARGIN_MINUTES,
+    );
+    const latestClock = buildClockPrediction(
+      clockMinutes + CHECKPOINT_SAFETY_MARGIN_MINUTES,
+    );
+
     return {
       id: point.properties.id,
       label: point.properties.label,
       kind: point.properties.kind,
       distanceKm: point.properties.distanceKm,
-      predictedTime: formatMinutesAsClock(clockMinutes),
-      dayOffset: dayOffsetFromMinutes(clockMinutes),
+      predictedTime: predictedClock.time,
+      dayOffset: predictedClock.dayOffset,
+      safetyMarginMinutes: CHECKPOINT_SAFETY_MARGIN_MINUTES,
+      earliestTime: earliestClock.time,
+      earliestDayOffset: earliestClock.dayOffset,
+      latestTime: latestClock.time,
+      latestDayOffset: latestClock.dayOffset,
     };
   });
 };

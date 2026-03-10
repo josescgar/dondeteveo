@@ -16,17 +16,17 @@ Work on a GitHub issue from setup through implementation to a PR, following the 
 
 1. **Fetch issue:**
    ```bash
-   gh issue view <issue-number> --repo escobeitor/dondeteveo
+   gh issue view <issue-number> --repo josescgar/dondeteveo
    ```
 
 2. **Assign to self:**
    ```bash
-   gh issue edit <issue-number> --add-assignee @me --repo escobeitor/dondeteveo
+   gh issue edit <issue-number> --add-assignee @me --repo josescgar/dondeteveo
    ```
 
 3. **Apply `status/in-progress` label:**
    ```bash
-   gh issue edit <issue-number> --add-label "status/in-progress" --repo escobeitor/dondeteveo
+   gh issue edit <issue-number> --add-label "status/in-progress" --repo josescgar/dondeteveo
    ```
 
 4. **Determine branch type** from the issue's `type/*` label:
@@ -93,7 +93,7 @@ Work on a GitHub issue from setup through implementation to a PR, following the 
 2. **Create PR:**
    ```bash
    gh pr create \
-     --repo escobeitor/dondeteveo \
+     --repo josescgar/dondeteveo \
      --title "<conventional-title>" \
      --body "<body>"
    ```
@@ -124,7 +124,7 @@ Work on a GitHub issue from setup through implementation to a PR, following the 
 
 4. **Apply `status/in-review` label to the issue:**
    ```bash
-   gh issue edit <issue-number> --remove-label "status/in-progress" --add-label "status/in-review" --repo escobeitor/dondeteveo
+   gh issue edit <issue-number> --remove-label "status/in-progress" --add-label "status/in-review" --repo josescgar/dondeteveo
    ```
 
 5. **Report** the PR URL and remind the user:
@@ -142,7 +142,7 @@ Work on a GitHub issue from setup through implementation to a PR, following the 
    Launch it with `run_in_background: true` (Agent tool) so the user is not blocked.
 
 2. **The code review must be posted to the PR on GitHub** — not just reported in the conversation.
-   Use `gh pr review <pr-number> --repo escobeitor/dondeteveo --comment --body "<review>"` to post the
+   Use `gh pr review <pr-number> --repo josescgar/dondeteveo --comment --body "<review>"` to post the
    overall review summary. Add inline comments via the GitHub API (`gh api`) where relevant.
 
 3. **Review behaviour — act as a team developer peer reviewer:**

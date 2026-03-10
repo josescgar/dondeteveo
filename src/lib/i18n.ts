@@ -81,6 +81,7 @@ type Dictionary = {
   copiedToClipboard: string;
   copyLink: string;
   copiedLink: string;
+  checkpointSafetyMargin: string;
   dayOffsetLabel: string;
   footerPunchline: string;
   importantRaceNote: string;
@@ -187,6 +188,7 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     copiedToClipboard: "Copied to the clipboard",
     copyLink: "Copy link",
     copiedLink: "Copied!",
+    checkpointSafetyMargin: "(±{minutes}mins, {start} - {end})",
     dayOffsetLabel: "D+{n}",
     footerPunchline: "Made by a runner, for runners",
     importantRaceNote: "Important race note",
@@ -294,6 +296,7 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     copiedToClipboard: "Copiado al portapapeles",
     copyLink: "Copiar enlace",
     copiedLink: "¡Copiado!",
+    checkpointSafetyMargin: "(±{minutes} min, {start} - {end})",
     dayOffsetLabel: "D+{n}",
     footerPunchline: "Hecho por un corredor, para corredores",
     importantRaceNote: "Nota importante",
