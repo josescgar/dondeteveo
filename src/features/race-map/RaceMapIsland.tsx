@@ -282,10 +282,10 @@ export default function RaceMapIsland({
               stroke-linejoin="round"
               aria-hidden="true"
             >
-              <path d="M9 15H4v5" />
-              <path d="M15 9h5V4" />
-              <path d="M4 20l6-6" />
-              <path d="M20 4l-6 6" />
+              <path d="M4 14h6v6" />
+              <path d="M20 10h-6V4" />
+              <path d="M14 20v-6h6" />
+              <path d="M10 4v6H4" />
             </svg>
           ) : (
             <svg
