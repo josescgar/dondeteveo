@@ -44,6 +44,15 @@ const clickRouteLineCenter = async (
   });
 };
 
+const getFieldBoxes = async (page: import("@playwright/test").Page) =>
+  page.locator("[data-race-info-field]").evaluateAll((elements) =>
+    elements.map((element) => {
+      const { top, left, width, height } = element.getBoundingClientRect();
+
+      return { top, left, width, height };
+    }),
+  );
+
 test("root serves the Spanish homepage for Spanish browsers", async ({
   browser,
 }) => {
@@ -248,6 +257,38 @@ test("race detail map shows only distance for tapped route points", async ({
   );
   await expect(page.locator("[data-route-selection-time]")).toHaveCount(0);
   await expect(page.locator("[data-point-selection-detail]")).toHaveCount(0);
+});
+
+test("race detail info fields stay aligned across breakpoints", async ({
+  page,
+}, testInfo) => {
+  await page.goto("/es/races/carrera-triana-los-remedios-5k/2026");
+
+  const infoGrid = page.locator("[data-race-info-grid]");
+  await expect(infoGrid).toBeVisible();
+  await expect(infoGrid.locator("[data-race-info-field]")).toHaveCount(3);
+
+  const fieldBoxes = await getFieldBoxes(page);
+
+  expect(fieldBoxes).toHaveLength(3);
+  await expectNoHorizontalOverflow(page);
+
+  if (testInfo.project.name.includes("mobile")) {
+    expect(
+      Math.max(...fieldBoxes.map((box) => box.left)) -
+        Math.min(...fieldBoxes.map((box) => box.left)),
+    ).toBeLessThan(1);
+    expect(fieldBoxes[0]?.top).toBeLessThan(fieldBoxes[1]?.top ?? 0);
+    expect(fieldBoxes[1]?.top).toBeLessThan(fieldBoxes[2]?.top ?? 0);
+    return;
+  }
+
+  expect(
+    Math.max(...fieldBoxes.map((box) => box.top)) -
+      Math.min(...fieldBoxes.map((box) => box.top)),
+  ).toBeLessThan(1);
+  expect(fieldBoxes[0]?.left).toBeLessThan(fieldBoxes[1]?.left ?? 0);
+  expect(fieldBoxes[1]?.left).toBeLessThan(fieldBoxes[2]?.left ?? 0);
 });
 
 test("special race notes appear only for races that define them", async ({
