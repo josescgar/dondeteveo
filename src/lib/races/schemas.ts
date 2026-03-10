@@ -27,18 +27,12 @@ export const pointPropertiesSchema = z.object({
   distanceKm: z.number().min(0),
 });
 
-export const routeStreetSegmentSchema = z.object({
-  startCoordinateIndex: z.number().int().min(0),
-  streetName: z.string().min(1),
-});
-
 export const routeFeatureSchema = z.object({
   type: z.literal("Feature"),
   properties: z
     .object({
       id: z.string().min(1).optional(),
       name: z.string().min(1).optional(),
-      streetSegments: z.array(routeStreetSegmentSchema).min(1).optional(),
     })
     .catchall(z.unknown()),
   geometry: z.object({
@@ -71,7 +65,6 @@ export const pointsFeatureCollectionSchema = z.object({
 export type RaceMeta = z.infer<typeof metaSchema>;
 export type RaceSource = z.infer<typeof sourceSchema>;
 export type RaceRouteFeature = z.infer<typeof routeFeatureSchema>;
-export type RaceRouteStreetSegment = z.infer<typeof routeStreetSegmentSchema>;
 export type RacePointFeature = z.infer<
   typeof pointsFeatureCollectionSchema
 >["features"][number];

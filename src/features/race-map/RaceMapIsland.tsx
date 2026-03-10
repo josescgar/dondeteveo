@@ -10,6 +10,7 @@ import type {
   RaceRouteCollection,
 } from "../../lib/races/schemas";
 import {
+  type RaceMapMarker,
   getMapMarkers,
   getRouteCoordinates,
   getRouteSelection,
@@ -27,6 +28,16 @@ type Props = {
   mode?: MapMode;
   selectionTimeFormatter?: (distanceKm: number) => string | null;
 };
+
+type MapPanelState =
+  | {
+      kind: "route";
+      selection: RouteSelection;
+    }
+  | {
+      kind: "marker";
+      marker: RaceMapMarker;
+    };
 
 const formatExactDistance = (distanceKm: number, locale: Locale): string =>
   `${new Intl.NumberFormat(locale === "en" ? "en-GB" : "es-ES", {
@@ -49,7 +60,7 @@ export default function RaceMapIsland({
   const mapRef = useRef<import("leaflet").Map | null>(null);
   const leafletRef = useRef<typeof import("leaflet") | null>(null);
   const selectionLayerRef = useRef<import("leaflet").LayerGroup | null>(null);
-  const [selection, setSelection] = useState<RouteSelection | null>(null);
+  const [panelState, setPanelState] = useState<MapPanelState | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [canFullscreen, setCanFullscreen] = useState(false);
 
@@ -103,9 +114,8 @@ export default function RaceMapIsland({
         .addTo(mapRef.current);
 
       const applySelection = (lat: number, lng: number) => {
-        setSelection(
-          getRouteSelection(route, [lng, lat], raceDistanceKm) ?? null,
-        );
+        const selection = getRouteSelection(route, [lng, lat], raceDistanceKm);
+        setPanelState(selection ? { kind: "route", selection } : null);
       };
 
       hitArea.on("click", (event: { latlng: { lat: number; lng: number } }) => {
@@ -122,25 +132,18 @@ export default function RaceMapIsland({
       const markers = getMapMarkers(points, pointDetails);
       markers.forEach((marker) => {
         const circle = leaflet.circleMarker(marker.coordinates, {
+          className: `dtv-point-marker dtv-point-marker--${marker.kind}`,
           radius: marker.kind === "cheer-point" ? 8 : 5,
-          color: marker.kind === "cheer-point" ? "#1e6fa0" : "#f26419",
-          fillColor: marker.kind === "cheer-point" ? "#f26419" : "#ffffff",
+          color: "#ffffff",
+          fillColor: marker.kind === "cheer-point" ? "#1e6fa0" : "#f26419",
           fillOpacity: 1,
-          weight: 2,
+          weight: 3,
         });
 
-        const popupContent = document.createElement("div");
-        const label = document.createElement("div");
-        label.textContent = marker.label;
-        popupContent.append(label);
-
-        if (marker.detail) {
-          const detail = document.createElement("div");
-          detail.textContent = marker.detail;
-          popupContent.append(detail);
-        }
-
-        circle.bindPopup(popupContent);
+        circle.on("click", (event) => {
+          leaflet.DomEvent.stopPropagation(event);
+          setPanelState({ kind: "marker", marker });
+        });
         circle.addTo(mapRef.current!);
       });
 
@@ -172,9 +175,26 @@ export default function RaceMapIsland({
 
     layerGroup.clearLayers();
 
-    if (!selection) {
+    if (!panelState) {
       return;
     }
+
+    if (panelState.kind === "marker") {
+      leaflet
+        .circleMarker(panelState.marker.coordinates, {
+          className: "dtv-point-selection-halo",
+          color: "#1e6fa0",
+          fillColor: "#1e6fa0",
+          fillOpacity: 0.18,
+          radius: 16,
+          weight: 2,
+        })
+        .addTo(layerGroup);
+
+      return;
+    }
+
+    const { selection } = panelState;
 
     leaflet
       .circleMarker(selection.coordinates, {
@@ -197,10 +217,10 @@ export default function RaceMapIsland({
         weight: 3,
       })
       .addTo(layerGroup);
-  }, [pointDetails, points, raceDistanceKm, route, selection]);
+  }, [panelState, pointDetails, points, raceDistanceKm, route]);
 
   const handleDismissSelection = () => {
-    setSelection(null);
+    setPanelState(null);
   };
 
   const handleToggleFullscreen = async () => {
@@ -216,9 +236,13 @@ export default function RaceMapIsland({
     await wrapperRef.current.requestFullscreen?.();
   };
 
+  const selectedRoute =
+    panelState?.kind === "route" ? panelState.selection : null;
+  const selectedMarker =
+    panelState?.kind === "marker" ? panelState.marker : null;
   const predictedPassingTime =
-    mode === "spectator" && selection
-      ? (selectionTimeFormatter?.(selection.distanceKm) ?? null)
+    mode === "spectator" && selectedRoute
+      ? (selectionTimeFormatter?.(selectedRoute.distanceKm) ?? null)
       : null;
 
   return (
@@ -232,17 +256,56 @@ export default function RaceMapIsland({
           type="button"
           data-map-fullscreen-toggle
           onClick={handleToggleFullscreen}
-          class="absolute top-3 right-3 z-[500] px-3 py-2 font-mono text-[10px] tracking-[0.2em] uppercase"
+          class="absolute top-3 right-3 z-[500] flex h-10 w-10 items-center justify-center"
           style="background-color: var(--color-surface-raised); color: var(--color-text); border: 1px solid var(--color-line); cursor: pointer;"
           aria-label={
             isFullscreen
               ? dictionary.exitFullscreenMap
               : dictionary.enterFullscreenMap
           }
+          title={
+            isFullscreen
+              ? dictionary.exitFullscreenMap
+              : dictionary.enterFullscreenMap
+          }
         >
-          {isFullscreen
-            ? dictionary.exitFullscreenMap
-            : dictionary.enterFullscreenMap}
+          {isFullscreen ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M9 15H4v5" />
+              <path d="M15 9h5V4" />
+              <path d="M4 20l6-6" />
+              <path d="M20 4l-6 6" />
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M15 3h6v6" />
+              <path d="M9 21H3v-6" />
+              <path d="M21 3l-7 7" />
+              <path d="M3 21l7-7" />
+            </svg>
+          )}
         </button>
       )}
       <div
@@ -252,7 +315,7 @@ export default function RaceMapIsland({
         class="w-full overflow-hidden"
         style={isFullscreen ? "height: 100%;" : "height: 24rem;"}
       />
-      {mode !== "static" && selection && (
+      {mode !== "static" && panelState && (
         <div
           data-route-selection-panel
           class="absolute right-3 bottom-3 left-3 z-[500] max-w-md p-4 sm:left-auto"
@@ -264,14 +327,20 @@ export default function RaceMapIsland({
                 class="font-mono text-[10px] tracking-[0.24em] uppercase"
                 style="color: var(--color-muted);"
               >
-                {dictionary.selectedRoutePoint}
+                {selectedRoute
+                  ? dictionary.selectedRoutePoint
+                  : selectedMarker?.kind === "cheer-point"
+                    ? dictionary.cheerPointLabel
+                    : dictionary.splitLabel}
               </div>
               <div
-                data-route-selection-distance
+                data-route-selection-primary
                 class="font-display mt-2 text-2xl font-bold uppercase"
                 style="color: var(--color-text);"
               >
-                {formatExactDistance(selection.distanceKm, locale)}
+                {selectedRoute
+                  ? formatExactDistance(selectedRoute.distanceKm, locale)
+                  : selectedMarker?.label}
               </div>
             </div>
             <button
@@ -285,7 +354,12 @@ export default function RaceMapIsland({
               X
             </button>
           </div>
-          {mode === "spectator" && predictedPassingTime && (
+          {selectedRoute && (
+            <div data-route-selection-distance class="hidden">
+              {formatExactDistance(selectedRoute.distanceKm, locale)}
+            </div>
+          )}
+          {mode === "spectator" && predictedPassingTime && selectedRoute && (
             <div
               class="mt-4 font-mono text-sm"
               style="color: var(--color-text);"
@@ -296,15 +370,13 @@ export default function RaceMapIsland({
               <span data-route-selection-time>{predictedPassingTime}</span>
             </div>
           )}
-          {mode === "spectator" && selection.streetName && (
+          {selectedMarker?.detail && (
             <div
-              class="mt-2 font-mono text-sm"
+              data-point-selection-detail
+              class="mt-4 font-mono text-sm leading-6"
               style="color: var(--color-text);"
             >
-              <span style="color: var(--color-muted);">
-                {dictionary.streetLabel}:
-              </span>{" "}
-              <span data-route-selection-street>{selection.streetName}</span>
+              {selectedMarker.detail}
             </div>
           )}
         </div>

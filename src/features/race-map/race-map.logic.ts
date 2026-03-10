@@ -1,7 +1,6 @@
 import type {
   RacePointsCollection,
   RaceRouteCollection,
-  RaceRouteFeature,
 } from "../../lib/races/schemas";
 
 export type RaceMapMarker = {
@@ -15,7 +14,6 @@ export type RaceMapMarker = {
 export type RouteSelection = {
   coordinates: [number, number];
   distanceKm: number;
-  streetName?: string;
 };
 
 type RouteSelectionCandidate = RouteSelection & {
@@ -26,7 +24,6 @@ type RouteSelectionCandidate = RouteSelection & {
 type RouteSegment = {
   start: [number, number];
   end: [number, number];
-  streetName?: string;
   distanceBeforeKm: number;
   lengthKm: number;
 };
@@ -91,35 +88,18 @@ const distanceBetweenCoordinatesKm = (
   return (EARTH_RADIUS_METERS * angularDistance) / 1000;
 };
 
-const getFeatureStreetSegments = (
-  feature: RaceRouteFeature,
-): { startCoordinateIndex: number; streetName: string }[] =>
-  [...(feature.properties.streetSegments ?? [])].sort(
-    (left, right) => left.startCoordinateIndex - right.startCoordinateIndex,
-  );
-
 const getRouteSegments = (route: RaceRouteCollection): RouteSegment[] => {
   const segments: RouteSegment[] = [];
   let cumulativeDistanceKm = 0;
 
   route.features.forEach((feature) => {
     const coordinates = feature.geometry.coordinates;
-    const streetSegments = getFeatureStreetSegments(feature);
-    let streetSegmentIndex = 0;
 
     for (
       let coordinateIndex = 0;
       coordinateIndex < coordinates.length - 1;
       coordinateIndex += 1
     ) {
-      while (
-        streetSegmentIndex < streetSegments.length - 1 &&
-        streetSegments[streetSegmentIndex + 1].startCoordinateIndex <=
-          coordinateIndex
-      ) {
-        streetSegmentIndex += 1;
-      }
-
       const start = coordinates[coordinateIndex] as [number, number];
       const end = coordinates[coordinateIndex + 1] as [number, number];
       const lengthKm = distanceBetweenCoordinatesKm(start, end);
@@ -131,7 +111,6 @@ const getRouteSegments = (route: RaceRouteCollection): RouteSegment[] => {
       segments.push({
         start,
         end,
-        streetName: streetSegments[streetSegmentIndex]?.streetName,
         distanceBeforeKm: cumulativeDistanceKm,
         lengthKm,
       });
@@ -262,7 +241,6 @@ export const getRouteSelection = (
         totalRouteDistanceKm,
         raceDistanceKm,
       ),
-      streetName: segment.streetName,
       distanceFromRouteMeters,
       rawDistanceKm,
     };
@@ -280,7 +258,6 @@ export const getRouteSelection = (
   return {
     coordinates: closestSelection.coordinates,
     distanceKm: closestSelection.distanceKm,
-    streetName: closestSelection.streetName,
   };
 };
 

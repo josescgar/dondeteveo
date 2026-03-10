@@ -118,9 +118,17 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
         edition.meta.startTime,
       );
 
-      return formatPointTime(predicted.time, predicted.dayOffset);
+      return `${formatPointTime(predicted.predictedTime, predicted.dayOffset)} · ${dictionary.checkpointSafetyMargin
+        .replace("{minutes}", String(predicted.safetyMarginMinutes))
+        .replace("{start}", predicted.earliestTime)
+        .replace("{end}", predicted.latestTime)}`;
     },
-    [dictionary.dayOffsetLabel, edition.meta.startTime, paceMinutesPerKm],
+    [
+      dictionary.checkpointSafetyMargin,
+      dictionary.dayOffsetLabel,
+      edition.meta.startTime,
+      paceMinutesPerKm,
+    ],
   );
   const pointDetails = useMemo(
     () =>

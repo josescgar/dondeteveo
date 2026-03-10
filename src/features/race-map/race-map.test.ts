@@ -15,10 +15,6 @@ const buildRoute = (): RaceRouteCollection => ({
       type: "Feature" as const,
       properties: {
         id: "segment-a",
-        streetSegments: [
-          { startCoordinateIndex: 0, streetName: "Alpha Street" },
-          { startCoordinateIndex: 1, streetName: "Beta Avenue" },
-        ],
       },
       geometry: {
         type: "LineString" as const,
@@ -33,7 +29,6 @@ const buildRoute = (): RaceRouteCollection => ({
       type: "Feature" as const,
       properties: {
         id: "segment-b",
-        streetSegments: [{ startCoordinateIndex: 0, streetName: "Gamma Road" }],
       },
       geometry: {
         type: "LineString" as const,
@@ -69,12 +64,11 @@ describe("race map logic", () => {
 
     expect(selection).not.toBeNull();
     expect(selection?.distanceKm).toBeCloseTo(4.6, 1);
-    expect(selection?.streetName).toBe("Beta Avenue");
     expect(selection?.coordinates[0]).toBeCloseTo(37.38, 5);
     expect(selection?.coordinates[1]).toBeCloseTo(-5.975, 5);
   });
 
-  it("uses the street metadata from later route features", () => {
+  it("keeps scaling distance across later route features", () => {
     const selection = getRouteSelection(
       buildRoute(),
       [-5.97, 37.385],
@@ -83,7 +77,6 @@ describe("race map logic", () => {
     );
 
     expect(selection).not.toBeNull();
-    expect(selection?.streetName).toBe("Gamma Road");
     expect(selection?.distanceKm).toBeGreaterThan(6);
   });
 
@@ -104,11 +97,7 @@ describe("race map logic", () => {
       features: [
         {
           type: "Feature" as const,
-          properties: {
-            streetSegments: [
-              { startCoordinateIndex: 0, streetName: "Outbound" },
-            ],
-          },
+          properties: {},
           geometry: {
             type: "LineString" as const,
             coordinates: [
@@ -120,11 +109,7 @@ describe("race map logic", () => {
         },
         {
           type: "Feature" as const,
-          properties: {
-            streetSegments: [
-              { startCoordinateIndex: 0, streetName: "Inbound" },
-            ],
-          },
+          properties: {},
           geometry: {
             type: "LineString" as const,
             coordinates: [

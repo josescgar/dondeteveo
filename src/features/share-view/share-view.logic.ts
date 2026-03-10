@@ -21,6 +21,16 @@ export type PredictedPoint = {
   latestDayOffset: number;
 };
 
+export type PredictedRouteSelection = {
+  predictedTime: string;
+  dayOffset: number;
+  safetyMarginMinutes: number;
+  earliestTime: string;
+  earliestDayOffset: number;
+  latestTime: string;
+  latestDayOffset: number;
+};
+
 export const CHECKPOINT_SAFETY_MARGIN_MINUTES = 5;
 
 export const resolvePaceMinutesPerKm = (
@@ -53,11 +63,26 @@ export const buildPredictedRouteSelection = (
   distanceKm: number,
   paceMinutesPerKm: number,
   raceStartTime: string,
-) => {
+): PredictedRouteSelection => {
   const clockMinutes =
     startClockMinutes(raceStartTime) + distanceKm * paceMinutesPerKm;
+  const predictedClock = buildClockPrediction(clockMinutes);
+  const earliestClock = buildClockPrediction(
+    clockMinutes - CHECKPOINT_SAFETY_MARGIN_MINUTES,
+  );
+  const latestClock = buildClockPrediction(
+    clockMinutes + CHECKPOINT_SAFETY_MARGIN_MINUTES,
+  );
 
-  return buildClockPrediction(clockMinutes);
+  return {
+    predictedTime: predictedClock.time,
+    dayOffset: predictedClock.dayOffset,
+    safetyMarginMinutes: CHECKPOINT_SAFETY_MARGIN_MINUTES,
+    earliestTime: earliestClock.time,
+    earliestDayOffset: earliestClock.dayOffset,
+    latestTime: latestClock.time,
+    latestDayOffset: latestClock.dayOffset,
+  };
 };
 
 export const buildPredictedPoints = (
@@ -66,19 +91,10 @@ export const buildPredictedPoints = (
   raceStartTime: string,
 ): PredictedPoint[] => {
   return points.map((point) => {
-    const baseMinutes = startClockMinutes(raceStartTime);
     const predictedClock = buildPredictedRouteSelection(
       point.properties.distanceKm,
       paceMinutesPerKm,
       raceStartTime,
-    );
-    const clockMinutes =
-      baseMinutes + point.properties.distanceKm * paceMinutesPerKm;
-    const earliestClock = buildClockPrediction(
-      clockMinutes - CHECKPOINT_SAFETY_MARGIN_MINUTES,
-    );
-    const latestClock = buildClockPrediction(
-      clockMinutes + CHECKPOINT_SAFETY_MARGIN_MINUTES,
     );
 
     return {
@@ -86,13 +102,13 @@ export const buildPredictedPoints = (
       label: point.properties.label,
       kind: point.properties.kind,
       distanceKm: point.properties.distanceKm,
-      predictedTime: predictedClock.time,
+      predictedTime: predictedClock.predictedTime,
       dayOffset: predictedClock.dayOffset,
-      safetyMarginMinutes: CHECKPOINT_SAFETY_MARGIN_MINUTES,
-      earliestTime: earliestClock.time,
-      earliestDayOffset: earliestClock.dayOffset,
-      latestTime: latestClock.time,
-      latestDayOffset: latestClock.dayOffset,
+      safetyMarginMinutes: predictedClock.safetyMarginMinutes,
+      earliestTime: predictedClock.earliestTime,
+      earliestDayOffset: predictedClock.earliestDayOffset,
+      latestTime: predictedClock.latestTime,
+      latestDayOffset: predictedClock.latestDayOffset,
     };
   });
 };

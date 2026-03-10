@@ -127,14 +127,16 @@ describe("share view logic", () => {
   it("builds a predicted passing time for any selected route point", () => {
     const predicted = buildPredictedRouteSelection(4.07, 5, "09:00");
 
-    expect(predicted.time).toBe("09:20");
+    expect(predicted.predictedTime).toBe("09:20");
     expect(predicted.dayOffset).toBe(0);
+    expect(predicted.earliestTime).toBe("09:15");
+    expect(predicted.latestTime).toBe("09:25");
   });
 
   it("wraps selected route times across midnight", () => {
     const predicted = buildPredictedRouteSelection(20, 15, "23:30");
 
-    expect(predicted.time).toBe("04:30");
+    expect(predicted.predictedTime).toBe("04:30");
     expect(predicted.dayOffset).toBe(1);
   });
 });

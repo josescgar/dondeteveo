@@ -155,9 +155,7 @@ test("share page lets spectators inspect any tapped route point", async ({
   await expect(page.locator("[data-route-selection-time]")).toHaveText(
     /\d{2}:\d{2}/,
   );
-  await expect(page.locator("[data-route-selection-street]")).not.toHaveText(
-    "",
-  );
+  await expect(page.locator("[data-route-selection-time]")).toContainText(/±5/);
 
   await page.locator("[data-route-selection-dismiss]").click();
   await expect(page.locator("[data-route-selection-panel]")).toHaveCount(0);
@@ -205,7 +203,7 @@ test("race detail map shows only distance for tapped route points", async ({
     "km",
   );
   await expect(page.locator("[data-route-selection-time]")).toHaveCount(0);
-  await expect(page.locator("[data-route-selection-street]")).toHaveCount(0);
+  await expect(page.locator("[data-point-selection-detail]")).toHaveCount(0);
 });
 
 test("special race notes appear only for races that define them", async ({

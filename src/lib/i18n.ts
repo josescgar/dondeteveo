@@ -93,7 +93,6 @@ type Dictionary = {
   exitFullscreenMap: string;
   predictedPassingTime: string;
   selectedRoutePoint: string;
-  streetLabel: string;
 };
 
 const DICTIONARIES: Record<Locale, Dictionary> = {
@@ -206,7 +205,6 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     exitFullscreenMap: "Exit fullscreen map",
     predictedPassingTime: "Predicted time",
     selectedRoutePoint: "Selected route point",
-    streetLabel: "Street",
   },
   es: {
     about: "Acerca de",
@@ -320,7 +318,6 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     exitFullscreenMap: "Salir del mapa a pantalla completa",
     predictedPassingTime: "Hora estimada",
     selectedRoutePoint: "Punto seleccionado del recorrido",
-    streetLabel: "Calle",
   },
 };
 
