@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "preact/hooks";
 
 import { Tooltip } from "../../components/Tooltip";
 import type { Locale } from "../../lib/config";
@@ -24,6 +30,9 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
   const [fragment, setFragment] = useState("");
   const [copied, setCopied] = useState(false);
   const [currentHref, setCurrentHref] = useState("");
+  const [selectedPointId, setSelectedPointId] = useState<string | null>(null);
+  const [focusedPointRequestNonce, setFocusedPointRequestNonce] = useState(0);
+  const mapSectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const syncFragment = () => {
@@ -39,6 +48,38 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
   useEffect(() => {
     setCopied(false);
   }, [fragment]);
+
+  const getScrollBehavior = () =>
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "auto"
+      : "smooth";
+
+  const handleTimingCardSelect = useCallback((pointId: string) => {
+    setSelectedPointId(pointId);
+    setFocusedPointRequestNonce((current) => current + 1);
+    mapSectionRef.current?.scrollIntoView({
+      behavior: getScrollBehavior(),
+      block: "start",
+      inline: "nearest",
+    });
+  }, []);
+
+  const handleMapSelectionChange = useCallback(
+    (
+      selection:
+        | {
+            kind: "route";
+          }
+        | {
+            kind: "marker";
+            id: string;
+          }
+        | null,
+    ) => {
+      setSelectedPointId(selection?.kind === "marker" ? selection.id : null);
+    },
+    [],
+  );
 
   const handleCopy = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
@@ -296,9 +337,20 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
         </p>
         <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           {predictedPoints.map((point) => (
-            <article
-              class="timing-card"
-              style="background-color: var(--color-surface); border: 1px solid var(--color-line); padding: 1.5rem;"
+            <button
+              key={point.id}
+              type="button"
+              class="timing-card w-full text-left"
+              data-predicted-point-card
+              data-point-id={point.id}
+              data-selected={selectedPointId === point.id ? "true" : "false"}
+              aria-pressed={selectedPointId === point.id}
+              onClick={() => handleTimingCardSelect(point.id)}
+              style={`background-color: var(--color-surface); border: 1px solid ${
+                selectedPointId === point.id
+                  ? "var(--color-accent)"
+                  : "var(--color-line)"
+              }; padding: 1.5rem; cursor: pointer; width: 100%;`}
             >
               <div
                 class="font-mono text-[9px] tracking-[0.32em] uppercase"
@@ -340,21 +392,32 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
               >
                 {formatSafetyMargin(point)}
               </div>
-            </article>
+            </button>
           ))}
         </div>
       </div>
 
       {/* Map — secondary */}
-      <RaceMapIsland
-        locale={locale}
-        route={edition.route}
-        points={edition.points}
-        raceDistanceKm={edition.meta.distanceKm}
-        pointDetails={pointDetails}
-        mode="spectator"
-        selectionTimeFormatter={formatPredictedRouteTime}
-      />
+      <section ref={mapSectionRef} data-share-map-section>
+        <RaceMapIsland
+          locale={locale}
+          route={edition.route}
+          points={edition.points}
+          raceDistanceKm={edition.meta.distanceKm}
+          pointDetails={pointDetails}
+          mode="spectator"
+          focusedMarkerRequest={
+            selectedPointId
+              ? {
+                  id: selectedPointId,
+                  nonce: focusedPointRequestNonce,
+                }
+              : undefined
+          }
+          onSelectionChange={handleMapSelectionChange}
+          selectionTimeFormatter={formatPredictedRouteTime}
+        />
+      </section>
     </div>
   );
 }

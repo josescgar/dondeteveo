@@ -185,6 +185,50 @@ test("share page lets spectators inspect any tapped route point", async ({
     .toBe(false);
 });
 
+test("share page time cards focus the matching map marker", async ({
+  page,
+}) => {
+  await page.goto(
+    "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=05%3A00&name=Pepe",
+  );
+
+  const mapSection = page.locator("[data-share-map-section]");
+  const firstCard = page.locator("[data-predicted-point-card]").first();
+  const pointLabel = (await firstCard.locator("h4").textContent())?.trim();
+  const initialMapTop = await mapSection.evaluate((element) =>
+    Math.round(element.getBoundingClientRect().top),
+  );
+
+  await firstCard.click();
+
+  await expect(firstCard).toHaveAttribute("data-selected", "true");
+  await expect
+    .poll(() =>
+      mapSection.evaluate((element) =>
+        Math.round(element.getBoundingClientRect().top),
+      ),
+    )
+    .toBeLessThan(initialMapTop);
+  await expect
+    .poll(() =>
+      mapSection.evaluate((element) => {
+        const rect = element.getBoundingClientRect();
+        return rect.top < window.innerHeight && rect.bottom > 0;
+      }),
+    )
+    .toBe(true);
+  await expect(page.locator("[data-route-selection-panel]")).toBeVisible();
+  await expect(page.locator("[data-route-selection-primary]")).toHaveText(
+    pointLabel ?? "",
+  );
+  await expect(page.locator("[data-point-selection-detail]")).toBeVisible();
+  await expect(page.locator("[data-route-selection-distance]")).toHaveCount(0);
+
+  await page.locator("[data-route-selection-dismiss]").click();
+  await expect(page.locator("[data-route-selection-panel]")).toHaveCount(0);
+  await expect(firstCard).toHaveAttribute("data-selected", "false");
+});
+
 test("race detail map shows only distance for tapped route points", async ({
   page,
 }) => {
@@ -293,5 +337,49 @@ test("mobile share map supports route taps", async ({ page }, testInfo) => {
   await expect(page.locator("[data-route-selection-time]")).toHaveText(
     /\d{2}:\d{2}/,
   );
+  await expectNoHorizontalOverflow(page);
+});
+
+test("mobile share time cards scroll to the focused map marker", async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    !testInfo.project.name.includes("mobile"),
+    "Mobile-only time card focus test",
+  );
+
+  await page.goto(
+    "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=05%3A00&name=Pepe",
+  );
+
+  const mapSection = page.locator("[data-share-map-section]");
+  const firstCard = page.locator("[data-predicted-point-card]").first();
+  const pointLabel = (await firstCard.locator("h4").textContent())?.trim();
+  const initialMapTop = await mapSection.evaluate((element) =>
+    Math.round(element.getBoundingClientRect().top),
+  );
+
+  await firstCard.click();
+
+  await expect
+    .poll(() =>
+      mapSection.evaluate((element) =>
+        Math.round(element.getBoundingClientRect().top),
+      ),
+    )
+    .toBeLessThan(initialMapTop);
+  await expect
+    .poll(() =>
+      mapSection.evaluate((element) => {
+        const rect = element.getBoundingClientRect();
+        return rect.top < window.innerHeight && rect.bottom > 0;
+      }),
+    )
+    .toBe(true);
+  await expect(page.locator("[data-route-selection-panel]")).toBeVisible();
+  await expect(page.locator("[data-route-selection-primary]")).toHaveText(
+    pointLabel ?? "",
+  );
+  await expect(page.locator("[data-point-selection-detail]")).toBeVisible();
   await expectNoHorizontalOverflow(page);
 });
