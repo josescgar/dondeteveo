@@ -407,7 +407,7 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
             <button
               key={point.id}
               type="button"
-              class="timing-card w-full text-left"
+              class="timing-card flex w-full flex-col text-left"
               data-predicted-point-card
               data-point-id={point.id}
               data-selected={selectedPointId === point.id ? "true" : "false"}
@@ -419,25 +419,27 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
                   : "var(--color-line)"
               }; padding: 1.5rem; cursor: pointer; width: 100%;`}
             >
-              <div
-                class="font-mono text-[9px] tracking-[0.32em] uppercase"
-                style="color: var(--color-muted);"
-              >
-                {point.kind === "split"
-                  ? dictionary.splitLabel
-                  : dictionary.cheerPointLabel}
-              </div>
-              <h4
-                class="font-display mt-1 text-xl leading-tight font-bold uppercase"
-                style="color: var(--color-text);"
-              >
-                {point.label}
-              </h4>
-              <div
-                class="mt-1 font-mono text-xs"
-                style="color: var(--color-muted);"
-              >
-                {formatDistance(point.distanceKm, locale)}
+              <div class="flex-1">
+                <div
+                  class="font-mono text-[9px] tracking-[0.32em] uppercase"
+                  style="color: var(--color-muted);"
+                >
+                  {point.kind === "split"
+                    ? dictionary.splitLabel
+                    : dictionary.cheerPointLabel}
+                </div>
+                <h4
+                  class="font-display mt-1 text-xl leading-tight font-bold uppercase"
+                  style="color: var(--color-text);"
+                >
+                  {point.label}
+                </h4>
+                <div
+                  class="mt-1 font-mono text-xs"
+                  style="color: var(--color-muted);"
+                >
+                  {formatDistance(point.distanceKm, locale)}
+                </div>
               </div>
               <div
                 class="mt-4 flex items-baseline gap-2 font-mono leading-none font-medium"
