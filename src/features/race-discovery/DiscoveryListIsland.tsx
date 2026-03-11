@@ -128,7 +128,7 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
             return (
               <a
                 href={card.href}
-                class="race-row group flex items-center justify-between gap-4 px-0 py-4 transition-colors"
+                class="race-row group flex items-center justify-between gap-4 py-4 pr-2 transition-colors"
                 style="border-bottom: 1px solid var(--color-line);"
                 onMouseOver={(e) => {
                   (e.currentTarget as HTMLAnchorElement).style.backgroundColor =
