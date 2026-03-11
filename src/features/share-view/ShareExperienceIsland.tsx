@@ -30,7 +30,7 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
   const [fragment, setFragment] = useState("");
   const [copied, setCopied] = useState(false);
   const [shared, setShared] = useState(false);
-  const [canShare, setCanShare] = useState(true);
+  const [canShare, setCanShare] = useState(false);
   const [currentHref, setCurrentHref] = useState("");
   const [selectedPointId, setSelectedPointId] = useState<string | null>(null);
   const [focusedPointRequestNonce, setFocusedPointRequestNonce] = useState(0);
@@ -48,13 +48,14 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
   }, []);
 
   useEffect(() => {
-    if (!navigator.share) {
-      setCanShare(false);
+    if (typeof navigator.share === "function") {
+      setCanShare(true);
     }
   }, []);
 
   useEffect(() => {
     setCopied(false);
+    setShared(false);
   }, [fragment]);
 
   const getScrollBehavior = () =>
