@@ -373,7 +373,7 @@ export default function RaceMapIsland({
         <div
           data-route-selection-panel
           class="absolute right-3 bottom-3 left-3 z-[500] max-w-md p-4 sm:left-auto"
-          style="background-color: var(--color-surface-raised); border: 1px solid var(--color-line); box-shadow: 0 18px 45px rgba(15, 23, 42, 0.18);"
+          style="background-color: var(--color-surface-raised); border: 1px solid var(--color-line); box-shadow: var(--shadow-md);"
         >
           <div class="flex items-start justify-between gap-4">
             <div>

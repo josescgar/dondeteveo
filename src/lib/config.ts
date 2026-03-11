@@ -10,6 +10,7 @@ export const REQUIRED_CHECK_NAMES = [
 export const MAP_TILE_URL =
   "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
 export const MAP_ATTRIBUTION = "&copy; OpenStreetMap contributors &copy; CARTO";
+export const THEME_STORAGE_KEY = "dtv-theme";
 
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
 
