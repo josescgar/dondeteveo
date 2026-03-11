@@ -31,6 +31,39 @@ Colors and logo are drawn from the brand mark: a location pin split between a ri
 - **Muted** — eyebrow labels, secondary metadata, distance/pace labels, filter controls.
 - **Surface** — white card backgrounds; `surface-raised` for badges and inline highlights.
 
+### Dark Mode
+
+Dark mode is controlled by a `data-theme="dark"` attribute on `<html>`. A blocking inline script in `<head>` resolves the theme before first paint (no FOUC):
+
+1. Read `localStorage` key `dtv-theme` — if `"dark"` or `"light"`, use it
+2. Otherwise fall back to `window.matchMedia("(prefers-color-scheme: dark)")`
+3. If detection fails, default to light
+
+A header toggle (sun/moon icon) lets the user override. On click it sets `data-theme`, stores the choice in `localStorage`, and updates the icon. `color-scheme: light` is set by default in `:root`; `color-scheme: dark` is set inside `html[data-theme="dark"]` so native controls adapt.
+
+All color tokens are redefined inside `html[data-theme="dark"] { ... }` in `global.css`.
+
+| Token                     | Light                              | Dark                         |
+| ------------------------- | ---------------------------------- | ---------------------------- |
+| `--color-bg`              | `#f4f7fb`                          | `#0f1a24`                    |
+| `--color-surface`         | `#ffffff`                          | `#162230`                    |
+| `--color-surface-raised`  | `#e6eff7`                          | `#1e3044`                    |
+| `--color-accent`          | `#1e6fa0`                          | `#5aabdb`                    |
+| `--color-accent-dim`      | `rgba(30,111,160,0.15)`            | `rgba(90,171,219,0.18)`      |
+| `--color-coral`           | `#f26419`                          | `#f5813a`                    |
+| `--color-coral-deep`      | `#d6560e`                          | `#f26419`                    |
+| `--color-warning`         | `#8d6d1f`                          | `#d4a632`                    |
+| `--color-warning-line`    | `rgba(173,136,39,0.24)`            | `rgba(212,166,50,0.3)`       |
+| `--color-surface-warning` | `#f7f2e1`                          | `#2a2410`                    |
+| `--color-text`            | `#1a2e3b`                          | `#e2eaf1`                    |
+| `--color-muted`           | `#6b7e8c`                          | `#8fa3b3`                    |
+| `--color-line`            | `rgba(30,111,160,0.14)`            | `rgba(90,171,219,0.16)`      |
+| `--color-line-solid`      | `#ccd8e4`                          | `#2d4358`                    |
+| `--shadow-sm`             | `0 1px 4px rgba(30,111,160,0.08)`  | `0 1px 4px rgba(0,0,0,0.2)`  |
+| `--shadow-md`             | `0 4px 16px rgba(30,111,160,0.12)` | `0 4px 16px rgba(0,0,0,0.3)` |
+
+Map tiles always use the light CARTO tileset for better street name contrast. Marker colors remain fixed (light-mode values) regardless of theme.
+
 ## Typography
 
 ```css

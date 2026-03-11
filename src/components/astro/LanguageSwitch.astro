@@ -20,17 +20,22 @@ const alternatePath = switchLocalePath(pathname, alternateLocale);
 <a
   href={alternatePath}
   data-preserve-hash-link
-  class="inline-flex items-center gap-1.5 border px-2.5 py-1 text-[9px] font-bold tracking-[0.22em] uppercase transition sm:px-3 sm:py-1.5 sm:text-[10px] sm:tracking-[0.24em]"
-  style="border-color: rgba(30,111,160,0.25); background-color: rgba(30,111,160,0.07); color: var(--color-accent);"
-  onmouseover="this.style.backgroundColor='rgba(30,111,160,0.14)'; this.style.borderColor='rgba(30,111,160,0.5)';"
-  onmouseout="this.style.backgroundColor='rgba(30,111,160,0.07)'; this.style.borderColor='rgba(30,111,160,0.25)';"
+  class="lang-switch inline-flex items-center gap-1.5 border px-2.5 py-1 text-[9px] font-bold tracking-[0.22em] uppercase transition sm:px-3 sm:py-1.5 sm:text-[10px] sm:tracking-[0.24em]"
+  style="border-color: var(--color-line); background-color: var(--color-accent-dim); color: var(--color-accent);"
 >
   <span>{LOCALE_LABELS[currentLocale].slice(0, 2)}</span>
-  <span style="color: rgba(30,111,160,0.35);">/</span>
-  <span style="color: rgba(30,111,160,0.55);"
+  <span style="color: var(--color-muted);">/</span>
+  <span style="color: var(--color-muted);"
     >{LOCALE_LABELS[alternateLocale].slice(0, 2)}</span
   >
 </a>
+
+<style>
+  .lang-switch:hover {
+    background-color: var(--color-line) !important;
+    border-color: var(--color-accent) !important;
+  }
+</style>
 
 <script is:inline define:vars={{ storageKey: LOCALE_STORAGE_KEY }}>
   document.querySelectorAll("[data-preserve-hash-link]").forEach((element) => {

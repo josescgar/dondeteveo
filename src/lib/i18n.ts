@@ -94,6 +94,8 @@ type Dictionary = {
   selectedRoutePoint: string;
   shareLink: string;
   sharedViaDevice: string;
+  switchToLightTheme: string;
+  switchToDarkTheme: string;
 };
 
 const DICTIONARIES: Record<Locale, Dictionary> = {
@@ -207,6 +209,8 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     selectedRoutePoint: "Selected route point",
     shareLink: "Share link",
     sharedViaDevice: "Shared!",
+    switchToLightTheme: "Switch to light theme",
+    switchToDarkTheme: "Switch to dark theme",
   },
   es: {
     about: "Acerca de",
@@ -321,6 +325,8 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     selectedRoutePoint: "Punto seleccionado del recorrido",
     shareLink: "Compartir enlace",
     sharedViaDevice: "¡Compartido!",
+    switchToLightTheme: "Cambiar a tema claro",
+    switchToDarkTheme: "Cambiar a tema oscuro",
   },
 };
 

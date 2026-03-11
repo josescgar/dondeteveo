@@ -2,7 +2,11 @@
 import LanguageSwitch from "../components/astro/LanguageSwitch.astro";
 import "../styles/global.css";
 
-import { GITHUB_REPOSITORY_URL, type Locale } from "../lib/config";
+import {
+  GITHUB_REPOSITORY_URL,
+  THEME_STORAGE_KEY,
+  type Locale,
+} from "../lib/config";
 import { getDictionary } from "../lib/i18n";
 import { buildSeo, type SeoInput } from "../lib/seo";
 
@@ -54,6 +58,26 @@ const mobileNavId = "site-mobile-nav";
     {seo.noindex && <meta name="robots" content="noindex,follow" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
+    <script is:inline define:vars={{ themeKey: THEME_STORAGE_KEY }}>
+      (function () {
+        let stored;
+        try {
+          stored = localStorage.getItem(themeKey);
+        } catch {
+          /* localStorage may be unavailable */
+        }
+        const theme =
+          stored === "dark" || stored === "light"
+            ? stored
+            : window.matchMedia &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+        if (theme === "dark") {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      })();
+    </script>
   </head>
   <body class="flex min-h-screen flex-col antialiased">
     <header
@@ -71,7 +95,14 @@ const mobileNavId = "site-mobile-nav";
             alt="Dondeteveo"
             width="128"
             height="128"
-            class="h-8 w-auto sm:h-9"
+            class="header-logo header-logo--light h-8 w-auto sm:h-9"
+          />
+          <img
+            src="/logo-header-dark.png"
+            alt="Dondeteveo"
+            width="128"
+            height="128"
+            class="header-logo header-logo--dark h-8 w-auto sm:h-9"
           />
           <div class="min-w-0">
             <div
@@ -105,6 +136,56 @@ const mobileNavId = "site-mobile-nav";
               ))
             }
           </nav>
+          <button
+            type="button"
+            data-theme-toggle
+            class="flex h-[1.625rem] w-[1.625rem] items-center justify-center border transition sm:h-[1.875rem] sm:w-[1.875rem]"
+            style="border-color: var(--color-line); background-color: var(--color-accent-dim); color: var(--color-accent); cursor: pointer;"
+            aria-label={dictionary.switchToDarkTheme}
+            data-light-label={dictionary.switchToLightTheme}
+            data-dark-label={dictionary.switchToDarkTheme}
+          >
+            <svg
+              data-theme-icon-sun
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              class="hidden"
+            >
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg
+              data-theme-icon-moon
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              class="hidden"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
           <LanguageSwitch currentLocale={locale} pathname={pathname} />
           <details class="mobile-nav relative sm:hidden" data-mobile-nav>
             <summary
@@ -269,6 +350,48 @@ const mobileNavId = "site-mobile-nav";
 
         syncMobileNavState();
       }
+    </script>
+    <script is:inline define:vars={{ themeKey: THEME_STORAGE_KEY }}>
+      (function () {
+        const toggle = document.querySelector("[data-theme-toggle]");
+        const iconSun = document.querySelector("[data-theme-icon-sun]");
+        const iconMoon = document.querySelector("[data-theme-icon-moon]");
+
+        if (!toggle || !iconSun || !iconMoon) return;
+
+        const syncIcons = () => {
+          const isDark =
+            document.documentElement.getAttribute("data-theme") === "dark";
+          iconSun.classList.toggle("hidden", !isDark);
+          iconMoon.classList.toggle("hidden", isDark);
+          toggle.setAttribute(
+            "aria-label",
+            isDark ? toggle.dataset.lightLabel : toggle.dataset.darkLabel,
+          );
+        };
+
+        syncIcons();
+
+        toggle.addEventListener("click", () => {
+          const isDark =
+            document.documentElement.getAttribute("data-theme") === "dark";
+          const next = isDark ? "light" : "dark";
+
+          if (next === "dark") {
+            document.documentElement.setAttribute("data-theme", "dark");
+          } else {
+            document.documentElement.removeAttribute("data-theme");
+          }
+
+          try {
+            localStorage.setItem(themeKey, next);
+          } catch {
+            /* localStorage may be unavailable */
+          }
+
+          syncIcons();
+        });
+      })();
     </script>
   </body>
 </html>
