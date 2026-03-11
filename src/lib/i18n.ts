@@ -92,6 +92,8 @@ type Dictionary = {
   enterFullscreenMap: string;
   exitFullscreenMap: string;
   selectedRoutePoint: string;
+  shareLink: string;
+  sharedViaDevice: string;
 };
 
 const DICTIONARIES: Record<Locale, Dictionary> = {
@@ -203,6 +205,8 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     enterFullscreenMap: "Enter fullscreen map",
     exitFullscreenMap: "Exit fullscreen map",
     selectedRoutePoint: "Selected route point",
+    shareLink: "Share link",
+    sharedViaDevice: "Shared!",
   },
   es: {
     about: "Acerca de",
@@ -315,6 +319,8 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     enterFullscreenMap: "Abrir mapa a pantalla completa",
     exitFullscreenMap: "Salir del mapa a pantalla completa",
     selectedRoutePoint: "Punto seleccionado del recorrido",
+    shareLink: "Compartir enlace",
+    sharedViaDevice: "¡Compartido!",
   },
 };
 
