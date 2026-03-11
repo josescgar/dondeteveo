@@ -21,7 +21,7 @@
 - chore(deps): upgrade astro to 5.x (#<issue>)
 - ci: add visual regression step (#<issue>)
 
-**Full changelog:** https://github.com/escobeitor/dondeteveo/compare/v<prev>...v<new>
+**Full changelog:** https://github.com/josescgar/dondeteveo/compare/v<prev>...v<new>
 ```
 
 ---
@@ -68,5 +68,5 @@
 ### Chore
 - chore(deps): upgrade astro to 5.2 (#19)
 
-**Full changelog:** https://github.com/escobeitor/dondeteveo/compare/v0.1.0...v0.2.0
+**Full changelog:** https://github.com/josescgar/dondeteveo/compare/v0.1.0...v0.2.0
 ```

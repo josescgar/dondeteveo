@@ -59,4 +59,4 @@ dondeteveo is pre-1.0 (`0.x.y`). Under pre-1.0:
 
 - [Semantic Versioning 2.0.0](https://semver.org/)
 - [Keep a Changelog](https://keepachangelog.com/)
-- Releases: `https://github.com/escobeitor/dondeteveo/releases`
+- Releases: `https://github.com/josescgar/dondeteveo/releases`

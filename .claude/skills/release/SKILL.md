@@ -17,7 +17,7 @@ Validate, version, squash-merge, tag, publish a GitHub Release, close the relate
 1. **Fetch PR details:**
    ```bash
    gh pr view <pr-number> \
-     --repo escobeitor/dondeteveo \
+     --repo josescgar/dondeteveo \
      --json number,title,body,state,mergeable,isDraft,headRefName,commits
    ```
 
@@ -36,7 +36,7 @@ Validate, version, squash-merge, tag, publish a GitHub Release, close the relate
 
 1. **Get latest release tag:**
    ```bash
-   gh release list --repo escobeitor/dondeteveo --limit 1 --json tagName
+   gh release list --repo josescgar/dondeteveo --limit 1 --json tagName
    ```
    If no releases exist, current version is `0.1.0` and previous tag is `(none)`.
 
@@ -53,7 +53,7 @@ Validate, version, squash-merge, tag, publish a GitHub Release, close the relate
 1. **Squash merge:**
    ```bash
    gh pr merge <pr-number> \
-     --repo escobeitor/dondeteveo \
+     --repo josescgar/dondeteveo \
      --squash \
      --delete-branch=false
    ```
@@ -73,7 +73,7 @@ Validate, version, squash-merge, tag, publish a GitHub Release, close the relate
 3. **Create GitHub Release:**
    ```bash
    gh release create v<version> \
-     --repo escobeitor/dondeteveo \
+     --repo josescgar/dondeteveo \
      --title "v<version>" \
      --notes "<changelog>" \
      --latest
@@ -81,7 +81,7 @@ Validate, version, squash-merge, tag, publish a GitHub Release, close the relate
 
    Append to changelog notes:
    ```
-   **Full changelog:** https://github.com/escobeitor/dondeteveo/compare/v<prev>...v<new>
+   **Full changelog:** https://github.com/josescgar/dondeteveo/compare/v<prev>...v<new>
    ```
    If this is the first release, omit the compare link.
 
@@ -94,11 +94,11 @@ Validate, version, squash-merge, tag, publish a GitHub Release, close the relate
 1. **Close the linked issue** with a comment:
    ```bash
    gh issue comment <issue-number> \
-     --repo escobeitor/dondeteveo \
-     --body "Released in [v<version>](https://github.com/escobeitor/dondeteveo/releases/tag/v<version>)."
+     --repo josescgar/dondeteveo \
+     --body "Released in [v<version>](https://github.com/josescgar/dondeteveo/releases/tag/v<version>)."
 
    gh issue close <issue-number> \
-     --repo escobeitor/dondeteveo \
+     --repo josescgar/dondeteveo \
      --reason completed
    ```
 

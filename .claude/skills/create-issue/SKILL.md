@@ -8,7 +8,7 @@
 
 ## Purpose
 
-Create a GitHub issue on `escobeitor/dondeteveo` with the correct labels, structured body, and branch/commit guidance.
+Create a GitHub issue on `josescgar/dondeteveo` with the correct labels, structured body, and branch/commit guidance.
 
 ## Type Configuration
 
@@ -38,13 +38,13 @@ Create a GitHub issue on `escobeitor/dondeteveo` with the correct labels, struct
 
 3. **Ensure labels exist** — for each label to be applied:
    ```bash
-   gh label create "<label>" --repo escobeitor/dondeteveo 2>/dev/null || true
+   gh label create "<label>" --repo josescgar/dondeteveo 2>/dev/null || true
    ```
 4. **Generate issue body** — use the matching template from `references/issue-templates.md`, filled with answers.
 5. **Create the issue**:
    ```bash
    gh issue create \
-     --repo escobeitor/dondeteveo \
+     --repo josescgar/dondeteveo \
      --title "<title>" \
      --body "<body>" \
      --label "type/<type>,area/<area>,priority/<priority>,status/planned"
