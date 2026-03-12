@@ -20,10 +20,20 @@ const {
   description,
   pathname,
   noindex = false,
+  imagePath,
+  imageAlt,
   eyebrow,
 } = Astro.props;
 const dictionary = getDictionary(locale as Locale);
-const seo = buildSeo({ locale, title, description, pathname, noindex });
+const seo = buildSeo({
+  locale,
+  title,
+  description,
+  pathname,
+  noindex,
+  imagePath,
+  imageAlt,
+});
 const navLinks = [
   {
     href: `/${locale}/races`,
@@ -46,6 +56,27 @@ const mobileNavId = "site-mobile-nav";
     <meta name="generator" content={Astro.generator} />
     <title>{seo.title}</title>
     <link rel="canonical" href={seo.canonical} />
+    <meta property="og:title" content={seo.openGraph.title} />
+    <meta property="og:description" content={seo.openGraph.description} />
+    <meta property="og:url" content={seo.openGraph.url} />
+    <meta property="og:type" content={seo.openGraph.type} />
+    <meta property="og:site_name" content={seo.openGraph.siteName} />
+    <meta property="og:locale" content={seo.openGraph.locale} />
+    <meta property="og:image" content={seo.openGraph.image.url} />
+    <meta property="og:image:alt" content={seo.openGraph.image.alt} />
+    <meta
+      property="og:image:width"
+      content={String(seo.openGraph.image.width)}
+    />
+    <meta
+      property="og:image:height"
+      content={String(seo.openGraph.image.height)}
+    />
+    <meta name="twitter:card" content={seo.twitter.card} />
+    <meta name="twitter:title" content={seo.twitter.title} />
+    <meta name="twitter:description" content={seo.twitter.description} />
+    <meta name="twitter:image" content={seo.twitter.image.url} />
+    <meta name="twitter:image:alt" content={seo.twitter.image.alt} />
     {
       seo.alternates.map((alternate) => (
         <link

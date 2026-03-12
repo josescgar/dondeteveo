@@ -20,6 +20,10 @@ export default defineConfig({
           return false;
         }
 
+        if (/\/og\//.test(page)) {
+          return false;
+        }
+
         return !/\/races\/[^/]+\/$/.test(page);
       },
     }),

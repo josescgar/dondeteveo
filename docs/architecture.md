@@ -31,6 +31,7 @@
 - Non-indexable: share pages, search states, filter states
 - Past editions remain public and indexable.
 - Canonical domain: `https://dondeteveo.com`
+- Public pages emit centralized canonical, locale alternate, Open Graph, Twitter card, and generated `og:image` metadata.
 
 ## Rendering Boundaries
 
