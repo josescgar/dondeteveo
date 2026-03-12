@@ -53,6 +53,11 @@ const getFieldBoxes = async (page: import("@playwright/test").Page) =>
     }),
   );
 
+const getMetaContent = async (
+  page: import("@playwright/test").Page,
+  selector: string,
+) => page.locator(selector).getAttribute("content");
+
 test("root serves the Spanish homepage for Spanish browsers", async ({
   browser,
 }) => {
@@ -133,10 +138,47 @@ test("share page stays noindex", async ({ page }) => {
     "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=05%3A00&name=Pepe",
   );
 
-  const robotsContent = await page
-    .locator('meta[name="robots"]')
-    .getAttribute("content");
+  const robotsContent = await getMetaContent(page, 'meta[name="robots"]');
+  const openGraphImage = await getMetaContent(
+    page,
+    'meta[property="og:image"]',
+  );
+  const twitterImage = await getMetaContent(page, 'meta[name="twitter:image"]');
+
   expect(robotsContent).toBe("noindex,follow");
+  expect(openGraphImage).toBe(
+    "https://dondeteveo.com/og/en/races/carrera-triana-los-remedios-10k/2026.png",
+  );
+  expect(twitterImage).toBe(openGraphImage);
+});
+
+test("race page emits open graph and twitter metadata", async ({ page }) => {
+  await page.goto("/en/races/carrera-triana-los-remedios-10k/2026");
+
+  const pageTitle = await page.title();
+  const openGraphTitle = await getMetaContent(
+    page,
+    'meta[property="og:title"]',
+  );
+  const openGraphUrl = await getMetaContent(page, 'meta[property="og:url"]');
+  const openGraphType = await getMetaContent(page, 'meta[property="og:type"]');
+  const openGraphImage = await getMetaContent(
+    page,
+    'meta[property="og:image"]',
+  );
+  const twitterCard = await getMetaContent(page, 'meta[name="twitter:card"]');
+  const twitterImage = await getMetaContent(page, 'meta[name="twitter:image"]');
+
+  expect(openGraphTitle).toBe(pageTitle);
+  expect(openGraphUrl).toBe(
+    "https://dondeteveo.com/en/races/carrera-triana-los-remedios-10k/2026",
+  );
+  expect(openGraphType).toBe("website");
+  expect(openGraphImage).toBe(
+    "https://dondeteveo.com/og/en/races/carrera-triana-los-remedios-10k/2026.png",
+  );
+  expect(twitterCard).toBe("summary_large_image");
+  expect(twitterImage).toBe(openGraphImage);
 });
 
 test("share page shows safety margin subtitles for pace and finish plans", async ({
