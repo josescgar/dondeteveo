@@ -438,6 +438,46 @@ test("mobile share map supports route taps", async ({ page }, testInfo) => {
   await expectNoHorizontalOverflow(page);
 });
 
+test("404 page shows English content for /en paths", async ({ page }) => {
+  await page.goto("/en/nonexistent-page");
+
+  await expect(page.getByText("404")).toBeVisible();
+  await expect(
+    page.getByText(/doesn\u2019t exist or may have moved/i),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: /Go to homepage/i }),
+  ).toHaveAttribute("href", "/en");
+  await expect(
+    page.getByRole("link", { name: /Find your race/i }),
+  ).toHaveAttribute("href", "/en/races");
+});
+
+test("404 page shows Spanish content for /es paths", async ({ page }) => {
+  await page.goto("/es/nonexistent-page");
+
+  await expect(page.getByText("404")).toBeVisible();
+  await expect(
+    page.getByText(/no existe o puede haberse movido/i),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: /Ir al inicio/i }),
+  ).toHaveAttribute("href", "/es");
+  await expect(
+    page.getByRole("link", { name: /Encuentra tu carrera/i }),
+  ).toHaveAttribute("href", "/es/races");
+});
+
+test("404 page is noindex", async ({ page }) => {
+  await page.goto("/en/nonexistent-page");
+
+  const robotsContent = await page
+    .locator('meta[name="robots"]')
+    .getAttribute("content");
+
+  expect(robotsContent).toBe("noindex,follow");
+});
+
 test("mobile share time cards scroll to the focused map marker", async ({
   page,
 }, testInfo) => {
