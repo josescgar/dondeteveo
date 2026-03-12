@@ -1,0 +1,204 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import {
+  DEFAULT_LOCALE,
+  LOCALE_STORAGE_KEY,
+  SUPPORTED_LOCALES,
+} from "../lib/config";
+import { getDictionary } from "../lib/i18n";
+
+const locale = DEFAULT_LOCALE;
+const dictionary = getDictionary(locale);
+
+const notFoundKeys = {
+  en: {
+    notFoundTitle: getDictionary("en").notFoundTitle,
+    notFoundDescription: getDictionary("en").notFoundDescription,
+    notFoundBody: getDictionary("en").notFoundBody,
+    notFoundGoHome: getDictionary("en").notFoundGoHome,
+    notFoundFindRace: getDictionary("en").notFoundFindRace,
+  },
+  es: {
+    notFoundTitle: getDictionary("es").notFoundTitle,
+    notFoundDescription: getDictionary("es").notFoundDescription,
+    notFoundBody: getDictionary("es").notFoundBody,
+    notFoundGoHome: getDictionary("es").notFoundGoHome,
+    notFoundFindRace: getDictionary("es").notFoundFindRace,
+  },
+};
+---
+
+<BaseLayout
+  locale={locale}
+  pathname="/404"
+  title={dictionary.notFoundTitle}
+  description={dictionary.notFoundDescription}
+  noindex={true}
+>
+  <section class="flex flex-col items-center py-20 text-center">
+    <div
+      class="font-display leading-none font-bold uppercase"
+      style="font-size: clamp(6rem, 20vw, 12rem); color: var(--color-accent);"
+    >
+      404
+    </div>
+    <div
+      class="relative mt-2 overflow-hidden"
+      style="height: 2.5rem; width: 100vw; left: 50%; margin-left: -50vw;"
+      aria-hidden="true"
+      data-runner-track
+    >
+      <span class="absolute text-2xl" data-runner>🏃‍♀️‍➡️</span>
+      <span class="absolute text-2xl" data-runner>🏃‍➡️</span>
+      <span class="absolute text-xl" data-runner>🏃‍♀️‍➡️</span>
+      <span class="absolute text-xl" data-runner>🏃‍➡️</span>
+      <span class="absolute text-lg" data-runner>🏃‍♀️‍➡️</span>
+      <span class="absolute text-lg" data-runner>🏃‍➡️</span>
+    </div>
+    <p
+      class="mt-4 max-w-md font-mono text-base leading-8"
+      style="color: var(--color-muted);"
+      data-i18n="notFoundBody"
+    >
+      {dictionary.notFoundBody}
+    </p>
+    <div class="mt-8 flex flex-wrap justify-center gap-4">
+      <a
+        href={`/${locale}`}
+        data-i18n="notFoundGoHome"
+        data-i18n-href="home"
+        class="inline-flex px-5 py-2.5 font-mono text-sm tracking-[0.18em] uppercase transition"
+        style="background-color: var(--color-coral); color: var(--color-text);"
+        onmouseover="this.style.backgroundColor='var(--color-coral-deep)'"
+        onmouseout="this.style.backgroundColor='var(--color-coral)'"
+      >
+        {dictionary.notFoundGoHome}
+      </a>
+      <a
+        href={`/${locale}/races`}
+        data-i18n="notFoundFindRace"
+        data-i18n-href="races"
+        class="inline-flex px-5 py-2.5 font-mono text-sm tracking-[0.18em] uppercase transition"
+        style="border: 1px solid var(--color-line); color: var(--color-text);"
+        onmouseover="this.style.borderColor='var(--color-accent)'"
+        onmouseout="this.style.borderColor='var(--color-line)'"
+      >
+        {dictionary.notFoundFindRace}
+      </a>
+    </div>
+  </section>
+
+  <style>
+    @keyframes race-across {
+      0% {
+        left: -2rem;
+        opacity: 0;
+      }
+      5% {
+        opacity: 1;
+      }
+      95% {
+        opacity: 1;
+      }
+      100% {
+        left: calc(100% + 2rem);
+        opacity: 0;
+      }
+    }
+    [data-runner] {
+      opacity: 0;
+    }
+  </style>
+
+  <script is:inline>
+    (function () {
+      const runners = document.querySelectorAll("[data-runner]");
+      const rand = (min, max) => min + Math.random() * (max - min);
+
+      runners.forEach(function (el) {
+        const duration = rand(4.5, 7.5);
+        const delay = rand(0, 4);
+        const top = rand(0, 12);
+        el.style.top = top + "px";
+        el.style.animation =
+          "race-across " + duration + "s linear " + delay + "s infinite";
+      });
+    })();
+  </script>
+
+  <script
+    is:inline
+    define:vars={{
+      notFoundKeys,
+      defaultLocale: DEFAULT_LOCALE,
+      supportedLocales: SUPPORTED_LOCALES,
+      storageKey: LOCALE_STORAGE_KEY,
+    }}
+  >
+    (function () {
+      let detected;
+
+      // 1. Try URL path
+      const pathSegment = window.location.pathname.split("/")[1];
+      if (pathSegment && supportedLocales.includes(pathSegment)) {
+        detected = pathSegment;
+      }
+
+      // 2. Try localStorage
+      if (!detected) {
+        try {
+          const saved = localStorage.getItem(storageKey);
+          if (saved && supportedLocales.includes(saved)) {
+            detected = saved;
+          }
+        } catch {
+          // localStorage may be unavailable
+        }
+      }
+
+      // 3. Try navigator.languages
+      if (!detected) {
+        const langs = navigator.languages || [];
+        for (let i = 0; i < langs.length; i++) {
+          const code = langs[i].slice(0, 2).toLowerCase();
+          if (supportedLocales.includes(code)) {
+            detected = code;
+            break;
+          }
+        }
+      }
+
+      // 4. Fallback
+      if (!detected) {
+        detected = "en";
+      }
+
+      if (detected !== defaultLocale) {
+        document.documentElement.lang = detected;
+
+        const keys = notFoundKeys[detected];
+        if (keys) {
+          document.querySelectorAll("[data-i18n]").forEach(function (el) {
+            const key = el.getAttribute("data-i18n");
+            if (key && keys[key]) {
+              el.textContent = keys[key];
+            }
+          });
+
+          document.querySelectorAll("[data-i18n-href]").forEach(function (el) {
+            const type = el.getAttribute("data-i18n-href");
+            if (type === "home") {
+              el.setAttribute("href", "/" + detected);
+            } else if (type === "races") {
+              el.setAttribute("href", "/" + detected + "/races");
+            }
+          });
+
+          if (keys.notFoundTitle) {
+            document.title = keys.notFoundTitle;
+          }
+        }
+      }
+    })();
+  </script>
+</BaseLayout>

@@ -98,6 +98,11 @@ type Dictionary = {
   sharedViaDevice: string;
   switchToLightTheme: string;
   switchToDarkTheme: string;
+  notFoundTitle: string;
+  notFoundDescription: string;
+  notFoundBody: string;
+  notFoundGoHome: string;
+  notFoundFindRace: string;
 };
 
 const DICTIONARIES: Record<Locale, Dictionary> = {
@@ -216,6 +221,13 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     sharedViaDevice: "Shared!",
     switchToLightTheme: "Switch to light theme",
     switchToDarkTheme: "Switch to dark theme",
+    notFoundTitle: "Page not found | Dondeteveo",
+    notFoundDescription:
+      "The page you're looking for doesn't exist. Head back to find your race.",
+    notFoundBody:
+      "The page you\u2019re looking for doesn\u2019t exist or may have moved.",
+    notFoundGoHome: "Go to homepage",
+    notFoundFindRace: "Find your race",
   },
   es: {
     about: "Acerca de",
@@ -335,6 +347,12 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     sharedViaDevice: "¡Compartido!",
     switchToLightTheme: "Cambiar a tema claro",
     switchToDarkTheme: "Cambiar a tema oscuro",
+    notFoundTitle: "P\u00e1gina no encontrada | Dondeteveo",
+    notFoundDescription:
+      "La p\u00e1gina que buscas no existe. Vuelve al inicio para encontrar tu carrera.",
+    notFoundBody: "La p\u00e1gina que buscas no existe o puede haberse movido.",
+    notFoundGoHome: "Ir al inicio",
+    notFoundFindRace: "Encuentra tu carrera",
   },
 };
 
