@@ -86,6 +86,8 @@ type Dictionary = {
   footerPunchline: string;
   importantRaceNote: string;
   invalidFinishTimeFormat: string;
+  invalidNicknameCharacters: string;
+  invalidNicknameLength: string;
   invalidPaceFormat: string;
   shareLinkTitle: string;
   dismissRoutePoint: string;
@@ -201,6 +203,9 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     footerPunchline: "Made by a runner, for runners",
     importantRaceNote: "Important race note",
     invalidFinishTimeFormat: "Enter a valid finish time (HH:MM:SS)",
+    invalidNicknameCharacters:
+      "Only letters, numbers, spaces, and characters (', ., -) allowed",
+    invalidNicknameLength: "Nickname must be 30 characters or fewer",
     invalidPaceFormat: "Enter a valid pace (MM:SS)",
     shareLinkTitle: "Share this page",
     dismissRoutePoint: "Dismiss selected point",
@@ -317,6 +322,9 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     footerPunchline: "Hecho por un corredor, para corredores",
     importantRaceNote: "Nota importante",
     invalidFinishTimeFormat: "Introduce un tiempo válido (HH:MM:SS)",
+    invalidNicknameCharacters:
+      "Solo se permiten letras, números, espacios y caracteres (', ., -)",
+    invalidNicknameLength: "El apodo debe tener 30 caracteres o menos",
     invalidPaceFormat: "Introduce un ritmo válido (MM:SS)",
     shareLinkTitle: "Comparte esta página",
     dismissRoutePoint: "Cerrar punto seleccionado",

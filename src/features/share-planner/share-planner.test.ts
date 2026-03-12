@@ -5,6 +5,7 @@ import {
   getDefaultShareValue,
   isValidShareValue,
   maskTimeInput,
+  validateNickname,
 } from "./share-planner.logic";
 
 describe("share planner logic", () => {
@@ -57,6 +58,65 @@ describe("isValidShareValue", () => {
     expect(isValidShareValue("finish", "01:00:60")).toBe(false);
     expect(isValidShareValue("finish", "00:00:00")).toBe(false);
     expect(isValidShareValue("finish", "1:45")).toBe(false);
+  });
+});
+
+describe("validateNickname", () => {
+  it("accepts empty string", () => {
+    expect(validateNickname("")).toEqual({ valid: true });
+  });
+
+  it("accepts alphanumeric names", () => {
+    expect(validateNickname("Runner42")).toEqual({ valid: true });
+  });
+
+  it("accepts accented characters", () => {
+    expect(validateNickname("José")).toEqual({ valid: true });
+  });
+
+  it("accepts spaces", () => {
+    expect(validateNickname("José López")).toEqual({ valid: true });
+  });
+
+  it("accepts basic punctuation: apostrophe, period, hyphen", () => {
+    expect(validateNickname("O'Brien")).toEqual({ valid: true });
+    expect(validateNickname("Dr. Smith")).toEqual({ valid: true });
+    expect(validateNickname("Jean-Luc")).toEqual({ valid: true });
+  });
+
+  it("accepts name at exactly 30 characters", () => {
+    expect(validateNickname("a".repeat(30))).toEqual({ valid: true });
+  });
+
+  it("rejects name over 30 characters", () => {
+    expect(validateNickname("a".repeat(31))).toEqual({
+      valid: false,
+      reason: "too-long",
+    });
+  });
+
+  it("rejects URL-problematic characters", () => {
+    for (const char of ["#", "&", "=", "+"]) {
+      expect(validateNickname(`foo${char}bar`)).toEqual({
+        valid: false,
+        reason: "invalid-characters",
+      });
+    }
+  });
+
+  it("rejects control characters", () => {
+    expect(validateNickname("foo\x00bar")).toEqual({
+      valid: false,
+      reason: "invalid-characters",
+    });
+  });
+
+  it("checks characters before length", () => {
+    const longInvalid = "#".repeat(31);
+    expect(validateNickname(longInvalid)).toEqual({
+      valid: false,
+      reason: "invalid-characters",
+    });
   });
 });
 

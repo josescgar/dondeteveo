@@ -7,7 +7,12 @@ const shareModeSchema = z.enum(["pace", "finish"]);
 const fragmentSchema = z.object({
   mode: shareModeSchema,
   value: z.string().min(1),
-  name: z.string().trim().max(40).optional(),
+  name: z
+    .string()
+    .trim()
+    .max(30)
+    .regex(/^[\p{L}\p{N}\s'.-]*$/u)
+    .optional(),
 });
 
 export type ShareMode = z.infer<typeof shareModeSchema>;
