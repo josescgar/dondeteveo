@@ -203,6 +203,5 @@ export const buildSeoImageResponse = (
   new Response(body, {
     headers: {
       "Content-Type": contentType,
-      "Cache-Control": "public, max-age=86400",
     },
   });
