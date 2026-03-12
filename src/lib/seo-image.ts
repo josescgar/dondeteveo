@@ -1,6 +1,16 @@
+import { readFile } from "node:fs/promises";
+
 import sharp from "sharp";
 
 import { SEO_IMAGE_HEIGHT, SEO_IMAGE_WIDTH, type Locale } from "./config";
+
+const LOGO_IMAGE_URL = new URL("../../public/logo.png", import.meta.url);
+const logoOverlayPromise = readFile(LOGO_IMAGE_URL).then((buffer) =>
+  sharp(buffer)
+    .resize({ width: 136, height: 136, fit: "contain" })
+    .png()
+    .toBuffer(),
+);
 
 type SeoImageInput = {
   locale: Locale;
@@ -110,61 +120,65 @@ export const renderSeoImage = ({
   footer,
 }: SeoImageInput): string => {
   const titleLines = wrapText(title, 24, 3);
-  const descriptionLines = wrapText(description, 58, 3);
-  const footerLine = wrapText(footer.filter(Boolean).join(" / "), 80, 1);
-  const descriptionStartY = 250 + titleLines.length * 84;
+  const descriptionLines = wrapText(description, 56, 3);
+  const footerLine = wrapText(footer.filter(Boolean).join(" / "), 74, 1);
+  const descriptionStartY = 276 + titleLines.length * 78;
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${SEO_IMAGE_WIDTH}" height="${SEO_IMAGE_HEIGHT}" viewBox="0 0 ${SEO_IMAGE_WIDTH} ${SEO_IMAGE_HEIGHT}" role="img" aria-labelledby="title desc">
   <title id="title">${escapeXml(title)}</title>
   <desc id="desc">${escapeXml(description)}</desc>
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#fff7eb" />
-      <stop offset="100%" stop-color="#fff1d6" />
-    </linearGradient>
-    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#f26419" />
-      <stop offset="100%" stop-color="#ea580c" />
-    </linearGradient>
+    <pattern id="dot-grid" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.2" fill="#1e6fa0" opacity="0.08" />
+    </pattern>
   </defs>
-  <rect width="1200" height="630" fill="url(#bg)" rx="28" />
-  <circle cx="1040" cy="110" r="190" fill="#f8d9b8" opacity="0.75" />
-  <circle cx="1120" cy="70" r="72" fill="#f26419" opacity="0.12" />
-  <rect x="72" y="72" width="132" height="10" rx="5" fill="#f26419" opacity="0.95" />
-  <rect x="72" y="112" width="256" height="2" rx="1" fill="#f4c28b" />
-  <text x="72" y="150" fill="#7c2d12" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" letter-spacing="3">${escapeXml(
+  <rect width="1200" height="630" fill="#f4f7fb" />
+  <rect width="1200" height="630" fill="url(#dot-grid)" />
+  <rect x="56" y="56" width="1088" height="518" fill="#ffffff" stroke="#ccd8e4" stroke-width="2" />
+  <rect x="56" y="56" width="1088" height="14" fill="#1e6fa0" />
+  <rect x="884" y="88" width="220" height="180" fill="#e6eff7" stroke="#ccd8e4" stroke-width="2" />
+  <rect x="884" y="248" width="220" height="20" fill="#f26419" />
+  <rect x="900" y="300" width="188" height="96" fill="#f4f7fb" stroke="#ccd8e4" stroke-width="2" />
+  <rect x="96" y="188" width="8" height="238" fill="#f26419" />
+  <rect x="96" y="470" width="688" height="2" fill="#ccd8e4" />
+  <text x="96" y="118" fill="#6b7e8c" font-family="IBM Plex Mono, Courier New, monospace" font-size="18" font-weight="500" letter-spacing="3">// ${escapeXml(
     eyebrow.toUpperCase(),
   )}</text>
-  <text x="72" y="96" fill="#0f172a" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="800" letter-spacing="2">DONDETEVEO</text>
-  <text x="1110" y="96" text-anchor="end" fill="#9a3412" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="4">${escapeXml(
+  <text x="96" y="166" fill="#1e6fa0" font-family="Barlow Condensed, Arial Narrow, Arial, sans-serif" font-size="54" font-weight="800" letter-spacing="1.5">DONDETEVEO</text>
+  <text x="1088" y="120" text-anchor="end" fill="#6b7e8c" font-family="IBM Plex Mono, Courier New, monospace" font-size="18" font-weight="500" letter-spacing="4">${escapeXml(
     locale.toUpperCase(),
-  )}</text>${renderTextLines({
-    lines: titleLines,
-    x: 72,
-    y: 250,
-    lineHeight: 84,
-    fontSize: 76,
-    fontWeight: 800,
-    fill: "#0f172a",
-  })}${renderTextLines({
+  )}</text>
+  <rect x="920" y="326" width="92" height="10" fill="#1e6fa0" />
+  <rect x="920" y="350" width="136" height="6" fill="#ccd8e4" />
+  <rect x="920" y="370" width="120" height="6" fill="#f26419" opacity="0.7" />${renderTextLines(
+    {
+      lines: titleLines,
+      x: 132,
+      y: 276,
+      lineHeight: 78,
+      fontSize: 72,
+      fontWeight: 800,
+      fill: "#1a2e3b",
+    },
+  )}${renderTextLines({
     lines: descriptionLines,
-    x: 72,
+    x: 132,
     y: descriptionStartY,
-    lineHeight: 42,
-    fontSize: 30,
+    lineHeight: 40,
+    fontSize: 28,
     fontWeight: 500,
-    fill: "#475569",
+    fill: "#6b7e8c",
   })}
-  <rect x="72" y="530" width="1056" height="1" fill="#f4c28b" />${renderTextLines(
+  <rect x="132" y="518" width="956" height="2" fill="#ccd8e4" />${renderTextLines(
     {
       lines: footerLine,
-      x: 72,
-      y: 572,
-      lineHeight: 32,
-      fontSize: 24,
-      fontWeight: 700,
-      fill: "#9a3412",
+      x: 132,
+      y: 560,
+      lineHeight: 30,
+      fontSize: 22,
+      fontWeight: 500,
+      fill: "#1e6fa0",
     },
   )}
 </svg>`;
@@ -173,7 +187,9 @@ export const renderSeoImage = ({
 export const renderSeoImagePng = async (
   input: SeoImageInput,
 ): Promise<ArrayBuffer> => {
+  const logoOverlay = await logoOverlayPromise;
   const buffer = await sharp(Buffer.from(renderSeoImage(input)))
+    .composite([{ input: logoOverlay, left: 926, top: 106 }])
     .png()
     .toBuffer();
 

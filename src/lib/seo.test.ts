@@ -34,6 +34,7 @@ describe("seo helpers", () => {
     expect(seo.openGraph.image.url).toBe(
       "https://dondeteveo.com/og/en/default.png",
     );
+    expect(seo.openGraph.image.alt).toBe("Dondeteveo | Race discovery");
     expect(seo.twitter.card).toBe("summary_large_image");
   });
 

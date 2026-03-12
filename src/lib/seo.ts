@@ -104,7 +104,7 @@ export const buildSeo = (input: SeoInput): SeoOutput => {
     buildDefaultSeoImagePathForPathname(input.locale, input.pathname);
   const image: SeoImage = {
     url: buildCanonicalUrl(imagePath),
-    alt: input.imageAlt ?? `${input.title} social preview`,
+    alt: input.imageAlt ?? input.title,
     width: SEO_IMAGE_WIDTH,
     height: SEO_IMAGE_HEIGHT,
   };
