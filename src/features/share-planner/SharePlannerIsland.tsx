@@ -1,4 +1,4 @@
-import { useState } from "preact/hooks";
+import { useRef, useState } from "preact/hooks";
 
 import type { Locale } from "../../lib/config";
 import { getDictionary } from "../../lib/i18n";
@@ -8,6 +8,8 @@ import {
   getDefaultShareValue,
   isValidShareValue,
   maskTimeInput,
+  NICKNAME_MAX_LENGTH,
+  validateNickname,
 } from "./share-planner.logic";
 
 type Props = {
@@ -27,11 +29,14 @@ export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
   const [value, setValue] = useState(getDefaultShareValue("pace"));
   const [name, setName] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [nameError, setNameError] = useState<string | null>(null);
+  const linkRef = useRef<HTMLAnchorElement>(null);
 
   const handleModeChange = (nextMode: ShareMode) => {
     setMode(nextMode);
     setValue(getDefaultShareValue(nextMode));
     setError(null);
+    setNameError(null);
   };
 
   const handleValueFocus = (event: Event) => {
@@ -51,23 +56,46 @@ export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
     }
   };
 
-  const handleLinkClick = (event: Event) => {
-    if (isValidShareValue(mode, value)) {
-      setError(null);
+  const handleNameInput = (event: Event) => {
+    const next = (event.currentTarget as HTMLInputElement).value;
+    setName(next);
+    const result = validateNickname(next);
+    if (result.valid) {
+      setNameError(null);
+    } else {
+      setNameError(
+        result.reason === "invalid-characters"
+          ? dictionary.invalidNicknameCharacters
+          : dictionary.invalidNicknameLength,
+      );
+    }
+  };
+
+  const handleSubmit = (event: Event) => {
+    event.preventDefault();
+
+    if (nameError) return;
+
+    if (!isValidShareValue(mode, value)) {
+      setError(
+        mode === "pace"
+          ? dictionary.invalidPaceFormat
+          : dictionary.invalidFinishTimeFormat,
+      );
       return;
     }
-    event.preventDefault();
-    setError(
-      mode === "pace"
-        ? dictionary.invalidPaceFormat
-        : dictionary.invalidFinishTimeFormat,
-    );
+
+    setError(null);
+    linkRef.current?.click();
   };
 
   const href = buildShareHref({ locale, raceSlug, year, mode, value, name });
 
   return (
-    <div style="background-color: var(--color-surface); border: 1px solid var(--color-line); padding: 1.5rem;">
+    <form
+      onSubmit={handleSubmit}
+      style="background-color: var(--color-surface); border: 1px solid var(--color-line); padding: 1.5rem;"
+    >
       <div
         class="font-mono text-[10px] tracking-[0.3em] uppercase"
         style="color: var(--color-accent);"
@@ -150,7 +178,8 @@ export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
         <input
           type="text"
           value={name}
-          onInput={(event) => setName(event.currentTarget.value)}
+          maxLength={NICKNAME_MAX_LENGTH}
+          onInput={handleNameInput}
           class={fieldInputClass}
           style={fieldInputStyle}
           onFocus={(e) =>
@@ -160,10 +189,29 @@ export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
             (e.currentTarget.style.borderColor = "var(--color-line-solid)")
           }
         />
+        <div class="flex items-baseline justify-between gap-2">
+          {nameError ? (
+            <span
+              class="font-mono text-xs"
+              style="color: var(--color-coral-deep);"
+              role="alert"
+            >
+              {nameError}
+            </span>
+          ) : (
+            <span />
+          )}
+          <span
+            class={`shrink-0 font-mono text-[10px]${name.length === 0 ? "invisible" : ""}`}
+            style={`color: var(${name.length >= NICKNAME_MAX_LENGTH ? "--color-coral-deep" : "--color-muted"});`}
+          >
+            {NICKNAME_MAX_LENGTH - name.length}
+          </span>
+        </div>
       </label>
       <a
+        ref={linkRef}
         href={href}
-        onClick={handleLinkClick}
         class="mt-6 inline-flex px-5 py-2.5 font-mono text-sm tracking-[0.18em] uppercase transition"
         style="background-color: var(--color-coral); color: var(--color-text);"
         onMouseOver={(e) => {
@@ -177,6 +225,7 @@ export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
       >
         {dictionary.generateShareLink}
       </a>
-    </div>
+      <button type="submit" class="hidden" tabIndex={-1} aria-hidden="true" />
+    </form>
   );
 }

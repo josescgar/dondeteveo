@@ -7,6 +7,23 @@ import {
 } from "../../lib/share/share-state";
 import type { Locale } from "../../lib/config";
 
+export const NICKNAME_MAX_LENGTH = 30;
+
+const NICKNAME_PATTERN = /^[\p{L}\p{N}\s'.-]+$/u;
+
+export type NicknameValidationResult =
+  | { valid: true }
+  | { valid: false; reason: "invalid-characters" | "too-long" };
+
+export const validateNickname = (name: string): NicknameValidationResult => {
+  if (name.length === 0) return { valid: true };
+  if (!NICKNAME_PATTERN.test(name))
+    return { valid: false, reason: "invalid-characters" };
+  if (name.length > NICKNAME_MAX_LENGTH)
+    return { valid: false, reason: "too-long" };
+  return { valid: true };
+};
+
 export type SharePlannerInput = {
   locale: Locale;
   raceSlug: string;
