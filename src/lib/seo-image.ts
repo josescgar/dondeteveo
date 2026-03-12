@@ -167,8 +167,6 @@ export const renderSeoImage = ({
       fill: "#9a3412",
     },
   )}
-  <rect x="975" y="500" width="153" height="58" rx="18" fill="url(#accent)" />
-  <text x="1051" y="536" text-anchor="middle" fill="#fff7ed" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="800">PLAN YOUR CREW</text>
 </svg>`;
 };
 
