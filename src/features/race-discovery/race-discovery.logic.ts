@@ -1,4 +1,5 @@
 import type { Locale } from "../../lib/config";
+import { formatCountryName } from "../../lib/format";
 import type { RaceSummary } from "../../lib/races/catalog";
 
 export type DiscoveryFilters = {
@@ -11,6 +12,11 @@ export type DiscoveryCard = RaceSummary & {
   href: string;
 };
 
+export type DiscoveryCountryOption = {
+  value: string;
+  label: string;
+};
+
 export const getDiscoveryCards = (
   locale: Locale,
   races: RaceSummary[],
@@ -19,6 +25,21 @@ export const getDiscoveryCards = (
     ...race,
     href: `/${locale}/races/${race.raceSlug}/${race.year}`,
   }));
+
+export const getDiscoveryCountryOptions = (
+  locale: Locale,
+  races: RaceSummary[],
+): DiscoveryCountryOption[] =>
+  [...new Set(races.map((race) => race.countryCode))]
+    .map((countryCode) => ({
+      value: countryCode,
+      label: formatCountryName(countryCode, locale),
+    }))
+    .sort(
+      (left, right) =>
+        left.label.localeCompare(right.label, locale) ||
+        left.value.localeCompare(right.value),
+    );
 
 export const filterDiscoveryCards = (
   cards: DiscoveryCard[],
