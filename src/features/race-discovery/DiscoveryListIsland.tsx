@@ -11,6 +11,7 @@ import type { RaceSummary } from "../../lib/races/catalog";
 import {
   filterDiscoveryCards,
   getDiscoveryCards,
+  getDiscoveryCountryOptions,
 } from "./race-discovery.logic";
 
 type Props = {
@@ -37,11 +38,12 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
     () => filterDiscoveryCards(cards, { query, country, year }),
     [cards, country, query, year],
   );
+  const availableCountries = useMemo(
+    () => getDiscoveryCountryOptions(locale, races),
+    [locale, races],
+  );
 
   const availableYears = [...new Set(races.map((race) => race.year))].sort();
-  const availableCountries = [
-    ...new Set(races.map((race) => race.countryCode)),
-  ].sort();
 
   return (
     <div class="space-y-6">
@@ -88,8 +90,8 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
             }
           >
             <option value="">{dictionary.allFilter}</option>
-            {availableCountries.map((countryCode) => (
-              <option value={countryCode}>{countryCode.toUpperCase()}</option>
+            {availableCountries.map((country) => (
+              <option value={country.value}>{country.label}</option>
             ))}
           </select>
         </label>

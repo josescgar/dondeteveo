@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { filterDiscoveryCards } from "./race-discovery.logic";
+import {
+  filterDiscoveryCards,
+  getDiscoveryCountryOptions,
+} from "./race-discovery.logic";
 
 const cards = [
   {
@@ -24,10 +27,53 @@ const cards = [
 ];
 
 describe("race discovery logic", () => {
+  it("builds localized country options sorted by visible label", () => {
+    const races = [
+      cards[0],
+      {
+        ...cards[0],
+        countryCode: "fr",
+        raceSlug: "paris-marathon",
+      },
+      {
+        ...cards[0],
+        countryCode: "ad",
+        raceSlug: "andorra-run",
+      },
+      {
+        ...cards[0],
+        countryCode: "fr",
+        raceSlug: "paris-half-marathon",
+      },
+    ];
+
+    expect(getDiscoveryCountryOptions("en", races)).toEqual([
+      { value: "ad", label: "Andorra" },
+      { value: "fr", label: "France" },
+      { value: "es", label: "Spain" },
+    ]);
+
+    expect(getDiscoveryCountryOptions("es", races)).toEqual([
+      { value: "ad", label: "Andorra" },
+      { value: "es", label: "Espa\u00f1a" },
+      { value: "fr", label: "Francia" },
+    ]);
+  });
+
   it("filters cards by query", () => {
     const result = filterDiscoveryCards(cards, {
       query: "triana",
       country: "",
+      year: "",
+    });
+
+    expect(result).toHaveLength(1);
+  });
+
+  it("filters cards by the ISO country value", () => {
+    const result = filterDiscoveryCards(cards, {
+      query: "",
+      country: "es",
       year: "",
     });
 

@@ -13,6 +13,11 @@ const DATE_FORMATTERS: Record<Locale, Intl.DateTimeFormat> = {
   }),
 };
 
+const REGION_DISPLAY_NAMES: Record<Locale, Intl.DisplayNames> = {
+  en: new Intl.DisplayNames(["en-GB"], { type: "region" }),
+  es: new Intl.DisplayNames(["es-ES"], { type: "region" }),
+};
+
 export const formatRaceDate = (date: string, locale: Locale): string =>
   DATE_FORMATTERS[locale].format(new Date(`${date}T00:00:00`));
 
@@ -22,6 +27,22 @@ export const formatDistance = (distanceKm: number, locale: Locale): string => {
   }).format(distanceKm);
 
   return `${number} km`;
+};
+
+export const formatCountryName = (
+  countryCode: string,
+  locale: Locale,
+): string => {
+  const normalizedCountryCode = countryCode.trim().toUpperCase();
+
+  if (!/^[A-Z]{2}$/.test(normalizedCountryCode)) {
+    return normalizedCountryCode;
+  }
+
+  return (
+    REGION_DISPLAY_NAMES[locale].of(normalizedCountryCode) ??
+    normalizedCountryCode
+  );
 };
 
 export const getTodayInTimeZone = (

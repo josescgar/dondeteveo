@@ -97,6 +97,10 @@ test("root stays on / for English browser with saved Spanish preference", async 
 
 test("race discovery reaches a race page and share flow", async ({ page }) => {
   await page.goto("/en/races");
+  await expect(page.getByLabel("Country").locator("option")).toHaveText([
+    "All",
+    "Spain",
+  ]);
   await page
     .getByRole("link", { name: /Triana - Los Remedios .*10K/i })
     .click();
@@ -111,6 +115,17 @@ test("race discovery reaches a race page and share flow", async ({ page }) => {
   await expect(
     page.getByText(/All times are in the race.s local timezone\./i).first(),
   ).toBeVisible();
+});
+
+test("race discovery localizes country filter labels by locale", async ({
+  page,
+}) => {
+  await page.goto("/es/races");
+
+  await expect(page.getByLabel("Pa\u00eds").locator("option")).toHaveText([
+    "Todas",
+    "Espa\u00f1a",
+  ]);
 });
 
 test("share page stays noindex", async ({ page }) => {
