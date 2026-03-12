@@ -68,13 +68,13 @@ export const buildAlternates = (locale: Locale, pathname: string) => [
 ];
 
 export const buildDefaultSeoImagePath = (locale: Locale): string =>
-  `/og/${locale}/default.svg`;
+  `/og/${locale}/default.png`;
 
 export const buildEditionSeoImagePath = (
   locale: Locale,
   raceSlug: string,
   year: string,
-): string => `/og/${locale}/races/${raceSlug}/${year}.svg`;
+): string => `/og/${locale}/races/${raceSlug}/${year}.png`;
 
 export const buildEditionSeoImageAlt = (
   raceName: string,

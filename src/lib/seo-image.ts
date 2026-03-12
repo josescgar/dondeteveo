@@ -1,3 +1,5 @@
+import sharp from "sharp";
+
 import { SEO_IMAGE_HEIGHT, SEO_IMAGE_WIDTH, type Locale } from "./config";
 
 type SeoImageInput = {
@@ -170,10 +172,23 @@ export const renderSeoImage = ({
 </svg>`;
 };
 
-export const buildSeoImageResponse = (svg: string): Response =>
-  new Response(svg, {
+export const renderSeoImagePng = async (
+  input: SeoImageInput,
+): Promise<ArrayBuffer> => {
+  const buffer = await sharp(Buffer.from(renderSeoImage(input)))
+    .png()
+    .toBuffer();
+
+  return Uint8Array.from(buffer).buffer;
+};
+
+export const buildSeoImageResponse = (
+  body: BodyInit,
+  contentType: string,
+): Response =>
+  new Response(body, {
     headers: {
-      "Content-Type": "image/svg+xml",
+      "Content-Type": contentType,
       "Cache-Control": "public, max-age=31536000, immutable",
     },
   });

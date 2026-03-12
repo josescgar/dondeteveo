@@ -147,7 +147,7 @@ test("share page stays noindex", async ({ page }) => {
 
   expect(robotsContent).toBe("noindex,follow");
   expect(openGraphImage).toBe(
-    "https://dondeteveo.com/og/en/races/carrera-triana-los-remedios-10k/2026.svg",
+    "https://dondeteveo.com/og/en/races/carrera-triana-los-remedios-10k/2026.png",
   );
   expect(twitterImage).toBe(openGraphImage);
 });
@@ -175,7 +175,7 @@ test("race page emits open graph and twitter metadata", async ({ page }) => {
   );
   expect(openGraphType).toBe("website");
   expect(openGraphImage).toBe(
-    "https://dondeteveo.com/og/en/races/carrera-triana-los-remedios-10k/2026.svg",
+    "https://dondeteveo.com/og/en/races/carrera-triana-los-remedios-10k/2026.png",
   );
   expect(twitterCard).toBe("summary_large_image");
   expect(twitterImage).toBe(openGraphImage);

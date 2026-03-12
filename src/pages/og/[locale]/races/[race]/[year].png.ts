@@ -7,7 +7,7 @@ import { getAllRaceEditions } from "../../../../../lib/races/catalog";
 import { localizeRaceEdition } from "../../../../../lib/races/localized";
 import {
   buildSeoImageResponse,
-  renderSeoImage,
+  renderSeoImagePng,
 } from "../../../../../lib/seo-image";
 
 type RaceEdition = Awaited<ReturnType<typeof getAllRaceEditions>>[number];
@@ -29,25 +29,24 @@ export const getStaticPaths = async () => {
   );
 };
 
-export const GET: APIRoute = ({ params, props }) => {
+export const GET: APIRoute = async ({ params, props }) => {
   const locale = params.locale as Locale;
   const dictionary = getDictionary(locale);
   const edition = localizeRaceEdition(
     (props as { edition: RaceEdition }).edition,
     locale,
   );
+  const image = await renderSeoImagePng({
+    locale,
+    eyebrow: dictionary.raceDiscovery,
+    title: `${edition.meta.name} ${edition.year}`,
+    description: edition.meta.summary,
+    footer: [
+      formatRaceDate(edition.meta.date, locale),
+      edition.meta.city,
+      formatDistance(edition.meta.distanceKm, locale),
+    ],
+  });
 
-  return buildSeoImageResponse(
-    renderSeoImage({
-      locale,
-      eyebrow: dictionary.raceDiscovery,
-      title: `${edition.meta.name} ${edition.year}`,
-      description: edition.meta.summary,
-      footer: [
-        formatRaceDate(edition.meta.date, locale),
-        edition.meta.city,
-        formatDistance(edition.meta.distanceKm, locale),
-      ],
-    }),
-  );
+  return buildSeoImageResponse(image, "image/png");
 };

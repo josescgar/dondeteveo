@@ -28,11 +28,11 @@ describe("seo helpers", () => {
       pathname: "/en/races",
     });
 
-    expect(buildDefaultSeoImagePath("en")).toBe("/og/en/default.svg");
+    expect(buildDefaultSeoImagePath("en")).toBe("/og/en/default.png");
     expect(seo.canonical).toBe("https://dondeteveo.com/en/races");
     expect(seo.openGraph.locale).toBe("en_US");
     expect(seo.openGraph.image.url).toBe(
-      "https://dondeteveo.com/og/en/default.svg",
+      "https://dondeteveo.com/og/en/default.png",
     );
     expect(seo.twitter.card).toBe("summary_large_image");
   });
@@ -59,10 +59,10 @@ describe("seo helpers", () => {
 
     expect(seo.noindex).toBe(true);
     expect(imagePath).toBe(
-      "/og/es/races/carrera-triana-los-remedios-10k/2026.svg",
+      "/og/es/races/carrera-triana-los-remedios-10k/2026.png",
     );
     expect(seo.openGraph.image.url).toBe(
-      "https://dondeteveo.com/og/es/races/carrera-triana-los-remedios-10k/2026.svg",
+      "https://dondeteveo.com/og/es/races/carrera-triana-los-remedios-10k/2026.png",
     );
     expect(seo.twitter.image.alt).toBe(imageAlt);
   });
