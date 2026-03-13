@@ -92,9 +92,6 @@ export default function RaceMapIsland({
     const syncFullscreenState = () => {
       const active = document.fullscreenElement === wrapperRef.current;
       setIsFullscreen(active);
-      requestAnimationFrame(() => {
-        mapRef.current?.invalidateSize();
-      });
     };
 
     const mountMap = async () => {
@@ -272,6 +269,10 @@ export default function RaceMapIsland({
       .addTo(layerGroup);
   }, [panelState, pointDetails, points, raceDistanceKm, route]);
 
+  useEffect(() => {
+    mapRef.current?.invalidateSize();
+  }, [isFullscreen]);
+
   const handleDismissSelection = () => {
     setPanelState(null);
     onSelectionChange?.(null);
@@ -302,7 +303,7 @@ export default function RaceMapIsland({
   return (
     <div
       ref={wrapperRef}
-      class="border-line bg-surface relative overflow-hidden border"
+      class={`bg-surface relative overflow-hidden ${isFullscreen ? "h-screen w-screen" : "border-line h-96 border"}`}
     >
       {mode === "spectator" && canFullscreen && (
         <button
@@ -364,7 +365,7 @@ export default function RaceMapIsland({
         ref={containerRef}
         data-race-map
         data-map-mode={mode}
-        class={`w-full overflow-hidden ${isFullscreen ? "h-full" : "h-96"}`}
+        class="h-full w-full overflow-hidden"
       />
       {mode !== "static" && panelState && (
         <div
