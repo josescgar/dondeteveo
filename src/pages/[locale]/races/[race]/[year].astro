@@ -4,7 +4,7 @@ import RaceMapIsland from "../../../../features/race-map/RaceMapIsland";
 import SharePlannerIsland from "../../../../features/share-planner/SharePlannerIsland";
 
 import { type Locale, SUPPORTED_LOCALES } from "../../../../lib/config";
-import { formatDistance, formatRaceDate } from "../../../../lib/format";
+import { buildRaceInfoFields, formatDistance } from "../../../../lib/format";
 import { buildRacePath } from "../../../../lib/routes";
 import { getDictionary } from "../../../../lib/i18n";
 import { getAllRaceEditions } from "../../../../lib/races/catalog";
@@ -33,20 +33,15 @@ const { edition: rawEdition } = Astro.props;
 const edition = localizeRaceEdition(rawEdition, locale);
 const points = getPointSummaries(edition.points);
 const pathname = buildRacePath(locale, edition.raceSlug, edition.year);
-const raceInfoFields = [
+const raceInfoFields = buildRaceInfoFields(
+  edition.meta,
   {
-    label: dictionary.date,
-    value: formatRaceDate(edition.meta.date, locale),
+    date: dictionary.date,
+    city: dictionary.city,
+    startTime: dictionary.startTime,
   },
-  {
-    label: dictionary.city,
-    value: edition.meta.city,
-  },
-  {
-    label: dictionary.startTime,
-    value: `${edition.meta.startTime} (${edition.meta.timezone})`,
-  },
-];
+  locale,
+);
 ---
 
 <BaseLayout

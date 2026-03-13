@@ -2,7 +2,9 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 import {
-  GITHUB_REPOSITORY_URL,
+  CONTACT_EMAIL,
+  CONTRIBUTING_URL,
+  NEW_ISSUE_URL,
   type Locale,
   SUPPORTED_LOCALES,
 } from "../../lib/config";
@@ -14,10 +16,6 @@ export const getStaticPaths = () =>
 
 const locale = Astro.params.locale as Locale;
 const dictionary = getDictionary(locale);
-
-const CONTACT_EMAIL = "jose.escobar.dev@gmail.com";
-const CONTRIBUTING_URL = `${GITHUB_REPOSITORY_URL}/blob/main/CONTRIBUTING.md`;
-const NEW_ISSUE_URL = `${GITHUB_REPOSITORY_URL}/issues/new`;
 ---
 
 <BaseLayout
