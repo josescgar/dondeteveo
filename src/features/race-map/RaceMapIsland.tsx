@@ -299,6 +299,10 @@ export default function RaceMapIsland({
     mode === "spectator" && selectedRoute
       ? (selectionTimeFormatter?.(selectedRoute.distanceKm) ?? null)
       : null;
+  const predictedReturnTime =
+    mode === "spectator" && selectedRoute?.returnPassDistanceKm != null
+      ? (selectionTimeFormatter?.(selectedRoute.returnPassDistanceKm) ?? null)
+      : null;
 
   return (
     <div
@@ -386,7 +390,9 @@ export default function RaceMapIsland({
                 class="font-display text-text mt-2 text-2xl font-bold uppercase"
               >
                 {selectedRoute
-                  ? formatExactDistance(selectedRoute.distanceKm, locale)
+                  ? selectedRoute.returnPassDistanceKm != null
+                    ? `${formatExactDistance(selectedRoute.returnPassDistanceKm, locale)} / ${formatExactDistance(selectedRoute.distanceKm, locale)}`
+                    : formatExactDistance(selectedRoute.distanceKm, locale)
                   : selectedMarker?.label}
               </div>
             </div>
@@ -402,12 +408,33 @@ export default function RaceMapIsland({
           </div>
           {selectedRoute && (
             <div data-route-selection-distance class="hidden">
-              {formatExactDistance(selectedRoute.distanceKm, locale)}
+              {selectedRoute.returnPassDistanceKm != null
+                ? `${formatExactDistance(selectedRoute.returnPassDistanceKm, locale)} / ${formatExactDistance(selectedRoute.distanceKm, locale)}`
+                : formatExactDistance(selectedRoute.distanceKm, locale)}
             </div>
           )}
           {mode === "spectator" && predictedPassingTime && selectedRoute && (
             <div class="text-text mt-4 font-mono text-sm">
-              <span data-route-selection-time>{predictedPassingTime}</span>
+              {predictedReturnTime ? (
+                <div class="flex flex-col gap-1">
+                  <div>
+                    <span class="text-muted mr-2">
+                      {dictionary.firstPassLabel}
+                    </span>
+                    <span data-route-selection-time>{predictedReturnTime}</span>
+                  </div>
+                  <div>
+                    <span class="text-muted mr-2">
+                      {dictionary.returnPassLabel}
+                    </span>
+                    <span data-route-selection-return-time>
+                      {predictedPassingTime}
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <span data-route-selection-time>{predictedPassingTime}</span>
+              )}
             </div>
           )}
           {selectedMarker?.detail && (
