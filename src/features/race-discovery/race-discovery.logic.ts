@@ -41,6 +41,11 @@ export const getDiscoveryCountryOptions = (
         left.value.localeCompare(right.value),
     );
 
+export const paginateDiscoveryCards = (
+  cards: DiscoveryCard[],
+  visibleCount: number,
+): DiscoveryCard[] => cards.slice(0, visibleCount);
+
 export const filterDiscoveryCards = (
   cards: DiscoveryCard[],
   filters: DiscoveryFilters,

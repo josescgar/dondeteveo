@@ -45,6 +45,10 @@
 - Fragment data is untrusted and must be parsed and validated before use.
 - Share pages are always `noindex`.
 
+## Race Listing Pagination
+
+The race listing pages (`/en/races`, `/es/races`) use client-side "Load more" pagination. All race data is passed at build time; the Preact island slices the filtered list into batches of 12 and reveals more on button click. Changing any filter resets pagination to the first batch.
+
 ## Repository Shape
 
 - `src/pages/`, `src/layouts/`

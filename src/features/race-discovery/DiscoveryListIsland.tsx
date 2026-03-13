@@ -6,12 +6,13 @@ import {
   formatRaceDate,
   getTodayInTimeZone,
 } from "../../lib/format";
-import type { Locale } from "../../lib/config";
+import { DISCOVERY_PAGE_SIZE, type Locale } from "../../lib/config";
 import type { RaceSummary } from "../../lib/races/catalog";
 import {
   filterDiscoveryCards,
   getDiscoveryCards,
   getDiscoveryCountryOptions,
+  paginateDiscoveryCards,
 } from "./race-discovery.logic";
 
 type Props = {
@@ -29,6 +30,7 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
   const [query, setQuery] = useState("");
   const [country, setCountry] = useState("");
   const [year, setYear] = useState("");
+  const [visibleCount, setVisibleCount] = useState(DISCOVERY_PAGE_SIZE);
 
   const cards = useMemo(
     () => getDiscoveryCards(locale, races),
@@ -37,6 +39,10 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
   const filteredCards = useMemo(
     () => filterDiscoveryCards(cards, { query, country, year }),
     [cards, country, query, year],
+  );
+  const visibleCards = useMemo(
+    () => paginateDiscoveryCards(filteredCards, visibleCount),
+    [filteredCards, visibleCount],
   );
   const availableCountries = useMemo(
     () => getDiscoveryCountryOptions(locale, races),
@@ -58,7 +64,10 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
           <input
             type="search"
             value={query}
-            onInput={(event) => setQuery(event.currentTarget.value)}
+            onInput={(event) => {
+              setQuery(event.currentTarget.value);
+              setVisibleCount(DISCOVERY_PAGE_SIZE);
+            }}
             placeholder={dictionary.raceSearchPlaceholder}
             class={inputClass}
             style={baseInputStyle}
@@ -79,7 +88,10 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
           </span>
           <select
             value={country}
-            onInput={(event) => setCountry(event.currentTarget.value)}
+            onInput={(event) => {
+              setCountry(event.currentTarget.value);
+              setVisibleCount(DISCOVERY_PAGE_SIZE);
+            }}
             class={inputClass}
             style={baseInputStyle}
             onFocus={(e) =>
@@ -104,7 +116,10 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
           </span>
           <select
             value={year}
-            onInput={(event) => setYear(event.currentTarget.value)}
+            onInput={(event) => {
+              setYear(event.currentTarget.value);
+              setVisibleCount(DISCOVERY_PAGE_SIZE);
+            }}
             class={inputClass}
             style={baseInputStyle}
             onFocus={(e) =>
@@ -124,7 +139,7 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
 
       <div>
         {filteredCards.length > 0 ? (
-          filteredCards.map((card) => {
+          visibleCards.map((card) => {
             const isUpcoming =
               card.meta.date >= getTodayInTimeZone(card.meta.timezone);
             return (
@@ -209,6 +224,24 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
           </div>
         )}
       </div>
+
+      {visibleCount < filteredCards.length && (
+        <div class="mt-6 flex flex-col items-center gap-2">
+          <span class="font-mono text-xs" style="color: var(--color-muted);">
+            {visibleCards.length} / {filteredCards.length}
+          </span>
+          <button
+            type="button"
+            onClick={() =>
+              setVisibleCount((prev) => prev + DISCOVERY_PAGE_SIZE)
+            }
+            class="px-4 py-2 font-mono text-sm transition"
+            style="color: var(--color-accent); border: 1px solid var(--color-line-solid);"
+          >
+            {dictionary.loadMore}
+          </button>
+        </div>
+      )}
 
       <div class="mt-6 text-center">
         <a
