@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   filterDiscoveryCards,
   getDiscoveryCountryOptions,
+  paginateDiscoveryCards,
 } from "./race-discovery.logic";
 
 const cards = [
@@ -78,6 +79,24 @@ describe("race discovery logic", () => {
     });
 
     expect(result).toHaveLength(1);
+  });
+
+  it("paginates to at most visibleCount cards", () => {
+    const manyCards = Array.from({ length: 5 }, (_, i) => ({
+      ...cards[0],
+      raceSlug: `race-${i}`,
+      href: `/en/races/race-${i}/2026`,
+    }));
+
+    expect(paginateDiscoveryCards(manyCards, 3)).toHaveLength(3);
+  });
+
+  it("returns all cards when visibleCount exceeds length", () => {
+    expect(paginateDiscoveryCards(cards, 100)).toHaveLength(1);
+  });
+
+  it("returns empty array for empty input", () => {
+    expect(paginateDiscoveryCards([], 10)).toHaveLength(0);
   });
 
   it("returns no cards when query does not match", () => {
