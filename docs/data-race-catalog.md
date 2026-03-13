@@ -23,6 +23,10 @@
 - `points.geojson`
 - `source.json`
 
+## Optional Files Per Edition
+
+- `localizations.json` — locale-specific overrides for meta fields and point labels
+
 ## `meta.json` Schema
 
 | Field                | Type                | Required | Notes                                                         |
@@ -57,6 +61,34 @@
 | `label`      | string                       | Display label (e.g. `"10K split"`, `"Cheer point: Plaza Nueva"`)                                   |
 | `kind`       | `"split"` \| `"cheer-point"` | `split` = timing splits shown in planner; `cheer-point` = spectator locations shown on share pages |
 | `distanceKm` | number                       | Distance from start along the route                                                                |
+
+## `localizations.json` Schema
+
+Optional file. Keys are locale codes (e.g. `"es"`). Each locale entry may contain:
+
+| Field         | Type                     | Notes                                                               |
+| ------------- | ------------------------ | ------------------------------------------------------------------- |
+| `meta`        | object (partial)         | Any subset of: `name`, `city`, `summary`, `heroNote`, `specialNote` |
+| `pointLabels` | `Record<string, string>` | Maps point `id` from `points.geojson` to a localized display label  |
+
+Both fields are optional per locale. Point IDs that don't match any feature in `points.geojson` are silently ignored.
+
+Example:
+
+```json
+{
+  "es": {
+    "meta": {
+      "name": "Carrera Ejemplo 10K",
+      "city": "Sevilla"
+    },
+    "pointLabels": {
+      "start": "Salida",
+      "finish": "Meta"
+    }
+  }
+}
+```
 
 ## Timing Rules
 

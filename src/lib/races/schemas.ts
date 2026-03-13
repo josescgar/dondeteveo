@@ -62,6 +62,24 @@ export const pointsFeatureCollectionSchema = z.object({
     .min(1),
 });
 
+const localizableMetaSchema = metaSchema
+  .pick({
+    name: true,
+    city: true,
+    summary: true,
+    heroNote: true,
+    specialNote: true,
+  })
+  .partial();
+
+const localeLocalizationSchema = z.object({
+  meta: localizableMetaSchema.optional(),
+  pointLabels: z.record(z.string().min(1), z.string().min(1)).optional(),
+});
+
+export const localizationsSchema = z.record(localeLocalizationSchema);
+export type RaceLocalizations = z.infer<typeof localizationsSchema>;
+
 export type RaceMeta = z.infer<typeof metaSchema>;
 export type RaceSource = z.infer<typeof sourceSchema>;
 export type RaceRouteFeature = z.infer<typeof routeFeatureSchema>;
