@@ -70,30 +70,22 @@ const sharePageRaceConnector =
   <div class="max-w-3xl">
     <h1
       id="share-h1-static"
-      class="font-display leading-none font-bold uppercase"
-      style={`font-size: clamp(2.5rem, 10vw, 5rem); color: var(--color-text);`}
+      class="font-display text-text leading-none font-bold uppercase"
+      style="font-size: clamp(2.5rem, 10vw, 5rem);"
     >
       {dictionary.sharePageTitle}{" "}<span id="share-h1-name-slot"></span>
       {sharePageRaceConnector}
       {edition.meta.name}
     </h1>
-    <p
-      class="mt-4 font-mono text-sm leading-7"
-      style="color: var(--color-muted);"
-    >
+    <p class="text-muted mt-4 font-mono text-sm leading-7">
       {dictionary.allTimesRaceLocal}
     </p>
   </div>
 
   <section class="mt-8">
     <noscript>
-      <div
-        style="background-color: var(--color-surface); border: 1px solid var(--color-line); padding: 1.5rem;"
-      >
-        <p
-          class="font-mono text-sm leading-7"
-          style="color: var(--color-muted);"
-        >
+      <div class="card-surface">
+        <p class="text-muted font-mono text-sm leading-7">
           {dictionary.shareNeedsJavaScript}
         </p>
       </div>

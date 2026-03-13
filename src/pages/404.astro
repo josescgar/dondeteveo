@@ -38,8 +38,7 @@ const notFoundKeys = {
 >
   <section class="flex flex-col items-center py-20 text-center">
     <div
-      class="font-display leading-none font-bold uppercase"
-      style="font-size: clamp(6rem, 20vw, 12rem); color: var(--color-accent);"
+      class="font-display text-404 text-accent leading-none font-bold uppercase"
     >
       404
     </div>
@@ -57,8 +56,7 @@ const notFoundKeys = {
       <span class="absolute text-lg" data-runner>🏃‍➡️</span>
     </div>
     <p
-      class="mt-4 max-w-md font-mono text-base leading-8"
-      style="color: var(--color-muted);"
+      class="text-muted mt-4 max-w-md font-mono text-base leading-8"
       data-i18n="notFoundBody"
     >
       {dictionary.notFoundBody}
@@ -68,10 +66,7 @@ const notFoundKeys = {
         href={buildHomePath(locale)}
         data-i18n="notFoundGoHome"
         data-i18n-href="home"
-        class="inline-flex px-5 py-2.5 font-mono text-sm tracking-[0.18em] uppercase transition"
-        style="background-color: var(--color-coral); color: var(--color-text);"
-        onmouseover="this.style.backgroundColor='var(--color-coral-deep)'"
-        onmouseout="this.style.backgroundColor='var(--color-coral)'"
+        class="bg-coral text-text hover:bg-coral-deep inline-flex px-5 py-2.5 font-mono text-sm tracking-[0.18em] uppercase transition"
       >
         {dictionary.notFoundGoHome}
       </a>
@@ -79,10 +74,7 @@ const notFoundKeys = {
         href={buildRacesPath(locale)}
         data-i18n="notFoundFindRace"
         data-i18n-href="races"
-        class="inline-flex px-5 py-2.5 font-mono text-sm tracking-[0.18em] uppercase transition"
-        style="border: 1px solid var(--color-line); color: var(--color-text);"
-        onmouseover="this.style.borderColor='var(--color-accent)'"
-        onmouseout="this.style.borderColor='var(--color-line)'"
+        class="border-line text-text hover:border-accent inline-flex border px-5 py-2.5 font-mono text-sm tracking-[0.18em] uppercase transition"
       >
         {dictionary.notFoundFindRace}
       </a>

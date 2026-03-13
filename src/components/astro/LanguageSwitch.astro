@@ -20,22 +20,12 @@ const alternatePath = switchLocalePath(pathname, alternateLocale);
 <a
   href={alternatePath}
   data-preserve-hash-link
-  class="lang-switch inline-flex items-center gap-1.5 border px-2.5 py-1 text-[9px] font-bold tracking-[0.22em] uppercase transition sm:px-3 sm:py-1.5 sm:text-[10px] sm:tracking-[0.24em]"
-  style="border-color: var(--color-line); background-color: var(--color-accent-dim); color: var(--color-accent);"
+  class="border-line bg-accent-dim text-accent hover:border-accent hover:bg-line inline-flex items-center gap-1.5 border px-2.5 py-1 text-[9px] font-bold tracking-[0.22em] uppercase transition sm:px-3 sm:py-1.5 sm:text-[10px] sm:tracking-[0.24em]"
 >
   <span>{LOCALE_LABELS[currentLocale].slice(0, 2)}</span>
-  <span style="color: var(--color-muted);">/</span>
-  <span style="color: var(--color-muted);"
-    >{LOCALE_LABELS[alternateLocale].slice(0, 2)}</span
-  >
+  <span class="text-muted">/</span>
+  <span class="text-muted">{LOCALE_LABELS[alternateLocale].slice(0, 2)}</span>
 </a>
-
-<style>
-  .lang-switch:hover {
-    background-color: var(--color-line) !important;
-    border-color: var(--color-accent) !important;
-  }
-</style>
 
 <script is:inline define:vars={{ storageKey: LOCALE_STORAGE_KEY }}>
   document.querySelectorAll("[data-preserve-hash-link]").forEach((element) => {

@@ -302,16 +302,14 @@ export default function RaceMapIsland({
   return (
     <div
       ref={wrapperRef}
-      class="relative overflow-hidden"
-      style="border: 1px solid var(--color-line); background-color: var(--color-surface);"
+      class="border-line bg-surface relative overflow-hidden border"
     >
       {mode === "spectator" && canFullscreen && (
         <button
           type="button"
           data-map-fullscreen-toggle
           onClick={handleToggleFullscreen}
-          class="absolute top-3 right-3 z-[500] flex h-10 w-10 items-center justify-center"
-          style="background-color: var(--color-surface-raised); color: var(--color-text); border: 1px solid var(--color-line); cursor: pointer;"
+          class="border-line bg-surface-raised text-text absolute top-3 right-3 z-[500] flex h-10 w-10 cursor-pointer items-center justify-center border"
           aria-label={
             isFullscreen
               ? dictionary.exitFullscreenMap
@@ -366,21 +364,16 @@ export default function RaceMapIsland({
         ref={containerRef}
         data-race-map
         data-map-mode={mode}
-        class="w-full overflow-hidden"
-        style={isFullscreen ? "height: 100%;" : "height: 24rem;"}
+        class={`w-full overflow-hidden ${isFullscreen ? "h-full" : "h-96"}`}
       />
       {mode !== "static" && panelState && (
         <div
           data-route-selection-panel
-          class="absolute right-3 bottom-3 left-3 z-[500] max-w-md p-4 sm:left-auto"
-          style="background-color: var(--color-surface-raised); border: 1px solid var(--color-line); box-shadow: var(--shadow-md);"
+          class="border-line bg-surface-raised absolute right-3 bottom-3 left-3 z-[500] max-w-md border p-4 shadow-md sm:left-auto"
         >
           <div class="flex items-start justify-between gap-4">
             <div>
-              <div
-                class="font-mono text-[10px] tracking-[0.24em] uppercase"
-                style="color: var(--color-muted);"
-              >
+              <div class="text-muted font-mono text-[10px] tracking-[0.24em] uppercase">
                 {selectedRoute
                   ? dictionary.selectedRoutePoint
                   : selectedMarker?.kind === "cheer-point"
@@ -389,8 +382,7 @@ export default function RaceMapIsland({
               </div>
               <div
                 data-route-selection-primary
-                class="font-display mt-2 text-2xl font-bold uppercase"
-                style="color: var(--color-text);"
+                class="font-display text-text mt-2 text-2xl font-bold uppercase"
               >
                 {selectedRoute
                   ? formatExactDistance(selectedRoute.distanceKm, locale)
@@ -401,8 +393,7 @@ export default function RaceMapIsland({
               type="button"
               data-route-selection-dismiss
               onClick={handleDismissSelection}
-              class="shrink-0 px-2 py-1 font-mono text-sm uppercase"
-              style="background: none; color: var(--color-muted); border: 1px solid var(--color-line); cursor: pointer;"
+              class="border-line text-muted shrink-0 cursor-pointer border bg-transparent px-2 py-1 font-mono text-sm uppercase"
               aria-label={dictionary.dismissRoutePoint}
             >
               X
@@ -414,18 +405,14 @@ export default function RaceMapIsland({
             </div>
           )}
           {mode === "spectator" && predictedPassingTime && selectedRoute && (
-            <div
-              class="mt-4 font-mono text-sm"
-              style="color: var(--color-text);"
-            >
+            <div class="text-text mt-4 font-mono text-sm">
               <span data-route-selection-time>{predictedPassingTime}</span>
             </div>
           )}
           {selectedMarker?.detail && (
             <div
               data-point-selection-detail
-              class="mt-4 font-mono text-sm leading-6"
-              style="color: var(--color-text);"
+              class="text-text mt-4 font-mono text-sm leading-6"
             >
               {selectedMarker.detail}
             </div>

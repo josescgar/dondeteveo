@@ -16,10 +16,7 @@ export function Tooltip({
   return (
     <div class={`relative inline-block${className ? ` ${className}` : ""}`}>
       {visible && (
-        <div
-          class="absolute right-0 bottom-full mb-2 font-mono text-[10px] whitespace-nowrap"
-          style="background-color: var(--color-text); color: var(--color-bg); padding: 0.25rem 0.5rem;"
-        >
+        <div class="bg-text text-bg absolute right-0 bottom-full mb-2 px-2 py-1 font-mono text-[10px] whitespace-nowrap">
           {text}
           <div
             class="absolute right-2"

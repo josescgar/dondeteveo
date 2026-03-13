@@ -27,15 +27,12 @@ const races = (await getRaceSummaries()).map((race) =>
 >
   <div class="max-w-3xl">
     <h1
-      class="font-display leading-none font-bold uppercase"
-      style={`font-size: clamp(2.5rem, 8vw, 4rem); color: var(--color-text);`}
+      class="font-display text-text leading-none font-bold uppercase"
+      style="font-size: clamp(2.5rem, 8vw, 4rem);"
     >
       {dictionary.discoverTitle}
     </h1>
-    <p
-      class="mt-4 font-mono text-base leading-7"
-      style="color: var(--color-muted);"
-    >
+    <p class="text-muted mt-4 font-mono text-base leading-7">
       {dictionary.discoverIntro}
     </p>
   </div>

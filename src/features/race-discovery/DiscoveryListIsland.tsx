@@ -22,9 +22,7 @@ type Props = {
 };
 
 const inputClass =
-  "w-full border-b bg-transparent px-0 py-2 font-mono text-sm outline-none transition";
-const baseInputStyle =
-  "border-color: var(--color-line-solid); color: var(--color-text);";
+  "w-full border-b border-line-solid bg-transparent px-0 py-2 font-mono text-sm text-text outline-none transition focus:border-accent";
 
 export default function DiscoveryListIsland({ locale, races }: Props) {
   const dictionary = getDictionary(locale);
@@ -56,10 +54,7 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
     <div class="space-y-6">
       <div class="grid gap-6 md:grid-cols-[2fr_1fr_1fr]">
         <label class="flex flex-col gap-1.5">
-          <span
-            class="font-mono text-[10px] tracking-[0.26em] uppercase"
-            style="color: var(--color-muted);"
-          >
+          <span class="text-muted font-mono text-[10px] tracking-[0.26em] uppercase">
             {dictionary.search}
           </span>
           <input
@@ -71,20 +66,10 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
             }}
             placeholder={dictionary.raceSearchPlaceholder}
             class={inputClass}
-            style={baseInputStyle}
-            onFocus={(e) =>
-              (e.currentTarget.style.borderColor = "var(--color-accent)")
-            }
-            onBlur={(e) =>
-              (e.currentTarget.style.borderColor = "var(--color-line-solid)")
-            }
           />
         </label>
         <label class="flex flex-col gap-1.5">
-          <span
-            class="font-mono text-[10px] tracking-[0.26em] uppercase"
-            style="color: var(--color-muted);"
-          >
+          <span class="text-muted font-mono text-[10px] tracking-[0.26em] uppercase">
             {dictionary.country}
           </span>
           <select
@@ -94,13 +79,6 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
               setVisibleCount(DISCOVERY_PAGE_SIZE);
             }}
             class={inputClass}
-            style={baseInputStyle}
-            onFocus={(e) =>
-              (e.currentTarget.style.borderColor = "var(--color-accent)")
-            }
-            onBlur={(e) =>
-              (e.currentTarget.style.borderColor = "var(--color-line-solid)")
-            }
           >
             <option value="">{dictionary.allFilter}</option>
             {availableCountries.map((country) => (
@@ -109,10 +87,7 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
           </select>
         </label>
         <label class="flex flex-col gap-1.5">
-          <span
-            class="font-mono text-[10px] tracking-[0.26em] uppercase"
-            style="color: var(--color-muted);"
-          >
+          <span class="text-muted font-mono text-[10px] tracking-[0.26em] uppercase">
             {dictionary.date}
           </span>
           <select
@@ -122,13 +97,6 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
               setVisibleCount(DISCOVERY_PAGE_SIZE);
             }}
             class={inputClass}
-            style={baseInputStyle}
-            onFocus={(e) =>
-              (e.currentTarget.style.borderColor = "var(--color-accent)")
-            }
-            onBlur={(e) =>
-              (e.currentTarget.style.borderColor = "var(--color-line-solid)")
-            }
           >
             <option value="">{dictionary.allFilter}</option>
             {availableYears.map((yearOption) => (
@@ -146,63 +114,37 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
             return (
               <a
                 href={card.href}
-                class="race-row group flex items-center justify-between gap-4 py-4 pr-2 transition-colors"
-                style="border-bottom: 1px solid var(--color-line);"
-                onMouseOver={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.backgroundColor =
-                    "var(--color-surface)";
-                }}
-                onMouseOut={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.backgroundColor =
-                    "";
-                }}
+                class="race-row group border-line hover:bg-surface flex items-center justify-between gap-4 border-b py-4 pr-2 transition-colors"
               >
                 <div class="flex min-w-0 items-center gap-4">
                   <div
-                    class="w-0.5 shrink-0 self-stretch"
-                    style={`background-color: ${isUpcoming ? "var(--color-accent)" : "var(--color-line-solid)"};`}
+                    class={`w-0.5 shrink-0 self-stretch ${isUpcoming ? "bg-accent" : "bg-line-solid"}`}
                   ></div>
                   <div class="min-w-0">
-                    <h2
-                      class="font-display text-xl leading-tight font-bold uppercase"
-                      style="color: var(--color-text);"
-                    >
+                    <h2 class="font-display text-text text-xl leading-tight font-bold uppercase">
                       {card.meta.name}
                     </h2>
-                    <div
-                      class="mt-0.5 font-mono text-xs"
-                      style="color: var(--color-muted);"
-                    >
+                    <div class="text-muted mt-0.5 font-mono text-xs">
                       {card.meta.city}
                     </div>
                   </div>
                 </div>
                 <div class="flex shrink-0 items-center gap-4 font-mono text-xs">
                   <span
-                    class="px-2 py-0.5 text-[10px] tracking-wider"
-                    style={`background-color: var(--color-surface-raised); color: ${isUpcoming ? "var(--color-accent)" : "var(--color-muted)"};`}
+                    class={`bg-surface-raised px-2 py-0.5 text-[10px] tracking-wider ${isUpcoming ? "text-accent" : "text-muted"}`}
                   >
                     {isUpcoming
                       ? dictionary.upcomingEdition
                       : dictionary.pastEdition}
                   </span>
-                  <span
-                    class="hidden md:inline"
-                    style="color: var(--color-muted);"
-                  >
+                  <span class="text-muted hidden md:inline">
                     {formatRaceDate(card.meta.date, locale)}
                   </span>
-                  <span
-                    class="hidden lg:inline"
-                    style="color: var(--color-muted);"
-                  >
+                  <span class="text-muted hidden lg:inline">
                     {formatDistance(card.meta.distanceKm, locale)}
                   </span>
-                  <span style="color: var(--color-muted);">{card.year}</span>
-                  <span
-                    class="transition-transform group-hover:translate-x-0.5"
-                    style="color: var(--color-accent);"
-                  >
+                  <span class="text-muted">{card.year}</span>
+                  <span class="text-accent transition-transform group-hover:translate-x-0.5">
                     →
                   </span>
                 </div>
@@ -210,15 +152,11 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
             );
           })
         ) : (
-          <div
-            class="border border-dashed p-6 font-mono text-sm leading-7"
-            style="border-color: var(--color-line); color: var(--color-muted);"
-          >
+          <div class="border-line text-muted border border-dashed p-6 font-mono text-sm leading-7">
             {dictionary.noMatch}
             <a
               href={buildContributePath(locale)}
-              class="mt-2 block text-sm transition"
-              style="color: var(--color-accent);"
+              class="text-accent mt-2 block text-sm transition"
             >
               {dictionary.cantFindRace} →
             </a>
@@ -228,7 +166,7 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
 
       {visibleCount < filteredCards.length && (
         <div class="mt-6 flex flex-col items-center gap-2">
-          <span class="font-mono text-xs" style="color: var(--color-muted);">
+          <span class="text-muted font-mono text-xs">
             {visibleCards.length} / {filteredCards.length}
           </span>
           <button
@@ -236,8 +174,7 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
             onClick={() =>
               setVisibleCount((prev) => prev + DISCOVERY_PAGE_SIZE)
             }
-            class="px-4 py-2 font-mono text-sm transition"
-            style="color: var(--color-accent); border: 1px solid var(--color-line-solid);"
+            class="border-line-solid text-accent border px-4 py-2 font-mono text-sm transition"
           >
             {dictionary.loadMore}
           </button>
@@ -247,16 +184,7 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
       <div class="mt-6 text-center">
         <a
           href={buildContributePath(locale)}
-          class="font-mono text-sm transition"
-          style="color: var(--color-muted);"
-          onMouseOver={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.color =
-              "var(--color-accent)";
-          }}
-          onMouseOut={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.color =
-              "var(--color-muted)";
-          }}
+          class="text-muted hover:text-accent font-mono text-sm transition"
         >
           {dictionary.cantFindRace} →
         </a>

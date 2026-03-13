@@ -25,38 +25,27 @@ const races = (await getRaceSummaries()).map((race) =>
   description={dictionary.heroBody}
 >
   <!-- Section 1: Hero -->
-  <section class="pb-14" style="border-bottom: 1px solid var(--color-line);">
-    <div
-      class="font-mono text-[10px] tracking-[0.32em] uppercase"
-      style="color: var(--color-muted);"
-    >
+  <section class="border-line border-b pb-14">
+    <div class="text-muted font-mono text-[10px] tracking-[0.32em] uppercase">
       // {dictionary.siteTagline}
     </div>
     <div
-      class="font-display mt-3 leading-none font-bold uppercase"
-      style="font-size: clamp(3.5rem, 14vw, 9rem); color: var(--color-text);"
+      class="font-display text-hero text-text mt-3 leading-none font-bold uppercase"
     >
       DONDETEVEO
     </div>
     <h1
-      class="font-display mt-4 font-bold uppercase sm:text-5xl"
-      style="font-size: clamp(1.5rem, 5vw, 3rem); color: var(--color-accent);"
+      class="font-display text-hero-sub text-accent mt-4 font-bold uppercase sm:text-5xl"
     >
       {dictionary.heroTitle}
     </h1>
-    <p
-      class="mt-4 max-w-lg font-mono text-base leading-8"
-      style="color: var(--color-muted);"
-    >
+    <p class="text-muted mt-4 max-w-lg font-mono text-base leading-8">
       {dictionary.heroBody}
     </p>
     <div class="mt-7">
       <a
         href={buildRacesPath(locale)}
-        class="inline-flex px-5 py-2.5 font-mono text-sm tracking-[0.18em] uppercase transition"
-        style="background-color: var(--color-coral); color: var(--color-text);"
-        onmouseover="this.style.backgroundColor='var(--color-coral-deep)'"
-        onmouseout="this.style.backgroundColor='var(--color-coral)'"
+        class="bg-coral text-text hover:bg-coral-deep inline-flex px-5 py-2.5 font-mono text-sm tracking-[0.18em] uppercase transition"
       >
         {dictionary.directRaceSearch}
       </a>
@@ -64,67 +53,37 @@ const races = (await getRaceSummaries()).map((race) =>
   </section>
 
   <!-- Section 2: Feature row -->
-  <section class="py-14" style="border-bottom: 1px solid var(--color-line);">
+  <section class="border-line border-b py-14">
     <div class="grid gap-8 sm:grid-cols-3">
       <div class="flex gap-4">
-        <div
-          class="w-0.5 self-stretch"
-          style="background-color: var(--color-accent);"
-        >
-        </div>
+        <div class="bg-accent w-0.5 self-stretch"></div>
         <div>
-          <div
-            class="font-display text-base font-bold uppercase"
-            style="color: var(--color-accent);"
-          >
+          <div class="font-display text-accent text-base font-bold uppercase">
             {dictionary.searchFirstTitle}
           </div>
-          <p
-            class="mt-2 font-mono text-sm leading-7"
-            style="color: var(--color-muted);"
-          >
+          <p class="text-muted mt-2 font-mono text-sm leading-7">
             {dictionary.searchFirstBody}
           </p>
         </div>
       </div>
       <div class="flex gap-4">
-        <div
-          class="w-0.5 self-stretch"
-          style="background-color: var(--color-accent);"
-        >
-        </div>
+        <div class="bg-accent w-0.5 self-stretch"></div>
         <div>
-          <div
-            class="font-display text-base font-bold uppercase"
-            style="color: var(--color-accent);"
-          >
+          <div class="font-display text-accent text-base font-bold uppercase">
             {dictionary.justOpenTitle}
           </div>
-          <p
-            class="mt-2 font-mono text-sm leading-7"
-            style="color: var(--color-muted);"
-          >
+          <p class="text-muted mt-2 font-mono text-sm leading-7">
             {dictionary.justOpenBody}
           </p>
         </div>
       </div>
       <div class="flex gap-4">
-        <div
-          class="w-0.5 self-stretch"
-          style="background-color: var(--color-accent);"
-        >
-        </div>
+        <div class="bg-accent w-0.5 self-stretch"></div>
         <div>
-          <div
-            class="font-display text-base font-bold uppercase"
-            style="color: var(--color-accent);"
-          >
+          <div class="font-display text-accent text-base font-bold uppercase">
             {dictionary.shareReadyTitle}
           </div>
-          <p
-            class="mt-2 font-mono text-sm leading-7"
-            style="color: var(--color-muted);"
-          >
+          <p class="text-muted mt-2 font-mono text-sm leading-7">
             {dictionary.shareReadyBody}
           </p>
         </div>
@@ -135,8 +94,7 @@ const races = (await getRaceSummaries()).map((race) =>
   <!-- Section 3: Race search -->
   <section id="race-search" class="mt-14 scroll-mt-8">
     <div
-      class="mb-5 font-mono text-[10px] tracking-[0.32em] uppercase"
-      style="color: var(--color-muted);"
+      class="text-muted mb-5 font-mono text-[10px] tracking-[0.32em] uppercase"
     >
       // {dictionary.directRaceSearch}
     </div>
