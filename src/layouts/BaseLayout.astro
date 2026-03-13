@@ -8,6 +8,7 @@ import {
   type Locale,
 } from "../lib/config";
 import { getDictionary } from "../lib/i18n";
+import { buildAboutPath, buildHomePath, buildRacesPath } from "../lib/routes";
 import { buildSeo, type SeoInput } from "../lib/seo";
 
 type Props = SeoInput & {
@@ -36,11 +37,11 @@ const seo = buildSeo({
 });
 const navLinks = [
   {
-    href: `/${locale}/races`,
+    href: buildRacesPath(locale),
     label: dictionary.raceDiscovery,
   },
   {
-    href: `/${locale}/about`,
+    href: buildAboutPath(locale),
     label: dictionary.about,
   },
 ];
@@ -118,7 +119,7 @@ const mobileNavId = "site-mobile-nav";
         class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:gap-6 sm:px-8"
       >
         <a
-          href={`/${locale}`}
+          href={buildHomePath(locale)}
           class="flex min-w-0 items-center gap-2.5 sm:gap-3"
         >
           <img

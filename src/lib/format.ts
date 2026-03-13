@@ -1,5 +1,10 @@
 import type { Locale } from "./config";
 
+/**
+ * @deprecated Import from "./routes" instead.
+ */
+export { buildRacePath, buildSharePath, switchLocalePath } from "./routes";
+
 const DATE_FORMATTERS: Record<Locale, Intl.DateTimeFormat> = {
   en: new Intl.DateTimeFormat("en-GB", {
     day: "numeric",
@@ -66,21 +71,3 @@ export const getTodayInTimeZone = (
 
   return `${year}-${month}-${day}`;
 };
-
-export const buildRacePath = (
-  locale: Locale,
-  raceSlug: string,
-  year?: string,
-): string =>
-  year
-    ? `/${locale}/races/${raceSlug}/${year}`
-    : `/${locale}/races/${raceSlug}`;
-
-export const buildSharePath = (
-  locale: Locale,
-  raceSlug: string,
-  year: string,
-): string => `/${locale}/share/${raceSlug}/${year}`;
-
-export const switchLocalePath = (pathname: string, locale: Locale): string =>
-  pathname.replace(/^\/(en|es)/, `/${locale}`);

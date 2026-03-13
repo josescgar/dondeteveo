@@ -4,6 +4,7 @@ import DiscoveryListIsland from "../../features/race-discovery/DiscoveryListIsla
 
 import { type Locale, SUPPORTED_LOCALES } from "../../lib/config";
 import { getDictionary } from "../../lib/i18n";
+import { buildHomePath, buildRacesPath } from "../../lib/routes";
 import { localizeRaceSummary } from "../../lib/races/localized";
 import { getRaceSummaries } from "../../lib/races/catalog";
 
@@ -19,7 +20,7 @@ const races = (await getRaceSummaries()).map((race) =>
 
 <BaseLayout
   locale={locale}
-  pathname={`/${locale}`}
+  pathname={buildHomePath(locale)}
   title={`Dondeteveo | ${dictionary.directRaceSearch}`}
   description={dictionary.heroBody}
 >
@@ -51,7 +52,7 @@ const races = (await getRaceSummaries()).map((race) =>
     </p>
     <div class="mt-7">
       <a
-        href={`/${locale}/races`}
+        href={buildRacesPath(locale)}
         class="inline-flex px-5 py-2.5 font-mono text-sm tracking-[0.18em] uppercase transition"
         style="background-color: var(--color-coral); color: var(--color-text);"
         onmouseover="this.style.backgroundColor='var(--color-coral-deep)'"

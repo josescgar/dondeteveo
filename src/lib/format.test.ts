@@ -1,13 +1,10 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  buildRacePath,
-  buildSharePath,
   formatCountryName,
   formatDistance,
   formatRaceDate,
   getTodayInTimeZone,
-  switchLocalePath,
 } from "./format";
 
 describe("format helpers", () => {
@@ -41,27 +38,5 @@ describe("format helpers", () => {
     expect(getTodayInTimeZone("America/New_York", referenceDate)).toBe(
       "2026-03-15",
     );
-  });
-
-  it("builds race paths with and without a year", () => {
-    expect(buildRacePath("en", "carrera-triana-los-remedios-10k", "2026")).toBe(
-      "/en/races/carrera-triana-los-remedios-10k/2026",
-    );
-    expect(buildRacePath("es", "carrera-triana-los-remedios-10k")).toBe(
-      "/es/races/carrera-triana-los-remedios-10k",
-    );
-  });
-
-  it("builds share paths", () => {
-    expect(
-      buildSharePath("en", "carrera-triana-los-remedios-10k", "2026"),
-    ).toBe("/en/share/carrera-triana-los-remedios-10k/2026");
-  });
-
-  it("switches the leading locale segment in a path", () => {
-    expect(
-      switchLocalePath("/en/races/carrera-triana-los-remedios-10k", "es"),
-    ).toBe("/es/races/carrera-triana-los-remedios-10k");
-    expect(switchLocalePath("/es", "en")).toBe("/en");
   });
 });

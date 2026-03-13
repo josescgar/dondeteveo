@@ -1,5 +1,6 @@
 import type { Locale } from "../../lib/config";
 import { formatCountryName } from "../../lib/format";
+import { buildRacePath } from "../../lib/routes";
 import type { RaceSummary } from "../../lib/races/catalog";
 
 export type DiscoveryFilters = {
@@ -23,7 +24,7 @@ export const getDiscoveryCards = (
 ): DiscoveryCard[] =>
   races.map((race) => ({
     ...race,
-    href: `/${locale}/races/${race.raceSlug}/${race.year}`,
+    href: buildRacePath(locale, race.raceSlug, race.year),
   }));
 
 export const getDiscoveryCountryOptions = (

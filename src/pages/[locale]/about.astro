@@ -7,6 +7,7 @@ import {
   SUPPORTED_LOCALES,
 } from "../../lib/config";
 import { getDictionary } from "../../lib/i18n";
+import { buildAboutPath } from "../../lib/routes";
 
 export const getStaticPaths = () =>
   SUPPORTED_LOCALES.map((locale) => ({ params: { locale } }));
@@ -19,7 +20,7 @@ const CONTACT_EMAIL = "jose.escobar.dev@gmail.com";
 
 <BaseLayout
   locale={locale}
-  pathname={`/${locale}/about`}
+  pathname={buildAboutPath(locale)}
   title={`Dondeteveo | ${dictionary.about}`}
   description={dictionary.contactIntro}
   eyebrow={dictionary.about}

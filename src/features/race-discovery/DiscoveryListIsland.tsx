@@ -7,6 +7,7 @@ import {
   getTodayInTimeZone,
 } from "../../lib/format";
 import { DISCOVERY_PAGE_SIZE, type Locale } from "../../lib/config";
+import { buildContributePath } from "../../lib/routes";
 import type { RaceSummary } from "../../lib/races/catalog";
 import {
   filterDiscoveryCards,
@@ -215,7 +216,7 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
           >
             {dictionary.noMatch}
             <a
-              href={`/${locale}/contribute`}
+              href={buildContributePath(locale)}
               class="mt-2 block text-sm transition"
               style="color: var(--color-accent);"
             >
@@ -245,7 +246,7 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
 
       <div class="mt-6 text-center">
         <a
-          href={`/${locale}/contribute`}
+          href={buildContributePath(locale)}
           class="font-mono text-sm transition"
           style="color: var(--color-muted);"
           onMouseOver={(e) => {
