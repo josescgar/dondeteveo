@@ -2,10 +2,12 @@ import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
 import {
+  localizationsSchema,
   metaSchema,
   pointsFeatureCollectionSchema,
   routeFeatureCollectionSchema,
   sourceSchema,
+  type RaceLocalizations,
   type RaceMeta,
   type RacePointsCollection,
   type RaceRouteCollection,
@@ -21,6 +23,7 @@ export type RaceEdition = {
   source: RaceSource;
   route: RaceRouteCollection;
   points: RacePointsCollection;
+  localizations?: RaceLocalizations;
 };
 
 export type RaceSummary = {
@@ -29,12 +32,26 @@ export type RaceSummary = {
   year: string;
   meta: RaceMeta;
   upcoming: boolean;
+  localizations?: RaceLocalizations;
 };
 
 const DATA_DIRECTORY = path.join(process.cwd(), "data");
 
 const readJson = async <T>(filePath: string): Promise<T> =>
   JSON.parse(await readFile(filePath, "utf8")) as T;
+
+const readOptionalJson = async <T>(
+  filePath: string,
+): Promise<T | undefined> => {
+  try {
+    return JSON.parse(await readFile(filePath, "utf8")) as T;
+  } catch (error: unknown) {
+    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
+      return undefined;
+    }
+    throw error;
+  }
+};
 
 const getDirectories = async (directory: string): Promise<string[]> => {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -67,6 +84,13 @@ const loadRaceEdition = async (
     await readJson(path.join(editionDirectory, "points.geojson")),
   );
 
+  const rawLocalizations = await readOptionalJson(
+    path.join(editionDirectory, "localizations.json"),
+  );
+  const localizations = rawLocalizations
+    ? localizationsSchema.parse(rawLocalizations)
+    : undefined;
+
   return {
     countryCode,
     raceSlug,
@@ -75,6 +99,7 @@ const loadRaceEdition = async (
     source,
     route,
     points,
+    localizations,
   };
 };
 
@@ -119,6 +144,7 @@ export const getRaceSummaries = async (): Promise<RaceSummary[]> => {
     year: edition.year,
     meta: edition.meta,
     upcoming: edition.meta.date >= getTodayInTimeZone(edition.meta.timezone),
+    localizations: edition.localizations,
   }));
 };
 

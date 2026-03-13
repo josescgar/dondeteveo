@@ -1,0 +1,20 @@
+{
+  "es": {
+    "meta": {
+      "name": "Carrera Triana - Los Remedios \"Torre Sevilla\" 10K",
+      "city": "Sevilla",
+      "summary": "10K urbano por La Cartuja, Triana y Los Remedios, con regreso junto al rio hasta la zona de Torre Sevilla.",
+      "heroNote": "El recorrido vuelve por varios puntos muy comodos para animar, con buenas opciones alrededor de Plaza de Cuba, Calle Betis y la ribera de Triana."
+    },
+    "pointLabels": {
+      "start": "Salida - Camino de los Descubrimientos",
+      "km-2-5": "Punto 2.5K - Calle Inca Garcilaso",
+      "cheer-triana-entry": "Punto para animar - Ronda de Triana",
+      "km-5": "Punto 5K - Avenida Alfredo Kraus",
+      "km-7-5": "Punto 7.5K - Calle Asuncion",
+      "cheer-plaza-cuba": "Punto para animar - Plaza de Cuba",
+      "cheer-betis": "Punto para animar - Calle Betis",
+      "finish": "Meta - Torre Sevilla"
+    }
+  }
+}
