@@ -1,0 +1,22 @@
+{
+  "es": {
+    "meta": {
+      "name": "Media Maratón de Málaga",
+      "city": "Málaga",
+      "summary": "Media maratón por la costa de Málaga y el centro histórico, con salida y meta junto al Paseo del Parque.",
+      "heroNote": "Buenos puntos para animar en el paseo de la Malagueta, el Paseo Marítimo y la Alameda Principal cerca de la meta.",
+      "specialNote": "Esta carrera tiene varias oleadas de salida, por lo que los tiempos estimados pueden ser algo menos precisos."
+    },
+    "pointLabels": {
+      "start": "Salida - Paseo del Parque",
+      "cheer-malagueta": "Punto para animar - Playa de la Malagueta",
+      "km-5": "Punto 5K - Paseo Marítimo Pablo Ruiz Picasso",
+      "cheer-huelin": "Punto para animar - Paseo Marítimo Antonio Banderas",
+      "km-10": "Punto 10K - Avenida Juan Sebastián Elcano",
+      "km-15": "Punto 15K - Zona Calle Larios",
+      "cheer-alameda": "Punto para animar - Alameda Principal",
+      "km-20": "Punto 20K - Alameda Principal",
+      "finish": "Meta - Paseo del Parque"
+    }
+  }
+}
