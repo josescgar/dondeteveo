@@ -91,7 +91,7 @@ describe("race map logic", () => {
     expect(selection).toBeNull();
   });
 
-  it("returns null for ambiguous overlapping route selections", () => {
+  it("returns both passes for overlapping route selections", () => {
     const overlappingRoute = {
       type: "FeatureCollection" as const,
       features: [
@@ -129,6 +129,40 @@ describe("race map logic", () => {
       DEFAULT_ROUTE_SELECTION_TOLERANCE_METERS,
     );
 
-    expect(selection).toBeNull();
+    expect(selection).not.toBeNull();
+    expect(selection?.distanceKm).toBeCloseTo(7.5, 0);
+    expect(selection?.returnPassDistanceKm).toBeCloseTo(2.5, 0);
+  });
+
+  it("does not produce a return pass for consecutive segments within the ambiguity threshold", () => {
+    const tightRoute = {
+      type: "FeatureCollection" as const,
+      features: [
+        {
+          type: "Feature" as const,
+          properties: {},
+          geometry: {
+            type: "LineString" as const,
+            coordinates: [
+              [-5.99, 37.38],
+              [-5.988, 37.38],
+              [-5.986, 37.38],
+              [-5.984, 37.38],
+            ],
+          },
+        },
+      ],
+    } satisfies RaceRouteCollection;
+
+    const selection = getRouteSelection(
+      tightRoute,
+      [-5.987, 37.38],
+      10,
+      DEFAULT_ROUTE_SELECTION_TOLERANCE_METERS,
+    );
+
+    expect(selection).not.toBeNull();
+    expect(selection?.distanceKm).toBeDefined();
+    expect(selection?.returnPassDistanceKm).toBeUndefined();
   });
 });

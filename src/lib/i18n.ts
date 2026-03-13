@@ -103,6 +103,8 @@ type Dictionary = {
   notFoundBody: string;
   notFoundGoHome: string;
   notFoundFindRace: string;
+  firstPassLabel: string;
+  returnPassLabel: string;
   loadMore: string;
 };
 
@@ -229,6 +231,8 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
       "The page you\u2019re looking for doesn\u2019t exist or may have moved.",
     notFoundGoHome: "Go to homepage",
     notFoundFindRace: "Find your race",
+    firstPassLabel: "1st pass",
+    returnPassLabel: "Return",
     loadMore: "Load more",
   },
   es: {
@@ -355,6 +359,8 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     notFoundBody: "La p\u00e1gina que buscas no existe o puede haberse movido.",
     notFoundGoHome: "Ir al inicio",
     notFoundFindRace: "Encuentra tu carrera",
+    firstPassLabel: "1ª pasada",
+    returnPassLabel: "Vuelta",
     loadMore: "Cargar más",
   },
 };

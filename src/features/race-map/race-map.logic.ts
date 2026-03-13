@@ -14,6 +14,7 @@ export type RaceMapMarker = {
 export type RouteSelection = {
   coordinates: [number, number];
   distanceKm: number;
+  returnPassDistanceKm?: number;
 };
 
 type RouteSelectionCandidate = RouteSelection & {
@@ -30,7 +31,7 @@ type RouteSegment = {
 
 const EARTH_RADIUS_METERS = 6_371_000;
 const ROUTE_SELECTION_TIE_TOLERANCE_METERS = 0.5;
-const AMBIGUOUS_SELECTION_DISTANCE_THRESHOLD_KM = 0.1;
+const AMBIGUOUS_SELECTION_DISTANCE_THRESHOLD_KM = 0.5;
 
 export const DEFAULT_ROUTE_SELECTION_TOLERANCE_METERS = 90;
 
@@ -177,7 +178,7 @@ export const getRouteSelection = (
   const projectedCoordinate = projectCoordinate(coordinate, referenceLatitude);
   let closestSelection: RouteSelectionCandidate | null = null;
   let closestDistanceFromRouteMeters = Number.POSITIVE_INFINITY;
-  let hasAmbiguousMatch = false;
+  let returnPassRawDistanceKm: number | null = null;
 
   for (const segment of segments) {
     const projectedStart = projectCoordinate(segment.start, referenceLatitude);
@@ -221,7 +222,18 @@ export const getRouteSelection = (
           Math.abs(rawDistanceKm - closestSelection.rawDistanceKm) >
           AMBIGUOUS_SELECTION_DISTANCE_THRESHOLD_KM
         ) {
-          hasAmbiguousMatch = true;
+          returnPassRawDistanceKm ??= closestSelection.rawDistanceKm;
+          closestSelection = {
+            coordinates: [snappedCoordinate[1], snappedCoordinate[0]],
+            distanceKm: scaleRouteDistance(
+              rawDistanceKm,
+              totalRouteDistanceKm,
+              raceDistanceKm,
+            ),
+            distanceFromRouteMeters,
+            rawDistanceKm,
+          };
+          closestDistanceFromRouteMeters = distanceFromRouteMeters;
         }
 
         continue;
@@ -232,7 +244,7 @@ export const getRouteSelection = (
       }
     }
 
-    hasAmbiguousMatch = false;
+    returnPassRawDistanceKm = null;
 
     closestSelection = {
       coordinates: [snappedCoordinate[1], snappedCoordinate[0]],
@@ -249,7 +261,6 @@ export const getRouteSelection = (
 
   if (
     !closestSelection ||
-    hasAmbiguousMatch ||
     closestDistanceFromRouteMeters > maxSnapDistanceMeters
   ) {
     return null;
@@ -258,6 +269,13 @@ export const getRouteSelection = (
   return {
     coordinates: closestSelection.coordinates,
     distanceKm: closestSelection.distanceKm,
+    ...(returnPassRawDistanceKm != null && {
+      returnPassDistanceKm: scaleRouteDistance(
+        returnPassRawDistanceKm,
+        totalRouteDistanceKm,
+        raceDistanceKm,
+      ),
+    }),
   };
 };
 

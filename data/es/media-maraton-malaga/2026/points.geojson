@@ -17,8 +17,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "cheer-malagueta",
-        "label": "Cheer point - Playa de la Malagueta",
+        "id": "cheer-pacifico-norte",
+        "label": "Cheer point - Calle Pacífico",
         "kind": "cheer-point",
         "distanceKm": 3
       },
@@ -31,7 +31,7 @@
       "type": "Feature",
       "properties": {
         "id": "km-5",
-        "label": "5K split - Paseo Marítimo Pablo Ruiz Picasso",
+        "label": "5K split - Calle Pacífico",
         "kind": "split",
         "distanceKm": 5
       },
@@ -43,8 +43,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "cheer-huelin",
-        "label": "Cheer point - Paseo Marítimo Antonio Banderas",
+        "id": "cheer-pacifico-sur",
+        "label": "Cheer point - Calle Pacífico",
         "kind": "cheer-point",
         "distanceKm": 8
       },
@@ -57,7 +57,7 @@
       "type": "Feature",
       "properties": {
         "id": "km-10",
-        "label": "10K split - Avenida Juan Sebastián Elcano",
+        "label": "10K split - Paseo Antonio Machado",
         "kind": "split",
         "distanceKm": 10
       },
@@ -70,7 +70,7 @@
       "type": "Feature",
       "properties": {
         "id": "km-15",
-        "label": "15K split - Calle Larios area",
+        "label": "15K split - Paseo de Levante",
         "kind": "split",
         "distanceKm": 15
       },
@@ -82,8 +82,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "cheer-alameda",
-        "label": "Cheer point - Alameda Principal",
+        "id": "cheer-picasso",
+        "label": "Cheer point - Paseo Marítimo Pablo Ruiz Picasso",
         "kind": "cheer-point",
         "distanceKm": 18
       },
@@ -96,7 +96,7 @@
       "type": "Feature",
       "properties": {
         "id": "km-20",
-        "label": "20K split - Alameda Principal",
+        "label": "20K split - Paseo Marítimo Pablo Ruiz Picasso",
         "kind": "split",
         "distanceKm": 20
       },
@@ -115,7 +115,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-4.417151, 36.718398]
+        "coordinates": [-4.415656, 36.719591]
       }
     }
   ]
