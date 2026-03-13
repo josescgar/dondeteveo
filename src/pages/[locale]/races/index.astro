@@ -4,6 +4,7 @@ import DiscoveryListIsland from "../../../features/race-discovery/DiscoveryListI
 
 import { type Locale, SUPPORTED_LOCALES } from "../../../lib/config";
 import { getDictionary } from "../../../lib/i18n";
+import { buildRacesPath } from "../../../lib/routes";
 import { getRaceSummaries } from "../../../lib/races/catalog";
 import { localizeRaceSummary } from "../../../lib/races/localized";
 
@@ -19,7 +20,7 @@ const races = (await getRaceSummaries()).map((race) =>
 
 <BaseLayout
   locale={locale}
-  pathname={`/${locale}/races`}
+  pathname={buildRacesPath(locale)}
   title={`Dondeteveo | ${dictionary.discoverTitle}`}
   description={dictionary.discoverIntro}
   eyebrow={dictionary.discoverTitle}

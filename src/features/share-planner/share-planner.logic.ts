@@ -1,4 +1,4 @@
-import { buildSharePath } from "../../lib/format";
+import { buildSharePath } from "../../lib/routes";
 import {
   parseFinishTimeToMinutes,
   parsePaceToMinutesPerKm,

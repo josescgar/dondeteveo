@@ -3,6 +3,7 @@ import BaseLayout from "../../../../layouts/BaseLayout.astro";
 
 import { type Locale, SUPPORTED_LOCALES } from "../../../../lib/config";
 import { getDictionary } from "../../../../lib/i18n";
+import { buildRacePath } from "../../../../lib/routes";
 import {
   getAllRaceEditions,
   getDistinctRaces,
@@ -43,12 +44,15 @@ const fallbackEditions = editions.toSorted((left, right) =>
 
 <BaseLayout
   locale={locale}
-  pathname={`/${locale}/races/${raceSlug}`}
+  pathname={buildRacePath(locale, raceSlug)}
   title={`Dondeteveo | ${raceSlug}`}
   description={dictionary.latestEditionRedirect}
   noindex={true}
 >
-  <script is:inline define:vars={{ editions, locale, raceSlug }}>
+  <script
+    is:inline
+    define:vars={{ editions, raceBasePath: buildRacePath(locale, raceSlug) }}
+  >
     const getTodayInTimeZone = (timeZone) => {
       const parts = new Intl.DateTimeFormat("en-CA", {
         timeZone,
@@ -74,9 +78,7 @@ const fallbackEditions = editions.toSorted((left, right) =>
       )[0];
 
     if (targetEdition) {
-      window.location.replace(
-        `/${locale}/races/${raceSlug}/${targetEdition.year}`,
-      );
+      window.location.replace(raceBasePath + "/" + targetEdition.year);
     }
   </script>
   <div
@@ -90,7 +92,7 @@ const fallbackEditions = editions.toSorted((left, right) =>
       {
         fallbackEditions.map((edition) => (
           <a
-            href={`/${locale}/races/${raceSlug}/${edition.year}`}
+            href={buildRacePath(locale, raceSlug, edition.year)}
             class="inline-flex rounded-lg border px-4 py-2 text-sm font-bold transition"
             style="border-color: rgba(242,100,25,0.3); color: var(--color-orange);"
             onmouseover="this.style.borderColor='var(--color-orange)'; this.style.backgroundColor='var(--color-amber)';"

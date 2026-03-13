@@ -7,6 +7,7 @@ import {
   SUPPORTED_LOCALES,
 } from "../../lib/config";
 import { getDictionary } from "../../lib/i18n";
+import { buildContributePath } from "../../lib/routes";
 
 export const getStaticPaths = () =>
   SUPPORTED_LOCALES.map((locale) => ({ params: { locale } }));
@@ -21,7 +22,7 @@ const NEW_ISSUE_URL = `${GITHUB_REPOSITORY_URL}/issues/new`;
 
 <BaseLayout
   locale={locale}
-  pathname={`/${locale}/contribute`}
+  pathname={buildContributePath(locale)}
   title={`Dondeteveo | ${dictionary.contributeTitle}`}
   description={dictionary.contributeIntro}
   eyebrow={dictionary.contributeTitle}

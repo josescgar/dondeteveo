@@ -6,6 +6,7 @@ import {
   SUPPORTED_LOCALES,
 } from "../lib/config";
 import { getDictionary } from "../lib/i18n";
+import { buildHomePath, buildRacesPath, ROUTE_SEGMENTS } from "../lib/routes";
 
 const locale = DEFAULT_LOCALE;
 const dictionary = getDictionary(locale);
@@ -64,7 +65,7 @@ const notFoundKeys = {
     </p>
     <div class="mt-8 flex flex-wrap justify-center gap-4">
       <a
-        href={`/${locale}`}
+        href={buildHomePath(locale)}
         data-i18n="notFoundGoHome"
         data-i18n-href="home"
         class="inline-flex px-5 py-2.5 font-mono text-sm tracking-[0.18em] uppercase transition"
@@ -75,7 +76,7 @@ const notFoundKeys = {
         {dictionary.notFoundGoHome}
       </a>
       <a
-        href={`/${locale}/races`}
+        href={buildRacesPath(locale)}
         data-i18n="notFoundFindRace"
         data-i18n-href="races"
         class="inline-flex px-5 py-2.5 font-mono text-sm tracking-[0.18em] uppercase transition"
@@ -133,6 +134,7 @@ const notFoundKeys = {
       defaultLocale: DEFAULT_LOCALE,
       supportedLocales: SUPPORTED_LOCALES,
       storageKey: LOCALE_STORAGE_KEY,
+      racesSegment: ROUTE_SEGMENTS.races,
     }}
   >
     (function () {
@@ -190,7 +192,7 @@ const notFoundKeys = {
             if (type === "home") {
               el.setAttribute("href", "/" + detected);
             } else if (type === "races") {
-              el.setAttribute("href", "/" + detected + "/races");
+              el.setAttribute("href", "/" + detected + "/" + racesSegment);
             }
           });
 

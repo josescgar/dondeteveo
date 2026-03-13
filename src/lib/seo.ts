@@ -7,6 +7,7 @@ import {
   SITE_NAME,
   type Locale,
 } from "./config";
+import { EDITION_PATH_PATTERN, ROUTE_SEGMENTS } from "./routes";
 
 export type SeoImage = {
   url: string;
@@ -68,13 +69,14 @@ export const buildAlternates = (locale: Locale, pathname: string) => [
 ];
 
 export const buildDefaultSeoImagePath = (locale: Locale): string =>
-  `/og/${locale}/default.png`;
+  `/${ROUTE_SEGMENTS.og}/${locale}/default.png`;
 
 export const buildEditionSeoImagePath = (
   locale: Locale,
   raceSlug: string,
   year: string,
-): string => `/og/${locale}/races/${raceSlug}/${year}.png`;
+): string =>
+  `/${ROUTE_SEGMENTS.og}/${locale}/${ROUTE_SEGMENTS.races}/${raceSlug}/${year}.png`;
 
 export const buildEditionSeoImageAlt = (
   raceName: string,
@@ -85,9 +87,7 @@ const buildDefaultSeoImagePathForPathname = (
   locale: Locale,
   pathname: string,
 ): string => {
-  const editionPathMatch = pathname.match(
-    /^\/(en|es)\/(?:races|share)\/([^/]+)\/([^/]+)$/,
-  );
+  const editionPathMatch = pathname.match(EDITION_PATH_PATTERN);
 
   if (!editionPathMatch) {
     return buildDefaultSeoImagePath(locale);

@@ -5,6 +5,7 @@ import SharePlannerIsland from "../../../../features/share-planner/SharePlannerI
 
 import { type Locale, SUPPORTED_LOCALES } from "../../../../lib/config";
 import { formatDistance, formatRaceDate } from "../../../../lib/format";
+import { buildRacePath } from "../../../../lib/routes";
 import { getDictionary } from "../../../../lib/i18n";
 import { getAllRaceEditions } from "../../../../lib/races/catalog";
 import { localizeRaceEdition } from "../../../../lib/races/localized";
@@ -31,7 +32,7 @@ const dictionary = getDictionary(locale);
 const { edition: rawEdition } = Astro.props;
 const edition = localizeRaceEdition(rawEdition, locale);
 const points = getPointSummaries(edition.points);
-const pathname = `/${locale}/races/${edition.raceSlug}/${edition.year}`;
+const pathname = buildRacePath(locale, edition.raceSlug, edition.year);
 const raceInfoFields = [
   {
     label: dictionary.date,

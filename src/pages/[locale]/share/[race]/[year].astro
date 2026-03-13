@@ -4,6 +4,7 @@ import ShareExperienceIsland from "../../../../features/share-view/ShareExperien
 
 import { type Locale, SUPPORTED_LOCALES } from "../../../../lib/config";
 import { getDictionary } from "../../../../lib/i18n";
+import { buildSharePath } from "../../../../lib/routes";
 import { getAllRaceEditions } from "../../../../lib/races/catalog";
 import { localizeRaceEdition } from "../../../../lib/races/localized";
 
@@ -27,7 +28,7 @@ const locale = Astro.params.locale as Locale;
 const dictionary = getDictionary(locale);
 const { edition: rawEdition } = Astro.props;
 const edition = localizeRaceEdition(rawEdition, locale);
-const pathname = `/${locale}/share/${edition.raceSlug}/${edition.year}`;
+const pathname = buildSharePath(locale, edition.raceSlug, edition.year);
 
 const getSpanishRaceConnector = (raceName: string): string => {
   const normalized = raceName
