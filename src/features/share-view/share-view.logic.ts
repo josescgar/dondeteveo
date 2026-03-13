@@ -1,3 +1,4 @@
+import type { Locale } from "../../lib/config";
 import type { RacePointFeature } from "../../lib/races/schemas";
 import {
   dayOffsetFromMinutes,
@@ -83,6 +84,40 @@ export const buildPredictedRouteSelection = (
     latestTime: latestClock.time,
     latestDayOffset: latestClock.dayOffset,
   };
+};
+
+export const getSpanishRaceConnector = (raceName: string): string => {
+  const normalized = raceName
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+
+  if (
+    normalized.startsWith("carrera") ||
+    normalized.startsWith("media maraton")
+  ) {
+    return "en la";
+  }
+
+  if (
+    normalized.startsWith("maraton") ||
+    normalized.startsWith("medio maraton")
+  ) {
+    return "en el";
+  }
+
+  return "en";
+};
+
+export const getSharePageConnector = (
+  locale: Locale,
+  raceName: string,
+  fallback: string,
+): string => {
+  if (locale === "es") {
+    return getSpanishRaceConnector(raceName);
+  }
+  return fallback;
 };
 
 export const buildPredictedPoints = (

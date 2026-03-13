@@ -4,8 +4,46 @@ import {
   CHECKPOINT_SAFETY_MARGIN_MINUTES,
   buildPredictedPoints,
   buildPredictedRouteSelection,
+  getSharePageConnector,
+  getSpanishRaceConnector,
   resolvePaceMinutesPerKm,
 } from "./share-view.logic";
+
+describe("getSpanishRaceConnector", () => {
+  it('returns "en la" for names starting with "Carrera"', () => {
+    expect(getSpanishRaceConnector("Carrera de la Mujer")).toBe("en la");
+  });
+
+  it('returns "en la" for names starting with "Media Maratón" (accent handling)', () => {
+    expect(getSpanishRaceConnector("Media Maratón de Valencia")).toBe("en la");
+  });
+
+  it('returns "en el" for names starting with "Maratón"', () => {
+    expect(getSpanishRaceConnector("Maratón de Sevilla")).toBe("en el");
+  });
+
+  it('returns "en el" for names starting with "Medio Maratón"', () => {
+    expect(getSpanishRaceConnector("Medio Maratón de Madrid")).toBe("en el");
+  });
+
+  it('returns "en" for names without a recognized prefix', () => {
+    expect(getSpanishRaceConnector("Valencia Ciudad del Running")).toBe("en");
+  });
+});
+
+describe("getSharePageConnector", () => {
+  it("returns the Spanish connector for es locale", () => {
+    expect(getSharePageConnector("es", "Maratón de Sevilla", "for the")).toBe(
+      "en el",
+    );
+  });
+
+  it("returns the fallback for en locale", () => {
+    expect(getSharePageConnector("en", "Maratón de Sevilla", "for the")).toBe(
+      "for the",
+    );
+  });
+});
 
 describe("share view logic", () => {
   it("resolves pace from a finish target", () => {

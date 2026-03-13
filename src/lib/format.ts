@@ -50,6 +50,26 @@ export const formatCountryName = (
   );
 };
 
+export type RaceInfoField = { label: string; value: string };
+
+export const buildRaceInfoFields = (
+  edition: {
+    date: string;
+    city: string;
+    startTime: string;
+    timezone: string;
+  },
+  labels: { date: string; city: string; startTime: string },
+  locale: Locale,
+): RaceInfoField[] => [
+  { label: labels.date, value: formatRaceDate(edition.date, locale) },
+  { label: labels.city, value: edition.city },
+  {
+    label: labels.startTime,
+    value: `${edition.startTime} (${edition.timezone})`,
+  },
+];
+
 export const getTodayInTimeZone = (
   timeZone: string,
   referenceDate = new Date(),

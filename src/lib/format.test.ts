@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  buildRaceInfoFields,
   formatCountryName,
   formatDistance,
   formatRaceDate,
@@ -27,6 +28,44 @@ describe("format helpers", () => {
   it("falls back to the normalized country code when it is not a valid region", () => {
     expect(formatCountryName("xx", "en")).toBe("XX");
     expect(formatCountryName("e1", "en")).toBe("E1");
+  });
+
+  it("builds race info fields with correct labels and values", () => {
+    const edition = {
+      date: "2026-03-15",
+      city: "Valencia",
+      startTime: "09:00",
+      timezone: "Europe/Madrid",
+    };
+    const labels = { date: "Date", city: "City", startTime: "Start time" };
+
+    const fields = buildRaceInfoFields(edition, labels, "en");
+
+    expect(fields).toHaveLength(3);
+    expect(fields[0]).toEqual({ label: "Date", value: "15 March 2026" });
+    expect(fields[1]).toEqual({ label: "City", value: "Valencia" });
+    expect(fields[2]).toEqual({
+      label: "Start time",
+      value: "09:00 (Europe/Madrid)",
+    });
+  });
+
+  it("formats the date with the correct locale in race info fields", () => {
+    const edition = {
+      date: "2026-03-15",
+      city: "Sevilla",
+      startTime: "08:30",
+      timezone: "Europe/Madrid",
+    };
+    const labels = {
+      date: "Fecha",
+      city: "Ciudad",
+      startTime: "Hora de salida",
+    };
+
+    const fields = buildRaceInfoFields(edition, labels, "es");
+
+    expect(fields[0].value).toBe("15 de marzo de 2026");
   });
 
   it("gets the calendar day in a specific timezone", () => {

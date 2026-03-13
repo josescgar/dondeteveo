@@ -35,6 +35,10 @@ export const OPEN_GRAPH_LOCALES: Record<Locale, string> = {
 
 export const LOCALE_STORAGE_KEY = "dtv-locale";
 
+export const CONTACT_EMAIL = "jose.escobar.dev@gmail.com";
+export const CONTRIBUTING_URL = `${GITHUB_REPOSITORY_URL}/blob/main/CONTRIBUTING.md`;
+export const NEW_ISSUE_URL = `${GITHUB_REPOSITORY_URL}/issues/new`;
+
 export const SHARE_FRAGMENT_KEYS = {
   mode: "mode",
   value: "value",

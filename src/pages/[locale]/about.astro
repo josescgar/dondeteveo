@@ -2,6 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 import {
+  CONTACT_EMAIL,
   GITHUB_REPOSITORY_URL,
   type Locale,
   SUPPORTED_LOCALES,
@@ -14,8 +15,6 @@ export const getStaticPaths = () =>
 
 const locale = Astro.params.locale as Locale;
 const dictionary = getDictionary(locale);
-
-const CONTACT_EMAIL = "jose.escobar.dev@gmail.com";
 ---
 
 <BaseLayout
