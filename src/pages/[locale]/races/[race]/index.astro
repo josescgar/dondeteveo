@@ -81,11 +81,8 @@ const fallbackEditions = editions.toSorted((left, right) =>
       window.location.replace(raceBasePath + "/" + targetEdition.year);
     }
   </script>
-  <div
-    class="max-w-xl rounded-xl border bg-white p-6 shadow-[var(--shadow-sm)]"
-    style="border-color: var(--color-line);"
-  >
-    <p class="text-sm leading-7 text-[var(--color-muted)]">
+  <div class="border-line bg-surface max-w-xl rounded-xl border p-6 shadow-sm">
+    <p class="text-muted text-sm leading-7">
       {dictionary.latestEditionRedirect}
     </p>
     <div class="mt-4 flex flex-wrap gap-3">
@@ -93,10 +90,7 @@ const fallbackEditions = editions.toSorted((left, right) =>
         fallbackEditions.map((edition) => (
           <a
             href={buildRacePath(locale, raceSlug, edition.year)}
-            class="inline-flex rounded-lg border px-4 py-2 text-sm font-bold transition"
-            style="border-color: rgba(242,100,25,0.3); color: var(--color-orange);"
-            onmouseover="this.style.borderColor='var(--color-orange)'; this.style.backgroundColor='var(--color-amber)';"
-            onmouseout="this.style.borderColor='rgba(242,100,25,0.3)'; this.style.backgroundColor='';"
+            class="border-orange-dim text-orange hover:border-orange hover:bg-amber inline-flex rounded-lg border px-4 py-2 text-sm font-bold transition"
           >
             {edition.year}
           </a>

@@ -27,77 +27,53 @@ const NEW_ISSUE_URL = `${GITHUB_REPOSITORY_URL}/issues/new`;
   description={dictionary.contributeIntro}
   eyebrow={dictionary.contributeTitle}
 >
-  <div
-    class="max-w-3xl space-y-8"
-    style="background-color: var(--color-surface); border: 1px solid var(--color-line); padding: 1.5rem;"
-  >
+  <div class="card-surface max-w-3xl space-y-8">
     <div>
       <h1
-        class="fade-in font-display text-5xl font-bold uppercase"
-        style="color: var(--color-accent); animation-delay: 0ms;"
+        class="fade-in font-display text-accent text-5xl font-bold uppercase"
+        style="animation-delay: 0ms;"
       >
         {dictionary.contributeTitle}
       </h1>
       <p
-        class="fade-in mt-4 font-mono text-base leading-8"
-        style="color: var(--color-muted); animation-delay: 100ms;"
+        class="fade-in text-muted mt-4 font-mono text-base leading-8"
+        style="animation-delay: 100ms;"
       >
         {dictionary.contributeIntro}
       </p>
     </div>
 
     <div class="fade-in" style="animation-delay: 220ms;">
-      <h2
-        class="font-display text-2xl font-bold uppercase"
-        style="color: var(--color-text);"
-      >
+      <h2 class="font-display text-text text-2xl font-bold uppercase">
         {dictionary.contributeViaGithub}
       </h2>
-      <p
-        class="mt-2 font-mono text-sm leading-7"
-        style="color: var(--color-muted);"
-      >
+      <p class="text-muted mt-2 font-mono text-sm leading-7">
         {dictionary.contributeViaGithubBody}
       </p>
       <a
         href={CONTRIBUTING_URL}
         target="_blank"
         rel="noopener noreferrer"
-        class="mt-3 inline-flex font-mono text-sm transition"
-        style="color: var(--color-accent);"
-        onmouseover="this.style.opacity='0.7'"
-        onmouseout="this.style.opacity='1'"
+        class="text-accent mt-3 inline-flex font-mono text-sm transition hover:opacity-70"
       >
         CONTRIBUTING.md &rarr;
       </a>
     </div>
 
     <div class="fade-in" style="animation-delay: 340ms;">
-      <h2
-        class="font-display text-2xl font-bold uppercase"
-        style="color: var(--color-text);"
-      >
+      <h2 class="font-display text-text text-2xl font-bold uppercase">
         {dictionary.contributeTools}
       </h2>
-      <p
-        class="mt-2 font-mono text-sm leading-7"
-        style="color: var(--color-muted);"
-      >
+      <p class="text-muted mt-2 font-mono text-sm leading-7">
         {dictionary.contributeToolsBody}
       </p>
-      <ul
-        class="mt-3 space-y-2 font-mono text-sm"
-        style="color: var(--color-muted);"
-      >
+      <ul class="text-muted mt-3 space-y-2 font-mono text-sm">
         <li>
           <a
             href="https://geojson.io"
             target="_blank"
             rel="noopener noreferrer"
-            class="transition"
-            style="color: var(--color-accent);"
-            onmouseover="this.style.opacity='0.7'"
-            onmouseout="this.style.opacity='1'">geojson.io</a
+            class="text-accent transition hover:opacity-70">geojson.io</a
           > — {dictionary.contributeToolGeojsonio}
         </li>
         <li>
@@ -105,10 +81,7 @@ const NEW_ISSUE_URL = `${GITHUB_REPOSITORY_URL}/issues/new`;
             href="https://www.plotaroute.com"
             target="_blank"
             rel="noopener noreferrer"
-            class="transition"
-            style="color: var(--color-accent);"
-            onmouseover="this.style.opacity='0.7'"
-            onmouseout="this.style.opacity='1'">plotaroute.com</a
+            class="text-accent transition hover:opacity-70">plotaroute.com</a
           > — {dictionary.contributeToolPlotaroute}
         </li>
         <li>
@@ -116,26 +89,17 @@ const NEW_ISSUE_URL = `${GITHUB_REPOSITORY_URL}/issues/new`;
             href="https://mapstogpx.com"
             target="_blank"
             rel="noopener noreferrer"
-            class="transition"
-            style="color: var(--color-accent);"
-            onmouseover="this.style.opacity='0.7'"
-            onmouseout="this.style.opacity='1'">mapstogpx.com</a
+            class="text-accent transition hover:opacity-70">mapstogpx.com</a
           > — {dictionary.contributeToolMapstogpx}
         </li>
       </ul>
     </div>
 
     <div class="fade-in" style="animation-delay: 460ms;">
-      <h2
-        class="font-display text-2xl font-bold uppercase"
-        style="color: var(--color-text);"
-      >
+      <h2 class="font-display text-text text-2xl font-bold uppercase">
         {dictionary.contributeRequest}
       </h2>
-      <p
-        class="mt-2 font-mono text-sm leading-7"
-        style="color: var(--color-muted);"
-      >
+      <p class="text-muted mt-2 font-mono text-sm leading-7">
         {dictionary.contributeRequestBody}
       </p>
       <div class="mt-3 flex flex-col gap-2 sm:flex-row sm:gap-4">
@@ -143,19 +107,13 @@ const NEW_ISSUE_URL = `${GITHUB_REPOSITORY_URL}/issues/new`;
           href={NEW_ISSUE_URL}
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex font-mono text-sm transition"
-          style="color: var(--color-accent);"
-          onmouseover="this.style.opacity='0.7'"
-          onmouseout="this.style.opacity='1'"
+          class="text-accent inline-flex font-mono text-sm transition hover:opacity-70"
         >
           {dictionary.contributeGithubIssue} &rarr;
         </a>
         <a
           href={`mailto:${CONTACT_EMAIL}`}
-          class="inline-flex font-mono text-sm transition"
-          style="color: var(--color-accent);"
-          onmouseover="this.style.opacity='0.7'"
-          onmouseout="this.style.opacity='1'"
+          class="text-accent inline-flex font-mono text-sm transition hover:opacity-70"
         >
           {dictionary.contributeEmail} &rarr;
         </a>

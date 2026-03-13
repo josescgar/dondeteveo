@@ -19,9 +19,7 @@ type Props = {
 };
 
 const fieldInputClass =
-  "w-full border-b bg-transparent px-0 py-2 font-mono text-sm outline-none transition";
-const fieldInputStyle =
-  "border-color: var(--color-line-solid); color: var(--color-text);";
+  "w-full border-b border-line-solid bg-transparent px-0 py-2 font-mono text-sm text-text outline-none transition focus:border-accent";
 
 export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
   const dictionary = getDictionary(locale);
@@ -92,28 +90,16 @@ export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
   const href = buildShareHref({ locale, raceSlug, year, mode, value, name });
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      style="background-color: var(--color-surface); border: 1px solid var(--color-line); padding: 1.5rem;"
-    >
-      <div
-        class="font-mono text-[10px] tracking-[0.3em] uppercase"
-        style="color: var(--color-accent);"
-      >
+    <form onSubmit={handleSubmit} class="card-surface">
+      <div class="text-accent font-mono text-[10px] tracking-[0.3em] uppercase">
         {dictionary.share}
       </div>
-      <p
-        class="mt-2 font-mono text-sm leading-7"
-        style="color: var(--color-muted);"
-      >
+      <p class="text-muted mt-2 font-mono text-sm leading-7">
         {dictionary.shareIntro}
       </p>
       <div class="mt-5 grid gap-4 md:grid-cols-2">
         <label class="flex flex-col gap-1.5">
-          <span
-            class="font-mono text-[10px] tracking-[0.26em] uppercase"
-            style="color: var(--color-muted);"
-          >
+          <span class="text-muted font-mono text-[10px] tracking-[0.26em] uppercase">
             {dictionary.plannerMode}
           </span>
           <select
@@ -122,23 +108,13 @@ export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
               handleModeChange(event.currentTarget.value as ShareMode)
             }
             class={fieldInputClass}
-            style={fieldInputStyle}
-            onFocus={(e) =>
-              (e.currentTarget.style.borderColor = "var(--color-accent)")
-            }
-            onBlur={(e) =>
-              (e.currentTarget.style.borderColor = "var(--color-line-solid)")
-            }
           >
             <option value="pace">{dictionary.pace}</option>
             <option value="finish">{dictionary.finishTime}</option>
           </select>
         </label>
         <label class="flex flex-col gap-1.5">
-          <span
-            class="font-mono text-[10px] tracking-[0.26em] uppercase"
-            style="color: var(--color-muted);"
-          >
+          <span class="text-muted font-mono text-[10px] tracking-[0.26em] uppercase">
             {mode === "pace" ? dictionary.pacePerKm : dictionary.finishTime}
           </span>
           <input
@@ -148,31 +124,17 @@ export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
             placeholder={getDefaultShareValue(mode)}
             inputMode="numeric"
             class={fieldInputClass}
-            style={fieldInputStyle}
-            onFocus={(e) => {
-              e.currentTarget.style.borderColor = "var(--color-accent)";
-              handleValueFocus(e);
-            }}
-            onBlur={(e) =>
-              (e.currentTarget.style.borderColor = "var(--color-line-solid)")
-            }
+            onFocus={handleValueFocus}
           />
           {error && (
-            <span
-              class="font-mono text-xs"
-              style="color: var(--color-coral-deep);"
-              role="alert"
-            >
+            <span class="text-coral-deep font-mono text-xs" role="alert">
               {error}
             </span>
           )}
         </label>
       </div>
       <label class="mt-4 flex flex-col gap-1.5">
-        <span
-          class="font-mono text-[10px] tracking-[0.26em] uppercase"
-          style="color: var(--color-muted);"
-        >
+        <span class="text-muted font-mono text-[10px] tracking-[0.26em] uppercase">
           {dictionary.optionalNickname}
         </span>
         <input
@@ -181,29 +143,17 @@ export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
           maxLength={NICKNAME_MAX_LENGTH}
           onInput={handleNameInput}
           class={fieldInputClass}
-          style={fieldInputStyle}
-          onFocus={(e) =>
-            (e.currentTarget.style.borderColor = "var(--color-accent)")
-          }
-          onBlur={(e) =>
-            (e.currentTarget.style.borderColor = "var(--color-line-solid)")
-          }
         />
         <div class="flex items-baseline justify-between gap-2">
           {nameError ? (
-            <span
-              class="font-mono text-xs"
-              style="color: var(--color-coral-deep);"
-              role="alert"
-            >
+            <span class="text-coral-deep font-mono text-xs" role="alert">
               {nameError}
             </span>
           ) : (
             <span />
           )}
           <span
-            class={`shrink-0 font-mono text-[10px]${name.length === 0 ? "invisible" : ""}`}
-            style={`color: var(${name.length >= NICKNAME_MAX_LENGTH ? "--color-coral-deep" : "--color-muted"});`}
+            class={`shrink-0 font-mono text-[10px] ${name.length === 0 ? "invisible" : ""} ${name.length >= NICKNAME_MAX_LENGTH ? "text-coral-deep" : "text-muted"}`}
           >
             {NICKNAME_MAX_LENGTH - name.length}
           </span>
@@ -212,16 +162,7 @@ export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
       <a
         ref={linkRef}
         href={href}
-        class="mt-6 inline-flex px-5 py-2.5 font-mono text-sm tracking-[0.18em] uppercase transition"
-        style="background-color: var(--color-coral); color: var(--color-text);"
-        onMouseOver={(e) => {
-          (e.currentTarget as HTMLAnchorElement).style.backgroundColor =
-            "var(--color-coral-deep)";
-        }}
-        onMouseOut={(e) => {
-          (e.currentTarget as HTMLAnchorElement).style.backgroundColor =
-            "var(--color-coral)";
-        }}
+        class="bg-coral text-text hover:bg-coral-deep mt-6 inline-flex px-5 py-2.5 font-mono text-sm tracking-[0.18em] uppercase transition"
       >
         {dictionary.generateShareLink}
       </a>

@@ -112,9 +112,7 @@ const mobileNavId = "site-mobile-nav";
     </script>
   </head>
   <body class="flex min-h-screen flex-col antialiased">
-    <header
-      style="background-color: var(--color-surface); border-bottom: 1px solid var(--color-line);"
-    >
+    <header class="border-line bg-surface border-b">
       <div
         class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:gap-6 sm:px-8"
       >
@@ -138,14 +136,12 @@ const mobileNavId = "site-mobile-nav";
           />
           <div class="min-w-0">
             <div
-              class="font-display text-xl leading-none font-bold uppercase sm:text-2xl"
-              style="color: var(--color-accent);"
+              class="font-display text-accent text-xl leading-none font-bold uppercase sm:text-2xl"
             >
               DONDETEVEO
             </div>
             <div
-              class="mt-0.5 hidden font-mono text-[9px] tracking-[0.28em] uppercase sm:block"
-              style="color: var(--color-muted);"
+              class="text-muted mt-0.5 hidden font-mono text-[9px] tracking-[0.28em] uppercase sm:block"
             >
               {dictionary.siteTagline}
             </div>
@@ -160,8 +156,7 @@ const mobileNavId = "site-mobile-nav";
               navLinks.map((link) => (
                 <a
                   href={link.href}
-                  class="nav-link font-mono text-xs tracking-[0.18em] uppercase transition-colors"
-                  style="color: var(--color-muted);"
+                  class="nav-link text-muted font-mono text-xs tracking-[0.18em] uppercase transition-colors"
                 >
                   {link.label}
                 </a>
@@ -171,8 +166,7 @@ const mobileNavId = "site-mobile-nav";
           <button
             type="button"
             data-theme-toggle
-            class="flex h-[1.625rem] w-[1.625rem] items-center justify-center border transition sm:h-[1.875rem] sm:w-[1.875rem]"
-            style="border-color: var(--color-line); background-color: var(--color-accent-dim); color: var(--color-accent); cursor: pointer;"
+            class="border-line bg-accent-dim text-accent flex h-[1.625rem] w-[1.625rem] cursor-pointer items-center justify-center border transition sm:h-[1.875rem] sm:w-[1.875rem]"
             aria-label={dictionary.switchToDarkTheme}
             data-light-label={dictionary.switchToLightTheme}
             data-dark-label={dictionary.switchToDarkTheme}
@@ -269,10 +263,7 @@ const mobileNavId = "site-mobile-nav";
       <div class="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
         {
           eyebrow && (
-            <div
-              class="mb-4 font-mono text-[10px] tracking-[0.3em] uppercase"
-              style="color: var(--color-muted);"
-            >
+            <div class="text-muted mb-4 font-mono text-[10px] tracking-[0.3em] uppercase">
               // {eyebrow}
             </div>
           )
@@ -280,23 +271,17 @@ const mobileNavId = "site-mobile-nav";
         <slot />
       </div>
     </main>
-    <footer
-      style="background-color: var(--color-surface); border-top: 1px solid var(--color-line);"
-    >
+    <footer class="border-line bg-surface border-t">
       <div
         class="mx-auto flex max-w-6xl flex-col gap-3 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8"
       >
         <div>
           <p
-            class="font-mono text-[10px] tracking-[0.24em] uppercase"
-            style="color: var(--color-muted);"
+            class="text-muted font-mono text-[10px] tracking-[0.24em] uppercase"
           >
             {dictionary.siteTagline}
           </p>
-          <p
-            class="mt-1 font-mono text-xs"
-            style="color: var(--color-muted); opacity: 0.8;"
-          >
+          <p class="text-muted mt-1 font-mono text-xs opacity-80">
             {dictionary.footerPunchline}
           </p>
         </div>
@@ -304,8 +289,7 @@ const mobileNavId = "site-mobile-nav";
           href={GITHUB_REPOSITORY_URL}
           target="_blank"
           rel="noopener noreferrer"
-          class="nav-link inline-flex items-center gap-2 font-mono text-xs tracking-[0.18em] uppercase transition-colors"
-          style="color: var(--color-muted);"
+          class="nav-link text-muted inline-flex items-center gap-2 font-mono text-xs tracking-[0.18em] uppercase transition-colors"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

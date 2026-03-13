@@ -209,23 +209,14 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
 
   if (!shareState || paceMinutesPerKm === null) {
     return (
-      <div style="background-color: var(--color-surface); border: 1px solid var(--color-line); padding: 1.5rem;">
-        <div
-          class="font-mono text-[10px] tracking-[0.3em] uppercase"
-          style="color: var(--color-muted);"
-        >
+      <div class="card-surface">
+        <div class="text-muted font-mono text-[10px] tracking-[0.3em] uppercase">
           {dictionary.spectatorReady}
         </div>
-        <h2
-          class="font-display mt-2 text-4xl font-bold uppercase"
-          style="color: var(--color-text);"
-        >
+        <h2 class="font-display text-text mt-2 text-4xl font-bold uppercase">
           {dictionary.sharePageTitle}
         </h2>
-        <p
-          class="mt-3 max-w-2xl font-mono text-base leading-7"
-          style="color: var(--color-muted);"
-        >
+        <p class="text-muted mt-3 max-w-2xl font-mono text-base leading-7">
           {dictionary.invalidShareState}
         </p>
       </div>
@@ -236,22 +227,15 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
     <div class="space-y-8">
       {/* Share URL box */}
       <div>
-        <div
-          class="mb-1 font-mono text-[10px] tracking-[0.3em] uppercase"
-          style="color: var(--color-muted);"
-        >
+        <div class="text-muted mb-1 font-mono text-[10px] tracking-[0.3em] uppercase">
           {dictionary.shareLinkTitle}
         </div>
-        <div
-          class="flex items-center gap-2"
-          style="background-color: var(--color-surface-raised); border: 1px solid var(--color-line); padding: 0.5rem 0.75rem;"
-        >
+        <div class="border-line bg-surface-raised flex items-center gap-2 border px-3 py-2">
           <input
             type="text"
             readOnly
             value={currentHref}
-            class="min-w-0 flex-1 overflow-hidden border-none bg-transparent font-mono text-xs text-ellipsis outline-none"
-            style="color: var(--color-text);"
+            class="text-text min-w-0 flex-1 overflow-hidden border-none bg-transparent font-mono text-xs text-ellipsis outline-none"
           />
           <Tooltip
             text={dictionary.copiedToClipboard}
@@ -261,7 +245,7 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
             <button
               type="button"
               onClick={handleCopy}
-              style="color: var(--color-accent); background: none; border: none; cursor: pointer; padding: 0.25rem;"
+              class="text-accent cursor-pointer border-none bg-transparent p-1"
               aria-label={dictionary.copyLink}
             >
               {copied ? (
@@ -305,7 +289,7 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
               <button
                 type="button"
                 onClick={handleShare}
-                style="color: var(--color-accent); background: none; border: none; cursor: pointer; padding: 0.25rem;"
+                class="text-accent cursor-pointer border-none bg-transparent p-1"
                 aria-label={dictionary.shareLink}
               >
                 {shared ? (
@@ -346,42 +330,26 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
       </div>
 
       {/* Runner header band */}
-      <div style="background-color: var(--color-surface); border: 1px solid var(--color-line); padding: 1.25rem 1.5rem;">
-        <h2
-          class="font-display text-4xl font-bold uppercase"
-          style="color: var(--color-text);"
-        >
-          {edition.meta.name}{" "}
-          <span style="color: var(--color-accent);">· {edition.year}</span>
+      <div class="border-line bg-surface border px-6 py-5">
+        <h2 class="font-display text-text text-4xl font-bold uppercase">
+          {edition.meta.name} <span class="text-accent">· {edition.year}</span>
         </h2>
         {shareState.name && (
-          <div
-            class="mt-3 inline-block px-4 py-1.5 font-mono text-xs tracking-[0.2em] uppercase"
-            style="background-color: var(--color-surface-raised); color: var(--color-accent); border: 1px solid var(--color-line);"
-          >
+          <div class="border-line bg-surface-raised text-accent mt-3 inline-block border px-4 py-1.5 font-mono text-xs tracking-[0.2em] uppercase">
             {dictionary.runnerLabel}: {shareState.name}
           </div>
         )}
-        <div class="mt-3 font-mono text-sm" style="color: var(--color-muted);">
-          <span style="color: var(--color-text);">{dictionary.startTime}:</span>{" "}
+        <div class="text-muted mt-3 font-mono text-sm">
+          <span class="text-text">{dictionary.startTime}:</span>{" "}
           {edition.meta.startTime}
           <span class="ml-2">({edition.meta.timezone})</span>
         </div>
         {edition.meta.specialNote && (
-          <div
-            class="mt-4"
-            style="background-color: var(--color-surface-warning); border: 1px solid var(--color-warning-line); padding: 1rem 1.25rem;"
-          >
-            <div
-              class="font-mono text-[10px] tracking-[0.28em] uppercase"
-              style="color: var(--color-warning);"
-            >
+          <div class="banner-warning mt-4">
+            <div class="text-warning font-mono text-[10px] tracking-[0.28em] uppercase">
               // {dictionary.importantRaceNote}
             </div>
-            <p
-              class="mt-3 font-mono text-sm leading-6"
-              style="color: var(--color-text);"
-            >
+            <p class="text-text mt-3 font-mono text-sm leading-6">
               {edition.meta.specialNote}
             </p>
           </div>
@@ -390,16 +358,10 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
 
       {/* Timing cards — hero */}
       <div>
-        <div
-          class="mb-1 font-mono text-[10px] tracking-[0.3em] uppercase"
-          style="color: var(--color-muted);"
-        >
+        <div class="text-muted mb-1 font-mono text-[10px] tracking-[0.3em] uppercase">
           {dictionary.predictedTimes}
         </div>
-        <p
-          class="mb-4 font-mono text-xs leading-6"
-          style="color: var(--color-muted);"
-        >
+        <p class="text-muted mb-4 font-mono text-xs leading-6">
           {dictionary.allTimesRaceLocal}
         </p>
         <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -407,58 +369,40 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
             <button
               key={point.id}
               type="button"
-              class="timing-card flex w-full flex-col text-left"
+              class={`timing-card bg-surface flex w-full cursor-pointer flex-col border p-6 text-left ${
+                selectedPointId === point.id ? "border-accent" : "border-line"
+              }`}
               data-predicted-point-card
               data-point-id={point.id}
               data-selected={selectedPointId === point.id ? "true" : "false"}
               aria-pressed={selectedPointId === point.id}
               onClick={() => handleTimingCardSelect(point.id)}
-              style={`background-color: var(--color-surface); border: 1px solid ${
-                selectedPointId === point.id
-                  ? "var(--color-accent)"
-                  : "var(--color-line)"
-              }; padding: 1.5rem; cursor: pointer; width: 100%;`}
             >
               <div class="flex-1">
-                <div
-                  class="font-mono text-[9px] tracking-[0.32em] uppercase"
-                  style="color: var(--color-muted);"
-                >
+                <div class="text-muted font-mono text-[9px] tracking-[0.32em] uppercase">
                   {point.kind === "split"
                     ? dictionary.splitLabel
                     : dictionary.cheerPointLabel}
                 </div>
-                <h4
-                  class="font-display mt-1 text-xl leading-tight font-bold uppercase"
-                  style="color: var(--color-text);"
-                >
+                <h4 class="font-display text-text mt-1 text-xl leading-tight font-bold uppercase">
                   {point.label}
                 </h4>
-                <div
-                  class="mt-1 font-mono text-xs"
-                  style="color: var(--color-muted);"
-                >
+                <div class="text-muted mt-1 font-mono text-xs">
                   {formatDistance(point.distanceKm, locale)}
                 </div>
               </div>
               <div
-                class="mt-4 flex items-baseline gap-2 font-mono leading-none font-medium"
-                style={`font-size: clamp(2.8rem, 8vw, 4rem); color: var(--color-coral); letter-spacing: -0.02em;`}
+                class="text-coral mt-4 flex items-baseline gap-2 font-mono leading-none font-medium tracking-[-0.02em]"
+                style="font-size: clamp(2.8rem, 8vw, 4rem);"
               >
                 {point.predictedTime}
                 {point.dayOffset > 0 && (
-                  <span
-                    class="font-mono text-xs font-normal tracking-wide"
-                    style="color: var(--color-muted);"
-                  >
+                  <span class="text-muted font-mono text-xs font-normal tracking-wide">
                     {formatDayOffset(point.dayOffset)}
                   </span>
                 )}
               </div>
-              <div
-                class="mt-3 font-mono text-xs leading-5"
-                style="color: var(--color-muted);"
-              >
+              <div class="text-muted mt-3 font-mono text-xs leading-5">
                 {formatSafetyMargin(point)}
               </div>
             </button>

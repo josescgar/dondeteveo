@@ -19,20 +19,11 @@ const dictionary = getDictionary(locale);
   description={dictionary.privacyBody}
   eyebrow={dictionary.privacy}
 >
-  <div
-    class="max-w-3xl"
-    style="background-color: var(--color-surface); border: 1px solid var(--color-line); padding: 1.5rem;"
-  >
-    <h1
-      class="font-display text-5xl font-bold uppercase"
-      style="color: var(--color-accent);"
-    >
+  <div class="card-surface max-w-3xl">
+    <h1 class="font-display text-accent text-5xl font-bold uppercase">
       {dictionary.privacy}
     </h1>
-    <p
-      class="mt-4 font-mono text-base leading-8"
-      style="color: var(--color-muted);"
-    >
+    <p class="text-muted mt-4 font-mono text-base leading-8">
       {dictionary.privacyBody}
     </p>
   </div>
