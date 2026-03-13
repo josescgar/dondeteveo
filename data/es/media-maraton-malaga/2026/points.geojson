@@ -1,0 +1,122 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "start",
+        "label": "Start - Paseo del Parque",
+        "kind": "split",
+        "distanceKm": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.41566, 36.71959]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-malagueta",
+        "label": "Cheer point - Playa de la Malagueta",
+        "kind": "cheer-point",
+        "distanceKm": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.436678, 36.699676]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-5",
+        "label": "5K split - Paseo Marítimo Pablo Ruiz Picasso",
+        "kind": "split",
+        "distanceKm": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.446094, 36.684897]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-huelin",
+        "label": "Cheer point - Paseo Marítimo Antonio Banderas",
+        "kind": "cheer-point",
+        "distanceKm": 8
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.444446, 36.68731]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-10",
+        "label": "10K split - Avenida Juan Sebastián Elcano",
+        "kind": "split",
+        "distanceKm": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.433221, 36.702767]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-15",
+        "label": "15K split - Calle Larios area",
+        "kind": "split",
+        "distanceKm": 15
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.413079, 36.70928]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-alameda",
+        "label": "Cheer point - Alameda Principal",
+        "kind": "cheer-point",
+        "distanceKm": 18
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.391226, 36.722477]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-20",
+        "label": "20K split - Alameda Principal",
+        "kind": "split",
+        "distanceKm": 20
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.406554, 36.719748]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "finish",
+        "label": "Finish - Paseo del Parque",
+        "kind": "split",
+        "distanceKm": 21.097
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.417151, 36.718398]
+      }
+    }
+  ]
+}
