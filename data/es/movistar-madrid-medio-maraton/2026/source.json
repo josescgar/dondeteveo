@@ -1,0 +1,6 @@
+{
+  "routeSourceType": "gpx-import",
+  "officialSourceName": "Movistar Madrid Medio Maratón official website",
+  "officialSourceUrl": "https://www.mediomaratonmadrid.es/",
+  "notes": "Route imported from official GPX file downloaded from the race website. 2026 edition reuses the same course as 2025 (25th edition)."
+}

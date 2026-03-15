@@ -1,0 +1,135 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "start",
+        "label": "Start - Paseo de Recoletos",
+        "kind": "split",
+        "distanceKm": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.690599, 40.424445]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-castellana",
+        "label": "Cheer point - Paseo de la Castellana",
+        "kind": "cheer-point",
+        "distanceKm": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.690712, 40.45085]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-5",
+        "label": "5K split - Plaza de Castilla",
+        "kind": "split",
+        "distanceKm": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.691522, 40.465502]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-villaverde",
+        "label": "Cheer point - Calle Raimundo Fernández Villaverde",
+        "kind": "cheer-point",
+        "distanceKm": 8
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.697459, 40.446477]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-10",
+        "label": "10K split - Calle de Francisco Silvela",
+        "kind": "split",
+        "distanceKm": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.678332, 40.438237]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-alcala",
+        "label": "Cheer point - Puerta de Alcalá",
+        "kind": "cheer-point",
+        "distanceKm": 13.89
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.688348, 40.419784]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-15",
+        "label": "15K split - Calle de Serrano",
+        "kind": "split",
+        "distanceKm": 15
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.687133, 40.428984]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-sol",
+        "label": "Cheer point - Puerta del Sol",
+        "kind": "cheer-point",
+        "distanceKm": 19.38
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.70323, 40.416689]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-20",
+        "label": "20K split - Plaza de las Cortes",
+        "kind": "split",
+        "distanceKm": 20
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.696025, 40.415797]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "finish",
+        "label": "Finish - Paseo de Recoletos",
+        "kind": "split",
+        "distanceKm": 21.097
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.690565, 40.424405]
+      }
+    }
+  ]
+}
