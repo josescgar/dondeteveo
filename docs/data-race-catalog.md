@@ -41,8 +41,12 @@
 | `summary`            | string              | required | 1–2 sentence description for race pages                       |
 | `heroNote`           | string              | required | Spectator-specific note for share pages                       |
 | `specialNote`        | string              | optional | Prominent race-day note for important logistics or exceptions |
+| `waves`              | array of objects    | optional | Wave start definitions (min 2 if present)                     |
+| `waves[].label`      | string              | required | Wave display name (e.g. `"Elite"`, `"Wave 1"`)                |
+| `waves[].startTime`  | string `HH:MM`      | required | Wave gun time in race local timezone                          |
 
 - Omit `specialNote` entirely when a race does not need an extra highlighted callout.
+- Omit `waves` for races with a single start time. If present, `waves` must contain at least 2 entries. Each wave has a `label` and a `startTime` in the same `HH:MM` format as the main `startTime`.
 
 ## `source.json` Schema
 
