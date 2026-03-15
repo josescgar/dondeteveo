@@ -57,7 +57,7 @@
       "type": "Feature",
       "properties": {
         "id": "km-10",
-        "label": "10K split - Calle Doctor Esquerdo",
+        "label": "10K split - Calle de Francisco Silvela",
         "kind": "split",
         "distanceKm": 10
       },
@@ -72,18 +72,18 @@
         "id": "cheer-alcala",
         "label": "Cheer point - Puerta de Alcalá",
         "kind": "cheer-point",
-        "distanceKm": 13
+        "distanceKm": 13.89
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-3.678677, 40.421675]
+        "coordinates": [-3.688348, 40.419784]
       }
     },
     {
       "type": "Feature",
       "properties": {
         "id": "km-15",
-        "label": "15K split - Gran Vía",
+        "label": "15K split - Calle de Serrano",
         "kind": "split",
         "distanceKm": 15
       },
@@ -98,18 +98,18 @@
         "id": "cheer-sol",
         "label": "Cheer point - Puerta del Sol",
         "kind": "cheer-point",
-        "distanceKm": 18
+        "distanceKm": 19.38
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-3.707456, 40.423671]
+        "coordinates": [-3.70323, 40.416689]
       }
     },
     {
       "type": "Feature",
       "properties": {
         "id": "km-20",
-        "label": "20K split - Paseo del Prado",
+        "label": "20K split - Plaza de las Cortes",
         "kind": "split",
         "distanceKm": 20
       },
