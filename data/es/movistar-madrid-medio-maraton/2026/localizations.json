@@ -1,0 +1,29 @@
+{
+  "es": {
+    "meta": {
+      "name": "Movistar Madrid Medio Maratón",
+      "city": "Madrid",
+      "summary": "Media maratón por el corazón de Madrid, recorriendo el Paseo de la Castellana hasta Plaza de Castilla y volviendo por Gran Vía, Puerta del Sol y Paseo del Prado.",
+      "heroNote": "Buenos puntos para animar en el Paseo de la Castellana, cerca de la Puerta de Alcalá y en la Puerta del Sol.",
+      "specialNote": "Esta carrera tiene varias oleadas de salida. Comprueba que la hora de salida es correcta."
+    },
+    "waveLabels": [
+      "Cajón 1 (sub 1:40)",
+      "Cajón 2 (sub 1:50)",
+      "Cajón 3 (sub 2:00)",
+      "Cajón 4 (2:00+)"
+    ],
+    "pointLabels": {
+      "start": "Salida - Paseo de Recoletos",
+      "cheer-castellana": "Punto para animar - Paseo de la Castellana",
+      "km-5": "Punto 5K - Plaza de Castilla",
+      "cheer-villaverde": "Punto para animar - Calle Raimundo Fernández Villaverde",
+      "km-10": "Punto 10K - Calle Doctor Esquerdo",
+      "cheer-alcala": "Punto para animar - Puerta de Alcalá",
+      "km-15": "Punto 15K - Gran Vía",
+      "cheer-sol": "Punto para animar - Puerta del Sol",
+      "km-20": "Punto 20K - Paseo del Prado",
+      "finish": "Meta - Paseo de Recoletos"
+    }
+  }
+}
