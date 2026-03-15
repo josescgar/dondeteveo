@@ -1,5 +1,9 @@
 import type { Locale } from "../config";
-import type { RaceLocalizations, RacePointsCollection } from "./schemas";
+import type {
+  RaceLocalizations,
+  RaceMeta,
+  RacePointsCollection,
+} from "./schemas";
 import type { RaceEdition, RaceSummary } from "./catalog";
 
 const getEditionOverride = (
@@ -27,6 +31,17 @@ const localizePoints = (
   };
 };
 
+const localizeWaves = (
+  waves: RaceMeta["waves"],
+  waveLabels?: string[],
+): RaceMeta["waves"] => {
+  if (!waves || !waveLabels) return waves;
+  return waves.map((wave, i) => ({
+    ...wave,
+    label: waveLabels[i] ?? wave.label,
+  }));
+};
+
 export const localizeRaceEdition = (
   edition: RaceEdition,
   locale: Locale,
@@ -42,6 +57,7 @@ export const localizeRaceEdition = (
     meta: {
       ...edition.meta,
       ...override.meta,
+      waves: localizeWaves(edition.meta.waves, override.waveLabels),
     },
     points: localizePoints(edition.points, override.pointLabels),
   };

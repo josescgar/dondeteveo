@@ -13,6 +13,7 @@ const fragmentSchema = z.object({
     .max(30)
     .regex(/^[\p{L}\p{N}\s'.-]*$/u)
     .optional(),
+  wave: z.coerce.number().int().min(0).optional(),
 });
 
 export type ShareMode = z.infer<typeof shareModeSchema>;
@@ -21,6 +22,7 @@ export type ShareState = {
   mode: ShareMode;
   value: string;
   name?: string;
+  wave?: number;
 };
 
 export const serializeShareState = (state: ShareState): string => {
@@ -30,6 +32,10 @@ export const serializeShareState = (state: ShareState): string => {
 
   if (state.name) {
     params.set(SHARE_FRAGMENT_KEYS.name, state.name);
+  }
+
+  if (state.wave !== undefined) {
+    params.set(SHARE_FRAGMENT_KEYS.wave, String(state.wave));
   }
 
   return params.toString();
@@ -44,6 +50,7 @@ export const parseShareState = (fragment: string): ShareState | null => {
     mode: params.get(SHARE_FRAGMENT_KEYS.mode),
     value: params.get(SHARE_FRAGMENT_KEYS.value),
     name: params.get(SHARE_FRAGMENT_KEYS.name) ?? undefined,
+    wave: params.get(SHARE_FRAGMENT_KEYS.wave) ?? undefined,
   });
 
   if (!parsed.success) {

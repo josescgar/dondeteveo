@@ -23,6 +23,33 @@ describe("share planner logic", () => {
     expect(href).toContain("mode=pace");
   });
 
+  it("includes wave in share href when provided", () => {
+    const href = buildShareHref({
+      locale: "en",
+      raceSlug: "carrera-triana-los-remedios-10k",
+      year: "2026",
+      mode: "pace",
+      value: "05:00",
+      name: "",
+      wave: 1,
+    });
+
+    expect(href).toContain("wave=1");
+  });
+
+  it("does not include wave in share href when undefined", () => {
+    const href = buildShareHref({
+      locale: "en",
+      raceSlug: "carrera-triana-los-remedios-10k",
+      year: "2026",
+      mode: "pace",
+      value: "05:00",
+      name: "",
+    });
+
+    expect(href).not.toContain("wave=");
+  });
+
   it("uses mode-specific default values", () => {
     expect(getDefaultShareValue("pace")).toBe("05:00");
     expect(getDefaultShareValue("finish")).toBe("01:45:00");

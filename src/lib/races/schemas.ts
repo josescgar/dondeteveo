@@ -84,6 +84,7 @@ const localizableMetaSchema = metaSchema
 const localeLocalizationSchema = z.object({
   meta: localizableMetaSchema.optional(),
   pointLabels: z.record(z.string().min(1), z.string().min(1)).optional(),
+  waveLabels: z.array(z.string().min(1)).optional(),
 });
 
 export const localizationsSchema = z.record(localeLocalizationSchema);

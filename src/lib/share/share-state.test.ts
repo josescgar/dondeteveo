@@ -48,6 +48,39 @@ describe("share state helpers", () => {
     expect(formatMinutesAsClock(2880)).toBe("00:00");
   });
 
+  it("round-trips wave index through serialize and parse", () => {
+    const serialized = serializeShareState({
+      mode: "pace",
+      value: "05:00",
+      wave: 1,
+    });
+    const parsed = parseShareState(serialized);
+
+    expect(parsed).toEqual({ mode: "pace", value: "05:00", wave: 1 });
+  });
+
+  it("parses fragment without wave as undefined", () => {
+    const parsed = parseShareState("mode=pace&value=05%3A00");
+
+    expect(parsed).not.toBeNull();
+    expect(parsed!.wave).toBeUndefined();
+  });
+
+  it("parses wave=0 correctly", () => {
+    const parsed = parseShareState("mode=pace&value=05%3A00&wave=0");
+
+    expect(parsed).not.toBeNull();
+    expect(parsed!.wave).toBe(0);
+  });
+
+  it("rejects non-numeric wave value", () => {
+    expect(parseShareState("mode=pace&value=05%3A00&wave=abc")).toBeNull();
+  });
+
+  it("rejects negative wave value", () => {
+    expect(parseShareState("mode=pace&value=05%3A00&wave=-1")).toBeNull();
+  });
+
   it("computes day offset from minutes", () => {
     expect(dayOffsetFromMinutes(600)).toBe(0);
     expect(dayOffsetFromMinutes(1440)).toBe(1);

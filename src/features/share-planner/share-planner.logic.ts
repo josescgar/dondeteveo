@@ -31,6 +31,7 @@ export type SharePlannerInput = {
   mode: ShareMode;
   value: string;
   name: string;
+  wave?: number;
 };
 
 export const getDefaultShareValue = (mode: ShareMode): string =>
@@ -43,11 +44,13 @@ export const buildShareHref = ({
   mode,
   value,
   name,
+  wave,
 }: SharePlannerInput): string => {
   const fragment = serializeShareState({
     mode,
     value,
     name: name.trim() || undefined,
+    wave,
   });
 
   return `${buildSharePath(locale, raceSlug, year)}#${fragment}`;

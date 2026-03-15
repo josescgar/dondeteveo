@@ -8,5 +8,11 @@
   "officialWebsiteUrl": "https://www.mediamaratonmalaga.com/",
   "summary": "Scenic half marathon along the Málaga coastline and through the historic city center, starting and finishing near Paseo del Parque.",
   "heroNote": "Great cheering spots along the Malagueta beachfront promenade, the Paseo Marítimo, and the tree-lined Alameda Principal near the finish.",
-  "specialNote": "This race uses wave starts, so estimated times may be slightly less accurate."
+  "specialNote": "This race uses wave starts. Check that the start time is correct.",
+  "waves": [
+    { "label": "Wave 1 (sub 1:30)", "startTime": "08:15" },
+    { "label": "Wave 2 (sub 1:45)", "startTime": "08:20" },
+    { "label": "Wave 3 (1:46–2:00)", "startTime": "08:27" },
+    { "label": "Wave 4 (2:00+)", "startTime": "08:35" }
+  ]
 }
