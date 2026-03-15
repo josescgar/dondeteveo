@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   filterDiscoveryCards,
+  getDiscoveryCityOptions,
   getDiscoveryCountryOptions,
   paginateDiscoveryCards,
 } from "./race-discovery.logic";
@@ -65,6 +66,7 @@ describe("race discovery logic", () => {
     const result = filterDiscoveryCards(cards, {
       query: "triana",
       country: "",
+      city: "",
       year: "",
     });
 
@@ -75,6 +77,7 @@ describe("race discovery logic", () => {
     const result = filterDiscoveryCards(cards, {
       query: "",
       country: "es",
+      city: "",
       year: "",
     });
 
@@ -103,9 +106,75 @@ describe("race discovery logic", () => {
     const result = filterDiscoveryCards(cards, {
       query: "madrid",
       country: "",
+      city: "",
       year: "",
     });
 
     expect(result).toHaveLength(0);
+  });
+
+  it("builds sorted unique city options", () => {
+    const races = [
+      cards[0],
+      {
+        ...cards[0],
+        raceSlug: "malaga-half",
+        meta: { ...cards[0].meta, city: "Málaga" },
+      },
+      {
+        ...cards[0],
+        raceSlug: "seville-half",
+        meta: { ...cards[0].meta, city: "Seville" },
+      },
+    ];
+
+    expect(getDiscoveryCityOptions(races)).toEqual([
+      { value: "Málaga", label: "Málaga" },
+      { value: "Seville", label: "Seville" },
+    ]);
+  });
+
+  it("filters cards by city", () => {
+    const result = filterDiscoveryCards(cards, {
+      query: "",
+      country: "",
+      city: "Seville",
+      year: "",
+    });
+
+    expect(result).toHaveLength(1);
+  });
+
+  it("returns no cards when city does not match", () => {
+    const result = filterDiscoveryCards(cards, {
+      query: "",
+      country: "",
+      city: "Madrid",
+      year: "",
+    });
+
+    expect(result).toHaveLength(0);
+  });
+
+  it("composes city filter with other filters", () => {
+    const multiCards = [
+      cards[0],
+      {
+        ...cards[0],
+        countryCode: "fr",
+        raceSlug: "paris-marathon",
+        meta: { ...cards[0].meta, city: "Paris" },
+      },
+    ];
+
+    const result = filterDiscoveryCards(multiCards, {
+      query: "",
+      country: "es",
+      city: "Seville",
+      year: "2026",
+    });
+
+    expect(result).toHaveLength(1);
+    expect(result[0].raceSlug).toBe("carrera-triana-los-remedios-10k");
   });
 });

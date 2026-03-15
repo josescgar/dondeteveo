@@ -6,6 +6,7 @@ import type { RaceSummary } from "../../lib/races/catalog";
 export type DiscoveryFilters = {
   query: string;
   country: string;
+  city: string;
   year: string;
 };
 
@@ -13,7 +14,7 @@ export type DiscoveryCard = RaceSummary & {
   href: string;
 };
 
-export type DiscoveryCountryOption = {
+export type DiscoveryFilterOption = {
   value: string;
   label: string;
 };
@@ -30,7 +31,7 @@ export const getDiscoveryCards = (
 export const getDiscoveryCountryOptions = (
   locale: Locale,
   races: RaceSummary[],
-): DiscoveryCountryOption[] =>
+): DiscoveryFilterOption[] =>
   [...new Set(races.map((race) => race.countryCode))]
     .map((countryCode) => ({
       value: countryCode,
@@ -41,6 +42,14 @@ export const getDiscoveryCountryOptions = (
         left.label.localeCompare(right.label, locale) ||
         left.value.localeCompare(right.value),
     );
+
+export const getDiscoveryCityOptions = (
+  races: RaceSummary[],
+  locale?: Locale,
+): DiscoveryFilterOption[] =>
+  [...new Set(races.map((race) => race.meta.city))]
+    .map((city) => ({ value: city, label: city }))
+    .sort((left, right) => left.label.localeCompare(right.label, locale));
 
 export const paginateDiscoveryCards = (
   cards: DiscoveryCard[],
@@ -59,8 +68,10 @@ export const filterDiscoveryCards = (
       card.meta.name.toLowerCase().includes(normalizedQuery);
     const matchesCountry =
       filters.country.length === 0 || card.countryCode === filters.country;
+    const matchesCity =
+      filters.city.length === 0 || card.meta.city === filters.city;
     const matchesYear = filters.year.length === 0 || card.year === filters.year;
 
-    return matchesQuery && matchesCountry && matchesYear;
+    return matchesQuery && matchesCountry && matchesCity && matchesYear;
   });
 };

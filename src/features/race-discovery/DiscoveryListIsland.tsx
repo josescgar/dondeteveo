@@ -12,6 +12,7 @@ import type { RaceSummary } from "../../lib/races/catalog";
 import {
   filterDiscoveryCards,
   getDiscoveryCards,
+  getDiscoveryCityOptions,
   getDiscoveryCountryOptions,
   paginateDiscoveryCards,
 } from "./race-discovery.logic";
@@ -28,6 +29,7 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
   const dictionary = getDictionary(locale);
   const [query, setQuery] = useState("");
   const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
   const [year, setYear] = useState("");
   const [visibleCount, setVisibleCount] = useState(DISCOVERY_PAGE_SIZE);
 
@@ -36,8 +38,8 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
     [locale, races],
   );
   const filteredCards = useMemo(
-    () => filterDiscoveryCards(cards, { query, country, year }),
-    [cards, country, query, year],
+    () => filterDiscoveryCards(cards, { query, country, city, year }),
+    [cards, country, city, query, year],
   );
   const visibleCards = useMemo(
     () => paginateDiscoveryCards(filteredCards, visibleCount),
@@ -47,12 +49,18 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
     () => getDiscoveryCountryOptions(locale, races),
     [locale, races],
   );
+  const availableCities = useMemo(() => {
+    const filteredRaces = country
+      ? races.filter((race) => race.countryCode === country)
+      : races;
+    return getDiscoveryCityOptions(filteredRaces, locale);
+  }, [races, country, locale]);
 
   const availableYears = [...new Set(races.map((race) => race.year))].sort();
 
   return (
     <div class="space-y-6">
-      <div class="grid gap-6 md:grid-cols-[2fr_1fr_1fr]">
+      <div class="grid gap-6 md:grid-cols-[2fr_1fr_1fr_1fr]">
         <label class="flex flex-col gap-1.5">
           <span class="text-muted font-mono text-[10px] tracking-[0.26em] uppercase">
             {dictionary.search}
@@ -76,6 +84,7 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
             value={country}
             onInput={(event) => {
               setCountry(event.currentTarget.value);
+              setCity("");
               setVisibleCount(DISCOVERY_PAGE_SIZE);
             }}
             class={inputClass}
@@ -83,6 +92,24 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
             <option value="">{dictionary.allFilter}</option>
             {availableCountries.map((country) => (
               <option value={country.value}>{country.label}</option>
+            ))}
+          </select>
+        </label>
+        <label class="flex flex-col gap-1.5">
+          <span class="text-muted font-mono text-[10px] tracking-[0.26em] uppercase">
+            {dictionary.city}
+          </span>
+          <select
+            value={city}
+            onInput={(event) => {
+              setCity(event.currentTarget.value);
+              setVisibleCount(DISCOVERY_PAGE_SIZE);
+            }}
+            class={inputClass}
+          >
+            <option value="">{dictionary.allFilter}</option>
+            {availableCities.map((cityOption) => (
+              <option value={cityOption.value}>{cityOption.label}</option>
             ))}
           </select>
         </label>
