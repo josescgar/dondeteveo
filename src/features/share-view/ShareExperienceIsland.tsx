@@ -11,7 +11,7 @@ import type { Locale } from "../../lib/config";
 import { formatDistance } from "../../lib/format";
 import { getDictionary } from "../../lib/i18n";
 import type { RaceEdition } from "../../lib/races/catalog";
-import { getPointSummaries } from "../../lib/races/points";
+import { getPointSummaries, resolveStartTime } from "../../lib/races/points";
 import { parseShareState } from "../../lib/share/share-state";
 import RaceMapIsland from "../race-map/RaceMapIsland";
 import {
@@ -136,6 +136,10 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
     });
   }, [locale, shareState?.name]);
 
+  const effectiveStartTime = useMemo(
+    () => resolveStartTime(edition.meta, shareState?.wave),
+    [edition.meta, shareState?.wave],
+  );
   const points = useMemo(
     () => getPointSummaries(edition.points),
     [edition.points],
@@ -150,9 +154,9 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
   const predictedPoints = useMemo(
     () =>
       paceMinutesPerKm
-        ? buildPredictedPoints(points, paceMinutesPerKm, edition.meta.startTime)
+        ? buildPredictedPoints(points, paceMinutesPerKm, effectiveStartTime)
         : [],
-    [edition.meta.startTime, paceMinutesPerKm, points],
+    [effectiveStartTime, paceMinutesPerKm, points],
   );
   const formatDayOffset = (n: number) => {
     if (n < 0) {
@@ -177,7 +181,7 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
       const predicted = buildPredictedRouteSelection(
         distanceKm,
         paceMinutesPerKm,
-        edition.meta.startTime,
+        effectiveStartTime,
       );
 
       return `${formatPointTime(predicted.predictedTime, predicted.dayOffset)} · ${dictionary.checkpointSafetyMargin
@@ -188,7 +192,7 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
     [
       dictionary.checkpointSafetyMargin,
       dictionary.dayOffsetLabel,
-      edition.meta.startTime,
+      effectiveStartTime,
       paceMinutesPerKm,
     ],
   );
@@ -334,14 +338,28 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
         <h2 class="font-display text-text text-4xl font-bold uppercase">
           {edition.meta.name} <span class="text-accent">· {edition.year}</span>
         </h2>
-        {shareState.name && (
-          <div class="border-line bg-surface-raised text-accent mt-3 inline-block border px-4 py-1.5 font-mono text-xs tracking-[0.2em] uppercase">
-            {dictionary.runnerLabel}: {shareState.name}
+        <div class="mt-3 flex flex-wrap gap-2">
+          {shareState.name && (
+            <div class="border-line bg-surface-raised text-accent inline-block border px-4 py-1.5 font-mono text-xs tracking-[0.2em] uppercase">
+              {dictionary.runnerLabel}: {shareState.name}
+            </div>
+          )}
+          {shareState.wave !== undefined &&
+            edition.meta.waves?.[shareState.wave] && (
+              <div class="border-line bg-surface-raised text-accent inline-block border px-4 py-1.5 font-mono text-xs tracking-[0.2em] uppercase">
+                {dictionary.startWave}:{" "}
+                {edition.meta.waves[shareState.wave].label}
+              </div>
+            )}
+          <div class="border-line bg-surface-raised text-accent inline-block border px-4 py-1.5 font-mono text-xs tracking-[0.2em] uppercase">
+            {shareState.mode === "pace"
+              ? `${dictionary.pace}: ${shareState.value}/km`
+              : `${dictionary.finishTime}: ${shareState.value}`}
           </div>
-        )}
+        </div>
         <div class="text-muted mt-3 font-mono text-sm">
           <span class="text-text">{dictionary.startTime}:</span>{" "}
-          {edition.meta.startTime}
+          {effectiveStartTime}
           <span class="ml-2">({edition.meta.timezone})</span>
         </div>
         {edition.meta.specialNote && (

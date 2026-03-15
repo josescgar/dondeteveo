@@ -11,6 +11,15 @@ export const metaSchema = z.object({
   summary: z.string().min(1),
   heroNote: z.string().min(1),
   specialNote: z.string().min(1).optional(),
+  waves: z
+    .array(
+      z.object({
+        label: z.string().min(1),
+        startTime: z.string().regex(/^\d{2}:\d{2}$/),
+      }),
+    )
+    .min(2)
+    .optional(),
 });
 
 export const sourceSchema = z.object({
@@ -75,6 +84,7 @@ const localizableMetaSchema = metaSchema
 const localeLocalizationSchema = z.object({
   meta: localizableMetaSchema.optional(),
   pointLabels: z.record(z.string().min(1), z.string().min(1)).optional(),
+  waveLabels: z.array(z.string().min(1)).optional(),
 });
 
 export const localizationsSchema = z.record(localeLocalizationSchema);

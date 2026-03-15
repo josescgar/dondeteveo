@@ -5,8 +5,14 @@
       "city": "Málaga",
       "summary": "Media maratón por la costa de Málaga y el centro histórico, con salida y meta junto al Paseo del Parque.",
       "heroNote": "Buenos puntos para animar en Calle Pacífico, el Paseo Marítimo Pablo Ruiz Picasso y el Paseo Antonio Machado.",
-      "specialNote": "Esta carrera tiene varias oleadas de salida, por lo que los tiempos estimados pueden ser algo menos precisos."
+      "specialNote": "Esta carrera tiene varias oleadas de salida. Comprueba que la hora de salida es correcta."
     },
+    "waveLabels": [
+      "Cajón 1 (sub 1:30)",
+      "Cajón 2 (sub 1:45)",
+      "Cajón 3 (1:46–2:00)",
+      "Cajón 4 (2:00+)"
+    ],
     "pointLabels": {
       "start": "Salida - Paseo del Parque",
       "cheer-pacifico-norte": "Punto para animar - Calle Pacífico",

@@ -43,4 +43,5 @@ export const SHARE_FRAGMENT_KEYS = {
   mode: "mode",
   value: "value",
   name: "name",
+  wave: "wave",
 } as const;

@@ -106,6 +106,8 @@ type Dictionary = {
   firstPassLabel: string;
   returnPassLabel: string;
   loadMore: string;
+  startWave: string;
+  selectWave: string;
 };
 
 const DICTIONARIES: Record<Locale, Dictionary> = {
@@ -234,6 +236,8 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     firstPassLabel: "1st pass",
     returnPassLabel: "Return",
     loadMore: "Load more",
+    startWave: "Start wave",
+    selectWave: "Select your wave (optional)",
   },
   es: {
     about: "Acerca de",
@@ -362,6 +366,8 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     firstPassLabel: "1ª pasada",
     returnPassLabel: "Vuelta",
     loadMore: "Cargar más",
+    startWave: "Cajón de salida",
+    selectWave: "Selecciona tu cajón (opcional)",
   },
 };
 

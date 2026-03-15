@@ -16,16 +16,23 @@ type Props = {
   locale: Locale;
   raceSlug: string;
   year: string;
+  waves?: Array<{ label: string; startTime: string }>;
 };
 
 const fieldInputClass =
   "w-full border-b border-line-solid bg-transparent px-0 py-2 font-mono text-sm text-text outline-none transition focus:border-accent";
 
-export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
+export default function SharePlannerIsland({
+  locale,
+  raceSlug,
+  year,
+  waves,
+}: Props) {
   const dictionary = getDictionary(locale);
   const [mode, setMode] = useState<ShareMode>("pace");
   const [value, setValue] = useState(getDefaultShareValue("pace"));
   const [name, setName] = useState("");
+  const [waveIndex, setWaveIndex] = useState<number | undefined>(undefined);
   const [error, setError] = useState<string | null>(null);
   const [nameError, setNameError] = useState<string | null>(null);
   const linkRef = useRef<HTMLAnchorElement>(null);
@@ -87,7 +94,15 @@ export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
     linkRef.current?.click();
   };
 
-  const href = buildShareHref({ locale, raceSlug, year, mode, value, name });
+  const href = buildShareHref({
+    locale,
+    raceSlug,
+    year,
+    mode,
+    value,
+    name,
+    wave: waveIndex,
+  });
 
   return (
     <form onSubmit={handleSubmit} class="card-surface">
@@ -133,6 +148,28 @@ export default function SharePlannerIsland({ locale, raceSlug, year }: Props) {
           )}
         </label>
       </div>
+      {waves && waves.length > 0 && (
+        <label class="mt-4 flex flex-col gap-1.5">
+          <span class="text-muted font-mono text-[10px] tracking-[0.26em] uppercase">
+            {dictionary.startWave}
+          </span>
+          <select
+            value={waveIndex === undefined ? "" : String(waveIndex)}
+            onInput={(event) => {
+              const val = event.currentTarget.value;
+              setWaveIndex(val === "" ? undefined : Number(val));
+            }}
+            class={fieldInputClass}
+          >
+            <option value="">{dictionary.selectWave}</option>
+            {waves.map((wave, index) => (
+              <option key={index} value={String(index)}>
+                {wave.label} — {wave.startTime}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
       <label class="mt-4 flex flex-col gap-1.5">
         <span class="text-muted font-mono text-[10px] tracking-[0.26em] uppercase">
           {dictionary.optionalNickname}

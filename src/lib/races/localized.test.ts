@@ -212,6 +212,49 @@ describe("localizeRaceEdition", () => {
     expect(result).toBe(editionWithoutLocalizations);
   });
 
+  it("localizes wave labels when waveLabels override is present", () => {
+    const editionWithWaves: RaceEdition = {
+      ...baseEdition,
+      meta: {
+        ...baseEdition.meta,
+        waves: [
+          { label: "Wave 1 (sub 1:30)", startTime: "08:15" },
+          { label: "Wave 2 (sub 1:45)", startTime: "08:20" },
+        ],
+      },
+      localizations: {
+        es: {
+          waveLabels: ["Cajón 1 (sub 1:30)", "Cajón 2 (sub 1:45)"],
+        },
+      },
+    };
+
+    const result = localizeRaceEdition(editionWithWaves, "es");
+    expect(result.meta.waves).toEqual([
+      { label: "Cajón 1 (sub 1:30)", startTime: "08:15" },
+      { label: "Cajón 2 (sub 1:45)", startTime: "08:20" },
+    ]);
+  });
+
+  it("keeps base wave labels when no waveLabels override is present", () => {
+    const waves = [
+      { label: "Wave 1", startTime: "08:15" },
+      { label: "Wave 2", startTime: "08:20" },
+    ] as const;
+    const editionWithWaves: RaceEdition = {
+      ...baseEdition,
+      meta: { ...baseEdition.meta, waves: [...waves] },
+      localizations: {
+        es: {
+          meta: { name: "Nombre" },
+        },
+      },
+    };
+
+    const result = localizeRaceEdition(editionWithWaves, "es");
+    expect(result.meta.waves).toEqual([...waves]);
+  });
+
   it("keeps base label when point ID has no localized label", () => {
     const editionWithPartialLabels: RaceEdition = {
       ...baseEdition,
