@@ -103,7 +103,7 @@ export default function RaceMapIsland({
 
       leafletRef.current = leaflet;
       mapRef.current = leaflet.map(containerRef.current, {
-        scrollWheelZoom: false,
+        scrollWheelZoom: true,
       });
 
       setCanFullscreen(Boolean(wrapperRef.current?.requestFullscreen));
