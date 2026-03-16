@@ -31,6 +31,7 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [year, setYear] = useState("");
+  const [includePast, setIncludePast] = useState(false);
   const [visibleCount, setVisibleCount] = useState(DISCOVERY_PAGE_SIZE);
 
   const cards = useMemo(
@@ -38,8 +39,9 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
     [locale, races],
   );
   const filteredCards = useMemo(
-    () => filterDiscoveryCards(cards, { query, country, city, year }),
-    [cards, country, city, query, year],
+    () =>
+      filterDiscoveryCards(cards, { query, country, city, year, includePast }),
+    [cards, country, city, query, year, includePast],
   );
   const visibleCards = useMemo(
     () => paginateDiscoveryCards(filteredCards, visibleCount),
@@ -60,7 +62,7 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
 
   return (
     <div class="space-y-6">
-      <div class="grid gap-6 md:grid-cols-[2fr_1fr_1fr_1fr]">
+      <div class="grid gap-6 md:grid-cols-[2fr_1fr_1fr]">
         <label class="flex flex-col gap-1.5">
           <span class="text-muted font-mono text-[10px] tracking-[0.26em] uppercase">
             {dictionary.search}
@@ -76,7 +78,7 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
             class={inputClass}
           />
         </label>
-        <label class="flex flex-col gap-1.5">
+        <label class="hidden flex-col gap-1.5">
           <span class="text-muted font-mono text-[10px] tracking-[0.26em] uppercase">
             {dictionary.country}
           </span>
@@ -132,6 +134,19 @@ export default function DiscoveryListIsland({ locale, races }: Props) {
           </select>
         </label>
       </div>
+
+      <label class="text-muted flex items-center gap-2 font-mono text-sm">
+        <input
+          type="checkbox"
+          checked={includePast}
+          onInput={(event) => {
+            setIncludePast(event.currentTarget.checked);
+            setVisibleCount(DISCOVERY_PAGE_SIZE);
+          }}
+          class="accent-accent"
+        />
+        {dictionary.includePastRaces}
+      </label>
 
       <div>
         {filteredCards.length > 0 ? (

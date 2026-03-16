@@ -108,6 +108,7 @@ type Dictionary = {
   loadMore: string;
   startWave: string;
   selectWave: string;
+  includePastRaces: string;
 };
 
 const DICTIONARIES: Record<Locale, Dictionary> = {
@@ -238,6 +239,7 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     loadMore: "Load more",
     startWave: "Start wave",
     selectWave: "Select your wave (optional)",
+    includePastRaces: "Include past races",
   },
   es: {
     about: "Acerca de",
@@ -368,6 +370,7 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     loadMore: "Cargar más",
     startWave: "Cajón de salida",
     selectWave: "Selecciona tu cajón (opcional)",
+    includePastRaces: "Incluir carreras pasadas",
   },
 };
 
