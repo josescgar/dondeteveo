@@ -1,0 +1,19 @@
+{
+  "es": {
+    "meta": {
+      "name": "Santa Eulària Ibiza 12K",
+      "city": "Santa Eulària des Riu",
+      "summary": "Carrera de 12K con salida y llegada en Santa Eulària des Riu, pasando por es Canar, con meta en el Passeig de s'Alamera.",
+      "heroNote": "Mejores puntos para animar cerca de es Canar en el giro y en el tramo final en Santa Eulària."
+    },
+    "pointLabels": {
+      "start": "Salida - Passeig del Port Esportiu, Santa Eulària des Riu",
+      "km-3": "Punto 3K - Carretera es Canar, S'Argamassa",
+      "cheer-es-canar": "Punto para animar - Carretera es Canar, S'Argamassa",
+      "km-6": "Punto 6K - Avinguda d'es Canar, es Canar",
+      "km-9": "Punto 9K - Carretera es Canar, S'Argamassa",
+      "cheer-santa-eularia": "Punto para animar - Carrer de Cèsar Puget Riquer, Santa Eulària des Riu",
+      "finish": "Meta - Passeig de s'Alamera, Santa Eulària des Riu"
+    }
+  }
+}

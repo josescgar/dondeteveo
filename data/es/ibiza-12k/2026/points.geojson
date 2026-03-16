@@ -1,0 +1,96 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "start",
+        "label": "Start - Passeig del Port Esportiu, Santa Eulària des Riu",
+        "kind": "split",
+        "distanceKm": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.542219, 38.984814]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-3",
+        "label": "3K split - Carretera es Canar, S'Argamassa",
+        "kind": "split",
+        "distanceKm": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.55062, 38.993754]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-es-canar",
+        "label": "Cheer point - Carretera es Canar, S'Argamassa",
+        "kind": "cheer-point",
+        "distanceKm": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.569695, 39.003939]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-6",
+        "label": "6K split - Avinguda d'es Canar, es Canar",
+        "kind": "split",
+        "distanceKm": 6
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.578268, 39.00021]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-9",
+        "label": "9K split - Carretera es Canar, S'Argamassa",
+        "kind": "split",
+        "distanceKm": 9
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.55713, 38.997188]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-santa-eularia",
+        "label": "Cheer point - Carrer de Cèsar Puget Riquer, Santa Eulària des Riu",
+        "kind": "cheer-point",
+        "distanceKm": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.547616, 38.992069]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "finish",
+        "label": "Finish - Passeig de s'Alamera, Santa Eulària des Riu",
+        "kind": "split",
+        "distanceKm": 12
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.534712, 38.983546]
+      }
+    }
+  ]
+}

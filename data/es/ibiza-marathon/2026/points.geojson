@@ -1,0 +1,187 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "start",
+        "label": "Start - Avinguda de les Andanes, Eivissa",
+        "kind": "split",
+        "distanceKm": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.438126, 38.909974]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-eivissa",
+        "label": "Cheer point - Carrer de ses Feixes, Eivissa",
+        "kind": "cheer-point",
+        "distanceKm": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.456363, 38.918559]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-5",
+        "label": "5K split - Puig d'en Valls",
+        "kind": "split",
+        "distanceKm": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.443491, 38.920945]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-puig-den-valls",
+        "label": "Cheer point - Avinguda de Camí Vell de Sant Mateu, Puig d'en Valls",
+        "kind": "cheer-point",
+        "distanceKm": 8
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.429816, 38.928475]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-10",
+        "label": "10K split - Camí Vell de Sant Mateu",
+        "kind": "split",
+        "distanceKm": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.428158, 38.946173]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-15",
+        "label": "15K split - EI-631, Santa Eulària des Riu",
+        "kind": "split",
+        "distanceKm": 15
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.426028, 38.981147]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-20",
+        "label": "20K split - Carrer Vénda de Fruitera, Santa Gertrudis",
+        "kind": "split",
+        "distanceKm": 20
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.428864, 38.997797]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-21",
+        "label": "Half-way split - Camí de Bellmunt, Santa Gertrudis",
+        "kind": "split",
+        "distanceKm": 21.097
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.438728, 39.001514]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-25",
+        "label": "25K split - Camí de Bellmunt, Sant Joan de Labritja",
+        "kind": "split",
+        "distanceKm": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.477537, 39.000708]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-siesta",
+        "label": "Cheer point - EI-200, Siesta",
+        "kind": "cheer-point",
+        "distanceKm": 28
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.499639, 38.984939]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-30",
+        "label": "30K split - Avinguda de Can Nadal, Siesta",
+        "kind": "split",
+        "distanceKm": 30
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.521887, 38.98473]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-35",
+        "label": "35K split - Carretera es Canar, S'Argamassa",
+        "kind": "split",
+        "distanceKm": 35
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.568843, 39.003484]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-40",
+        "label": "40K split - Carretera es Canar, Santa Eulària des Riu",
+        "kind": "split",
+        "distanceKm": 40
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.548464, 38.992528]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "finish",
+        "label": "Finish - Passeig Marítim, Santa Eulària des Riu",
+        "kind": "split",
+        "distanceKm": 42.195
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.533733, 38.982986]
+      }
+    }
+  ]
+}

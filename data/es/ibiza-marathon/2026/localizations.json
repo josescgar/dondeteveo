@@ -1,0 +1,26 @@
+{
+  "es": {
+    "meta": {
+      "name": "Santa Eulària Ibiza Maratón",
+      "city": "Santa Eulària des Riu",
+      "summary": "Un maratón escénico que parte del Puerto de Ibiza y termina en el Passeig Marítim de Santa Eulària des Riu, pasando por Puig d'en Valls, Santa Gertrudis y la costa este de Ibiza.",
+      "heroNote": "Buenos puntos para animar en Eivissa cerca de la salida, en Santa Gertrudis alrededor de la mitad del recorrido y en la zona de meta del Passeig Marítim de Santa Eulària."
+    },
+    "pointLabels": {
+      "start": "Salida - Avinguda de les Andanes, Eivissa",
+      "cheer-eivissa": "Punto para animar - Carrer de ses Feixes, Eivissa",
+      "km-5": "Punto 5K - Puig d'en Valls",
+      "cheer-puig-den-valls": "Punto para animar - Avinguda de Camí Vell de Sant Mateu, Puig d'en Valls",
+      "km-10": "Punto 10K - Camí Vell de Sant Mateu",
+      "km-15": "Punto 15K - EI-631, Santa Eulària des Riu",
+      "km-20": "Punto 20K - Carrer Vénda de Fruitera, Santa Gertrudis",
+      "km-21": "Punto medio - Camí de Bellmunt, Santa Gertrudis",
+      "km-25": "Punto 25K - Camí de Bellmunt, Sant Joan de Labritja",
+      "cheer-siesta": "Punto para animar - EI-200, Siesta",
+      "km-30": "Punto 30K - Avinguda de Can Nadal, Siesta",
+      "km-35": "Punto 35K - Carretera es Canar, S'Argamassa",
+      "km-40": "Punto 40K - Carretera es Canar, Santa Eulària des Riu",
+      "finish": "Meta - Passeig Marítim, Santa Eulària des Riu"
+    }
+  }
+}

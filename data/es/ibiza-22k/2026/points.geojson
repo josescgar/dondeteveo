@@ -1,0 +1,109 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "start",
+        "label": "Start - Carretera de Sant Miquel, Santa Gertrudis",
+        "kind": "split",
+        "distanceKm": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.430225, 38.998912]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-5",
+        "label": "5K split - Camí de Bellmunt, Sant Joan de Labritja",
+        "kind": "split",
+        "distanceKm": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.478047, 38.999514]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-siesta",
+        "label": "Cheer point - EI-200, Siesta",
+        "kind": "cheer-point",
+        "distanceKm": 8
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.501229, 38.984695]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-10",
+        "label": "10K split - Avinguda de Can Nadal, Siesta",
+        "kind": "split",
+        "distanceKm": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.523499, 38.984625]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-15",
+        "label": "15K split - Carretera es Canar, S'Argamassa",
+        "kind": "split",
+        "distanceKm": 15
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.570178, 39.004198]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-santa-eularia",
+        "label": "Cheer point - Carrer de sa Trenca, S'Argamassa",
+        "kind": "cheer-point",
+        "distanceKm": 18
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.566936, 38.995863]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-20",
+        "label": "20K split - Carrer de Cèsar Puget Riquer, Santa Eulària des Riu",
+        "kind": "split",
+        "distanceKm": 20
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.547135, 38.991808]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "finish",
+        "label": "Finish - Passeig Marítim, Santa Eulària des Riu",
+        "kind": "split",
+        "distanceKm": 22
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [1.534221, 38.983296]
+      }
+    }
+  ]
+}
