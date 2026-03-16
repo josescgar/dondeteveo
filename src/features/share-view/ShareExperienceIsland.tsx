@@ -362,6 +362,18 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
           {effectiveStartTime}
           <span class="ml-2">({edition.meta.timezone})</span>
         </div>
+        {edition.meta.officialWebsiteUrl && (
+          <div class="mt-3">
+            <a
+              href={edition.meta.officialWebsiteUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-accent font-mono text-xs tracking-[0.2em] uppercase underline underline-offset-4 hover:no-underline"
+            >
+              {dictionary.officialWebsite} ↗
+            </a>
+          </div>
+        )}
         {edition.meta.specialNote && (
           <div class="banner-warning mt-4">
             <div class="text-warning font-mono text-[10px] tracking-[0.28em] uppercase">
