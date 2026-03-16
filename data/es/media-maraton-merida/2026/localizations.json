@@ -1,0 +1,21 @@
+{
+  "es": {
+    "meta": {
+      "name": "Media Maratón de Mérida",
+      "city": "Mérida",
+      "summary": "Una media maratón en circuito por el casco histórico de Mérida, ciudad Patrimonio de la Humanidad por la UNESCO, con salida y meta junto al icónico Puente Romano sobre el río Guadiana.",
+      "heroNote": "Buenos puntos para animar junto al Puente Lusitania en el km 3, cerca del Acueducto de los Milagros en el km 12 y junto al Teatro Romano en el km 19."
+    },
+    "pointLabels": {
+      "start": "Salida - Paseo de Roma",
+      "cheer-lusitania": "Punto para animar - Avenida Reina Sofía, junto al Puente Lusitania",
+      "km-5": "Punto 5K - Avenida Reina Sofía",
+      "km-10": "Punto 10K - Calle Río Albarrenal",
+      "cheer-acueducto": "Punto para animar - Avenida Emérita Augusta, junto al Acueducto de los Milagros",
+      "km-15": "Punto 15K - Paseo de los Rosales",
+      "cheer-teatro-romano": "Punto para animar - Calle José Ramón Mélida, junto al Teatro Romano",
+      "km-20": "Punto 20K - Calle Romero Leal",
+      "finish": "Meta - Paseo de Roma"
+    }
+  }
+}
