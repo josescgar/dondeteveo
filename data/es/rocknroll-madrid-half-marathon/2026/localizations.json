@@ -1,0 +1,22 @@
+{
+  "es": {
+    "meta": {
+      "name": "Zurich Rock 'n' Roll Madrid Media Maratón",
+      "city": "Madrid",
+      "summary": "Media maratón por el centro de Madrid desde el Paseo de la Castellana hasta el barrio de Salamanca, Gran Vía y meta en el Paseo de Recoletos.",
+      "heroNote": "Buenos puntos para animar en el Paseo de la Castellana, cerca de la Calle de O'Donnell y en Gran Vía cerca de la meta.",
+      "specialNote": "La organización divide a los corredores en varios cajones de salida según el tiempo estimado de llegada. La hora de salida indicada es para el primer cajón — tu salida real puede ser más tarde."
+    },
+    "pointLabels": {
+      "start": "Salida - Paseo de la Castellana",
+      "cheer-castellana": "Punto para animar - Paseo de la Castellana",
+      "km-5": "Punto 5K - Calle de Bravo Murillo",
+      "km-10": "Punto 10K - Calle de Francisco Silvela",
+      "cheer-odonnell": "Punto para animar - Calle de O'Donnell",
+      "km-15": "Punto 15K - Calle de Velázquez",
+      "cheer-gran-via": "Punto para animar - Gran Vía",
+      "km-20": "Punto 20K - Carrera de San Jerónimo",
+      "finish": "Meta - Paseo de Recoletos"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "es": {
+    "meta": {
+      "name": "Zurich Rock 'n' Roll Madrid Maratón",
+      "city": "Madrid",
+      "summary": "Maratón por el centro de Madrid, Casa de Campo y de vuelta por la ribera del Manzanares, saliendo del Paseo de la Castellana y llegando al Paseo de Recoletos.",
+      "heroNote": "Buenos puntos para animar en el Paseo de la Castellana cerca de la salida, en la Calle Mayor y cerca de la meta en el Paseo de Recoletos.",
+      "specialNote": "La organización divide a los corredores en varios cajones de salida según el tiempo estimado de llegada. La hora de salida indicada es para el primer cajón — tu salida real puede ser más tarde."
+    },
+    "pointLabels": {
+      "start": "Salida - Paseo de la Castellana",
+      "cheer-castellana": "Punto para animar - Paseo de la Castellana",
+      "km-5": "Punto 5K - Calle de Bravo Murillo",
+      "km-10": "Punto 10K - Calle de Francisco Silvela",
+      "cheer-principe-vergara": "Punto para animar - Calle del Príncipe de Vergara",
+      "km-15": "Punto 15K - Calle de Velázquez",
+      "km-20": "Punto 20K - Calle Mayor",
+      "km-21": "Punto medio - Calle de Bailén",
+      "cheer-casa-campo": "Punto para animar - Paseo de Ruperto Chapí",
+      "km-25": "Punto 25K - Avenida de Valladolid",
+      "km-30": "Punto 30K - Carretera de Rodajos",
+      "km-35": "Punto 35K - Paseo de la Ermita del Santo",
+      "cheer-paseo-imperial": "Punto para animar - Paseo Imperial",
+      "km-40": "Punto 40K - Ronda de Valencia",
+      "finish": "Meta - Paseo de Recoletos"
+    }
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "start",
+        "label": "Start - Paseo de la Castellana",
+        "kind": "split",
+        "distanceKm": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.691306, 40.440287]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-castellana",
+        "label": "Cheer point - Paseo de la Castellana",
+        "kind": "cheer-point",
+        "distanceKm": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.689717, 40.460972]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-5",
+        "label": "5K split - Calle de Bravo Murillo",
+        "kind": "split",
+        "distanceKm": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.701498, 40.457417]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-10",
+        "label": "10K split - Calle de Francisco Silvela",
+        "kind": "split",
+        "distanceKm": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.669765, 40.429195]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-principe-vergara",
+        "label": "Cheer point - Calle del Príncipe de Vergara",
+        "kind": "cheer-point",
+        "distanceKm": 14
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.679997, 40.427547]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-15",
+        "label": "15K split - Calle de Velázquez",
+        "kind": "split",
+        "distanceKm": 15
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.683806, 40.428979]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-20",
+        "label": "20K split - Calle Mayor",
+        "kind": "split",
+        "distanceKm": 20
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.708138, 40.416096]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-21",
+        "label": "Half-way split - Calle de Bailén",
+        "kind": "split",
+        "distanceKm": 21.097
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.712807, 40.420826]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-casa-campo",
+        "label": "Cheer point - Paseo de Ruperto Chapí",
+        "kind": "cheer-point",
+        "distanceKm": 24
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.731838, 40.433919]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-25",
+        "label": "25K split - Avenida de Valladolid",
+        "kind": "split",
+        "distanceKm": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.728858, 40.427977]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-30",
+        "label": "30K split - Carretera de Rodajos",
+        "kind": "split",
+        "distanceKm": 30
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.759405, 40.413389]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-35",
+        "label": "35K split - Paseo de la Ermita del Santo",
+        "kind": "split",
+        "distanceKm": 35
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.723684, 40.409089]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-paseo-imperial",
+        "label": "Cheer point - Paseo Imperial",
+        "kind": "cheer-point",
+        "distanceKm": 38
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.717836, 40.409506]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-40",
+        "label": "40K split - Ronda de Valencia",
+        "kind": "split",
+        "distanceKm": 40
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.700409, 40.405602]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "finish",
+        "label": "Finish - Paseo de Recoletos",
+        "kind": "split",
+        "distanceKm": 42.195
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.692169, 40.420978]
+      }
+    }
+  ]
+}
