@@ -1,0 +1,122 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "start",
+        "label": "Start - Puente Romano, Mérida",
+        "kind": "split",
+        "distanceKm": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.349457, 38.916674]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-roman-theatre",
+        "label": "Cheer point - Teatro Romano area",
+        "kind": "cheer-point",
+        "distanceKm": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.34066, 38.910808]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-5",
+        "label": "5K split - Avenida de la Libertad",
+        "kind": "split",
+        "distanceKm": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.327824, 38.922965]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-acueducto",
+        "label": "Cheer point - Acueducto de los Milagros area",
+        "kind": "cheer-point",
+        "distanceKm": 8
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.353152, 38.92096]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-10",
+        "label": "10K split - Calle Carderos",
+        "kind": "split",
+        "distanceKm": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.341026, 38.922868]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-15",
+        "label": "15K split - Barriada de San Antonio",
+        "kind": "split",
+        "distanceKm": 15
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.354276, 38.908166]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-riverside",
+        "label": "Cheer point - Riverside near Lusitania bridge",
+        "kind": "cheer-point",
+        "distanceKm": 18
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.33477, 38.911713]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-20",
+        "label": "20K split - Calle Pontezuelas",
+        "kind": "split",
+        "distanceKm": 20
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.344305, 38.916194]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "finish",
+        "label": "Finish - Puente Romano, Mérida",
+        "kind": "split",
+        "distanceKm": 21.097
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.349488, 38.916704]
+      }
+    }
+  ]
+}
