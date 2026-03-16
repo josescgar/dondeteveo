@@ -5,7 +5,7 @@
       "type": "Feature",
       "properties": {
         "id": "start",
-        "label": "Start - Puente Romano, Mérida",
+        "label": "Start - Paseo de Roma",
         "kind": "split",
         "distanceKm": 0
       },
@@ -17,8 +17,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "cheer-roman-theatre",
-        "label": "Cheer point - Teatro Romano area",
+        "id": "cheer-lusitania",
+        "label": "Cheer point - Avenida Reina Sofía, near Puente Lusitania",
         "kind": "cheer-point",
         "distanceKm": 3
       },
@@ -31,7 +31,7 @@
       "type": "Feature",
       "properties": {
         "id": "km-5",
-        "label": "5K split - Avenida de la Libertad",
+        "label": "5K split - Avenida Reina Sofía",
         "kind": "split",
         "distanceKm": 5
       },
@@ -43,21 +43,8 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "cheer-acueducto",
-        "label": "Cheer point - Acueducto de los Milagros area",
-        "kind": "cheer-point",
-        "distanceKm": 8
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [-6.353152, 38.92096]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "id": "km-10",
-        "label": "10K split - Calle Carderos",
+        "label": "10K split - Calle Río Albarrenal",
         "kind": "split",
         "distanceKm": 10
       },
@@ -69,8 +56,21 @@
     {
       "type": "Feature",
       "properties": {
+        "id": "cheer-acueducto",
+        "label": "Cheer point - Avenida Emérita Augusta, near Acueducto de los Milagros",
+        "kind": "cheer-point",
+        "distanceKm": 12
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.355003, 38.925823]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "id": "km-15",
-        "label": "15K split - Barriada de San Antonio",
+        "label": "15K split - Paseo de los Rosales",
         "kind": "split",
         "distanceKm": 15
       },
@@ -82,21 +82,21 @@
     {
       "type": "Feature",
       "properties": {
-        "id": "cheer-riverside",
-        "label": "Cheer point - Riverside near Lusitania bridge",
+        "id": "cheer-teatro-romano",
+        "label": "Cheer point - Calle José Ramón Mélida, near Teatro Romano",
         "kind": "cheer-point",
-        "distanceKm": 18
+        "distanceKm": 19
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [-6.33477, 38.911713]
+        "coordinates": [-6.336939, 38.916879]
       }
     },
     {
       "type": "Feature",
       "properties": {
         "id": "km-20",
-        "label": "20K split - Calle Pontezuelas",
+        "label": "20K split - Calle Romero Leal",
         "kind": "split",
         "distanceKm": 20
       },
@@ -109,7 +109,7 @@
       "type": "Feature",
       "properties": {
         "id": "finish",
-        "label": "Finish - Puente Romano, Mérida",
+        "label": "Finish - Paseo de Roma",
         "kind": "split",
         "distanceKm": 21.097
       },
