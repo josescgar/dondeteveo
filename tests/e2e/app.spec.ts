@@ -106,9 +106,18 @@ test("race discovery reaches a race page and share flow", async ({ page }) => {
     "All",
     "Spain",
   ]);
-  await page
-    .getByRole("link", { name: /Triana - Los Remedios .*10K/i })
-    .click();
+
+  const trianaLink = page.getByRole("link", {
+    name: /Triana - Los Remedios .*10K/i,
+  });
+
+  // Past race should be hidden by default
+  await expect(trianaLink).not.toBeVisible();
+
+  // Enable past races filter
+  await page.getByLabel(/include past races/i).check();
+
+  await trianaLink.click();
   await expect(page).toHaveURL(
     /\/en\/races\/carrera-triana-los-remedios-10k\/2026/,
   );
