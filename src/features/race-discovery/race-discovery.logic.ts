@@ -1,5 +1,5 @@
 import type { Locale } from "../../lib/config";
-import { formatCountryName } from "../../lib/format";
+import { formatCountryName, getTodayInTimeZone } from "../../lib/format";
 import { buildRacePath } from "../../lib/routes";
 import type { RaceSummary } from "../../lib/races/catalog";
 
@@ -8,6 +8,7 @@ export type DiscoveryFilters = {
   country: string;
   city: string;
   year: string;
+  includePast: boolean;
 };
 
 export type DiscoveryCard = RaceSummary & {
@@ -71,7 +72,16 @@ export const filterDiscoveryCards = (
     const matchesCity =
       filters.city.length === 0 || card.meta.city === filters.city;
     const matchesYear = filters.year.length === 0 || card.year === filters.year;
+    const matchesPast =
+      filters.includePast ||
+      card.meta.date >= getTodayInTimeZone(card.meta.timezone);
 
-    return matchesQuery && matchesCountry && matchesCity && matchesYear;
+    return (
+      matchesQuery &&
+      matchesCountry &&
+      matchesCity &&
+      matchesYear &&
+      matchesPast
+    );
   });
 };

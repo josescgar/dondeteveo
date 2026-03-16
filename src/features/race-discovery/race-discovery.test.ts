@@ -68,6 +68,7 @@ describe("race discovery logic", () => {
       country: "",
       city: "",
       year: "",
+      includePast: true,
     });
 
     expect(result).toHaveLength(1);
@@ -79,6 +80,7 @@ describe("race discovery logic", () => {
       country: "es",
       city: "",
       year: "",
+      includePast: true,
     });
 
     expect(result).toHaveLength(1);
@@ -108,6 +110,7 @@ describe("race discovery logic", () => {
       country: "",
       city: "",
       year: "",
+      includePast: true,
     });
 
     expect(result).toHaveLength(0);
@@ -140,6 +143,7 @@ describe("race discovery logic", () => {
       country: "",
       city: "Seville",
       year: "",
+      includePast: true,
     });
 
     expect(result).toHaveLength(1);
@@ -151,9 +155,96 @@ describe("race discovery logic", () => {
       country: "",
       city: "Madrid",
       year: "",
+      includePast: true,
     });
 
     expect(result).toHaveLength(0);
+  });
+
+  it("hides past races by default when includePast is false", () => {
+    const pastCard = {
+      ...cards[0],
+      raceSlug: "past-race",
+      href: "/en/races/past-race/2024",
+      meta: { ...cards[0].meta, date: "2024-01-01" },
+    };
+    const futureCard = {
+      ...cards[0],
+      raceSlug: "future-race",
+      href: "/en/races/future-race/2027",
+      meta: { ...cards[0].meta, date: "2027-06-01" },
+    };
+
+    const result = filterDiscoveryCards([pastCard, futureCard], {
+      query: "",
+      country: "",
+      city: "",
+      year: "",
+      includePast: false,
+    });
+
+    expect(result).toHaveLength(1);
+    expect(result[0].raceSlug).toBe("future-race");
+  });
+
+  it("shows all races when includePast is true", () => {
+    const pastCard = {
+      ...cards[0],
+      raceSlug: "past-race",
+      href: "/en/races/past-race/2024",
+      meta: { ...cards[0].meta, date: "2024-01-01" },
+    };
+    const futureCard = {
+      ...cards[0],
+      raceSlug: "future-race",
+      href: "/en/races/future-race/2027",
+      meta: { ...cards[0].meta, date: "2027-06-01" },
+    };
+
+    const result = filterDiscoveryCards([pastCard, futureCard], {
+      query: "",
+      country: "",
+      city: "",
+      year: "",
+      includePast: true,
+    });
+
+    expect(result).toHaveLength(2);
+  });
+
+  it("composes includePast filter with other filters", () => {
+    const pastCard = {
+      ...cards[0],
+      raceSlug: "past-seville",
+      href: "/en/races/past-seville/2024",
+      meta: { ...cards[0].meta, date: "2024-01-01", city: "Seville" },
+    };
+    const futureMadrid = {
+      ...cards[0],
+      raceSlug: "future-madrid",
+      href: "/en/races/future-madrid/2027",
+      meta: { ...cards[0].meta, date: "2027-06-01", city: "Madrid" },
+    };
+    const futureSeville = {
+      ...cards[0],
+      raceSlug: "future-seville",
+      href: "/en/races/future-seville/2027",
+      meta: { ...cards[0].meta, date: "2027-06-01", city: "Seville" },
+    };
+
+    const result = filterDiscoveryCards(
+      [pastCard, futureMadrid, futureSeville],
+      {
+        query: "",
+        country: "",
+        city: "Seville",
+        year: "",
+        includePast: false,
+      },
+    );
+
+    expect(result).toHaveLength(1);
+    expect(result[0].raceSlug).toBe("future-seville");
   });
 
   it("composes city filter with other filters", () => {
@@ -172,6 +263,7 @@ describe("race discovery logic", () => {
       country: "es",
       city: "Seville",
       year: "2026",
+      includePast: true,
     });
 
     expect(result).toHaveLength(1);
