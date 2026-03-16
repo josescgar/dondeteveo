@@ -1,0 +1,20 @@
+{
+  "es": {
+    "meta": {
+      "name": "Zurich Rock 'n' Roll Madrid 10K",
+      "city": "Madrid",
+      "summary": "10K rápido por el centro de Madrid desde el Paseo de la Castellana por los barrios de Chamberí y Malasaña, bajando por Gran Vía hasta la meta en el Paseo de Recoletos.",
+      "heroNote": "Buenos puntos para animar en la Calle de Joaquín Costa cerca de la salida y en Gran Vía cerca de la meta.",
+      "specialNote": "La organización divide a los corredores en varios cajones de salida según el tiempo estimado de llegada. La hora de salida indicada es para el primer cajón — tu salida real puede ser más tarde."
+    },
+    "pointLabels": {
+      "start": "Salida - Paseo de la Castellana",
+      "cheer-joaquin-costa": "Punto para animar - Calle de Joaquín Costa",
+      "km-2-5": "Punto 2,5K - Calle de Joaquín Costa",
+      "km-5": "Punto 5K - Puente Enrique de la Mata Gorostizaga",
+      "km-7-5": "Punto 7,5K - Calle de San Bernardo",
+      "cheer-gran-via": "Punto para animar - Gran Vía",
+      "finish": "Meta - Paseo de Recoletos"
+    }
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "start",
+        "label": "Start - Paseo de la Castellana",
+        "kind": "split",
+        "distanceKm": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.691306, 40.440289]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-castellana",
+        "label": "Cheer point - Paseo de la Castellana",
+        "kind": "cheer-point",
+        "distanceKm": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.689716, 40.460967]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-5",
+        "label": "5K split - Calle de Bravo Murillo",
+        "kind": "split",
+        "distanceKm": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.701496, 40.457421]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-10",
+        "label": "10K split - Calle de Francisco Silvela",
+        "kind": "split",
+        "distanceKm": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.669768, 40.429199]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-odonnell",
+        "label": "Cheer point - Calle de O'Donnell",
+        "kind": "cheer-point",
+        "distanceKm": 12
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.681968, 40.421361]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-15",
+        "label": "15K split - Calle de Velázquez",
+        "kind": "split",
+        "distanceKm": 15
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.683806, 40.428975]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-gran-via",
+        "label": "Cheer point - Gran Vía",
+        "kind": "cheer-point",
+        "distanceKm": 19
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.707597, 40.42138]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-20",
+        "label": "20K split - Carrera de San Jerónimo",
+        "kind": "split",
+        "distanceKm": 20
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.699232, 40.416591]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "finish",
+        "label": "Finish - Paseo de Recoletos",
+        "kind": "split",
+        "distanceKm": 21.097
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.692038, 40.42139]
+      }
+    }
+  ]
+}

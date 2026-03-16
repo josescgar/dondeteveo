@@ -1,0 +1,96 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "start",
+        "label": "Start - Paseo de la Castellana",
+        "kind": "split",
+        "distanceKm": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.691307, 40.440293]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-joaquin-costa",
+        "label": "Cheer point - Calle de Joaquín Costa",
+        "kind": "cheer-point",
+        "distanceKm": 2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.688341, 40.445991]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-2-5",
+        "label": "2.5K split - Calle de Joaquín Costa",
+        "kind": "split",
+        "distanceKm": 2.5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.683894, 40.443582]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-5",
+        "label": "5K split - Puente Enrique de la Mata Gorostizaga",
+        "kind": "split",
+        "distanceKm": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.687375, 40.43308]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-7-5",
+        "label": "7.5K split - Calle de San Bernardo",
+        "kind": "split",
+        "distanceKm": 7.5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.707399, 40.424191]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-gran-via",
+        "label": "Cheer point - Gran Vía",
+        "kind": "cheer-point",
+        "distanceKm": 8
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.706038, 40.420324]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "finish",
+        "label": "Finish - Paseo de Recoletos",
+        "kind": "split",
+        "distanceKm": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.691832, 40.421707]
+      }
+    }
+  ]
+}
