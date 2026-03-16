@@ -1,0 +1,20 @@
+{
+  "es": {
+    "meta": {
+      "name": "Santa Eulària Ibiza 22K",
+      "city": "Santa Eulària des Riu",
+      "summary": "Carrera de 22K que parte de Santa Gertrudis y termina en el Passeig Marítim de Santa Eulària des Riu, recorriendo el interior rural y la costa este de Ibiza.",
+      "heroNote": "Buenos puntos para animar cerca de Siesta y en el tramo final hacia Santa Eulària des Riu."
+    },
+    "pointLabels": {
+      "start": "Salida - Carretera de Sant Miquel, Santa Gertrudis",
+      "km-5": "Punto 5K - Camí de Bellmunt, Sant Joan de Labritja",
+      "cheer-siesta": "Punto para animar - EI-200, Siesta",
+      "km-10": "Punto 10K - Avinguda de Can Nadal, Siesta",
+      "km-15": "Punto 15K - Carretera es Canar, S'Argamassa",
+      "cheer-santa-eularia": "Punto para animar - Carrer de sa Trenca, S'Argamassa",
+      "km-20": "Punto 20K - Carrer de Cèsar Puget Riquer, Santa Eulària des Riu",
+      "finish": "Meta - Passeig Marítim, Santa Eulària des Riu"
+    }
+  }
+}
