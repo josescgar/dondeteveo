@@ -16,6 +16,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
+Use Node.js `>=22.12.0`.
+
 ```bash
 npm run dev          # Start Astro dev server
 npm run build        # Build for production
