@@ -1,11 +1,12 @@
 import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
 
 import sharp from "sharp";
 
 import { SEO_IMAGE_HEIGHT, SEO_IMAGE_WIDTH, type Locale } from "./config";
 
-const LOGO_IMAGE_URL = new URL("../../public/logo.png", import.meta.url);
-const logoOverlayPromise = readFile(LOGO_IMAGE_URL).then((buffer) =>
+const LOGO_IMAGE_PATH = resolve(process.cwd(), "public/logo.png");
+const logoOverlayPromise = readFile(LOGO_IMAGE_PATH).then((buffer) =>
   sharp(buffer)
     .resize({ width: 136, height: 136, fit: "contain" })
     .png()

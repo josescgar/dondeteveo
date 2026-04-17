@@ -39,6 +39,10 @@
 - Vitest for logic, parsing, validation, and transforms
 - Playwright for smoke E2E flows
 
+## Toolchain
+
+- Node.js `>=22.12.0`
+
 ## Pre-commit Hooks
 
 Configured via Husky + lint-staged. Runs automatically on `git commit`:

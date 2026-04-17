@@ -7,7 +7,7 @@ export const metaSchema = z.object({
   city: z.string().min(1),
   startTime: z.string().regex(/^\d{2}:\d{2}$/),
   timezone: z.string().min(1),
-  officialWebsiteUrl: z.string().url(),
+  officialWebsiteUrl: z.url(),
   summary: z.string().min(1),
   heroNote: z.string().min(1),
   specialNote: z.string().min(1).optional(),
@@ -24,7 +24,7 @@ export const metaSchema = z.object({
 
 export const sourceSchema = z.object({
   officialSourceName: z.string().min(1),
-  officialSourceUrl: z.string().url(),
+  officialSourceUrl: z.url(),
   routeSourceType: z.enum(["manual-trace", "gpx-import", "kml-import"]),
   notes: z.string().min(1),
 });
@@ -87,7 +87,10 @@ const localeLocalizationSchema = z.object({
   waveLabels: z.array(z.string().min(1)).optional(),
 });
 
-export const localizationsSchema = z.record(localeLocalizationSchema);
+export const localizationsSchema = z.record(
+  z.string(),
+  localeLocalizationSchema,
+);
 export type RaceLocalizations = z.infer<typeof localizationsSchema>;
 
 export type RaceMeta = z.infer<typeof metaSchema>;
