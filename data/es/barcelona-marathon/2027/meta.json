@@ -7,5 +7,15 @@
   "timezone": "Europe/Madrid",
   "officialWebsiteUrl": "https://www.zurichmaratobarcelona.es/en/",
   "summary": "A fast, flat urban marathon through Barcelona's iconic streets, starting on Passeig de Gràcia and finishing at Passeig de Lluís Companys next to the Arc de Triomf.",
-  "heroNote": "Great cheering spots along Passeig de Gràcia near the start, in the Eixample and Ciutat Vella streets around the halfway mark, along the seafront in Poblenou and Diagonal Mar, and at the Arc de Triomf finish."
+  "heroNote": "Great cheering spots along Passeig de Gràcia near the start, in the Eixample and Ciutat Vella streets around the halfway mark, along the seafront in Poblenou and Diagonal Mar, and at the Arc de Triomf finish.",
+  "specialNote": "This race uses colour-coded starting boxes with staggered gun times. Check that the start time matches your runner's box.",
+  "waves": [
+    { "label": "Box 1 (white, black, yellow bib)", "startTime": "08:30" },
+    { "label": "Box 2 (red bib)", "startTime": "08:40" },
+    { "label": "Box 3 (blue bib)", "startTime": "08:50" },
+    { "label": "Box 4 (pink bib)", "startTime": "09:00" },
+    { "label": "Box 5 (light blue bib)", "startTime": "09:20" },
+    { "label": "Box 6 (green bib)", "startTime": "09:40" },
+    { "label": "Box 7 (grey, lilac bib)", "startTime": "09:50" }
+  ]
 }

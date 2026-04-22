@@ -4,8 +4,18 @@
       "name": "Zurich Marató Barcelona",
       "city": "Barcelona",
       "summary": "Un maratón urbano rápido y llano por las calles más emblemáticas de Barcelona, que parte del Passeig de Gràcia y termina en el Passeig de Lluís Companys, junto al Arc de Triomf.",
-      "heroNote": "Buenos puntos para animar a lo largo del Passeig de Gràcia cerca de la salida, por el Eixample y Ciutat Vella en torno al ecuador, junto al mar en Poblenou y Diagonal Mar, y en la llegada al Arc de Triomf."
+      "heroNote": "Buenos puntos para animar a lo largo del Passeig de Gràcia cerca de la salida, por el Eixample y Ciutat Vella en torno al ecuador, junto al mar en Poblenou y Diagonal Mar, y en la llegada al Arc de Triomf.",
+      "specialNote": "Esta carrera tiene cajones de salida por colores con horarios escalonados. Comprueba que la hora de salida coincide con la del cajón de tu corredor."
     },
+    "waveLabels": [
+      "Cajón 1 (dorsal blanco, negro, amarillo)",
+      "Cajón 2 (dorsal rojo)",
+      "Cajón 3 (dorsal azul)",
+      "Cajón 4 (dorsal rosa)",
+      "Cajón 5 (dorsal azul claro)",
+      "Cajón 6 (dorsal verde)",
+      "Cajón 7 (dorsal gris, lila)"
+    ],
     "pointLabels": {
       "start": "Salida - Passeig de Gràcia, Barcelona",
       "km-5": "Punto 5K - Eixample, Barcelona",
