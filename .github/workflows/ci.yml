@@ -100,6 +100,8 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Build site
+        env:
+          PUBLIC_CF_ANALYTICS_TOKEN: ${{ secrets.PUBLIC_CF_ANALYTICS_TOKEN }}
         run: npm run build
 
       - name: Upload GitHub Pages artifact

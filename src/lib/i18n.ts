@@ -177,7 +177,7 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     predictedTimes: "Predicted times",
     privacy: "Privacy",
     privacyBody:
-      "This MVP keeps sharing simple. Personalized pages are public by URL, never indexed, and may still involve third-party services such as Cloudflare and map providers.",
+      "This MVP keeps sharing simple. Personalized pages are public by URL, never indexed, and may still involve third-party services such as Cloudflare (including cookieless aggregate traffic analytics) and map providers.",
     raceDiscovery: "Race discovery",
     raceLocalTime: "Race local time",
     raceSearchPlaceholder: "Search by race name",
@@ -309,7 +309,7 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     predictedTimes: "Horarios estimados",
     privacy: "Privacidad",
     privacyBody:
-      "Hemos querido mantenerlo simple. Las páginas personalizadas son públicas por URL, nunca se indexan y pueden pasar por servicios de terceros como Cloudflare y proveedores de mapas.",
+      "Hemos querido mantenerlo simple. Las páginas personalizadas son públicas por URL, nunca se indexan y pueden pasar por servicios de terceros como Cloudflare (incluidas analíticas agregadas sin cookies) y proveedores de mapas.",
     raceDiscovery: "Encontrar carreras",
     raceLocalTime: "Hora local de la carrera",
     raceSearchPlaceholder: "Busca por nombre de carrera",
