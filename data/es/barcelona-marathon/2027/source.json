@@ -1,0 +1,6 @@
+{
+  "routeSourceType": "gpx-import",
+  "officialSourceName": "Zurich Marató Barcelona official website",
+  "officialSourceUrl": "https://www.zurichmaratobarcelona.es/en/",
+  "notes": "Route imported from the official Strava GPX (\"Zurich Marató Barcelona\", creator RPM SPORTS) attached to issue #94. Route, start time (08:30) and wave/box gun times are carried forward from the 2026 edition — the organizer had not yet published 2027 course and schedule details at the time of import. Box gun times sourced from the event regulation page (https://zurichmaratobarcelona.es/en/i-am-a-runner/regulation/) and the 2026 runner guide at blogmaldito.com. Update when official 2027 materials are released."
+}

@@ -1,0 +1,226 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "start",
+        "label": "Start - Passeig de Gràcia, Barcelona",
+        "kind": "split",
+        "distanceKm": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.16922, 41.38887]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-5",
+        "label": "5K split - Eixample, Barcelona",
+        "kind": "split",
+        "distanceKm": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.15211, 41.383595]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-eixample",
+        "label": "Cheer point - Eixample, Barcelona",
+        "kind": "cheer-point",
+        "distanceKm": 7
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.168509, 41.396558]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-10",
+        "label": "10K split - Sant Andreu, Barcelona",
+        "kind": "split",
+        "distanceKm": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.1933, 41.41557]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-sagrera",
+        "label": "Cheer point - La Sagrera, Barcelona",
+        "kind": "cheer-point",
+        "distanceKm": 12
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.186982, 41.416543]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-15",
+        "label": "15K split - Eixample, Barcelona",
+        "kind": "split",
+        "distanceKm": 15
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.165625, 41.396095]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-20",
+        "label": "20K split - Ciutat Vella, Barcelona",
+        "kind": "split",
+        "distanceKm": 20
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.160493, 41.3817]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-21",
+        "label": "Half-way split - Ciutat Vella, Barcelona",
+        "kind": "split",
+        "distanceKm": 21.0975
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.15935, 41.37912]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-ciutat-vella",
+        "label": "Cheer point - Ciutat Vella, Barcelona",
+        "kind": "cheer-point",
+        "distanceKm": 23
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.17006, 41.37501]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-25",
+        "label": "25K split - Poblenou, Barcelona",
+        "kind": "split",
+        "distanceKm": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.185257, 41.384783]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-poblenou",
+        "label": "Cheer point - Poblenou, Barcelona",
+        "kind": "cheer-point",
+        "distanceKm": 27
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.19573, 41.38803]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-30",
+        "label": "30K split - Diagonal Mar, Barcelona",
+        "kind": "split",
+        "distanceKm": 30
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.2191, 41.40635]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-diagonal-mar",
+        "label": "Cheer point - Diagonal Mar, Barcelona",
+        "kind": "cheer-point",
+        "distanceKm": 32
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.203861, 41.407676]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-35",
+        "label": "35K split - Sant Martí, Barcelona",
+        "kind": "split",
+        "distanceKm": 35
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.21141, 41.40923]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-sant-marti",
+        "label": "Cheer point - Sant Martí, Barcelona",
+        "kind": "cheer-point",
+        "distanceKm": 37
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.19823, 41.40148]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-40",
+        "label": "40K split - Ciutadella, Barcelona",
+        "kind": "split",
+        "distanceKm": 40
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.18815, 41.39392]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "finish",
+        "label": "Finish - Passeig de Lluís Companys, Barcelona",
+        "kind": "split",
+        "distanceKm": 42.195
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.18126, 41.39058]
+      }
+    }
+  ]
+}
