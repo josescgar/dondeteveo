@@ -1,0 +1,30 @@
+{
+  "es": {
+    "meta": {
+      "name": "Nationale-Nederlanden San Silvestre Vallecana",
+      "city": "Madrid",
+      "summary": "10K mítico por el corazón de Madrid en Nochevieja, con cerca de 40.000 corredores que salen del Paseo de la Castellana junto al Bernabéu y meta en el Estadio de Vallecas.",
+      "heroNote": "El Paseo de la Castellana es amplio y muy accesible al inicio. Plaza de Cibeles, la glorieta de Atocha y la Avenida de la Albufera al entrar en Vallecas son las zonas con más ambiente.",
+      "specialNote": "La Popular sale en varios cajones repartidos a lo largo de la tarde. La hora indicada es la del primer cajón — tu salida real puede ser más tarde."
+    },
+    "pointLabels": {
+      "start": "Salida - Paseo de la Castellana (Concha Espina)",
+      "km-1": "Punto 1K - Paseo de la Castellana",
+      "km-2": "Punto 2K - Paseo de la Castellana (Nuevos Ministerios)",
+      "cheer-corte-ingles": "Punto para animar - Paseo de la Castellana (El Corte Inglés)",
+      "km-3": "Punto 3K - Paseo de la Castellana",
+      "cheer-alcala": "Punto para animar - Calle de Alcalá",
+      "km-4": "Punto 4K - Plaza de Cibeles",
+      "km-5": "Punto 5K - Paseo del Prado",
+      "cheer-nationale-nederlanden-1": "Punto para animar - Glorieta de Carlos V (Atocha)",
+      "km-6": "Punto 6K - Paseo de la Infanta Isabel",
+      "km-7": "Punto 7K - Avenida de la Ciudad de Barcelona",
+      "cheer-sanicentro": "Punto para animar - Avenida de la Ciudad de Barcelona",
+      "cheer-nationale-nederlanden-2": "Punto para animar - Puente de Vallecas",
+      "km-8": "Punto 8K - Avenida de la Albufera",
+      "cheer-juver": "Punto para animar - Avenida de la Albufera",
+      "km-9": "Punto 9K - Avenida de la Albufera",
+      "finish": "Meta - Estadio de Vallecas"
+    }
+  }
+}

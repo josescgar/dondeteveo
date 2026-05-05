@@ -1,0 +1,226 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "start",
+        "label": "Start - Paseo de la Castellana (Concha Espina)",
+        "kind": "split",
+        "distanceKm": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.6844003, 40.4517885]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-1",
+        "label": "1K split - Paseo de la Castellana",
+        "kind": "split",
+        "distanceKm": 1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.6856327, 40.4453647]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-2",
+        "label": "2K split - Paseo de la Castellana (Nuevos Ministerios)",
+        "kind": "split",
+        "distanceKm": 2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.6863645, 40.4369464]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-corte-ingles",
+        "label": "Cheer point - Paseo de la Castellana (El Corte Inglés)",
+        "kind": "cheer-point",
+        "distanceKm": 2.7
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.6870717, 40.4302818]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-3",
+        "label": "3K split - Paseo de la Castellana",
+        "kind": "split",
+        "distanceKm": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.6873123, 40.4281946]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-alcala",
+        "label": "Cheer point - Calle de Alcalá",
+        "kind": "cheer-point",
+        "distanceKm": 3.9
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.6885671, 40.4201956]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-4",
+        "label": "4K split - Plaza de Cibeles",
+        "kind": "split",
+        "distanceKm": 4
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.6899224, 40.4197739]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-5",
+        "label": "5K split - Paseo del Prado",
+        "kind": "split",
+        "distanceKm": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.6927973, 40.4126365]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-nationale-nederlanden-1",
+        "label": "Cheer point - Glorieta de Carlos V (Atocha)",
+        "kind": "cheer-point",
+        "distanceKm": 5.5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.69135, 40.4084898]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-6",
+        "label": "6K split - Paseo de la Infanta Isabel",
+        "kind": "split",
+        "distanceKm": 6
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.6870647, 40.4061438]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-7",
+        "label": "7K split - Avenida de la Ciudad de Barcelona",
+        "kind": "split",
+        "distanceKm": 7
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.6762592, 40.4020997]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-sanicentro",
+        "label": "Cheer point - Avenida de la Ciudad de Barcelona",
+        "kind": "cheer-point",
+        "distanceKm": 7.1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.6749769, 40.4011104]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-nationale-nederlanden-2",
+        "label": "Cheer point - Puente de Vallecas",
+        "kind": "cheer-point",
+        "distanceKm": 7.7
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.6691242, 40.3979878]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-8",
+        "label": "8K split - Avenida de la Albufera",
+        "kind": "split",
+        "distanceKm": 8
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.6665106, 40.3969733]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-juver",
+        "label": "Cheer point - Avenida de la Albufera",
+        "kind": "cheer-point",
+        "distanceKm": 8.7
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.660106, 40.393237]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-9",
+        "label": "9K split - Avenida de la Albufera",
+        "kind": "split",
+        "distanceKm": 9
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.6622727, 40.3908485]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "finish",
+        "label": "Finish - Estadio de Vallecas",
+        "kind": "split",
+        "distanceKm": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-3.6627496, 40.3833628]
+      }
+    }
+  ]
+}
