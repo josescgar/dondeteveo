@@ -1,0 +1,6 @@
+{
+  "routeSourceType": "kml-import",
+  "officialSourceName": "San Silvestre Vallecana official website",
+  "officialSourceUrl": "https://www.sansilvestrevallecana.com/",
+  "notes": "Route, kilometre splits, and named cheer points imported from the official KMZ 'San Silvestre Vallecana Popular 2025' published by the organizers. Altitude values stripped; coordinates kept at original precision. The 2026 edition is expected to use the same Popular course; will be revised when the 2026 KMZ is published."
+}
