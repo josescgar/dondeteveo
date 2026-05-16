@@ -1,4 +1,10 @@
 ---
+// Leaflet CSS is imported here (not just inside RaceMapIsland) because
+// ShareExperienceIsland is hydrated with `client:only`, and Astro's CSS
+// analyzer does not follow transitive imports through `client:only` islands.
+// Without this, leaflet panes fall back to position:static and tiles render broken.
+import "leaflet/dist/leaflet.css";
+
 import BaseLayout from "../../../../layouts/BaseLayout.astro";
 import ShareExperienceIsland from "../../../../features/share-view/ShareExperienceIsland";
 
