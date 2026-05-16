@@ -37,6 +37,21 @@ describe("share planner logic", () => {
     expect(href).toContain("wave=1");
   });
 
+  it("does not include an empty value in the share href fragment", () => {
+    const href = buildShareHref({
+      locale: "en",
+      raceSlug: "carrera-triana-los-remedios-10k",
+      year: "2026",
+      mode: "pace",
+      value: "",
+      name: "Maria",
+    });
+
+    expect(href).toContain("mode=pace");
+    expect(href).not.toContain("value=");
+    expect(href).toContain("name=Maria");
+  });
+
   it("does not include wave in share href when undefined", () => {
     const href = buildShareHref({
       locale: "en",

@@ -72,6 +72,35 @@ test("share planner generates URL with custom inputs", async ({ page }) => {
   );
 });
 
+test("share planner with empty pace falls back to a default pace", async ({
+  page,
+}) => {
+  await page.goto("/en/races/carrera-triana-los-remedios-10k/2026");
+
+  const valueInput = page.getByLabel(/Pace per km/i);
+  await valueInput.click();
+  // Focus clears the field; submit without typing a value.
+  await page.getByLabel(/Optional nickname/i).fill("Maria");
+
+  const shareLink = page.getByRole("link", { name: /Generate share link/i });
+  await expect(shareLink).toHaveAttribute("href", /mode=pace/);
+  await expect(shareLink).not.toHaveAttribute("href", /value=/);
+
+  await shareLink.click();
+  await expect(page).toHaveURL(
+    /\/en\/share\/carrera-triana-los-remedios-10k\/2026#/,
+  );
+
+  // Map, runner header, and predicted-time cards all render using the default pace.
+  await expect(page.locator("[data-share-map-section]")).toBeVisible();
+  await expect(page.locator("#share-h1-name-slot")).toContainText("Maria");
+  const cards = page.locator("[data-predicted-point-card]");
+  await expect(cards.first()).toBeVisible();
+  expect(await cards.count()).toBeGreaterThan(0);
+  // Header shows the default 05:00/km pace badge.
+  await expect(page.getByText(/Pace: 05:00\/km/i).first()).toBeVisible();
+});
+
 test("share view displays runner info and timing cards", async ({ page }) => {
   await page.goto(
     "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=06%3A00&name=Maria",

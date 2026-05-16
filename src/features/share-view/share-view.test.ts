@@ -55,6 +55,11 @@ describe("share view logic", () => {
     expect(pace).not.toBeNull();
   });
 
+  it("falls back to the default pace when value is missing", () => {
+    expect(resolvePaceMinutesPerKm({ mode: "pace" }, 10)).toBe(5);
+    expect(resolvePaceMinutesPerKm({ mode: "finish" }, 42.195)).toBe(5);
+  });
+
   it("builds predicted point times", () => {
     const points = [
       {

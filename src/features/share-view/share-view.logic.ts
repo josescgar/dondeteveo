@@ -1,6 +1,7 @@
 import type { Locale } from "../../lib/config";
 import type { RacePointFeature } from "../../lib/races/schemas";
 import {
+  DEFAULT_PACE_MINUTES_PER_KM,
   dayOffsetFromMinutes,
   formatMinutesAsClock,
   parseFinishTimeToMinutes,
@@ -38,6 +39,10 @@ export const resolvePaceMinutesPerKm = (
   state: ShareState,
   raceDistanceKm: number,
 ): number | null => {
+  if (!state.value) {
+    return DEFAULT_PACE_MINUTES_PER_KM;
+  }
+
   if (state.mode === "pace") {
     return parsePaceToMinutesPerKm(state.value);
   }

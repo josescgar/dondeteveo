@@ -12,7 +12,10 @@ import { formatDistance } from "../../lib/format";
 import { getDictionary } from "../../lib/i18n";
 import type { RaceEdition } from "../../lib/races/catalog";
 import { getPointSummaries, resolveStartTime } from "../../lib/races/points";
-import { parseShareState } from "../../lib/share/share-state";
+import {
+  DEFAULT_PACE_VALUE,
+  parseShareState,
+} from "../../lib/share/share-state";
 import RaceMapIsland from "../race-map/RaceMapIsland";
 import {
   buildPredictedPoints,
@@ -211,7 +214,7 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
     ],
   );
 
-  if (!shareState || paceMinutesPerKm === null) {
+  if (!shareState) {
     return (
       <div class="card-surface">
         <div class="text-muted font-mono text-[10px] tracking-[0.3em] uppercase">
@@ -352,9 +355,11 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
               </div>
             )}
           <div class="border-line bg-surface-raised text-accent inline-block border px-4 py-1.5 font-mono text-xs tracking-[0.2em] uppercase">
-            {shareState.mode === "pace"
-              ? `${dictionary.pace}: ${shareState.value}/km`
-              : `${dictionary.finishTime}: ${shareState.value}`}
+            {shareState.value
+              ? shareState.mode === "pace"
+                ? `${dictionary.pace}: ${shareState.value}/km`
+                : `${dictionary.finishTime}: ${shareState.value}`
+              : `${dictionary.pace}: ${DEFAULT_PACE_VALUE}/km`}
           </div>
         </div>
         <div class="text-muted mt-3 font-mono text-sm">
