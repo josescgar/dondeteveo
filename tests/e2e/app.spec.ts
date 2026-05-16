@@ -161,6 +161,25 @@ test("share page stays noindex", async ({ page }) => {
   expect(twitterImage).toBe(openGraphImage);
 });
 
+test("share page loads leaflet CSS so map tiles render correctly", async ({
+  page,
+}) => {
+  await page.goto(
+    "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=05%3A00&name=Pepe",
+  );
+
+  const tilePane = page.locator(
+    '[data-map-mode="spectator"] .leaflet-tile-pane',
+  );
+
+  await tilePane.waitFor({ state: "attached" });
+  await expect
+    .poll(() =>
+      tilePane.evaluate((element) => window.getComputedStyle(element).position),
+    )
+    .toBe("absolute");
+});
+
 test("race page emits open graph and twitter metadata", async ({ page }) => {
   await page.goto("/en/races/carrera-triana-los-remedios-10k/2026");
 
