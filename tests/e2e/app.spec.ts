@@ -172,7 +172,7 @@ test("share page loads leaflet CSS so map tiles render correctly", async ({
     '[data-map-mode="spectator"] .leaflet-tile-pane',
   );
 
-  await expect(tilePane).toBeVisible();
+  await tilePane.waitFor({ state: "attached" });
   await expect
     .poll(() =>
       tilePane.evaluate((element) => window.getComputedStyle(element).position),
