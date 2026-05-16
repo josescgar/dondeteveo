@@ -81,6 +81,38 @@ describe("share state helpers", () => {
     expect(parseShareState("mode=pace&value=05%3A00&wave=-1")).toBeNull();
   });
 
+  it("returns a no-pace state when value is missing from the fragment", () => {
+    const parsed = parseShareState("mode=pace");
+
+    expect(parsed).toEqual({ mode: "pace" });
+  });
+
+  it("returns a no-pace state when value is present but empty", () => {
+    const parsed = parseShareState("mode=pace&value=");
+
+    expect(parsed).toEqual({ mode: "pace" });
+  });
+
+  it("preserves name and wave when value is empty", () => {
+    const parsed = parseShareState("mode=pace&value=&name=Maria&wave=1");
+
+    expect(parsed).toEqual({ mode: "pace", name: "Maria", wave: 1 });
+  });
+
+  it("omits empty value when serializing", () => {
+    const serialized = serializeShareState({
+      mode: "pace",
+      value: "",
+      name: "Maria",
+    });
+
+    expect(serialized).not.toContain("value=");
+    expect(parseShareState(serialized)).toEqual({
+      mode: "pace",
+      name: "Maria",
+    });
+  });
+
   it("computes day offset from minutes", () => {
     expect(dayOffsetFromMinutes(600)).toBe(0);
     expect(dayOffsetFromMinutes(1440)).toBe(1);

@@ -38,6 +38,10 @@ export const resolvePaceMinutesPerKm = (
   state: ShareState,
   raceDistanceKm: number,
 ): number | null => {
+  if (!state.value) {
+    return null;
+  }
+
   if (state.mode === "pace") {
     return parsePaceToMinutesPerKm(state.value);
   }

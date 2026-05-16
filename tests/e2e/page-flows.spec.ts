@@ -72,6 +72,32 @@ test("share planner generates URL with custom inputs", async ({ page }) => {
   );
 });
 
+test("share planner with empty pace renders share view without crashing", async ({
+  page,
+}) => {
+  await page.goto("/en/races/carrera-triana-los-remedios-10k/2026");
+
+  const valueInput = page.getByLabel(/Pace per km/i);
+  await valueInput.click();
+  // Focus clears the field; submit without typing a value.
+  await page.getByLabel(/Optional nickname/i).fill("Maria");
+
+  const shareLink = page.getByRole("link", { name: /Generate share link/i });
+  await expect(shareLink).toHaveAttribute("href", /mode=pace/);
+  await expect(shareLink).not.toHaveAttribute("href", /value=/);
+
+  await shareLink.click();
+  await expect(page).toHaveURL(
+    /\/en\/share\/carrera-triana-los-remedios-10k\/2026#/,
+  );
+
+  // Map and runner header still render — the page is usable.
+  await expect(page.locator("[data-share-map-section]")).toBeVisible();
+  await expect(page.locator("#share-h1-name-slot")).toContainText("Maria");
+  // No predicted-time cards are shown when no pace is provided.
+  await expect(page.locator("[data-predicted-point-card]")).toHaveCount(0);
+});
+
 test("share view displays runner info and timing cards", async ({ page }) => {
   await page.goto(
     "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=06%3A00&name=Maria",

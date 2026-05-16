@@ -6,7 +6,7 @@ const shareModeSchema = z.enum(["pace", "finish"]);
 
 const fragmentSchema = z.object({
   mode: shareModeSchema,
-  value: z.string().min(1),
+  value: z.string().min(1).optional(),
   name: z
     .string()
     .trim()
@@ -20,7 +20,7 @@ export type ShareMode = z.infer<typeof shareModeSchema>;
 
 export type ShareState = {
   mode: ShareMode;
-  value: string;
+  value?: string;
   name?: string;
   wave?: number;
 };
@@ -28,7 +28,10 @@ export type ShareState = {
 export const serializeShareState = (state: ShareState): string => {
   const params = new URLSearchParams();
   params.set(SHARE_FRAGMENT_KEYS.mode, state.mode);
-  params.set(SHARE_FRAGMENT_KEYS.value, state.value);
+
+  if (state.value) {
+    params.set(SHARE_FRAGMENT_KEYS.value, state.value);
+  }
 
   if (state.name) {
     params.set(SHARE_FRAGMENT_KEYS.name, state.name);
@@ -46,9 +49,10 @@ export const parseShareState = (fragment: string): ShareState | null => {
     ? fragment.slice(1)
     : fragment;
   const params = new URLSearchParams(normalizedFragment);
+  const rawValue = params.get(SHARE_FRAGMENT_KEYS.value);
   const parsed = fragmentSchema.safeParse({
     mode: params.get(SHARE_FRAGMENT_KEYS.mode),
-    value: params.get(SHARE_FRAGMENT_KEYS.value),
+    value: rawValue && rawValue.length > 0 ? rawValue : undefined,
     name: params.get(SHARE_FRAGMENT_KEYS.name) ?? undefined,
     wave: params.get(SHARE_FRAGMENT_KEYS.wave) ?? undefined,
   });
@@ -57,13 +61,15 @@ export const parseShareState = (fragment: string): ShareState | null => {
     return null;
   }
 
-  const isValidTarget =
-    parsed.data.mode === "pace"
-      ? parsePaceToMinutesPerKm(parsed.data.value) !== null
-      : parseFinishTimeToMinutes(parsed.data.value) !== null;
+  if (parsed.data.value !== undefined) {
+    const isValidTarget =
+      parsed.data.mode === "pace"
+        ? parsePaceToMinutesPerKm(parsed.data.value) !== null
+        : parseFinishTimeToMinutes(parsed.data.value) !== null;
 
-  if (!isValidTarget) {
-    return null;
+    if (!isValidTarget) {
+      return null;
+    }
   }
 
   return parsed.data;
