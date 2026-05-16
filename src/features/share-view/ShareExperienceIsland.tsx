@@ -12,7 +12,10 @@ import { formatDistance } from "../../lib/format";
 import { getDictionary } from "../../lib/i18n";
 import type { RaceEdition } from "../../lib/races/catalog";
 import { getPointSummaries, resolveStartTime } from "../../lib/races/points";
-import { parseShareState } from "../../lib/share/share-state";
+import {
+  DEFAULT_PACE_VALUE,
+  parseShareState,
+} from "../../lib/share/share-state";
 import RaceMapIsland from "../race-map/RaceMapIsland";
 import {
   buildPredictedPoints,
@@ -351,13 +354,13 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
                 {edition.meta.waves[shareState.wave].label}
               </div>
             )}
-          {shareState.value && (
-            <div class="border-line bg-surface-raised text-accent inline-block border px-4 py-1.5 font-mono text-xs tracking-[0.2em] uppercase">
-              {shareState.mode === "pace"
+          <div class="border-line bg-surface-raised text-accent inline-block border px-4 py-1.5 font-mono text-xs tracking-[0.2em] uppercase">
+            {shareState.value
+              ? shareState.mode === "pace"
                 ? `${dictionary.pace}: ${shareState.value}/km`
-                : `${dictionary.finishTime}: ${shareState.value}`}
-            </div>
-          )}
+                : `${dictionary.finishTime}: ${shareState.value}`
+              : `${dictionary.pace}: ${DEFAULT_PACE_VALUE}/km`}
+          </div>
         </div>
         <div class="text-muted mt-3 font-mono text-sm">
           <span class="text-text">{dictionary.startTime}:</span>{" "}
@@ -389,60 +392,58 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
       </div>
 
       {/* Timing cards — hero */}
-      {predictedPoints.length > 0 && (
-        <div>
-          <div class="text-muted mb-1 font-mono text-[10px] tracking-[0.3em] uppercase">
-            {dictionary.predictedTimes}
-          </div>
-          <p class="text-muted mb-4 font-mono text-xs leading-6">
-            {dictionary.allTimesRaceLocal}
-          </p>
-          <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            {predictedPoints.map((point) => (
-              <button
-                key={point.id}
-                type="button"
-                class={`timing-card bg-surface flex w-full cursor-pointer flex-col border p-6 text-left ${
-                  selectedPointId === point.id ? "border-accent" : "border-line"
-                }`}
-                data-predicted-point-card
-                data-point-id={point.id}
-                data-selected={selectedPointId === point.id ? "true" : "false"}
-                aria-pressed={selectedPointId === point.id}
-                onClick={() => handleTimingCardSelect(point.id)}
-              >
-                <div class="flex-1">
-                  <div class="text-muted font-mono text-[9px] tracking-[0.32em] uppercase">
-                    {point.kind === "split"
-                      ? dictionary.splitLabel
-                      : dictionary.cheerPointLabel}
-                  </div>
-                  <h4 class="font-display text-text mt-1 text-xl leading-tight font-bold uppercase">
-                    {point.label}
-                  </h4>
-                  <div class="text-muted mt-1 font-mono text-xs">
-                    {formatDistance(point.distanceKm, locale)}
-                  </div>
-                </div>
-                <div
-                  class="text-coral mt-4 flex items-baseline gap-2 font-mono leading-none font-medium tracking-[-0.02em]"
-                  style="font-size: clamp(2.8rem, 8vw, 4rem);"
-                >
-                  {point.predictedTime}
-                  {point.dayOffset > 0 && (
-                    <span class="text-muted font-mono text-xs font-normal tracking-wide">
-                      {formatDayOffset(point.dayOffset)}
-                    </span>
-                  )}
-                </div>
-                <div class="text-muted mt-3 font-mono text-xs leading-5">
-                  {formatSafetyMargin(point)}
-                </div>
-              </button>
-            ))}
-          </div>
+      <div>
+        <div class="text-muted mb-1 font-mono text-[10px] tracking-[0.3em] uppercase">
+          {dictionary.predictedTimes}
         </div>
-      )}
+        <p class="text-muted mb-4 font-mono text-xs leading-6">
+          {dictionary.allTimesRaceLocal}
+        </p>
+        <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {predictedPoints.map((point) => (
+            <button
+              key={point.id}
+              type="button"
+              class={`timing-card bg-surface flex w-full cursor-pointer flex-col border p-6 text-left ${
+                selectedPointId === point.id ? "border-accent" : "border-line"
+              }`}
+              data-predicted-point-card
+              data-point-id={point.id}
+              data-selected={selectedPointId === point.id ? "true" : "false"}
+              aria-pressed={selectedPointId === point.id}
+              onClick={() => handleTimingCardSelect(point.id)}
+            >
+              <div class="flex-1">
+                <div class="text-muted font-mono text-[9px] tracking-[0.32em] uppercase">
+                  {point.kind === "split"
+                    ? dictionary.splitLabel
+                    : dictionary.cheerPointLabel}
+                </div>
+                <h4 class="font-display text-text mt-1 text-xl leading-tight font-bold uppercase">
+                  {point.label}
+                </h4>
+                <div class="text-muted mt-1 font-mono text-xs">
+                  {formatDistance(point.distanceKm, locale)}
+                </div>
+              </div>
+              <div
+                class="text-coral mt-4 flex items-baseline gap-2 font-mono leading-none font-medium tracking-[-0.02em]"
+                style="font-size: clamp(2.8rem, 8vw, 4rem);"
+              >
+                {point.predictedTime}
+                {point.dayOffset > 0 && (
+                  <span class="text-muted font-mono text-xs font-normal tracking-wide">
+                    {formatDayOffset(point.dayOffset)}
+                  </span>
+                )}
+              </div>
+              <div class="text-muted mt-3 font-mono text-xs leading-5">
+                {formatSafetyMargin(point)}
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
 
       {/* Map — secondary */}
       <section ref={mapSectionRef} data-share-map-section>

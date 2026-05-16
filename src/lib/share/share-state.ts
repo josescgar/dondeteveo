@@ -4,6 +4,9 @@ import { SHARE_FRAGMENT_KEYS } from "../config";
 
 const shareModeSchema = z.enum(["pace", "finish"]);
 
+export const DEFAULT_PACE_VALUE = "05:00";
+export const DEFAULT_PACE_MINUTES_PER_KM = 5;
+
 const fragmentSchema = z.object({
   mode: shareModeSchema,
   value: z.string().min(1).optional(),
