@@ -12,8 +12,7 @@ export const NICKNAME_MAX_LENGTH = 30;
 const NICKNAME_PATTERN = /^[\p{L}\p{N}\s'.-]+$/u;
 
 export type NicknameValidationResult =
-  | { valid: true }
-  | { valid: false; reason: "invalid-characters" | "too-long" };
+  { valid: true } | { valid: false; reason: "invalid-characters" | "too-long" };
 
 export const validateNickname = (name: string): NicknameValidationResult => {
   if (name.length === 0) return { valid: true };
