@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test("homepage loads with hero and race search", async ({ page }) => {
-  await page.goto("/en");
+  await page.goto("/en/");
 
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
@@ -10,7 +10,7 @@ test("homepage loads with hero and race search", async ({ page }) => {
 
   const cta = page.getByRole("link", { name: "Find your race", exact: true });
   await expect(cta).toBeVisible();
-  await expect(cta).toHaveAttribute("href", "/en/races");
+  await expect(cta).toHaveAttribute("href", "/en/races/");
 
   await expect(page.locator("#race-search")).toBeVisible();
   await expect(
@@ -20,7 +20,7 @@ test("homepage loads with hero and race search", async ({ page }) => {
 });
 
 test("race listing shows races with working links", async ({ page }) => {
-  await page.goto("/en/races");
+  await page.goto("/en/races/");
 
   await expect(
     page.getByRole("heading", { level: 1, name: /Race discovery/i }),
@@ -30,12 +30,12 @@ test("race listing shows races with working links", async ({ page }) => {
 
   await page.locator(".race-row").first().click();
 
-  await expect(page).toHaveURL(/\/en\/races\/[\w-]+\/\d{4}/);
+  await expect(page).toHaveURL(/\/en\/races\/[\w-]+\/\d{4}\/$/);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 });
 
 test("race detail shows info, map, and share planner", async ({ page }) => {
-  await page.goto("/en/races/carrera-triana-los-remedios-10k/2026");
+  await page.goto("/en/races/carrera-triana-los-remedios-10k/2026/");
 
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
@@ -53,11 +53,17 @@ test("race detail shows info, map, and share planner", async ({ page }) => {
 });
 
 test("share planner generates URL with custom inputs", async ({ page }) => {
-  await page.goto("/en/races/carrera-triana-los-remedios-10k/2026");
+  await page.goto("/en/races/carrera-triana-los-remedios-10k/2026/");
 
   const valueInput = page.getByLabel(/Pace per km/i);
-  await valueInput.click();
-  await page.keyboard.type("0630");
+  await expect
+    .poll(() =>
+      valueInput.evaluate(
+        (element) => !element.closest("astro-island")?.hasAttribute("ssr"),
+      ),
+    )
+    .toBe(true);
+  await valueInput.fill("06:30");
 
   await page.getByLabel(/Optional nickname/i).fill("TestRunner");
 
@@ -68,14 +74,14 @@ test("share planner generates URL with custom inputs", async ({ page }) => {
 
   await shareLink.click();
   await expect(page).toHaveURL(
-    /\/en\/share\/carrera-triana-los-remedios-10k\/2026#/,
+    /\/en\/share\/carrera-triana-los-remedios-10k\/2026\/#/,
   );
 });
 
 test("share planner with empty pace falls back to a default pace", async ({
   page,
 }) => {
-  await page.goto("/en/races/carrera-triana-los-remedios-10k/2026");
+  await page.goto("/en/races/carrera-triana-los-remedios-10k/2026/");
 
   const valueInput = page.getByLabel(/Pace per km/i);
   await valueInput.click();
@@ -88,7 +94,7 @@ test("share planner with empty pace falls back to a default pace", async ({
 
   await shareLink.click();
   await expect(page).toHaveURL(
-    /\/en\/share\/carrera-triana-los-remedios-10k\/2026#/,
+    /\/en\/share\/carrera-triana-los-remedios-10k\/2026\/#/,
   );
 
   // Map, runner header, and predicted-time cards all render using the default pace.
@@ -103,7 +109,7 @@ test("share planner with empty pace falls back to a default pace", async ({
 
 test("share view displays runner info and timing cards", async ({ page }) => {
   await page.goto(
-    "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=06%3A00&name=Maria",
+    "/en/share/carrera-triana-los-remedios-10k/2026/#mode=pace&value=06%3A00&name=Maria",
   );
 
   await expect(page.locator("#share-h1-name-slot")).toContainText("Maria");

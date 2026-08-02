@@ -38,6 +38,11 @@ const races = (await getRaceSummaries()).map((race) =>
   </div>
 
   <section class="mt-10">
-    <DiscoveryListIsland locale={locale} races={races} client:load />
+    <DiscoveryListIsland
+      locale={locale}
+      races={races}
+      showAllInitially={true}
+      client:load
+    />
   </section>
 </BaseLayout>

@@ -51,13 +51,13 @@ npx playwright test --project mobile-chromium
 
 ### Routing
 
-All pages are under `src/pages/[locale]/` (locales: `en`, `es`). The root `src/pages/index.astro` redirects by browser language. URL structure:
+All content pages are under `src/pages/[locale]/` (locales: `en`, `es`). Page URLs always have a trailing slash, and Cloudflare permanently redirects `/` to `/es/`. URL structure:
 
-- `/en` or `/es` — homepage
-- `/en/races` — race listing
-- `/en/races/<race>` — redirects to the next upcoming or most recent past edition
-- `/en/races/<race>/<year>` — canonical race edition page (SEO-indexed)
-- `/en/share/<race>/<year>#...` — share page (always `noindex`, state in URL fragment)
+- `/en/` or `/es/` — homepage
+- `/en/races/` — race listing
+- `/en/races/<race>/` — redirects to the next upcoming or most recent past edition
+- `/en/races/<race>/<year>/` — canonical race edition page (SEO-indexed)
+- `/en/share/<race>/<year>/#...` — share page (always `noindex`, state in URL fragment)
 
 Public URLs **never** include the country code. Race slugs must be globally unique.
 

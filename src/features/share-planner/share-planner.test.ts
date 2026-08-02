@@ -19,7 +19,7 @@ describe("share planner logic", () => {
       name: "Pepe",
     });
 
-    expect(href).toContain("/en/share/carrera-triana-los-remedios-10k/2026#");
+    expect(href).toContain("/en/share/carrera-triana-los-remedios-10k/2026/#");
     expect(href).toContain("mode=pace");
   });
 

@@ -1,5 +1,8 @@
 import { expect, test } from "@playwright/test";
 
+import { buildRacePath } from "../../src/lib/routes";
+import { getAllRaceEditions } from "../../src/lib/races/catalog";
+
 const expectNoHorizontalOverflow = async (
   page: import("@playwright/test").Page,
 ) => {
@@ -58,50 +61,14 @@ const getMetaContent = async (
   selector: string,
 ) => page.locator(selector).getAttribute("content");
 
-test("root serves the Spanish homepage for Spanish browsers", async ({
-  browser,
-}) => {
-  const context = await browser.newContext({ locale: "es-ES" });
-  const page = await context.newPage();
-
+test("root redirects to the canonical Spanish homepage", async ({ page }) => {
   await page.goto("/");
-
+  await expect(page).toHaveURL(/\/es\/$/);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-  await expect(page).toHaveURL("/");
-
-  await context.close();
-});
-
-test("root redirects to /en for English browsers", async ({ browser }) => {
-  const context = await browser.newContext({ locale: "en-US" });
-  const page = await context.newPage();
-
-  await page.goto("/");
-  await page.waitForURL(/\/en$/);
-
-  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-
-  await context.close();
-});
-
-test("root stays on / for English browser with saved Spanish preference", async ({
-  browser,
-}) => {
-  const context = await browser.newContext({ locale: "en-US" });
-  const page = await context.newPage();
-
-  await page.goto("/en");
-  await page.evaluate(() => localStorage.setItem("dtv-locale", "es"));
-
-  await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-  await expect(page).toHaveURL("/");
-
-  await context.close();
 });
 
 test("race discovery reaches a race page and share flow", async ({ page }) => {
-  await page.goto("/en/races");
+  await page.goto("/en/races/");
   await expect(page.getByLabel("Country").locator("option")).toHaveText([
     "All",
     "Spain",
@@ -111,30 +78,48 @@ test("race discovery reaches a race page and share flow", async ({ page }) => {
     name: /Triana - Los Remedios .*10K/i,
   });
 
-  // Past race should be hidden by default
-  await expect(trianaLink).not.toBeVisible();
-
-  // Enable past races filter
-  await page.getByLabel(/include past races/i).check();
+  await expect(page.getByLabel(/include past races/i)).toBeChecked();
+  await expect(trianaLink).toBeVisible();
 
   await trianaLink.click();
   await expect(page).toHaveURL(
-    /\/en\/races\/carrera-triana-los-remedios-10k\/2026/,
+    /\/en\/races\/carrera-triana-los-remedios-10k\/2026\/$/,
   );
 
   await page.getByRole("link", { name: /Generate share link/i }).click();
   await expect(page).toHaveURL(
-    /\/en\/share\/carrera-triana-los-remedios-10k\/2026#/,
+    /\/en\/share\/carrera-triana-los-remedios-10k\/2026\/#/,
   );
   await expect(
     page.getByText(/All times are in the race.s local timezone\./i).first(),
   ).toBeVisible();
 });
 
+test("race listing server HTML links every edition", async ({ request }) => {
+  const response = await request.get("/en/races/");
+  const html = await response.text();
+  const editions = await getAllRaceEditions();
+
+  expect(response.ok()).toBe(true);
+  for (const edition of editions) {
+    expect(html).toContain(
+      `href="${buildRacePath("en", edition.raceSlug, edition.year)}"`,
+    );
+  }
+});
+
+test("convenience race route redirects to a final edition URL", async ({
+  page,
+}) => {
+  await page.goto("/en/races/barcelona-marathon/");
+
+  await expect(page).toHaveURL(/\/en\/races\/barcelona-marathon\/2027\/$/);
+});
+
 test("race discovery localizes country filter labels by locale", async ({
   page,
 }) => {
-  await page.goto("/es/races");
+  await page.goto("/es/races/");
 
   await expect(page.getByLabel("Pa\u00eds").locator("option")).toHaveText([
     "Todas",
@@ -144,7 +129,7 @@ test("race discovery localizes country filter labels by locale", async ({
 
 test("share page stays noindex", async ({ page }) => {
   await page.goto(
-    "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=05%3A00&name=Pepe",
+    "/en/share/carrera-triana-los-remedios-10k/2026/#mode=pace&value=05%3A00&name=Pepe",
   );
 
   const robotsContent = await getMetaContent(page, 'meta[name="robots"]');
@@ -161,11 +146,22 @@ test("share page stays noindex", async ({ page }) => {
   expect(twitterImage).toBe(openGraphImage);
 });
 
+test("language switch preserves a share fragment", async ({ page }) => {
+  await page.goto(
+    "/en/share/carrera-triana-los-remedios-10k/2026/#mode=pace&value=05%3A00&name=Pepe",
+  );
+
+  await page.locator("[data-preserve-hash-link]").click();
+  await expect(page).toHaveURL(
+    /\/es\/share\/carrera-triana-los-remedios-10k\/2026\/#mode=pace&value=05%3A00&name=Pepe$/,
+  );
+});
+
 test("share page loads leaflet CSS so map tiles render correctly", async ({
   page,
 }) => {
   await page.goto(
-    "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=05%3A00&name=Pepe",
+    "/en/share/carrera-triana-los-remedios-10k/2026/#mode=pace&value=05%3A00&name=Pepe",
   );
 
   const tilePane = page.locator(
@@ -181,7 +177,7 @@ test("share page loads leaflet CSS so map tiles render correctly", async ({
 });
 
 test("race page emits open graph and twitter metadata", async ({ page }) => {
-  await page.goto("/en/races/carrera-triana-los-remedios-10k/2026");
+  await page.goto("/en/races/carrera-triana-los-remedios-10k/2026/");
 
   const pageTitle = await page.title();
   const openGraphTitle = await getMetaContent(
@@ -199,7 +195,7 @@ test("race page emits open graph and twitter metadata", async ({ page }) => {
 
   expect(openGraphTitle).toBe(pageTitle);
   expect(openGraphUrl).toBe(
-    "https://dondeteveo.com/en/races/carrera-triana-los-remedios-10k/2026",
+    "https://dondeteveo.com/en/races/carrera-triana-los-remedios-10k/2026/",
   );
   expect(openGraphType).toBe("website");
   expect(openGraphImage).toBe(
@@ -213,14 +209,14 @@ test("share page shows safety margin subtitles for pace and finish plans", async
   page,
 }) => {
   await page.goto(
-    "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=05%3A00&name=Pepe",
+    "/en/share/carrera-triana-los-remedios-10k/2026/#mode=pace&value=05%3A00&name=Pepe",
   );
   await expect(
     page.getByText(/^\(±5mins, \d{2}:\d{2} - \d{2}:\d{2}\)$/).first(),
   ).toBeVisible();
 
   await page.goto(
-    "/en/share/carrera-triana-los-remedios-10k/2026#mode=finish&value=00%3A50%3A00&name=Pepe",
+    "/en/share/carrera-triana-los-remedios-10k/2026/#mode=finish&value=00%3A50%3A00&name=Pepe",
   );
   await expect(
     page.getByText(/^\(±5mins, \d{2}:\d{2} - \d{2}:\d{2}\)$/).first(),
@@ -231,7 +227,7 @@ test("share page lets spectators inspect any tapped route point", async ({
   page,
 }) => {
   await page.goto(
-    "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=05%3A00&name=Pepe",
+    "/en/share/carrera-triana-los-remedios-10k/2026/#mode=pace&value=05%3A00&name=Pepe",
   );
 
   const map = page.locator('[data-map-mode="spectator"]');
@@ -283,7 +279,7 @@ test("share page time cards focus the matching map marker", async ({
   page,
 }) => {
   await page.goto(
-    "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=05%3A00&name=Pepe",
+    "/en/share/carrera-triana-los-remedios-10k/2026/#mode=pace&value=05%3A00&name=Pepe",
   );
 
   const mapSection = page.locator("[data-share-map-section]");
@@ -326,7 +322,7 @@ test("share page time cards focus the matching map marker", async ({
 test("race detail map shows only distance for tapped route points", async ({
   page,
 }) => {
-  await page.goto("/en/races/carrera-triana-los-remedios-10k/2026");
+  await page.goto("/en/races/carrera-triana-los-remedios-10k/2026/");
 
   const map = page.locator('[data-map-mode="distance-only"]');
 
@@ -347,7 +343,7 @@ test("race detail map shows only distance for tapped route points", async ({
 test("race detail info fields stay aligned across breakpoints", async ({
   page,
 }, testInfo) => {
-  await page.goto("/es/races/carrera-triana-los-remedios-5k/2026");
+  await page.goto("/es/races/carrera-triana-los-remedios-5k/2026/");
 
   const infoGrid = page.locator("[data-race-info-grid]");
   await expect(infoGrid).toBeVisible();
@@ -379,25 +375,25 @@ test("race detail info fields stay aligned across breakpoints", async ({
 test("special race notes appear only for races that define them", async ({
   page,
 }) => {
-  await page.goto("/en/races/carrera-triana-los-remedios-5k/2026");
+  await page.goto("/en/races/carrera-triana-los-remedios-5k/2026/");
   await expect(page.getByText(/Important race note/i)).toBeVisible();
   await expect(
     page.getByText(/The listed start time is approximate\./i).first(),
   ).toBeVisible();
 
   await page.goto(
-    "/en/share/carrera-triana-los-remedios-5k/2026#mode=pace&value=05%3A30&name=Pepe",
+    "/en/share/carrera-triana-los-remedios-5k/2026/#mode=pace&value=05%3A30&name=Pepe",
   );
   await expect(page.getByText(/Important race note/i)).toBeVisible();
   await expect(
     page.getByText(/The listed start time is approximate\./i).first(),
   ).toBeVisible();
 
-  await page.goto("/en/races/carrera-triana-los-remedios-10k/2026");
+  await page.goto("/en/races/carrera-triana-los-remedios-10k/2026/");
   await expect(page.getByText(/Important race note/i)).toHaveCount(0);
 
   await page.goto(
-    "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=05%3A00&name=Pepe",
+    "/en/share/carrera-triana-los-remedios-10k/2026/#mode=pace&value=05%3A00&name=Pepe",
   );
   await expect(page.getByText(/Important race note/i)).toHaveCount(0);
 });
@@ -408,7 +404,7 @@ test("mobile navigation opens and links work", async ({ page }, testInfo) => {
     "Mobile-only navigation test",
   );
 
-  await page.goto("/en");
+  await page.goto("/en/");
   await expectNoHorizontalOverflow(page);
 
   const menuToggle = page.locator("[data-mobile-nav-toggle]");
@@ -427,7 +423,7 @@ test("mobile navigation opens and links work", async ({ page }, testInfo) => {
   await expect(menuToggle).toHaveAttribute("aria-expanded", "true");
 
   await page.getByRole("link", { name: /About/i }).click();
-  await expect(page).toHaveURL(/\/en\/about$/);
+  await expect(page).toHaveURL(/\/en\/about\/$/);
   await expect(
     page.getByRole("heading", { level: 1, name: /About/i }),
   ).toBeVisible();
@@ -435,7 +431,7 @@ test("mobile navigation opens and links work", async ({ page }, testInfo) => {
 
   await page.locator("[data-mobile-nav-toggle]").click();
   await page.getByRole("link", { name: /Race discovery/i }).click();
-  await expect(page).toHaveURL(/\/en\/races$/);
+  await expect(page).toHaveURL(/\/en\/races\/$/);
   await expectNoHorizontalOverflow(page);
 });
 
@@ -446,7 +442,7 @@ test("mobile share map supports route taps", async ({ page }, testInfo) => {
   );
 
   await page.goto(
-    "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=05%3A00&name=Pepe",
+    "/en/share/carrera-triana-los-remedios-10k/2026/#mode=pace&value=05%3A00&name=Pepe",
   );
 
   const map = page.locator('[data-map-mode="spectator"]');
@@ -467,7 +463,7 @@ test("mobile share map supports route taps", async ({ page }, testInfo) => {
 });
 
 test("404 page shows English content for /en paths", async ({ page }) => {
-  await page.goto("/en/nonexistent-page");
+  await page.goto("/en/nonexistent-page/");
 
   await expect(page.getByText("404")).toBeVisible();
   await expect(
@@ -475,14 +471,14 @@ test("404 page shows English content for /en paths", async ({ page }) => {
   ).toBeVisible();
   await expect(
     page.getByRole("link", { name: /Go to homepage/i }),
-  ).toHaveAttribute("href", "/en");
+  ).toHaveAttribute("href", "/en/");
   await expect(
     page.getByRole("link", { name: /Find your race/i }),
-  ).toHaveAttribute("href", "/en/races");
+  ).toHaveAttribute("href", "/en/races/");
 });
 
 test("404 page shows Spanish content for /es paths", async ({ page }) => {
-  await page.goto("/es/nonexistent-page");
+  await page.goto("/es/nonexistent-page/");
 
   await expect(page.getByText("404")).toBeVisible();
   await expect(
@@ -490,14 +486,14 @@ test("404 page shows Spanish content for /es paths", async ({ page }) => {
   ).toBeVisible();
   await expect(
     page.getByRole("link", { name: /Ir al inicio/i }),
-  ).toHaveAttribute("href", "/es");
+  ).toHaveAttribute("href", "/es/");
   await expect(
     page.getByRole("link", { name: /Encuentra tu carrera/i }),
-  ).toHaveAttribute("href", "/es/races");
+  ).toHaveAttribute("href", "/es/races/");
 });
 
 test("404 page is noindex", async ({ page }) => {
-  await page.goto("/en/nonexistent-page");
+  await page.goto("/en/nonexistent-page/");
 
   const robotsContent = await page
     .locator('meta[name="robots"]')
@@ -515,7 +511,7 @@ test("mobile share time cards scroll to the focused map marker", async ({
   );
 
   await page.goto(
-    "/en/share/carrera-triana-los-remedios-10k/2026#mode=pace&value=05%3A00&name=Pepe",
+    "/en/share/carrera-triana-los-remedios-10k/2026/#mode=pace&value=05%3A00&name=Pepe",
   );
 
   const mapSection = page.locator("[data-share-map-section]");

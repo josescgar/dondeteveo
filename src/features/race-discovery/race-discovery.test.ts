@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   filterDiscoveryCards,
+  getDiscoveryCards,
   getDiscoveryCityOptions,
   getDiscoveryCountryOptions,
   paginateDiscoveryCards,
@@ -12,7 +13,7 @@ const cards = [
     countryCode: "es",
     raceSlug: "carrera-triana-los-remedios-10k",
     year: "2026",
-    href: "/en/races/carrera-triana-los-remedios-10k/2026",
+    href: "/en/races/carrera-triana-los-remedios-10k/2026/",
     upcoming: true,
     meta: {
       name: 'Triana - Los Remedios 10K "Torre Sevilla"',
@@ -29,6 +30,12 @@ const cards = [
 ];
 
 describe("race discovery logic", () => {
+  it("builds final race edition hrefs", () => {
+    expect(getDiscoveryCards("en", cards)[0].href).toBe(
+      "/en/races/carrera-triana-los-remedios-10k/2026/",
+    );
+  });
+
   it("builds localized country options sorted by visible label", () => {
     const races = [
       cards[0],
@@ -90,7 +97,7 @@ describe("race discovery logic", () => {
     const manyCards = Array.from({ length: 5 }, (_, i) => ({
       ...cards[0],
       raceSlug: `race-${i}`,
-      href: `/en/races/race-${i}/2026`,
+      href: `/en/races/race-${i}/2026/`,
     }));
 
     expect(paginateDiscoveryCards(manyCards, 3)).toHaveLength(3);
@@ -165,13 +172,13 @@ describe("race discovery logic", () => {
     const pastCard = {
       ...cards[0],
       raceSlug: "past-race",
-      href: "/en/races/past-race/2024",
+      href: "/en/races/past-race/2024/",
       meta: { ...cards[0].meta, date: "2024-01-01" },
     };
     const futureCard = {
       ...cards[0],
       raceSlug: "future-race",
-      href: "/en/races/future-race/2027",
+      href: "/en/races/future-race/2027/",
       meta: { ...cards[0].meta, date: "2027-06-01" },
     };
 
@@ -191,13 +198,13 @@ describe("race discovery logic", () => {
     const pastCard = {
       ...cards[0],
       raceSlug: "past-race",
-      href: "/en/races/past-race/2024",
+      href: "/en/races/past-race/2024/",
       meta: { ...cards[0].meta, date: "2024-01-01" },
     };
     const futureCard = {
       ...cards[0],
       raceSlug: "future-race",
-      href: "/en/races/future-race/2027",
+      href: "/en/races/future-race/2027/",
       meta: { ...cards[0].meta, date: "2027-06-01" },
     };
 
@@ -216,19 +223,19 @@ describe("race discovery logic", () => {
     const pastCard = {
       ...cards[0],
       raceSlug: "past-seville",
-      href: "/en/races/past-seville/2024",
+      href: "/en/races/past-seville/2024/",
       meta: { ...cards[0].meta, date: "2024-01-01", city: "Seville" },
     };
     const futureMadrid = {
       ...cards[0],
       raceSlug: "future-madrid",
-      href: "/en/races/future-madrid/2027",
+      href: "/en/races/future-madrid/2027/",
       meta: { ...cards[0].meta, date: "2027-06-01", city: "Madrid" },
     };
     const futureSeville = {
       ...cards[0],
       raceSlug: "future-seville",
-      href: "/en/races/future-seville/2027",
+      href: "/en/races/future-seville/2027/",
       meta: { ...cards[0].meta, date: "2027-06-01", city: "Seville" },
     };
 

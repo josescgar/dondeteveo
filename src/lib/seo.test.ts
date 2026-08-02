@@ -11,12 +11,12 @@ import {
 
 describe("seo helpers", () => {
   it("builds canonical and locale alternate urls", () => {
-    expect(buildCanonicalUrl("/en/races")).toBe(
-      "https://dondeteveo.com/en/races",
+    expect(buildCanonicalUrl("/en/races/")).toBe(
+      "https://dondeteveo.com/en/races/",
     );
-    expect(buildAlternates("en", "/en/races")).toEqual([
-      { hrefLang: "en", href: "https://dondeteveo.com/en/races" },
-      { hrefLang: "es", href: "https://dondeteveo.com/es/races" },
+    expect(buildAlternates("en", "/en/races/")).toEqual([
+      { hrefLang: "en", href: "https://dondeteveo.com/en/races/" },
+      { hrefLang: "es", href: "https://dondeteveo.com/es/races/" },
     ]);
   });
 
@@ -25,11 +25,11 @@ describe("seo helpers", () => {
       title: "Dondeteveo | Race discovery",
       description: "Browse race editions.",
       locale: "en",
-      pathname: "/en/races",
+      pathname: "/en/races/",
     });
 
     expect(buildDefaultSeoImagePath("en")).toBe("/og/en/default.png");
-    expect(seo.canonical).toBe("https://dondeteveo.com/en/races");
+    expect(seo.canonical).toBe("https://dondeteveo.com/en/races/");
     expect(seo.openGraph.locale).toBe("en_US");
     expect(seo.openGraph.image.url).toBe(
       "https://dondeteveo.com/og/en/default.png",
@@ -52,7 +52,7 @@ describe("seo helpers", () => {
       title: "Triana - Los Remedios 10K 2026 | Dondeteveo",
       description: "Plan where to cheer.",
       locale: "es",
-      pathname: "/es/share/carrera-triana-los-remedios-10k/2026",
+      pathname: "/es/share/carrera-triana-los-remedios-10k/2026/",
       noindex: true,
       imagePath,
       imageAlt,
@@ -66,5 +66,20 @@ describe("seo helpers", () => {
       "https://dondeteveo.com/og/es/races/carrera-triana-los-remedios-10k/2026.png",
     );
     expect(seo.twitter.image.alt).toBe(imageAlt);
+  });
+
+  it("selects an edition image without slash-terminating the asset", () => {
+    const seo = buildSeo({
+      title: "Race 2026 | Dondeteveo",
+      description: "Plan where to cheer.",
+      locale: "en",
+      pathname: "/en/races/race/2026/",
+    });
+
+    expect(seo.canonical).toBe("https://dondeteveo.com/en/races/race/2026/");
+    expect(seo.openGraph.url).toBe(seo.canonical);
+    expect(seo.openGraph.image.url).toBe(
+      "https://dondeteveo.com/og/en/races/race/2026.png",
+    );
   });
 });

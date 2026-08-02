@@ -11,16 +11,17 @@
 
 ## Public Routing
 
-- `/` serves the Spanish homepage directly; non-Spanish browsers are redirected to `/en` via a client-side script
-- Canonical localized homepages: `/en`, `/es`
-- Listing pages: `/en/races`, `/es/races`
-- Convenience race URLs: `/en/races/<race>`, `/es/races/<race>`
-- Canonical race edition pages: `/en/races/<race>/<year>`, `/es/races/<race>/<year>`
-- Share pages: `/en/share/<race>/<year>#...`, `/es/share/<race>/<year>#...`
+- `/` permanently redirects to `/es/`; Cloudflare owns the production HTTP redirect and preserves the query string
+- Canonical localized homepages: `/en/`, `/es/`
+- Listing pages: `/en/races/`, `/es/races/`
+- Convenience race URLs: `/en/races/<race>/`, `/es/races/<race>/`
+- Canonical race edition pages: `/en/races/<race>/<year>/`, `/es/races/<race>/<year>/`
+- Share pages: `/en/share/<race>/<year>/#...`, `/es/share/<race>/<year>/#...`
 
 ## Routing Rules
 
 - Public URLs do not include country.
+- Page route builders return final slash-terminated URLs. Asset and sitemap filenames remain extension-terminated.
 - Race slugs must be globally unique.
 - Convenience race URLs redirect to the next upcoming edition if available, otherwise the most recent past edition.
 - Language switching should map directly to the equivalent page in the other locale.
@@ -31,7 +32,9 @@
 - Non-indexable: share pages, search states, filter states
 - Past editions remain public and indexable.
 - Canonical domain: `https://dondeteveo.com`
-- Public pages emit centralized canonical, locale alternate, Open Graph, Twitter card, and generated `og:image` metadata.
+- Canonical, locale alternate, Open Graph, internal page links, and sitemap entries use final slash-terminated page URLs.
+- Public pages emit centralized metadata and generated `og:image` assets without altering extension-terminated asset URLs.
+- The sitemap excludes `/`, share pages, generated images, convenience race routes, and non-page assets. Search Console should discover every generated sitemap URL; the current 13-edition catalog produces 36 URLs.
 
 ## Rendering Boundaries
 
@@ -47,7 +50,13 @@
 
 ## Race Listing Pagination
 
-The race listing pages (`/en/races`, `/es/races`) use client-side "Load more" pagination. All race data is passed at build time; the Preact island slices the filtered list into batches of 12 and reveals more on button click. Changing any filter resets pagination to the first batch.
+The race listing pages (`/en/races/`, `/es/races/`) initially render every edition as a visible server-rendered link. Client-side filters and "Load more" pagination may change the presentation after interaction, but must never prevent crawlers from discovering an indexable edition in the initial listing HTML. The localized homepages keep a compact upcoming-race view.
+
+## Deployment Redirects
+
+Astro generates a static fallback for `/` to `/es/`, but GitHub Pages cannot emit the required HTTP redirect from repository configuration. Cloudflare must configure an exact-path permanent redirect from `https://dondeteveo.com/` to `https://dondeteveo.com/es/`, preserving query parameters and leaving all other paths unchanged.
+
+After route or catalog changes, verify both `sitemap-index.xml` and its child `sitemap-0.xml` in Google Search Console. Submit the child sitemap directly if Search Console does not register URLs from the index.
 
 ## Repository Shape
 
