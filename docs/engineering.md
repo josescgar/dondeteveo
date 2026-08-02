@@ -41,7 +41,7 @@
 
 ## Toolchain
 
-- Node.js `>=24.16.0`
+- Node.js `>=24.16.0 <25`
 
 ## Pre-commit Hooks
 

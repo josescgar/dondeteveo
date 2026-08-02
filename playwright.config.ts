@@ -24,7 +24,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: `ASTRO_DEV_BACKGROUND=0 npm run dev -- --host 127.0.0.1 --port ${PORT}`,
+    command: `npm run dev -- --host 127.0.0.1 --port ${PORT}`,
+    env: { ...process.env, ASTRO_DEV_BACKGROUND: "0" },
     url: BASE_URL,
     reuseExistingServer: false,
   },
