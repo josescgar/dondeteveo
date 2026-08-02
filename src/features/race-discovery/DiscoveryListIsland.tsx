@@ -20,19 +20,26 @@ import {
 type Props = {
   locale: Locale;
   races: RaceSummary[];
+  showAllInitially?: boolean;
 };
 
 const inputClass =
   "w-full border-b border-line-solid bg-transparent px-0 py-2 font-mono text-sm text-text outline-none transition focus:border-accent";
 
-export default function DiscoveryListIsland({ locale, races }: Props) {
+export default function DiscoveryListIsland({
+  locale,
+  races,
+  showAllInitially = false,
+}: Props) {
   const dictionary = getDictionary(locale);
   const [query, setQuery] = useState("");
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [year, setYear] = useState("");
-  const [includePast, setIncludePast] = useState(false);
-  const [visibleCount, setVisibleCount] = useState(DISCOVERY_PAGE_SIZE);
+  const [includePast, setIncludePast] = useState(showAllInitially);
+  const [visibleCount, setVisibleCount] = useState(
+    showAllInitially ? races.length : DISCOVERY_PAGE_SIZE,
+  );
 
   const cards = useMemo(
     () => getDiscoveryCards(locale, races),

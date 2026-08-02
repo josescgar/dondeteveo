@@ -8,6 +8,13 @@ import sitemap from "@astrojs/sitemap";
 // https://astro.build/config
 export default defineConfig({
   site: "https://dondeteveo.com",
+  trailingSlash: "always",
+  redirects: {
+    "/": {
+      status: 301,
+      destination: "/es/",
+    },
+  },
   integrations: [
     preact(),
     sitemap({

@@ -31,6 +31,7 @@ const editions = (await getAllRaceEditions())
     year: edition.year,
     date: edition.meta.date,
     timezone: edition.meta.timezone,
+    href: buildRacePath(locale, raceSlug, edition.year),
   }));
 
 if (editions.length === 0) {
@@ -49,10 +50,7 @@ const fallbackEditions = editions.toSorted((left, right) =>
   description={dictionary.latestEditionRedirect}
   noindex={true}
 >
-  <script
-    is:inline
-    define:vars={{ editions, raceBasePath: buildRacePath(locale, raceSlug) }}
-  >
+  <script is:inline define:vars={{ editions }}>
     const getTodayInTimeZone = (timeZone) => {
       const parts = new Intl.DateTimeFormat("en-CA", {
         timeZone,
@@ -78,7 +76,7 @@ const fallbackEditions = editions.toSorted((left, right) =>
       )[0];
 
     if (targetEdition) {
-      window.location.replace(raceBasePath + "/" + targetEdition.year);
+      window.location.replace(targetEdition.href);
     }
   </script>
   <div class="border-line bg-surface max-w-xl rounded-xl border p-6 shadow-sm">
