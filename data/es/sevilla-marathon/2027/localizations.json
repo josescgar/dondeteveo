@@ -1,0 +1,29 @@
+{
+  "es": {
+    "meta": {
+      "name": "Zurich Marat\u00f3n de Sevilla",
+      "city": "Sevilla",
+      "summary": "Un marat\u00f3n r\u00e1pido y excepcionalmente llano por Triana, la Cartuja, Nervi\u00f3n, la Plaza de Espa\u00f1a y el centro hist\u00f3rico de Sevilla, con salida en la Avenida de Mar\u00eda Luisa y meta en el Paseo de las Delicias.",
+      "heroNote": "Buenos puntos para animar en la Plaza de Armas al principio de la carrera, Isla M\u00e1gica, Gran Plaza, la Plaza de Espa\u00f1a y la Plaza Nueva antes del tramo final hacia el Paseo de las Delicias.",
+      "specialNote": "La carrera prev\u00e9 salidas escalonadas despu\u00e9s del primer pistoletazo a las 08:30. Comprueba la hora asignada a tu corredor cuando la organizaci\u00f3n publique los detalles de las oleadas."
+    },
+    "pointLabels": {
+      "start": "Salida - Avenida de Mar\u00eda Luisa",
+      "km-5": "Punto 5K",
+      "cheer-plaza-de-armas": "Punto para animar - Plaza de Armas",
+      "km-10": "Punto 10K",
+      "km-15": "Punto 15K",
+      "cheer-isla-magica": "Punto para animar - Isla M\u00e1gica",
+      "km-20": "Punto 20K",
+      "halfway": "Punto medio - Avenida Jos\u00e9 Laguillo",
+      "km-25": "Punto 25K",
+      "cheer-gran-plaza": "Punto para animar - Gran Plaza",
+      "km-30": "Punto 30K",
+      "cheer-plaza-de-espana": "Punto para animar - Plaza de Espa\u00f1a",
+      "km-35": "Punto 35K",
+      "km-40": "Punto 40K",
+      "cheer-plaza-nueva": "Punto para animar - Plaza Nueva",
+      "finish": "Meta - Paseo de las Delicias"
+    }
+  }
+}

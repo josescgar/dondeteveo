@@ -1,0 +1,6 @@
+{
+  "routeSourceType": "gpx-import",
+  "officialSourceName": "Zurich Seville Marathon 2027 official regulations",
+  "officialSourceUrl": "https://www.zurichmaratonsevilla.es/en/zms-regulations",
+  "notes": "Route imported from the supplied GPX named \"Zurich Marat\u00f3n de Sevilla 2026\", originally published by Dani Quintero as Strava route 3446449712738703246 (https://www.strava.com/routes/3446449712738703246). The organizer's 2027 regulations publish the same course itinerary, from Avenida de Maria Luisa to Paseo de las Delicias. Elevation and GPX metadata were removed. Split and spectator-point positions were normalized from the approximately 43.23 km GPX geometry to the certified 42.195 km race distance."
+}
