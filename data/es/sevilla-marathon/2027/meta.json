@@ -8,5 +8,9 @@
   "officialWebsiteUrl": "https://www.zurichmaratonsevilla.es/en/",
   "summary": "A fast, exceptionally flat marathon through Triana, La Cartuja, Nervion, Plaza de Espana, and Seville's historic center, starting on Avenida de Maria Luisa and finishing on Paseo de las Delicias.",
   "heroNote": "Strong cheering spots include Plaza de Armas early in the race, Isla Magica, Gran Plaza, Plaza de Espana, and Plaza Nueva before the final run to Paseo de las Delicias.",
-  "specialNote": "The race plans to use staggered wave starts after the 08:30 first gun. Check your runner's assigned start time when the organization publishes wave details."
+  "specialNote": "Wheelchair athletes start at 08:29. Other runners have planned staggered starts from 08:30; check your runner's assigned time when the organization publishes wave details.",
+  "waves": [
+    { "label": "Wheelchair athletes", "startTime": "08:29" },
+    { "label": "General start (wave details pending)", "startTime": "08:30" }
+  ]
 }
