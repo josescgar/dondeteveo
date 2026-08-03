@@ -1,0 +1,213 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "start",
+        "label": "Start - Avenida de Maria Luisa",
+        "kind": "split",
+        "distanceKm": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.99006, 37.37839]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-5",
+        "label": "5K split",
+        "kind": "split",
+        "distanceKm": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.003449, 37.394215]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-plaza-de-armas",
+        "label": "Cheer point - Plaza de Armas",
+        "kind": "cheer-point",
+        "distanceKm": 5.3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.00336, 37.3916]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-10",
+        "label": "10K split",
+        "kind": "split",
+        "distanceKm": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.010346, 37.382578]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-15",
+        "label": "15K split",
+        "kind": "split",
+        "distanceKm": 15
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.000973, 37.41216]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-isla-magica",
+        "label": "Cheer point - Isla Magica",
+        "kind": "cheer-point",
+        "distanceKm": 15.9
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.997993, 37.406535]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-20",
+        "label": "20K split",
+        "kind": "split",
+        "distanceKm": 20
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.981542, 37.398102]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "halfway",
+        "label": "Halfway split - Avenida Jose Laguillo",
+        "kind": "split",
+        "distanceKm": 21.0975
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.979227, 37.390905]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-25",
+        "label": "25K split",
+        "kind": "split",
+        "distanceKm": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.958678, 37.388208]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-gran-plaza",
+        "label": "Cheer point - Gran Plaza",
+        "kind": "cheer-point",
+        "distanceKm": 26.3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.96659, 37.38161]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-30",
+        "label": "30K split",
+        "kind": "split",
+        "distanceKm": 30
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.981051, 37.360297]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-plaza-de-espana",
+        "label": "Cheer point - Plaza de Espana",
+        "kind": "cheer-point",
+        "distanceKm": 33.1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.98641, 37.37686]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-35",
+        "label": "35K split",
+        "kind": "split",
+        "distanceKm": 35
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.983681, 37.385476]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-40",
+        "label": "40K split",
+        "kind": "split",
+        "distanceKm": 40
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.994987, 37.389264]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-plaza-nueva",
+        "label": "Cheer point - Plaza Nueva",
+        "kind": "cheer-point",
+        "distanceKm": 40.1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.9949, 37.38825]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "finish",
+        "label": "Finish - Paseo de las Delicias",
+        "kind": "split",
+        "distanceKm": 42.195
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.98981, 37.37312]
+      }
+    }
+  ]
+}
