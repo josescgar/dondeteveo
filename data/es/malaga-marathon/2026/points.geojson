@@ -1,0 +1,226 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "start",
+        "label": "Start - Paseo del Parque",
+        "kind": "split",
+        "distanceKm": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.415966, 36.719528]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-5",
+        "label": "5K split - Pasillo del Matadero",
+        "kind": "split",
+        "distanceKm": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.426364, 36.712736]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-alameda-principal",
+        "label": "Cheer point - Alameda Principal",
+        "kind": "cheer-point",
+        "distanceKm": 6
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.419413, 36.717646]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-10",
+        "label": "10K split - La Malagueta",
+        "kind": "split",
+        "distanceKm": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.40999, 36.71794]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-pedregalejo",
+        "label": "Cheer point - Pedregalejo",
+        "kind": "cheer-point",
+        "distanceKm": 12
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.389005, 36.722292]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-15",
+        "label": "15K split - El Palo",
+        "kind": "split",
+        "distanceKm": 15
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.355861, 36.71877]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-el-palo",
+        "label": "Cheer point - El Palo",
+        "kind": "cheer-point",
+        "distanceKm": 16
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.356905, 36.720708]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-20",
+        "label": "20K split - Paseo Maritimo Pablo Ruiz Picasso",
+        "kind": "split",
+        "distanceKm": 20
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.400788, 36.721298]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "halfway",
+        "label": "Halfway split - Paseo del Parque",
+        "kind": "split",
+        "distanceKm": 21.0975
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.411624, 36.71965]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-25",
+        "label": "25K split - La Rosaleda",
+        "kind": "split",
+        "distanceKm": 25
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.42711, 36.736987]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-la-rosaleda",
+        "label": "Cheer point - La Rosaleda",
+        "kind": "cheer-point",
+        "distanceKm": 26
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.426773, 36.731431]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-30",
+        "label": "30K split - Paseo Antonio Banderas",
+        "kind": "split",
+        "distanceKm": 30
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.43761, 36.698375]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-martin-carpena",
+        "label": "Cheer point - Martin Carpena",
+        "kind": "cheer-point",
+        "distanceKm": 34
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.46012, 36.68335]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-35",
+        "label": "35K split - Ciudad de Malaga Athletics Stadium",
+        "kind": "split",
+        "distanceKm": 35
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.459285, 36.679955]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-40",
+        "label": "40K split - Puente de Antonio Machado",
+        "kind": "split",
+        "distanceKm": 40
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.425852, 36.711279]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-pasillo-santa-isabel",
+        "label": "Cheer point - Pasillo de Santa Isabel",
+        "kind": "cheer-point",
+        "distanceKm": 41
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.425154, 36.719773]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "finish",
+        "label": "Finish - Paseo del Parque",
+        "kind": "split",
+        "distanceKm": 42.195
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.415972, 36.719543]
+      }
+    }
+  ]
+}
