@@ -1,0 +1,30 @@
+{
+  "es": {
+    "meta": {
+      "name": "Generali Maratón Málaga",
+      "city": "Málaga",
+      "summary": "Un maratón rápido y llano por el centro de Málaga, los barrios del litoral este, La Rosaleda y la costa oeste, con salida y meta en el Paseo del Parque.",
+      "heroNote": "Buenos puntos para animar en la Alameda Principal durante el primer paso por el centro, el litoral de Pedregalejo y El Palo, La Rosaleda y el último tramo costero de vuelta al Paseo del Parque.",
+      "specialNote": "Esta carrera tiene salidas escalonadas después del primer pistoletazo a las 08:30. Comprueba la hora de salida asignada a tu corredor."
+    },
+    "pointLabels": {
+      "start": "Salida - Paseo del Parque",
+      "km-5": "Punto 5K - Avenida de Andalucía",
+      "cheer-alameda-principal": "Punto para animar - Alameda Principal",
+      "km-10": "Punto 10K - La Malagueta",
+      "cheer-pedregalejo": "Punto para animar - Pedregalejo",
+      "km-15": "Punto 15K - El Palo",
+      "cheer-el-palo": "Punto para animar - El Palo",
+      "km-20": "Punto 20K - Paseo Marítimo Pablo Ruiz Picasso",
+      "halfway": "Punto medio - Paseo del Parque",
+      "km-25": "Punto 25K - La Rosaleda",
+      "cheer-la-rosaleda": "Punto para animar - La Rosaleda",
+      "km-30": "Punto 30K - Paseo Antonio Banderas",
+      "cheer-martin-carpena": "Punto para animar - Martín Carpena",
+      "km-35": "Punto 35K - Estadio de Atletismo Ciudad de Málaga",
+      "km-40": "Punto 40K - Huelin",
+      "cheer-avenida-andalucia": "Punto para animar - Avenida de Andalucía",
+      "finish": "Meta - Paseo del Parque"
+    }
+  }
+}
