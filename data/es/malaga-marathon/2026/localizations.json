@@ -9,7 +9,7 @@
     },
     "pointLabels": {
       "start": "Salida - Paseo del Parque",
-      "km-5": "Punto 5K - Avenida de Andalucía",
+      "km-5": "Punto 5K - Pasillo del Matadero",
       "cheer-alameda-principal": "Punto para animar - Alameda Principal",
       "km-10": "Punto 10K - La Malagueta",
       "cheer-pedregalejo": "Punto para animar - Pedregalejo",
@@ -22,8 +22,8 @@
       "km-30": "Punto 30K - Paseo Antonio Banderas",
       "cheer-martin-carpena": "Punto para animar - Martín Carpena",
       "km-35": "Punto 35K - Estadio de Atletismo Ciudad de Málaga",
-      "km-40": "Punto 40K - Huelin",
-      "cheer-avenida-andalucia": "Punto para animar - Avenida de Andalucía",
+      "km-40": "Punto 40K - Puente de Antonio Machado",
+      "cheer-pasillo-santa-isabel": "Punto para animar - Pasillo de Santa Isabel",
       "finish": "Meta - Paseo del Parque"
     }
   }
