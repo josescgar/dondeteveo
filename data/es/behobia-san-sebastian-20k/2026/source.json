@@ -1,0 +1,6 @@
+{
+  "routeSourceType": "gpx-import",
+  "officialSourceName": "Behobia-San Sebastian official route page",
+  "officialSourceUrl": "https://www.behobia-sansebastian.com/en/race/route",
+  "notes": "Route imported from the supplied tracks_recorrido_bss.gpx, matching the organizer's tracks_recorrido_bss_2024 download currently linked from the official route page. The organizer confirms the 2026 race date and 20 km distance, but notes that the 2026 route section is still pending and currently displays 2025 course materials. GPX metadata and waypoints were removed. Split and spectator-point positions were normalized from the approximately 20.1575 km GPX geometry to the official 20 km race distance."
+}
