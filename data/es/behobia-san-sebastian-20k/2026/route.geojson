@@ -5,7 +5,7 @@
       "type": "Feature",
       "properties": {
         "id": "behobia-san-sebastian-20k-2026-route",
-        "name": "Behobia-San Sebastian 20K 2026 route"
+        "name": "Provisional Behobia-San Sebastian 20K 2026 route"
       },
       "geometry": {
         "type": "LineString",
