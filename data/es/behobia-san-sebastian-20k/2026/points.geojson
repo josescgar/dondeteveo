@@ -1,0 +1,122 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "start",
+        "label": "Start - Behobia",
+        "kind": "split",
+        "distanceKm": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.77191427508916, 43.3416241044052]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-5",
+        "label": "5K split - Irun",
+        "kind": "split",
+        "distanceKm": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.82367128263325, 43.3299501062592]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-gaintxurizketa",
+        "label": "Cheer point - Gaintxurizketa",
+        "kind": "cheer-point",
+        "distanceKm": 8
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.85720486134014, 43.3266821560889]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-10",
+        "label": "10K split - Lintzirin",
+        "kind": "split",
+        "distanceKm": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.87544599072866, 43.3147409662264]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-errenteria",
+        "label": "Cheer point - Errenteria promenade",
+        "kind": "cheer-point",
+        "distanceKm": 12
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.89627273823723, 43.312401367926]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-15",
+        "label": "15K split - Buenavista",
+        "kind": "split",
+        "distanceKm": 15
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.92690330942026, 43.3212817783498]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-miracruz",
+        "label": "Cheer point - Miracruz",
+        "kind": "cheer-point",
+        "distanceKm": 17
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.95050804354539, 43.3213547397476]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-gros",
+        "label": "Cheer point - Gros and Zurriola",
+        "kind": "cheer-point",
+        "distanceKm": 19
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.97290104600715, 43.3262006728583]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "finish",
+        "label": "Finish - Alameda del Boulevard",
+        "kind": "split",
+        "distanceKm": 20
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-1.98379884129062, 43.3221081320628]
+      }
+    }
+  ]
+}
