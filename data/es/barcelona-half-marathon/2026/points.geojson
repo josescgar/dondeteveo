@@ -1,0 +1,135 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "start",
+        "label": "Start - Passeig de Picasso",
+        "kind": "split",
+        "distanceKm": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.184, 41.3869]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-sant-antoni",
+        "label": "Cheer point - Ronda de Sant Pau",
+        "kind": "cheer-point",
+        "distanceKm": 2.5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.166784, 41.375913]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-5",
+        "label": "5K split - Gran Via de les Corts Catalanes",
+        "kind": "split",
+        "distanceKm": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.16077, 41.383725]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-arc-de-triomf",
+        "label": "Cheer point - Arc de Triomf",
+        "kind": "cheer-point",
+        "distanceKm": 7.5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.182544, 41.39025]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-10",
+        "label": "10K split - Carrer del Perú",
+        "kind": "split",
+        "distanceKm": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.193027, 41.406098]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-rambla-de-prim",
+        "label": "Cheer point - Rambla de Prim",
+        "kind": "cheer-point",
+        "distanceKm": 12.5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.21463, 41.414607]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-15",
+        "label": "15K split - Carrer de Pallars",
+        "kind": "split",
+        "distanceKm": 15
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.204402, 41.406154]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-seafront",
+        "label": "Cheer point - Passeig de Garcia Fària",
+        "kind": "cheer-point",
+        "distanceKm": 17.5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.213541, 41.403344]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-20",
+        "label": "20K split - Carrer de la Marina",
+        "kind": "split",
+        "distanceKm": 20
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.195424, 41.388422]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "finish",
+        "label": "Finish - Passeig de Pujades",
+        "kind": "split",
+        "distanceKm": 21.097
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.18588, 41.39065]
+      }
+    }
+  ]
+}
