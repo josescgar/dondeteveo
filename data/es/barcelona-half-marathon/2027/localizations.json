@@ -1,0 +1,23 @@
+{
+  "es": {
+    "meta": {
+      "name": "Hyundai Mitja Marató Barcelona by Brooks",
+      "city": "Barcelona",
+      "summary": "Una media maratón rápida y completamente urbana por el centro de Barcelona y el frente marítimo del Poblenou, con un récord de 40.000 participantes en su edición de 2027.",
+      "heroNote": "Anima desde las concurridas calles de Sant Antoni, junto al Arc de Triomf o en el frente marítimo del Poblenou antes de la meta junto al Parc de la Ciutadella.",
+      "specialNote": "La carrera tiene salidas escalonadas según el ritmo previsto. Confirma la hora de salida real del cajón del corredor antes de planificar las llegadas."
+    },
+    "pointLabels": {
+      "start": "Salida - Passeig de Picasso",
+      "cheer-sant-antoni": "Punto para animar - Ronda de Sant Pau",
+      "km-5": "Punto 5K - Gran Via de les Corts Catalanes",
+      "cheer-arc-de-triomf": "Punto para animar - Arc de Triomf",
+      "km-10": "Punto 10K - Carrer del Perú",
+      "cheer-rambla-de-prim": "Punto para animar - Rambla de Prim",
+      "km-15": "Punto 15K - Carrer de Pallars",
+      "cheer-seafront": "Punto para animar - Passeig de Garcia Fària",
+      "km-20": "Punto 20K - Carrer de la Marina",
+      "finish": "Meta - Passeig de Pujades"
+    }
+  }
+}
