@@ -84,16 +84,14 @@ const fallbackEditions = editions.toSorted((left, right) =>
       {dictionary.latestEditionRedirect}
     </p>
     <div class="mt-4 flex flex-wrap gap-3">
-      {
-        fallbackEditions.map((edition) => (
-          <a
-            href={buildRacePath(locale, raceSlug, edition.year)}
-            class="border-orange-dim text-orange hover:border-orange hover:bg-amber inline-flex rounded-lg border px-4 py-2 text-sm font-bold transition"
-          >
-            {edition.year}
-          </a>
-        ))
-      }
+      {fallbackEditions.map((edition) => (
+        <a
+          href={buildRacePath(locale, raceSlug, edition.year)}
+          class="border-orange-dim text-orange hover:border-orange hover:bg-amber inline-flex rounded-lg border px-4 py-2 text-sm font-bold transition"
+        >
+          {edition.year}
+        </a>
+      ))}
     </div>
   </div>
 </BaseLayout>

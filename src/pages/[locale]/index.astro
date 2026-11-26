@@ -29,14 +29,10 @@ const races = (await getRaceSummaries()).map((race) =>
     <div class="text-muted font-mono text-[10px] tracking-[0.32em] uppercase">
       // {dictionary.siteTagline}
     </div>
-    <div
-      class="font-display text-hero text-text mt-3 leading-none font-bold uppercase"
-    >
+    <div class="font-display text-hero text-text mt-3 leading-none font-bold uppercase">
       DONDETEVEO
     </div>
-    <h1
-      class="font-display text-hero-sub text-accent mt-4 font-bold uppercase sm:text-5xl"
-    >
+    <h1 class="font-display text-hero-sub text-accent mt-4 font-bold uppercase sm:text-5xl">
       {dictionary.heroTitle}
     </h1>
     <p class="text-muted mt-4 max-w-lg font-mono text-base leading-8">
@@ -93,9 +89,7 @@ const races = (await getRaceSummaries()).map((race) =>
 
   <!-- Section 3: Race search -->
   <section id="race-search" class="mt-14 scroll-mt-8">
-    <div
-      class="text-muted mb-5 font-mono text-[10px] tracking-[0.32em] uppercase"
-    >
+    <div class="text-muted mb-5 font-mono text-[10px] tracking-[0.32em] uppercase">
       // {dictionary.directRaceSearch}
     </div>
     <DiscoveryListIsland locale={locale} races={races} client:load />
