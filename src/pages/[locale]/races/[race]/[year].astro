@@ -65,42 +65,39 @@ const raceInfoFields = buildRaceInfoFields(
       <p class="text-muted font-mono text-sm leading-7">
         {edition.meta.summary}
       </p>
-      {
-        edition.meta.specialNote && (
-          <div class="banner-warning">
-            <div class="text-warning font-mono text-[10px] tracking-[0.28em] uppercase">
-              // {dictionary.importantRaceNote}
-            </div>
-            <p class="text-text mt-3 font-mono text-sm leading-6">
-              {edition.meta.specialNote}
-            </p>
+      {edition.meta.specialNote && (
+        <div class="banner-warning">
+          <div class="text-warning font-mono text-[10px] tracking-[0.28em] uppercase">
+            // {dictionary.importantRaceNote}
           </div>
-        )
-      }
+          <p class="text-text mt-3 font-mono text-sm leading-6">
+            {edition.meta.specialNote}
+          </p>
+        </div>
+      )}
       <dl
         class="border-line m-0 grid gap-3 overflow-hidden border px-4 py-3.5 sm:px-5 md:grid-cols-3 md:gap-4"
         data-race-info-grid
       >
-        {
-          raceInfoFields.map(({ label, value }) => (
-            <div class="flex min-w-0 flex-col gap-2" data-race-info-field>
-              <dt class="text-accent m-0 font-mono text-[10px] tracking-[0.26em] uppercase">
-                {label}
-              </dt>
-              <dd class="text-text m-0 min-w-0 font-mono text-sm leading-6 [overflow-wrap:anywhere]">
-                {value}
-              </dd>
-            </div>
-          ))
-        }
+        {raceInfoFields.map(({ label, value }) => (
+          <div class="flex min-w-0 flex-col gap-2" data-race-info-field>
+            <dt class="text-accent m-0 font-mono text-[10px] tracking-[0.26em] uppercase">
+              {label}
+            </dt>
+            <dd class="text-text m-0 min-w-0 font-mono text-sm leading-6 [overflow-wrap:anywhere]">
+              {value}
+            </dd>
+          </div>
+        ))}
       </dl>
       <a
         href={edition.meta.officialWebsiteUrl}
         target="_blank"
         rel="noopener noreferrer"
         class="text-muted hover:text-accent inline-flex font-mono text-sm tracking-[0.18em] uppercase transition"
-        >{dictionary.officialWebsite} ↗</a
       >
+        {dictionary.officialWebsite} ↗
+      </a>
     </div>
 
     <SharePlannerIsland
@@ -129,16 +126,14 @@ const raceInfoFields = buildRaceInfoFields(
         {edition.meta.heroNote}
       </p>
       <div class="mt-5">
-        {
-          points.map((point) => (
-            <div class="border-line flex items-center justify-between border-b py-2.5 font-mono text-sm">
-              <span class="text-muted">{point.properties.label}</span>
-              <span class="text-accent">
-                {formatDistance(point.properties.distanceKm, locale)}
-              </span>
-            </div>
-          ))
-        }
+        {points.map((point) => (
+          <div class="border-line flex items-center justify-between border-b py-2.5 font-mono text-sm">
+            <span class="text-muted">{point.properties.label}</span>
+            <span class="text-accent">
+              {formatDistance(point.properties.distanceKm, locale)}
+            </span>
+          </div>
+        ))}
       </div>
     </div>
   </section>

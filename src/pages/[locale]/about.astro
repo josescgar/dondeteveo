@@ -38,21 +38,18 @@ const dictionary = getDictionary(locale);
       {dictionary.contactIntro}
     </p>
     <div class="fade-in mt-6" style="animation-delay: 220ms;">
-      <p
-        class="text-muted font-mono text-xs tracking-widest uppercase opacity-50"
-      >
+      <p class="text-muted font-mono text-xs tracking-widest uppercase opacity-50">
         {dictionary.contactLabel}
       </p>
       <a
         href={`mailto:${CONTACT_EMAIL}`}
         class="text-muted hover:text-accent mt-1 inline-flex font-mono text-sm transition"
-        >{CONTACT_EMAIL}</a
       >
+        {CONTACT_EMAIL}
+      </a>
     </div>
     <div class="fade-in mt-6" style="animation-delay: 340ms;">
-      <p
-        class="text-muted font-mono text-xs tracking-widest uppercase opacity-50"
-      >
+      <p class="text-muted font-mono text-xs tracking-widest uppercase opacity-50">
         {dictionary.websiteLabel}
       </p>
       <a
@@ -60,13 +57,12 @@ const dictionary = getDictionary(locale);
         target="_blank"
         rel="noopener noreferrer"
         class="text-muted hover:text-accent mt-1 inline-flex font-mono text-sm transition"
-        >https://jerna.digital →</a
       >
+        https://jerna.digital →
+      </a>
     </div>
     <div class="fade-in mt-6" style="animation-delay: 460ms;">
-      <p
-        class="text-muted font-mono text-xs tracking-widest uppercase opacity-50"
-      >
+      <p class="text-muted font-mono text-xs tracking-widest uppercase opacity-50">
         {dictionary.githubLabel}
       </p>
       <a
@@ -74,8 +70,9 @@ const dictionary = getDictionary(locale);
         target="_blank"
         rel="noopener noreferrer"
         class="text-muted hover:text-accent mt-1 inline-flex font-mono text-sm transition"
-        >github.com/josescgar/dondeteveo →</a
       >
+        github.com/josescgar/dondeteveo →
+      </a>
     </div>
   </div>
 </BaseLayout>
