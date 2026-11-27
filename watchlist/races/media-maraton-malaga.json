@@ -14,31 +14,31 @@
     "type": "other",
     "url": null,
     "loginRequired": null,
-    "checkedOn": "2026-03-13",
+    "checkedOn": "2026-11-27",
     "notes": "GPX sourced via plotaroute.com, based on the official 2026 course; the plotaroute URL was not recorded."
   },
   "nextEdition": {
     "year": 2027,
     "date": {
       "value": "2027-03-07",
-      "sourceUrl": "https://www.mediamaratonmalaga.com/mlg-noticia/leer/2026-03-23-el-totalenergies-medio-maraton-de-malaga-2027-ya-tiene-fecha-y-abre-inscripciones",
+      "sourceUrl": "https://www.mediamaratonmalaga.com/mlg-reglamento",
       "checkedOn": "2026-11-27"
     },
     "startTime": {
-      "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "value": "08:15",
+      "sourceUrl": "https://www.mediamaratonmalaga.com/mlg-reglamento",
+      "checkedOn": "2026-11-27"
     },
     "waves": {
       "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "sourceUrl": "https://www.mediamaratonmalaga.com/mlg-reglamento",
+      "checkedOn": "2026-11-27"
     },
     "routeConfirmed": {
-      "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "value": false,
+      "sourceUrl": "https://www.mediamaratonmalaga.com/mlg-recorrido",
+      "checkedOn": "2026-11-27"
     }
   },
-  "notes": "Wave details are published on https://www.mediamaratonmalaga.com/mlg-cajones-de-salida-oleadas-y-liebres (not read on 2026-11-27)."
+  "notes": "Wave details are published on https://www.mediamaratonmalaga.com/mlg-cajones-de-salida-oleadas-y-liebres (not read on 2026-11-27). On 2026-11-27 the regulations listed four 2027 wave times (8:15, 8:20, 8:27, 8:35) after a sentence saying the waves are planned (\"tiene previsto\"); they were not recorded. The 2027 rollover waits for a fresh track because the 2026 route fails validation without its exception (#155)."
 }

@@ -20,25 +20,25 @@
   "nextEdition": {
     "year": 2027,
     "date": {
-      "value": null,
-      "sourceUrl": "https://rocknrollmadridrun.com/",
+      "value": "2027-04-25",
+      "sourceUrl": "https://rocknrollmadridrun.com/reglamento/",
       "checkedOn": "2026-11-27"
     },
     "startTime": {
       "value": null,
-      "sourceUrl": "https://rocknrollmadridrun.com/",
+      "sourceUrl": "https://rocknrollmadridrun.com/reglamento/",
       "checkedOn": "2026-11-27"
     },
     "waves": {
       "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "sourceUrl": "https://rocknrollmadridrun.com/reglamento/",
+      "checkedOn": "2026-11-27"
     },
     "routeConfirmed": {
       "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "sourceUrl": "https://rocknrollmadridrun.com/recorridos/",
+      "checkedOn": "2026-11-27"
     }
   },
-  "notes": "On 2026-11-27 the homepage advertised 2027 registration but gave no 2027 date."
+  "notes": "On 2026-11-27 the regulations gave 25 April 2027 and the first start as \"por determinar\". The course page linked GPX files named rnrrsm-2023-half.gpx that returned HTTP 404, 2024 PDF maps per distance, and a PDF named recorrido_madrid_maraton_3D_2027.pdf that names no distance; whether the 2027 course is published for this distance is unclear, so the edition was not rolled over."
 }

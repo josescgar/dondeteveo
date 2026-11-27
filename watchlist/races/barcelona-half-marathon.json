@@ -14,14 +14,14 @@
     "type": "strava-route",
     "url": "https://www.strava.com/routes/3314658373496892858",
     "loginRequired": true,
-    "checkedOn": "2026-08-07",
+    "checkedOn": "2026-11-27",
     "notes": "Strava route by RPM SPORTS linked from the official course page; imported for the 2027 edition. Strava requires a signed-in account to export a route as GPX."
   },
   "nextEdition": {
     "year": 2027,
     "date": {
       "value": "2027-02-14",
-      "sourceUrl": "https://www.mitjamarato.barcelona/en/",
+      "sourceUrl": "https://www.mitjamarato.barcelona/en/i-am-a-runner/regulation/",
       "checkedOn": "2026-11-27"
     },
     "startTime": {
@@ -31,13 +31,14 @@
     },
     "waves": {
       "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "sourceUrl": "https://www.mitjamarato.barcelona/en/i-am-a-runner/regulation/",
+      "checkedOn": "2026-11-27"
     },
     "routeConfirmed": {
       "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "sourceUrl": "https://www.mitjamarato.barcelona/soc-corredor-a/recorregut/",
+      "checkedOn": "2026-11-27"
     }
-  }
+  },
+  "notes": "On 2026-11-27 the course page still linked the same Strava route the 2027 route was imported from, plus an undated PDF map; whether it is the 2027 course could not be read."
 }
