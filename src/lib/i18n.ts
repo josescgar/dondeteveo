@@ -246,9 +246,9 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     includePastRaces: "Include past races",
     provisionalNoticeTitle: "Pending confirmation",
     provisionalRouteNotice:
-      "Course from the previous edition, pending confirmation. The organizers have not published this year’s route yet, so the map, splits, and cheer points may change.",
+      "Course from the previous edition, pending confirmation. We haven’t yet confirmed that it matches this year’s course, so the map, splits, and cheer points may change. Check the official website before race day.",
     provisionalStartTimeNotice:
-      "Start time pending confirmation. The organizers have not confirmed this year’s start time yet, so the time shown may change.",
+      "Start time pending confirmation. We haven’t yet confirmed this year’s start time, so the time shown may change.",
     provisionalShareTimesNotice:
       "Predicted times are based on these provisional details. Links shared now will show the updated times once they are confirmed.",
   },
@@ -384,9 +384,9 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     includePastRaces: "Incluir carreras pasadas",
     provisionalNoticeTitle: "Pendiente de confirmación",
     provisionalRouteNotice:
-      "Recorrido de la edición anterior, pendiente de confirmación. La organización aún no ha publicado el recorrido de este año, así que el mapa, los puntos oficiales y los puntos para animar pueden cambiar.",
+      "Recorrido de la edición anterior, pendiente de confirmación. Todavía no hemos confirmado que coincida con el de este año, así que el mapa, los puntos oficiales y los puntos para animar pueden cambiar. Consulta la web oficial antes del día de la carrera.",
     provisionalStartTimeNotice:
-      "Hora de salida pendiente de confirmación. La organización aún no ha confirmado la hora de salida de este año, así que la hora indicada puede cambiar.",
+      "Hora de salida pendiente de confirmación. Todavía no hemos confirmado la hora de salida de este año, así que la hora indicada puede cambiar.",
     provisionalShareTimesNotice:
       "Las horas previstas se basan en estos datos provisionales. Los enlaces que compartas ahora mostrarán las horas actualizadas cuando se confirmen.",
   },

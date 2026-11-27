@@ -22,6 +22,11 @@ test("race page shows the provisional notice for route and start time", async ({
     pageNotice.locator('[data-provisional-fact="route"]'),
   ).toContainText("Course from the previous edition, pending confirmation.");
   await expect(
+    pageNotice.locator('[data-provisional-fact="route"]'),
+  ).toContainText("Check the official website before race day.");
+  // The notice makes no claim about what the organisers have published.
+  await expect(pageNotice).not.toContainText("organizers");
+  await expect(
     pageNotice.locator('[data-provisional-fact="startTime"]'),
   ).toContainText("Start time pending confirmation.");
 
@@ -47,6 +52,10 @@ test("race page shows the provisional notice in Spanish", async ({ page }) => {
   await expect(pageNotice).toContainText(
     "Recorrido de la edición anterior, pendiente de confirmación.",
   );
+  await expect(pageNotice).toContainText(
+    "Consulta la web oficial antes del día de la carrera.",
+  );
+  await expect(pageNotice).not.toContainText("organización");
   await expect(pageNotice).toContainText(
     "Hora de salida pendiente de confirmación.",
   );
