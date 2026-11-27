@@ -8,14 +8,29 @@ Let `L` be the latest edition folder in `data/<cc>/<slug>/` (highest year) and `
 
 | Situation                                | Target edition                                   | Kind        |
 | ---------------------------------------- | ------------------------------------------------ | ----------- |
-| Entry is `candidate` (no `data/` folder) | Next edition with race day on or after today     | `candidate` |
+| Entry is `candidate` (no `data/` folder) | Next edition with race day at least `--min-days` (default 2) days after today | `candidate` |
 | `L.date >= RUN_DATE`                     | `L` (upcoming published edition)                 | `published` |
 | `L.date < RUN_DATE`                      | Next edition after `L` (see "Edition year")      | `next`      |
 
 - **Edition year** for `next`: normally the year after `L`. A later year is correct when an official page names that edition's date (for example the race skipped a year, or the next edition announced is already the one after). Use the year of the announced date; the rollover's "skips at least one year" warning is then expected: note it in the PR body and continue.
 - Never target an edition whose race day is before today.
 - While a `published` edition exists, the following year's announcements are recorded only in the watchlist `notes`; rollover waits until `L` is past.
-- A `candidate` is never added to `data/` by this skill: its facts go only into its watchlist entry (adding a race is the job of its tracking issue).
+- **Candidate target.** Count days as calendar days from `RUN_DATE` to race day. An edition fewer than `--min-days` days away is not added (a PR could not be reviewed and merged in time): target the following edition instead. When its date is not published yet, that date is a missing fact (the candidate waits; section 6, row 4c).
+
+### Approved candidates
+
+A `candidate` gets its first edition only when a person approved adding it. Read its tracking issue once per run:
+
+```bash
+gh issue view <trackingIssue> --repo "$REPO" --json number,state,labels,body
+```
+
+It is **approved** when the issue is `OPEN` and either:
+
+- its body has no `scout-races: <slug>/add-race` marker: a person opened it (every "Add race data for…" issue that existed before scout-races could open issues, for example #91 to #104, is of this kind), or
+- it has the marker (scout-races discovered the race) and carries the label `status/ready`, which a person adds to approve it.
+
+The skill never adds `status/ready` itself, and authorship cannot tell a person from the scout (both use the owner's account), which is why the marker decides. Not approved (no `trackingIssue`, issue closed, or a scout issue without `status/ready`): the candidate stays `watchlist-only` (row 4a); its facts are still read and recorded in the watchlist, and nothing is commented.
 
 ## 2. Reading pages
 
@@ -45,6 +60,8 @@ Facts the run looks for, for the target edition and this race's distance only:
 | `routeConfirmed` | Course page, regulations itinerary, track file names | `true` / `false` / `null` (see the watchlist doc) |
 | track            | Course page links and embeds                         | URL and type (see section 4)                      |
 | status           | Homepage, news                                       | cancelled or postponed ("suspendida", "cancelada", "aplazada", "postponed") |
+| `distanceKm`     | Regulations ("distancia", "recorrido homologado")    | km; candidates only (first edition)               |
+| `name`           | Homepage title, regulations article 1                | official name; candidates only (first edition)    |
 
 Rules:
 
@@ -57,18 +74,21 @@ Rules:
 - **`startTime`** is the first start open to the general field of this distance: the first runner wave or the general start. Special-category starts (handbike, wheelchair, elite-only, "salida especial") never set `startTime`; they go only into `waves`. Reason: the share planner's wave picker is optional, and without a wave the app counts every time from `meta.startTime` (`resolveStartTime` in `src/lib/races/points.ts`).
 - **`waves`** are recorded only when at least two start times are published for this distance with what each applies to, special-category starts included, in start order. Labels are English in `meta.json` and the watchlist, short and distinct: a group name for special starts (`"Handbike and wheelchair"`, `"Elite"`) and `"Wave <n> (<criterion>)"` for runner waves (`"Wave 2 (accredited 50-60 min)"`). If waves are not published, leave `waves` absent (`null` in the watchlist) and recheck next run. When the organiser's own description of a wave is internally inconsistent (for example "entre 50 y 60 minutos (entre <52 minutos y <60 minutos)"), build the label from its first wording, keep the times, and point out the inconsistency in the PR body.
 - **Status.** A cancellation or postponement of the target edition, stated on an official page, is a fact like any other (quote it).
+- **`distanceKm`** (candidates): the official distance of this race, quoted from an official page: a distance in km or metres ("21,097 km", "10 kilómetros", "42.195 m"), or the race called a marathon or half marathon ("maratón", "medio maratón", "media maratón", "half marathon"), whose distances are fixed (42.195 and 21.097 km, as in the catalog). The value must equal the watchlist entry's `distanceKm`; if it does not, the distance is a conflict (unknown) and the entry may need another slug: report it. Distances read from a track file are never the official distance. The quote need not name the year when it is in the edition's own regulations or describes the race in general ("10 km", "Media Maratón"); a distance stated for a different edition is unknown.
+- **`name`** (candidates): the race's name as the organiser writes it, sponsors included, from the English version of the official site when there is one (`name.en`) and the Spanish version (`name.es`); with a single language, use that name for both. Quote both. A name is not tied to an edition: drop any edition number or year ("XXXII", "2026") from the value.
 - **Never convert** a time from another time zone, never read a time from an image, and never derive a date from a weekday alone.
 
 ## 4. Track sourcing (fixed order)
 
-Run this step when any of these holds: the target edition is (or after rollover will be) `provisional.route: true`; the watchlist `routeConfirmed` is not `true`; the official pages link a track or map that differs from `trackSource.url` or its recorded file name; or an official page says the course changed. Otherwise skip it.
+Run this step when any of these holds: the race is an approved `candidate` (classify with "Candidates: import into scratch and classify" below); the target edition is (or after rollover will be) `provisional.route: true`; the watchlist `routeConfirmed` is not `true`; the official pages link a track or map that differs from `trackSource.url` or its recorded file name; or an official page says the course changed. Otherwise skip it.
 
 Go through the steps in order and stop at the first one that yields **this edition's track** (see "Which edition does a file belong to"). First download and identify every candidate from steps 1 and 2 (names only, no import); when a page links several files or maps, try the one labelled with the target year first. Import only this edition's track. Import an earlier track only when no track for this edition exists, since it is then the evidence for the `unchanged` or `contradicted` outcome.
 
+0. **A file a person supplied**: an attachment on the race's open `route-file` issue or, for a candidate, its tracking issue (`github-items.md`, after the `route-file` template, says whose attachments count). It is this edition's track.
 1. **Official GPX, KML or KMZ download** linked from an official page (see "Downloading safely").
 2. **Google My Maps** embedded or linked (any `google.<tld>/maps/d/...` URL with `mid=<id>`: `viewer`, `embed` or `edit`). Export it as KML, which works without a login for public maps: `https://www.google.com/maps/d/kml?mid=<id>&forcekml=1` (without `&forcekml=1` the URL returns a KMZ). Usable only if the status is 200 and the file contains `<kml`. A 404, a login page or HTML means the map is private or gone: treat it like step 3.
-3. **Strava route or Wikiloc trail** embedded or linked. These **need a person**: Strava's `/routes/<id>/export_gpx` redirects to the login page, and Wikiloc requires a signed-in account and answers scripted requests with a bot challenge. Do not log in, scrape coordinates, or use third-party converters. Outcome: `not importable` (a `route-file` issue naming the exact URL, the export button, "Export GPX" on Strava or "Download" > GPX on Wikiloc, and the target edition).
-4. **No file** (steps 1 to 3 found no GPX, KML, KMZ, My Maps, Strava or Wikiloc link at all; only a PDF, an image, a map viewer without export, or nothing): the route in `data/` stays (rollover copies it as provisional). If an official page shows a course map (PDF or image) labelled with the target year, or says the course changed, and does not say it is unchanged, the outcome is `not importable` (a `route-file` issue). A street-by-street itinerary alone does not count. Never trace from a PDF or image.
+3. **Strava route or Wikiloc trail** embedded or linked. These **need a person**: Strava's `/routes/<id>/export_gpx` redirects to the login page, and Wikiloc requires a signed-in account and answers scripted requests with a bot challenge. Do not log in, scrape coordinates, or use third-party converters. Outcome: `not importable` (a `route-file` issue naming the exact URL, the export button, "Export GPX" on Strava or "Download" > GPX on Wikiloc, and the target edition; for a candidate, the same request goes into its tracking-issue comment instead).
+4. **No file** (steps 1 to 3 found no GPX, KML, KMZ, My Maps, Strava or Wikiloc link at all; only a PDF, an image, a map viewer without export, or nothing): the route in `data/` stays (rollover copies it as provisional). If an official page shows a course map (PDF or image) labelled with the target year, or says the course changed, and does not say it is unchanged, the outcome is `not importable` (a `route-file` issue). A street-by-street itinerary alone does not count. Never trace from a PDF or image. A candidate has no route in `data/` to fall back on: its outcome is `no track` and it waits (row 4c).
 
 When steps 1 to 3 found only an earlier track and it matched the route in `data/`, there is nothing to request unless an official page says the course changed.
 
@@ -92,7 +112,7 @@ When steps 1 to 3 found only an earlier track and it matched the route in `data/
 Read the names with the two checks allowed by Hard rule 2: `grep -c '<kml\|<gpx' <file>` (must be at least 1) and `grep -o '<name>[^<]*</name>' <file> | head -5` (document or map title, then the first folder or line). Also use the file name in the URL and the link text on the official page.
 
 - **This edition's track**: the file name, map or document title, or line name contains the target year, or an official page about the target edition presents it as the course and nothing in the file names another year.
-- **Earlier track**: anything labelled with an earlier year. It is evidence only (for example, "the organiser still links the 2025 map"). It never makes `routeConfirmed` true, unless an official page about the target edition says the course is unchanged from that year ("mismo recorrido que en 2025"); quote that sentence.
+- **Earlier track**: anything labelled with an earlier year. It is evidence only (for example, "the organiser still links the 2025 map"). It never makes `routeConfirmed` true, unless an official page about the target edition says the course is unchanged from that year ("mismo recorrido que en 2025"); quote that sentence. For a candidate, an earlier track can carry a provisional first edition only with such a sentence, or when an official page about the target edition presents that track as its course (for example the target edition's course page embeds the map); quote it.
 
 ### Import into scratch and classify
 
@@ -124,6 +144,36 @@ Use a separate scratch folder per race and per file tried: `S="$RUN_DIR/scratch/
 | no (earlier track)    | same course                                                    | `unchanged`       | No data change; note in the watchlist `trackSource` that the official link is still the earlier track                                                                         |
 | no (earlier track)    | differs, and the file is newer than the source of our route    | `contradicted`    | No data change; `needs-person` issue: the organiser's own newer file contradicts our route (compare the years in `source.json`). Not when this edition's track was found      |
 
+### Candidates: import into scratch and classify
+
+A candidate has no route in `data/` to compare with: the question is only whether the track builds a valid first edition. Gather the facts first (section 3), then use a separate scratch data folder per file tried, `S="$RUN_DIR/scratch/<slug>/<n>"`:
+
+1. Import into a new scratch edition (no `--force`: the folder must not exist):
+   ```bash
+   rm -rf "$S" && mkdir -p "$S/data"
+   npm run data:import -- <file> "$S/data/<cc>/<slug>/<year>" --distance <watchlist distanceKm> \
+     --name "<name.en>" --data-dir "$S/data"
+   ```
+   Keep the full output. Several lines, `--line <n>` and a length failure are handled exactly as in step 3 above ("Import into scratch and classify").
+2. When date, start time and distance are known (section 3), write the facts file (section 7, "First edition") and build the scratch edition with it, then validate:
+   ```bash
+   npm run data:first-edition -- "$RUN_DIR/facts/<slug>-<year>.json" "$S/data/<cc>/<slug>/<year>" --data-dir "$S/data"
+   npm run data:validate -- --data-dir "$S/data" "$S/data/<cc>/<slug>/<year>"
+   ```
+   If `data:first-edition` refuses the facts, fix only your own transcription errors (a value that differs from its quote); otherwise the fact is unknown. Without those three facts, skip this step and classify by the import alone.
+3. Classify:
+
+| Track found                                                                                                     | Import (and step 2)                   | Outcome             | What happens                                                                     |
+| --------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ------------------- | -------------------------------------------------------------------------------- |
+| This edition's track (steps 0 to 2)                                                                             | import and validation pass            | `first-import`      | First edition with `provisional.route` absent (row 4b)                            |
+| Earlier track, and an official page about the target edition says the course is unchanged or presents it as its course | import and validation pass   | `first-import-earlier` | First edition with `provisional.route: true` (row 4b)                         |
+| Earlier track without such a page                                                                               | (any)                                 | `earlier-only`      | Wait: tracking-issue comment (row 4c)                                             |
+| Any track                                                                                                       | import fails, or validation fails     | `not importable`    | Wait: tracking-issue comment quoting the lines or lengths (row 4c)                |
+| Strava, Wikiloc, or a My Maps map that is private or gone (step 2 or 3)                                         | (not tried)                           | `not importable`    | Wait: tracking-issue comment naming the URL and export button (row 4c)            |
+| No file or map (only a PDF, an image, or nothing)                                                               | (none)                                | `no track`          | Wait: tracking-issue comment (row 4c)                                             |
+
+The scratch edition is only a check: the edition PR imports the same file again in its worktree (section 7, "First edition").
+
 ### The "not published yet" notice
 
 While `provisional.route` is `true`, the race and share pages say "The organizers have not published this year's route yet". The skill must never leave that notice on an edition whose course the organiser has published. The course counts as **published** when this edition's track was found (any step, including login-only links) or an official page shows this edition's course map or says the course changed. So:
@@ -146,13 +196,13 @@ A difference in `meta.json` (or a route outcome `confirmed`, `replace-route` or 
 
 ### Flow for one race
 
-1. Section 1: target edition and kind.
+1. Section 1: target edition and kind; for a `candidate`, whether it is approved.
 2. Section 2: read the pages. All unreadable: go to the table (row 1).
 3. Section 3: facts, each with URL and quote.
-4. Section 4: track step (when it applies) gives one outcome: none, `confirmed`, `replace-route`, `fresh-import`, `not importable`, `unchanged` or `contradicted`.
+4. Section 4: track step (when it applies) gives one outcome: none, `confirmed`, `replace-route`, `fresh-import`, `not importable`, `unchanged` or `contradicted`; for a candidate, `first-import`, `first-import-earlier`, `earlier-only`, `not importable` or `no track`.
 5. Duplicate checks (`github-items.md`): open PRs for this race, then prior (closed or merged) items with the same key.
 6. Main action: the **first** matching row of the table below.
-7. Additional issues: the issue an outcome asks for (`route-file`, `cheer-points`, `needs-person`) is opened whatever the main row is, unless its own duplicate or prior-item check finds it. Open it before the race's edition PR, so the PR can say `Related: #<issue>`.
+7. Additional issues: the issue an outcome asks for (`route-file`, `cheer-points`, `needs-person`) is opened whatever the main row is, unless its own duplicate or prior-item check finds it. Open it before the race's edition PR, so the PR can say `Related: #<issue>`. Candidates are the exception: their only additional issue is the first edition's `cheer-points` issue, opened by the edition PR procedure once the edition validates; anything else a candidate lacks goes into the tracking-issue comment (row 4c).
 8. Section 8: watchlist changes go into the edition PR, or into the Phase 6 PR.
 
 ### Main action
@@ -162,7 +212,9 @@ A difference in `meta.json` (or a route outcome `confirmed`, `replace-route` or 
 | 1  | All pages unreadable                                                                                                                   | `watchlist-only`, no fact changes; record `Unreadable on <RUN_DATE>: <reason>.` in `notes`. If `notes` already record an unreadable run on an earlier date, also open one `needs-person` issue (key `reason=site-unreadable`) |
 | 2  | An open PR for this race is for an edition whose race day has passed                                                                  | `comment` once on it (stale: race day passed, a person should close it), never again; it then no longer blocks this race. Continue with the next rows                                      |
 | 3  | An open PR exists for this race (PR check)                                                                                             | `comment` on it if this run found a value that differs from what it proposes (facts, or a route outcome it does not have), else nothing. Compare values, not quote text                      |
-| 4  | Kind `candidate`                                                                                                                       | `watchlist-only` (and a `comment` on its open tracking issue if a usable track file was found for the first time)                                                                           |
+| 4a | Kind `candidate`, not approved (section 1, "Approved candidates")                                                                     | `watchlist-only`                                                                                                                                                                             |
+| 4b | Kind `candidate`, approved; date, start time and distance known (section 3); track outcome `first-import` or `first-import-earlier`; scratch edition validates | `edition-pr` (first edition)                                                                                                       |
+| 4c | Kind `candidate`, approved, anything else (a fact missing, unknown or conflicting; `earlier-only`, `not importable` or `no track`)   | `comment` on the tracking issue ("Candidate status comment" in `github-items.md`) unless its last status comment has the same key; plus the watchlist changes                                |
 | 5  | Kind `published`, an official page says the edition is cancelled or postponed                                                         | `issue` `needs-person` with the quote; do not edit the edition                                                                                                                               |
 | 6  | Kind `published`, a date in a different year from the edition folder                                                                 | `issue` `needs-person` (the edition folder would have to move)                                                                                                                               |
 | 7  | Kind `published`, conflicting official values for a fact shown on the published edition                                              | `issue` `needs-person`, quoting both sources                                                                                                                                                 |
@@ -174,6 +226,8 @@ A difference in `meta.json` (or a route outcome `confirmed`, `replace-route` or 
 
 - To see whether the previous edition only passes through an accepted exception (rows 9 and 10), read the rollover output: it warns about it, and `scripts/edition-validation/known-issues.ts` lists the edition.
 - Before creating any PR or issue, run the prior-item check (`github-items.md`): a closed or merged item with the same key means the same proposal was already handled, so create nothing.
+- Rows 2 and 3 come before rows 4a to 4c: a candidate whose first-edition PR is open is not checked for a new PR or status comment; only differing values are commented on that PR.
+- A cancellation or postponement of a candidate's target edition is a fact like any other: row 4c, with the quote in the comment.
 
 ## 7. Making the change (in the edition worktree)
 
@@ -192,6 +246,65 @@ npm run data:rollover -- <slug> <YYYY-MM-DD> [--start-time HH:MM [--start-time-p
   - A date in the past: the date is wrong; stop and report.
   - Previous edition passes only through an accepted exception: the copied route will fail validation; go to row 10 unless this edition's track was imported.
 - Then apply the route outcome from section 4 (`confirmed`, `replace-route` or `fresh-import`), if any.
+
+### First edition (`candidate`)
+
+The race's first edition is built from the organiser's track and the verified facts only, with generated splits, no cheer points, and neutral wording. In the edition worktree:
+
+1. **Import** the file the scratch check used, with the same options (no `--force`: the folder must not exist):
+   ```bash
+   npm run data:import -- <file> data/<cc>/<slug>/<year> --distance <distanceKm> --name "<name.en>" [--line <n>]
+   ```
+   It writes `route.geojson` and a starter `points.geojson` (`start`, `km-<n>` splits every 5 km, `halfway` for marathons, `finish`).
+2. **Facts file** `$RUN_DIR/facts/<slug>-<year>.json` (the one the scratch check used; never inside the repository). Every value comes from section 3 or the watchlist entry:
+   ```json
+   {
+     "runDate": "2026-11-27",
+     "name": { "en": "<official English name>", "es": "<official Spanish name>" },
+     "city": { "en": "Seville", "es": "Sevilla" },
+     "distanceKm": 42.195,
+     "date": "2026-12-06",
+     "startTime": "08:15",
+     "startTimeProvisional": false,
+     "timezone": "Europe/Madrid",
+     "officialWebsiteUrl": "<watchlist officialWebsiteUrl>",
+     "waves": [
+       { "label": { "en": "Wave 1 (under 2:50)", "es": "Oleada 1 (menos de 2:50)" }, "startTime": "08:15" },
+       { "label": { "en": "Wave 2 (2:50-2:59)", "es": "Oleada 2 (2:50-2:59)" }, "startTime": "08:25" }
+     ],
+     "route": {
+       "sourceType": "kml-import",
+       "fileUrl": "https://www.google.com/maps/d/kml?mid=<id>&forcekml=1",
+       "title": "<map title>",
+       "pageUrl": "<official page that embeds the map>",
+       "sourceName": "<official English name> official course page",
+       "edition": "this"
+     },
+     "facts": [
+       { "fact": "date", "value": "2026-12-06", "url": "<url>", "quotes": ["<verbatim line>"] },
+       { "fact": "startTime", "value": "08:15", "url": "<url>", "quotes": ["<verbatim line>"] },
+       { "fact": "distanceKm", "value": "42.195", "url": "<url>", "quotes": ["<verbatim line>"] },
+       { "fact": "waves", "value": "08:15,08:25", "url": "<url>", "quotes": ["<line 1>", "<line 2>"] },
+       { "fact": "name", "value": "<official English name>", "url": "<url>", "quotes": ["<verbatim line>"] }
+     ]
+   }
+   ```
+   - `runDate`: `RUN_DATE`. `name`: section 3. `distanceKm`: the watchlist `distanceKm`, confirmed by the `distanceKm` fact.
+   - `city`: `en` is the watchlist `city`, `es` the city's Spanish name ("Seville" / "Sevilla"). The host city only, never a district, venue or street.
+   - `startTimeProvisional`: `true` only for a tentative time (section 3). `waves`: only when published (section 3), in start order; `label.en` as section 3 says, `label.es` "Oleada <n> (<criterio>)" and the organiser's own words for special starts.
+   - `timezone`: `Europe/Madrid` in Spain except the Canary Islands (`Atlantic/Canary`); elsewhere the IANA zone of the host city.
+   - `officialWebsiteUrl`: the watchlist `officialWebsiteUrl`, read in this run (or its new address, section 2, "Moved pages").
+   - `route`: `sourceType` `gpx-import` or `kml-import` (My Maps exports are KML); `fileUrl` the URL downloaded (the KML export URL for My Maps, the attachment URL for a supplied file); `title` the file, map or document title from the name check; `pageUrl` the official page that links or embeds it (the issue URL for an attachment); `sourceName` "<name.en> official course page" (or "official regulations", whichever `pageUrl` is); `edition` `this` for `first-import`, or `earlier` for `first-import-earlier` with `earlierYear` and `sameCourse` (`url` and verbatim `quote` of the page that says the course is unchanged or presents the track).
+   - `facts`: one entry per fact used, with its `url` and verbatim `quotes` (one per line, as section 3 says): `date`, `startTime`, `distanceKm` (value as in `meta.json`), `waves` when present (start times joined by commas), `name`, and `name.es` when the Spanish name differs.
+3. **Write the metadata:**
+   ```bash
+   npm run data:first-edition -- "$RUN_DIR/facts/<slug>-<year>.json" data/<cc>/<slug>/<year>
+   ```
+   The script refuses facts that disagree with each other or with the imported points, any existing file, and a race that already has an edition. It writes `meta.json` (facts, neutral `summary` and `heroNote`, `waves` when given, `provisional` only when the route or start time is provisional, no `specialNote`), `source.json` (route provenance with the measured length, then one "Checked …" sentence per fact) and `localizations.json` (Spanish `name`, `city`, neutral `summary` and `heroNote`, `waveLabels`, and `pointLabels` "Salida", "Punto <n>K", "Punto medio", "Meta"). The neutral wording names only the host city:
+   - `summary`: "A marathon / A half marathon / A <n> km race through the streets of <city>." / "Un maratón / Una media maratón / Una carrera de <n> km por las calles de <ciudad>."
+   - `heroNote`: the same neutral text as "Fresh import" below.
+   It prints the measured route length and every text it authored: copy that list into the PR body ("Authored texts, please review").
+4. Make no other change to those files (Hard rule 3). Location-specific wording, split location suffixes and cheer points are for the `cheer-points` issue.
 
 ### Update (`published`)
 
@@ -229,6 +342,8 @@ The organiser's track for this edition imports cleanly but the existing points d
 
 ### `source.json`
 
+A first edition's `source.json` is written whole by `npm run data:first-edition`; the rules below are for rollovers and updates.
+
 - Append one sentence per changed fact to `notes`, after the existing text:
   `Checked <RUN_DATE> by scout-races: <fact> <value> per <url>: "<verbatim quote>".`
   For a value quoted from several lines (such as waves), list each exact quote, separated by commas: `... per <url>: "<line 1>", "<line 2>".`
@@ -248,6 +363,7 @@ Apply to `watchlist/races/<slug>.json` (in the edition PR when there is one, oth
 - `routeConfirmed`: `true` only for this edition's track (section 4) or an explicit "same course" sentence; `false` when the official course page still shows an earlier course; `null` when unclear. It says whether the organiser published the course; `meta.json` `provisional.route` says whether our route is that course.
 - `trackSource`: when the track step found nothing new (no file or map other than the ones already recorded), only set `checkedOn` to `RUN_DATE` and keep the other fields. When it found or used a different file or map, set `type`, `url` (the file or the page or map that links it), `loginRequired` (`true` for Strava and Wikiloc downloads, `false` for files that downloaded without login, `null` when not tried), `checkedOn` and `notes` (file or map title, what it was used for, whether it is this edition's or an earlier one).
 - URL fields: only as section 2, "Moved pages", allows.
+- **First edition** (in its edition PR only): set `catalogStatus` to `in-catalog` (the schema test requires it once `data/<cc>/<slug>/` exists); set `trackSource` from the imported file (`type` `official-gpx`, `official-kml` or `google-my-maps`, or `other` for a file a person attached; `url` the file or map; `loginRequired: false`; `checkedOn`; `notes` with the title, the measured length, and whether it is this edition's track or an earlier one); fill `nextEdition` for the edition's year with the facts used. Keep `trackingIssue`.
 - `notes`: replace stale sentences that this run disproved; keep the rest (including earlier "Unreadable on …" sentences until the site is readable again, then remove them). Write plain English, dates as `YYYY-MM-DD`.
-- Never change `slug`, `countryCode`, or `catalogStatus` (except a new candidate, created as `candidate`).
+- Never change `slug`, `countryCode`, or `catalogStatus` (except a new candidate, created as `candidate`, and a first edition, switched to `in-catalog` in its edition PR).
 - Run `npm run test:unit` after editing: the schema test catches inconsistent facts.

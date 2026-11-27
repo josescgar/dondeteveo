@@ -26,7 +26,7 @@ Prefer larger events: rank qualifying races by size, largest first, and propose 
 6. **Slug**: lowercase ASCII kebab-case, no sponsor names, globally unique across `data/` and `watchlist/races/`. Use `<city>-marathon` or `<city>-half-marathon` for marathons and half marathons named after their city, and `<distinctive-name>-<distance>k` otherwise (for example `valencia-10k`, `jean-bouin-10k`). Check existing slugs before choosing.
 7. With `--discovery on` (and not `--dry-run`), for each selected race in rank order while `issuesOpened < max-issues`:
    1. Run the duplicate check (open and closed issues, `github-items.md`).
-   2. Open the `add-race` issue (`github-items.md`).
+   2. Open the `add-race` issue (`github-items.md`). It carries the `add-race` marker and the label `status/planned`; the race is worked on only after a person adds `status/ready` (`race-check.md` section 1, "Approved candidates"). Never add that label yourself.
    3. Create `watchlist/races/<slug>.json` for the Phase 6 PR: `catalogStatus: "candidate"`, `trackingIssue` the new issue number, `usualMonth` the month of the found date, URLs only from pages you opened, facts per `race-check.md` section 8 (unknown facts `null`), `trackSource` per what the course page offers (`none` with notes when there is no file), and `notes` with the size evidence and discovery source.
 8. With `--discovery dry-run` (or `--dry-run`), create nothing: list each race that would be added with its slug, distance, date, city, official URL and size evidence (quote and URL), and the rejection counts by reason.
 
