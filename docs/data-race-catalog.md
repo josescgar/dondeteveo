@@ -200,6 +200,8 @@ Community members can contribute new races via pull request. See [`CONTRIBUTING.
   npm run data:validate -- data/<iso-country>/<race-slug>/<year>
   ```
 
+- Every race in `data/` needs a watchlist entry. When adding a new race, create or update `watchlist/races/<race-slug>.json` with `catalogStatus: "in-catalog"` and its `trackSource` taken from the edition's `source.json` (see [Race Watchlist and Discovery Sources](#race-watchlist-and-discovery-sources)). `npm run test:unit` fails until the entry exists.
+
 - Preserve past editions rather than overwriting them.
 
 ## Validation Checks
@@ -231,6 +233,7 @@ Accepted exceptions for committed editions live in `scripts/edition-validation/k
 
 - Route imported with `npm run data:import` when a GPX/KML file exists
 - `npm run data:validate` passes for the edition
+- Watchlist entry `watchlist/races/<race-slug>.json` exists with `catalogStatus: "in-catalog"`
 - Required metadata present
 - Timezone present and correct
 - Source information present, including the measured route length for imports
