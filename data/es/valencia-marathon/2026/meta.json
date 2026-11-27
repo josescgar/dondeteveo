@@ -1,0 +1,49 @@
+{
+  "name": "Valencia Marathon Trinidad Alfonso Zurich",
+  "date": "2026-12-06",
+  "distanceKm": 42.195,
+  "city": "Valencia",
+  "startTime": "08:15",
+  "timezone": "Europe/Madrid",
+  "officialWebsiteUrl": "https://www.valenciaciudaddelrunning.com/en/marathon/presentation/",
+  "summary": "A marathon through the streets of Valencia.",
+  "heroNote": "Cheer points for this course have not been added yet. Use the course map and the predicted split times to choose where to watch.",
+  "waves": [
+    {
+      "label": "Wave 1 (under 2:50)",
+      "startTime": "08:15"
+    },
+    {
+      "label": "Wave 2 (2:50-2:59)",
+      "startTime": "08:25"
+    },
+    {
+      "label": "Wave 3 (3:00-3:11)",
+      "startTime": "08:35"
+    },
+    {
+      "label": "Wave 4 (3:12-3:19)",
+      "startTime": "08:45"
+    },
+    {
+      "label": "Wave 5 (3:20-3:31)",
+      "startTime": "08:55"
+    },
+    {
+      "label": "Wave 6 (3:32-3:42)",
+      "startTime": "09:05"
+    },
+    {
+      "label": "Wave 7 (3:43-3:55)",
+      "startTime": "09:15"
+    },
+    {
+      "label": "Wave 8 (3:56-4:09)",
+      "startTime": "09:25"
+    },
+    {
+      "label": "Wave 9 (4:10 and over)",
+      "startTime": "09:35"
+    }
+  ]
+}

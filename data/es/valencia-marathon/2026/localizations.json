@@ -1,0 +1,34 @@
+{
+  "es": {
+    "meta": {
+      "name": "Maratón Valencia Trinidad Alfonso Zurich",
+      "city": "Valencia",
+      "summary": "Un maratón por las calles de Valencia.",
+      "heroNote": "Todavía no hay puntos para animar en este recorrido. Usa el mapa y los tiempos de paso previstos para elegir dónde verlo."
+    },
+    "waveLabels": [
+      "Oleada 1 (menos de 2:50)",
+      "Oleada 2 (2:50-2:59)",
+      "Oleada 3 (3:00-3:11)",
+      "Oleada 4 (3:12-3:19)",
+      "Oleada 5 (3:20-3:31)",
+      "Oleada 6 (3:32-3:42)",
+      "Oleada 7 (3:43-3:55)",
+      "Oleada 8 (3:56-4:09)",
+      "Oleada 9 (4:10 o más)"
+    ],
+    "pointLabels": {
+      "start": "Salida",
+      "km-5": "Punto 5K",
+      "km-10": "Punto 10K",
+      "km-15": "Punto 15K",
+      "km-20": "Punto 20K",
+      "halfway": "Punto medio",
+      "km-25": "Punto 25K",
+      "km-30": "Punto 30K",
+      "km-35": "Punto 35K",
+      "km-40": "Punto 40K",
+      "finish": "Meta"
+    }
+  }
+}

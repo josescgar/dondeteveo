@@ -4,7 +4,7 @@
   "name": "Valencia Marathon Trinidad Alfonso Zurich",
   "city": "Valencia",
   "distanceKm": 42.195,
-  "catalogStatus": "candidate",
+  "catalogStatus": "in-catalog",
   "trackingIssue": 91,
   "usualMonth": 12,
   "officialWebsiteUrl": "https://www.valenciaciudaddelrunning.com/en/marathon/presentation/",
@@ -12,10 +12,10 @@
   "regulationsUrl": "https://www.valenciaciudaddelrunning.com/en/marathon/regulations-valencia-marathon/",
   "trackSource": {
     "type": "google-my-maps",
-    "url": "https://www.google.com/maps/d/embed?mid=1qUeKqQPfof79_pThXQS1L_hZRqMFLNQ&ehbc=2E312F",
+    "url": "https://www.google.com/maps/d/kml?mid=1qUeKqQPfof79_pThXQS1L_hZRqMFLNQ&forcekml=1",
     "loginRequired": false,
     "checkedOn": "2026-11-27",
-    "notes": "Google My Maps map \"2026 - 42K VALENCIA INFO RUNNER\" embedded on the official course page on 2026-11-27; its KML export downloads without login. It is this edition's track: line 2 of 5 (\"RACE LINE 42K\") measured 42.180 km against 42.195 km in a scratch import (the other lines are a 1 km line, restricted-area outlines and a sponsor segment). The page also offers a PDF map."
+    "notes": "Google My Maps map \"2026 - 42K VALENCIA INFO RUNNER\" embedded on the official course page (https://www.valenciaciudaddelrunning.com/en/marathon/official-route-marathon/), exported as KML without login. Line 2 of 5, \"RACE LINE 42K\" (layer \"42K · 2026\"), is this edition’s track and was imported for the 2026 first edition: measured 42.180 km against the official 42.195 km (-0.04%). The other lines are a 1 km line, two restricted-area outlines and a sponsor segment. The page also links a PDF map (https://cdn1.valenciaciudaddelrunning.com/wp-content/uploads/2026/11/plano-recorrido-42k-2026.pdf)."
   },
   "nextEdition": {
     "year": 2026,
