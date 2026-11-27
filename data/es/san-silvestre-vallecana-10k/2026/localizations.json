@@ -25,6 +25,14 @@
       "cheer-juver": "Punto para animar - Calle Sierra de Cadí",
       "km-9": "Punto 9K - Calle de Carlos Martín Álvarez",
       "finish": "Meta - Estadio de Vallecas"
-    }
+    },
+    "waveLabels": [
+      "Handbike y sillas de atletismo",
+      "Oleada 1 (marca acreditada por debajo de 50 min)",
+      "Oleada 2 (marca acreditada entre 50 y 60 min)",
+      "Oleada 3 (sin marca acreditada o por encima de 60 min)",
+      "Oleada 4 (sin marca acreditada o por encima de 60 min)",
+      "Oleada 5 (sin marca acreditada o por encima de 60 min)"
+    ]
   }
 }
