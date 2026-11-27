@@ -72,7 +72,9 @@ Go through the steps in order and stop at the first one that yields **this editi
    ```
    Usable only if the status is 200 and the file contains `<kml`. Without `&forcekml=1` the same URL returns a KMZ. A 404, a login page or HTML means the map is private or gone: treat it like a login-only source (step 3).
 3. **Strava route or Wikiloc trail** embedded or linked. These **need a person**: Strava's `/routes/<id>/export_gpx` redirects to the login page, and Wikiloc requires a signed-in account to download and answers scripted requests with a bot challenge. Do not try to log in, scrape coordinates from the page, or use third-party converters. Action: `issue` of kind `route-file` naming the exact URL, the export button to use ("Export GPX" on Strava, "Download" > GPX on Wikiloc), and the target edition.
-4. **No file** (only a PDF, an image, a map viewer without export, or nothing): keep the previous edition's route (rollover copies it, provisional). Open a `route-file` issue only if an official page presents this edition's course and that course is not stated to be unchanged from the route in `data/` (so a person must supply a file or confirm it is unchanged). Never trace from a PDF or image.
+4. **No file** (steps 1 to 3 found no GPX, KML, KMZ, My Maps, Strava or Wikiloc link at all; only a PDF, an image, a map viewer without export, or nothing): keep the route in `data/` (rollover copies it, provisional). Open a `route-file` issue only if an official page shows a course map (PDF or image) labelled with the target year, or says the course changed, and does not say it is unchanged from the route in `data/`. A street-by-street itinerary in the regulations alone does not count. Never trace from a PDF or image.
+
+When steps 1 to 3 found only an earlier track and it matched the route in `data/` (same course, table below), there is nothing to request: open no issue unless an official page says the course changed.
 
 ### Which edition does a file belong to
 
@@ -83,20 +85,23 @@ Read the names with the two checks allowed by Hard rule 2: `grep -c '<kml\|<gpx'
 
 ### Import into scratch and compare
 
-1. Copy the edition you are comparing against into scratch: the current `published` edition, or for `next` the edition the rollover will produce (run the rollover with `--data-dir "$RUN_DIR/scratch/data"` after copying `data/<cc>/<slug>/` there; never `--dry-run` for this, since nothing would be written).
+Use a separate scratch folder per race and per file tried: `S="$RUN_DIR/scratch/<slug>/<n>"` (`<n>` = 1, 2, … for each file).
+
+1. Copy the edition you are comparing against into a fresh scratch folder: the current `published` edition, or for `next` the edition the rollover will produce (run the rollover with `--data-dir "$S/data"` after copying `data/<cc>/<slug>/` there; never `--dry-run` for this, since nothing would be written).
    ```bash
-   mkdir -p "$RUN_DIR/scratch/data/<cc>" && cp -R data/<cc>/<slug> "$RUN_DIR/scratch/data/<cc>/"
+   rm -rf "$S" && mkdir -p "$S/data/<cc>"
+   cp -R data/<cc>/<slug> "$S/data/<cc>/"
    ```
-2. Measure the current route: `npm run -s data:validate -- --data-dir "$RUN_DIR/scratch/data" "$RUN_DIR/scratch/data/<cc>/<slug>/<year>" --length-tolerance 0.000000001` and keep the "Measured route length" number (`currentKm`). If that run passes, `currentKm` equals the official distance. Make a fresh scratch copy (step 1) before each further file you import.
+2. Measure the current route: `npm run -s data:validate -- --data-dir "$S/data" "$S/data/<cc>/<slug>/<year>" --length-tolerance 0.000000001` and keep the "Measured route length" number (`currentKm`). If that run passes, `currentKm` equals the official distance.
 3. Import the file over the scratch copy, then put the existing points back:
    ```bash
-   cp "$RUN_DIR/scratch/data/<cc>/<slug>/<year>/points.geojson" "$RUN_DIR/scratch/points.keep.geojson"
-   npm run data:import -- <file> "$RUN_DIR/scratch/data/<cc>/<slug>/<year>" --distance <meta.distanceKm> \
-     --name "<meta.name>" --data-dir "$RUN_DIR/scratch/data" --force
-   cp "$RUN_DIR/scratch/points.keep.geojson" "$RUN_DIR/scratch/data/<cc>/<slug>/<year>/points.geojson"
+   cp "$S/data/<cc>/<slug>/<year>/points.geojson" "$S/points.keep.geojson"
+   npm run data:import -- <file> "$S/data/<cc>/<slug>/<year>" --distance <meta.distanceKm> \
+     --name "<meta.name>" --data-dir "$S/data" --force
+   cp "$S/points.keep.geojson" "$S/data/<cc>/<slug>/<year>/points.geojson"
    ```
    Keep the full import output (`measured length`, `official length`, `lines used`). If the file has several lines, the import fails and lists them: retry with `--line <n>` only when exactly one line's name identifies this race's distance (for example "21K", "Media Maratón", "Recorrido Popular" on a single-race map); otherwise action `issue` (`route-file`, saying which lines exist). If the import fails on length (more than 3% off), do not override it: action `issue` (`route-file`, quoting the measured and official lengths).
-4. Validate the scratch edition with the existing points: `npm run data:validate -- --data-dir "$RUN_DIR/scratch/data" "$RUN_DIR/scratch/data/<cc>/<slug>/<year>"`.
+4. Validate the scratch edition with the existing points: `npm run data:validate -- --data-dir "$S/data" "$S/data/<cc>/<slug>/<year>"`.
 5. Classify:
 
 | Import result                                                                  | Same course? | This edition's track? | Outcome                                                                                                                              |
@@ -120,19 +125,19 @@ A difference in `meta.json` is a **data change**. A difference only in the watch
 
 ## 6. Decision table
 
-Check for open items first (`references/github-items.md`, "Duplicate check"). Then pick the first matching row:
+Check for open items first (`references/github-items.md`, "Duplicate check"). Then pick the **first** matching row among rows 1 to 8 and 10 for the main action, and **separately** apply row 9: an issue a track step asked for is opened whenever its own duplicate check finds nothing, whatever the main row is (row 2 included).
 
 | # | Condition                                                                                                     | Action                                                                                 |
 | - | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
 | 1 | All pages unreadable                                                                                          | `watchlist-only`, no fact changes; report under "could not read"                       |
-| 2 | An open scout PR exists for this edition                                                                      | `comment` on it if this run found facts that differ from what it proposes, else nothing |
+| 2 | The PR duplicate check finds an open PR for this race                                                         | `comment` on it if this run found a value that differs from what it proposes (facts, or this edition's track found while the PR keeps a provisional route), else nothing. Compare values, not quote text: wording or spacing differences in a quote are not changes |
 | 3 | Kind `candidate`                                                                                              | `watchlist-only` (and a `comment` on its open tracking issue if a usable track file was found for the first time) |
 | 4 | Kind `next`, date known for the next edition, and the previous edition passes validation without an accepted exception, or this edition's track was imported and validates | `edition-pr` (rollover)                                         |
 | 5 | Kind `next`, date known, but the carried-over route would fail validation and no usable track for this edition exists | `issue` `needs-person` asking for a fresh track (do not add an exception)       |
 | 6 | Kind `published`, a date in a different year from the edition folder                                         | `issue` `needs-person` (the edition folder would have to move)                         |
 | 7 | Kind `published`, conflicting official values for a fact shown on the published edition                       | `issue` `needs-person`, quoting both sources                                           |
 | 8 | Kind `published` and at least one data change (date in the same year, start time, waves, provisional flags, route) | `edition-pr` (update)                                                              |
-| 9 | A track step said `issue` (`route-file` or `course-update`)                                                    | that issue, opened first, in addition to an `edition-pr` from rows 4 or 8 if any (the PR body then says `Related: #<issue>`) |
+| 9 | (additive, see above) A track step said `issue` (`route-file` or `course-update`)                             | that issue, opened before any `edition-pr` for the race (the PR body then says `Related: #<issue>`) |
 | 10 | Anything else                                                                                                | `watchlist-only`                                                                       |
 
 To see whether the previous edition only passes through an accepted exception (row 4 or 5), read the rollover output: it warns about it, and `scripts/edition-validation/known-issues.ts` lists the edition.

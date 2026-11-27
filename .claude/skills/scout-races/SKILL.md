@@ -116,10 +116,16 @@ Skip when `--discovery off`. Otherwise follow `references/discovery.md`. With `d
 
 One small PR per run for watchlist changes that need no edition change: refreshed `checkedOn` dates and facts for races whose action was `watchlist-only`, changed `trackSource` notes, discovery sources read successfully (`verifiedOn`, only when discovery is `on`), and new candidates from discovery. A PR that only refreshes dates is expected: it is how the watchlist records that each race was checked.
 
-1. Skip any race whose watchlist file is changed by an open PR (an edition PR opened this run included); its entry is updated there.
-2. If an open PR already exists whose branch starts with `chore/scout-watchlist-`, reuse it: add a worktree for that branch, apply this run's changes on top, commit, push (no force) and update its body. Otherwise create `chore/scout-watchlist-<RUN_DATE>` from the latest `origin/main` in a worktree.
-3. Apply the watchlist rules in `references/race-check.md` section 8. Run `npx prettier --write watchlist/`, then `npm run format:check` and `npm run test:unit`.
-4. If `git diff` is empty, open nothing. Otherwise commit, push and open (or update) the PR with the watchlist PR body from `references/github-items.md`. Watchlist-only PRs need no review pass (no app code, data or logic changes).
+1. Skip any race whose watchlist file is changed by an open PR other than the scout watchlist PR (an edition PR opened this run included); its entry is updated there.
+2. Work out the pending watchlist changes first (in the base worktree's copy, or in notes). If there are none, stop here: no worktree, no PR.
+3. If an open PR exists whose branch starts with `chore/scout-watchlist-`, reuse it (its entries are compared and updated like any other):
+   ```bash
+   git -C "$REPO_ROOT" fetch origin <its-branch>
+   git -C "$REPO_ROOT" worktree add --no-track -b <its-branch> "$RUN_DIR/wt/watchlist" "origin/<its-branch>"
+   ```
+   Otherwise create `chore/scout-watchlist-<RUN_DATE>` from the latest `origin/main` the same way as an edition worktree. Then `npm --prefix "$RUN_DIR/wt/watchlist" ci --no-audit --no-fund`.
+4. Apply the watchlist rules in `references/race-check.md` section 8. Run `npx prettier --write watchlist/`, then `npm run format:check` and `npm run test:unit`.
+5. If `git -C "$RUN_DIR/wt/watchlist" status --porcelain` is empty, open nothing. Otherwise commit, push (`git -C "$RUN_DIR/wt/watchlist" push -u origin <branch>`, never forced) and open the PR, or for a reused PR update its body (`gh pr edit`), with the watchlist PR body from `references/github-items.md`. Watchlist-only PRs need no review pass (no app code, data or logic changes).
 
 ## Phase 7: Clean up and report
 
