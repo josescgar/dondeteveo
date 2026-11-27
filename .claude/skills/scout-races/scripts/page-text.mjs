@@ -91,11 +91,20 @@ const readAttribute = (tag, name) => {
   return match ? (match[2] ?? match[3] ?? match[4] ?? "") : undefined;
 };
 
-/** Strips tags; only `<` followed by a letter, `/` or `!` starts a tag, as in browsers. */
+/** Inline elements do not separate words in a browser, so they are removed without a space. */
+const INLINE_TAG_PATTERN =
+  /<\/?(a|abbr|b|bdi|bdo|cite|code|data|dfn|em|font|i|kbd|mark|q|s|samp|small|span|strong|sub|sup|time|u|var|wbr)\b[^>]*>/gi;
+
+/**
+ * Strips tags; only `<` followed by a letter, `/` or `!` starts a tag, as in
+ * browsers. Block boundaries become line breaks, inline tags disappear, and
+ * any other tag becomes a space, so quotes match the rendered page text.
+ */
 const toText = (html) =>
   decodeEntities(
     html
       .replace(/<(br|\/p|\/div|\/li|\/h[1-6]|\/tr|\/td|\/th|\/section|\/article|\/header|\/footer)\b[^>]*>/gi, "\n")
+      .replace(INLINE_TAG_PATTERN, "")
       .replace(/<[a-z/!][^>]*>/gi, " "),
   );
 
