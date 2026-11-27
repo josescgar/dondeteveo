@@ -20,7 +20,14 @@ Stable names and a hidden marker in every body make the duplicate and prior-item
 | Needs-person issue         | `Check <what> for <name> <year> (<slug>)`                                                              | `needs-person` | `reason=<code>` plus values, e.g. `reason=cancelled`, `reason=site-unreadable`, `reason=conflict;startTime=09:25,09:30` |
 | New race issue (discovery) | `Add race data for <official race name>`                                                               | (marker `<!-- scout-races: <slug>/add-race key=<official domain> -->`) | official domain                      |
 
-**Edition key**: the values the PR sets in `meta.json`, in this order and format: `date=<YYYY-MM-DD>;start=<HH:MM>;waves=<HH:MM,HH:MM,...|none>;route=<measured km with 3 decimals|carried|unchanged>` (for example `date=2026-12-31;start=17:00;waves=16:50,17:00,17:15,17:35,17:55,18:20;route=unchanged`).
+**Edition key**: the values the edition has after the PR, in this order and format: `date=<YYYY-MM-DD>;start=<HH:MM>;waves=<HH:MM,HH:MM,...|none>;route=<value>` (for example `date=2026-12-31;start=17:00;waves=16:50,17:00,17:15,17:35,17:55,18:20;route=unchanged`). `route=` by route outcome (`race-check.md` section 4):
+
+| Route outcome                                         | `route=`                                                         |
+| ----------------------------------------------------- | ---------------------------------------------------------------- |
+| Rollover with no track for this edition               | `carried`                                                        |
+| Update with no route change (`unchanged`, or none)    | `unchanged`                                                      |
+| `confirmed`                                           | `confirmed-<currentKm, 3 decimals>`                              |
+| `replace-route` or `fresh-import`                     | the measured length from the import output, 3 decimals (`21.195`) |
 
 Every edition branch name is fixed by slug and year. Use a dated variant (`-<RUN_DATE without dashes>`, for example `fix/scout-ibiza-12k-2027-20270104`) only when the prior-item check allows a new proposal and the plain branch name already exists on `origin` (`git -C "$REPO_ROOT" ls-remote --heads origin <branch>`).
 
@@ -39,7 +46,7 @@ A race already has an **open PR** when this prints a non-empty list:
 jq -c --arg slug "<slug>" --arg cc "<cc>" -f "$SKILL_DIR/scripts/open-pr-check.jq" "$RUN_DIR/open-prs.json"
 ```
 
-It matches scout branch names, the `scout-races: <slug>/` marker, and any PR (a person's included) that changes `data/<cc>/<slug>/` or `watchlist/races/<slug>.json`. It ignores the scout watchlist PR (`chore/scout-watchlist-*`), which only means that race's entry is in that PR (Phase 6 handles it). Any match leads to decision rows 2 and 3 in `race-check.md`.
+It matches scout branch names, the `scout-races: <slug>/` marker, and any PR (a person's included) that changes `data/<cc>/<slug>/` or `watchlist/races/<slug>.json`. The `files` list from `gh pr list` can lag behind recent pushes: when the check prints nothing, confirm with `gh pr view <n> --repo "$REPO" --json files` for each open PR that is not a scout PR (there are usually few) before concluding that no PR touches the race. It ignores the scout watchlist PR (`chore/scout-watchlist-*`), which only means that race's entry is in that PR (Phase 6 handles it). Any match leads to decision rows 2 and 3 in `race-check.md`.
 
 An **open issue** of a kind already exists when this prints a non-empty list:
 

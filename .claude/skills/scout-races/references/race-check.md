@@ -19,7 +19,7 @@ Let `L` be the latest edition folder in `data/<cc>/<slug>/` (highest year) and `
 
 ## 2. Reading pages
 
-1. Pages to read, in order, skipping duplicates: the entry's `officialWebsiteUrl`, `coursePageUrl`, `regulationsUrl`, every `sourceUrl` in `nextEdition`, `trackSource.url`, and then official pages linked from those that are about the target edition (regulations, runner's guide, timetable or "horarios", course, news announcing the date). Read at most 10 pages per race. Only follow links on the organiser's own domain, the domain of the city council or sports department that organises it, or file hosts those pages link to (for example a CDN or blob store); listing and news sites are not official sources.
+1. Pages to read, in order, skipping duplicates: the entry's `officialWebsiteUrl`, `coursePageUrl`, `regulationsUrl`, every `sourceUrl` in `nextEdition`, `trackSource.url`, and then official pages linked from those that are about the target edition or likely to announce it (regulations, runner's guide, timetable or "horarios", course, calendar, news). Read at most 10 pages per race. Only follow links on the organiser's own domain, the domain of the city council or sports department that organises it, or file hosts those pages link to (for example a CDN or blob store); listing and news sites are not official sources.
    - Do not read Strava, Wikiloc or `loc.wiki` pages or binary files (PDF, images, GPX, KML, KMZ) as pages: they cannot be quoted. Note the link and use it only in section 4.
 2. Fetch the raw HTML and extract the text and links:
    ```bash
@@ -63,7 +63,7 @@ Rules:
 
 Run this step when any of these holds: the target edition is (or after rollover will be) `provisional.route: true`; the watchlist `routeConfirmed` is not `true`; the official pages link a track or map that differs from `trackSource.url` or its recorded file name; or an official page says the course changed. Otherwise skip it.
 
-Go through the steps in order and stop at the first one that yields **this edition's track** (see "Which edition does a file belong to"). A file that turns out to be an earlier track does not stop the search: classify it as evidence, then continue. When a page links several files or maps, try the one labelled with the target year first.
+Go through the steps in order and stop at the first one that yields **this edition's track** (see "Which edition does a file belong to"). First download and identify every candidate from steps 1 and 2 (names only, no import); when a page links several files or maps, try the one labelled with the target year first. Import only this edition's track. Import an earlier track only when no track for this edition exists, since it is then the evidence for the `unchanged` or `contradicted` outcome.
 
 1. **Official GPX, KML or KMZ download** linked from an official page (see "Downloading safely").
 2. **Google My Maps** embedded or linked (any `google.<tld>/maps/d/...` URL with `mid=<id>`: `viewer`, `embed` or `edit`). Export it as KML, which works without a login for public maps: `https://www.google.com/maps/d/kml?mid=<id>&forcekml=1` (without `&forcekml=1` the URL returns a KMZ). Usable only if the status is 200 and the file contains `<kml`. A 404, a login page or HTML means the map is private or gone: treat it like step 3.
@@ -103,7 +103,7 @@ Use a separate scratch folder per race and per file tried: `S="$RUN_DIR/scratch/
    rm -rf "$S" && mkdir -p "$S/data/<cc>"
    cp -R data/<cc>/<slug> "$S/data/<cc>/"
    ```
-2. Measure the current route: `npm run -s data:validate -- --data-dir "$S/data" "$S/data/<cc>/<slug>/<year>" --length-tolerance 0.000000001` and keep the "Measured route length" number (`currentKm`). If that run passes, `currentKm` equals the official distance.
+2. Measure the current route: `npm run -s data:validate -- --data-dir "$S/data" "$S/data/<cc>/<slug>/<year>" --length-tolerance 0.000000001` and keep the "Measured route length" number (`currentKm`). The run normally fails on purpose, even when the line reads `differs … by -0.00%`; the printed number is `currentKm` either way. If it passes with no such line, `currentKm` equals the official distance.
 3. Import the file over the scratch copy, then put the existing points back:
    ```bash
    cp "$S/data/<cc>/<slug>/<year>/points.geojson" "$S/points.keep.geojson"
@@ -246,7 +246,7 @@ Apply to `watchlist/races/<slug>.json` (in the edition PR when there is one, oth
 - Fact unknown because of a conflict: set `value` to `null` with the page checked, and describe the conflict in `notes`.
 - When `nextEdition.year` is not already the target edition's year (the tracked edition became past): set `year` to the target year and reset every fact to `{ "value": null, "sourceUrl": null, "checkedOn": null }` before filling in what was found. `date` must fall in `year`.
 - `routeConfirmed`: `true` only for this edition's track (section 4) or an explicit "same course" sentence; `false` when the official course page still shows an earlier course; `null` when unclear. It says whether the organiser published the course; `meta.json` `provisional.route` says whether our route is that course.
-- `trackSource`: when the track step ran, set `type`, `url` (the file or the page or map that links it), `loginRequired` (`true` for Strava and Wikiloc downloads, `false` for files that downloaded without login, `null` when not tried), `checkedOn` and `notes` (file or map title, what it was used for, whether it is this edition's or an earlier one).
+- `trackSource`: when the track step found nothing new (no file or map other than the ones already recorded), only set `checkedOn` to `RUN_DATE` and keep the other fields. When it found or used a different file or map, set `type`, `url` (the file or the page or map that links it), `loginRequired` (`true` for Strava and Wikiloc downloads, `false` for files that downloaded without login, `null` when not tried), `checkedOn` and `notes` (file or map title, what it was used for, whether it is this edition's or an earlier one).
 - URL fields: only as section 2, "Moved pages", allows.
 - `notes`: replace stale sentences that this run disproved; keep the rest (including earlier "Unreadable on …" sentences until the site is readable again, then remove them). Write plain English, dates as `YYYY-MM-DD`.
 - Never change `slug`, `countryCode`, or `catalogStatus` (except a new candidate, created as `candidate`).

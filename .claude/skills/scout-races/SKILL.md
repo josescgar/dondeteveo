@@ -87,10 +87,10 @@ An `edition-pr` that fails validation becomes an `issue` of kind `needs-person` 
 1. **Worktree from the latest `origin/main`:**
    ```bash
    git -C "$REPO_ROOT" fetch origin
-   git -C "$REPO_ROOT" worktree add --no-track -b <branch> "$RUN_DIR/wt/<slug>-<year>" origin/main
+   git -C "$REPO_ROOT" worktree add --no-track -B <branch> "$RUN_DIR/wt/<slug>-<year>" origin/main
    npm --prefix "$RUN_DIR/wt/<slug>-<year>" ci --no-audit --no-fund
    ```
-   (`--no-track` keeps the new branch from tracking `main`; the push below sets its upstream.) Run every later command of this procedure with the worktree as the working directory.
+   (`--no-track` keeps the new branch from tracking `main`; the push below sets its upstream. `-B` resets a local branch of the same name left over from an earlier run; the remote is checked separately in step 1.) Run every later command of this procedure with the worktree as the working directory.
    Branch names are in `references/github-items.md`. The dated variant is used only when the prior-item check allowed a new proposal and the plain name already exists on `origin`.
 2. **Create or change the edition** exactly as `references/race-check.md` section 7 says (rollover command, import, allowed JSON edits). Update `watchlist/races/<slug>.json` in the same worktree (section 8).
 3. **Format:** `npx prettier --write <every JSON file you changed>`.
@@ -123,21 +123,21 @@ One small PR per run for watchlist changes that need no edition change: refreshe
 A race's watchlist file is edited by exactly one open PR at a time: its edition PR if it has one, otherwise the watchlist PR.
 
 1. Skip any race whose watchlist file is changed by an open PR other than the scout watchlist PR (an edition PR opened this run included); its entry is updated there.
-2. Work out the pending watchlist changes first (in the base worktree's copy, or in notes). Pending changes include removing, from a reused watchlist PR, the entry of any race that now has its own edition PR. If there are none, stop here: no worktree, no PR.
+2. Work out the pending watchlist changes first, against the reused watchlist PR's branch when there is one (`origin/chore/scout-watchlist-*`), otherwise against `origin/main`. Pending changes include removing, from a reused watchlist PR, the entry of any race that now has its own edition PR. For a race whose edition PR or issue was **not re-proposed** (prior-item check), change only `checkedOn` on facts whose value is unchanged: never record in the watchlist the values a person rejected. If nothing is pending, stop here: no worktree, no PR.
 3. If an open PR exists whose branch starts with `chore/scout-watchlist-`, reuse it (its entries are compared and updated like any other), and bring it up to date with `main` first (a merge, so no force-push is needed):
    ```bash
    git -C "$REPO_ROOT" fetch origin <its-branch> main
-   git -C "$REPO_ROOT" worktree add --no-track -b <its-branch> "$RUN_DIR/wt/watchlist" "origin/<its-branch>"
+   git -C "$REPO_ROOT" worktree add --no-track -B <its-branch> "$RUN_DIR/wt/watchlist" "origin/<its-branch>"
    git -C "$RUN_DIR/wt/watchlist" merge --no-edit origin/main
    ```
    If the merge conflicts, run `git -C "$RUN_DIR/wt/watchlist" merge --abort`, leave that PR alone, comment on it that it needs a person, and create a new watchlist branch for this run instead. Otherwise create `chore/scout-watchlist-<RUN_DATE>` from the latest `origin/main` the same way as an edition worktree. Then `npm --prefix "$RUN_DIR/wt/watchlist" ci --no-audit --no-fund`.
 4. For each race that has an open edition PR and whose file differs from `main` in the reused branch, restore it: `git -C "$RUN_DIR/wt/watchlist" checkout origin/main -- watchlist/races/<slug>.json`.
 5. Apply the watchlist rules in `references/race-check.md` section 8 to the remaining races and to discovery candidates. Run `npx prettier --write watchlist/`, then `npm run format:check` and `npm run test:unit`.
-6. If `git -C "$RUN_DIR/wt/watchlist" status --porcelain` is empty and no merge commit was made, open nothing. Otherwise commit, push (`git -C "$RUN_DIR/wt/watchlist" push -u origin <branch>`, never forced) and open the PR, or for a reused PR update its body (`gh pr edit`), with the watchlist PR body from `references/github-items.md`. Watchlist-only PRs need no review pass (no app code, data or logic changes).
+6. Commit the changes (if `status --porcelain` shows any), then compare with the remote: for a reused branch, `git -C "$RUN_DIR/wt/watchlist" diff --quiet origin/<its-branch> -- watchlist/`; for a new branch, `git -C "$RUN_DIR/wt/watchlist" diff --quiet origin/main -- watchlist/`. If it exits 0 (no difference in `watchlist/`), push nothing and open nothing: a merge of `main` alone is never pushed. Otherwise push (`git -C "$RUN_DIR/wt/watchlist" push -u origin <branch>`, never forced) and open the PR, or for a reused PR update its body (`gh pr edit`), with the watchlist PR body from `references/github-items.md`. Watchlist-only PRs need no review pass (no app code, data or logic changes).
 
 ## Phase 7: Clean up and report
 
-1. Remove every worktree this run created (`git -C "$REPO_ROOT" worktree remove <path>`; add `--force` only for the base worktree, which has `node_modules`) and delete the local branches it created (they are on `origin`). Leave `REPO_ROOT` exactly as you found it.
+1. Remove every worktree this run created (`git -C "$REPO_ROOT" worktree remove <path>`; add `--force` only if `remove` refuses, and only for a worktree whose changes are already pushed or deliberately discarded) and delete the local branches it created (they are on `origin`). Leave `REPO_ROOT` exactly as you found it.
 2. Print the run summary in the format in `references/github-items.md`, "Run summary". It always lists: races checked, PRs opened, issues opened, comments added, facts changed (with source URLs), items deferred by caps, races or pages that could not be read and why, and discovery results.
 
 ## Dry run
