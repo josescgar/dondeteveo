@@ -12,10 +12,10 @@
   "regulationsUrl": "https://www.generalimaratonmalaga.com/regulations-marathon-malaga/",
   "trackSource": {
     "type": "wikiloc",
-    "url": "https://www.wikiloc.com/running-trails/generali-maraton-malaga-2025-236011261",
+    "url": "https://loc.wiki/t/293700127?wa=sc",
     "loginRequired": true,
-    "checkedOn": "2026-08-03",
-    "notes": "\"GENERALI Maratón Málaga 2025\" track published on Wikiloc by Atletismo Málaga and linked by the organizer as the 2026 42K course. Wikiloc requires a signed-in account to download a track."
+    "checkedOn": "2026-11-27",
+    "notes": "Wikiloc short link labelled \"Road 42K\" on the official course page on 2026-11-27 (it replaced the \"GENERALI Maratón Málaga 2025\" Wikiloc trail). Which edition it is for could not be read; Wikiloc requires a signed-in account to download a track."
   },
   "nextEdition": {
     "year": 2027,
@@ -40,5 +40,5 @@
       "checkedOn": null
     }
   },
-  "notes": "On 2026-11-27 the official site said 2027 registration was \"coming soon\" and linked a different Wikiloc short link for the 42K road course (https://loc.wiki/t/293700127?wa=sc), not yet reviewed."
+  "notes": "On 2026-11-27 the official site said registration for 2027 was coming soon and gave no 2027 date."
 }

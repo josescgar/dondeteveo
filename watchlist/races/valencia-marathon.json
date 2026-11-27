@@ -11,11 +11,11 @@
   "coursePageUrl": "https://www.valenciaciudaddelrunning.com/en/marathon/official-route-marathon/",
   "regulationsUrl": "https://www.valenciaciudaddelrunning.com/en/marathon/regulations-valencia-marathon/",
   "trackSource": {
-    "type": "none",
-    "url": null,
-    "loginRequired": null,
+    "type": "google-my-maps",
+    "url": "https://www.google.com/maps/d/embed?mid=1qUeKqQPfof79_pThXQS1L_hZRqMFLNQ&ehbc=2E312F",
+    "loginRequired": false,
     "checkedOn": "2026-11-27",
-    "notes": "The course page offers a PDF map (https://cdn1.valenciaciudaddelrunning.com/wp-content/uploads/2026/11/plano-recorrido-42k-2026.pdf) and says the course is on Google Maps, but links no GPX, KML, My Maps or Strava route."
+    "notes": "Google My Maps map \"2026 - 42K VALENCIA INFO RUNNER\" embedded on the official course page on 2026-11-27; its KML export downloads without login. It is this edition's track: line 2 of 5 (\"RACE LINE 42K\") measured 42.180 km against 42.195 km in a scratch import (the other lines are a 1 km line, restricted-area outlines and a sponsor segment). The page also offers a PDF map."
   },
   "nextEdition": {
     "year": 2026,
