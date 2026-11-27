@@ -348,7 +348,7 @@ Still missing: <what this issue is waiting for, or "nothing; <what happens next>
 
 For a stale PR (decision row 2), comment once: `The race day of this edition (<date>) has passed, so this PR can no longer be merged usefully. scout-races will not update it; please close it.` with the marker `<!-- scout-races-comment: stale -->`; skip if a comment with that marker exists.
 
-Before commenting, read the existing comments (`gh pr view <n> --json comments` or `gh issue view <n> --json comments`) and skip if one already reports the same values. Never push to a branch that has an open PR, except the watchlist PR branch in Phase 6.
+Before commenting, read the existing comments (`gh pr view <n> --json comments` or `gh issue view <n> --json comments`) and skip if one already reports the same values. Never push to a branch that has an open PR, except the watchlist PR branch in Phase 6 and the merge from `main` that SKILL.md edition PR procedure step 11 allows on a PR the same run opened.
 
 ### Candidate status comment
 
