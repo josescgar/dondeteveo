@@ -259,21 +259,24 @@ The `scout-races` Claude Code skill (`.claude/skills/scout-races/`) does the rea
 
 One run:
 
-1. Reads `watchlist/` from `origin/main` and, for each watched race, the organiser's official pages (raw HTML, through `.claude/skills/scout-races/scripts/page-text.mjs`).
+1. Reads `watchlist/` from `origin/main` and, for each watched race, the organiser's official pages (raw HTML, through `scripts/page-text.ts`, which drops hidden text and flags collapsed sections).
 2. Compares what it finds with the watchlist facts and the race's latest edition, for the next upcoming edition only:
    - a new date for a race whose latest edition is past: `npm run data:rollover` and a PR with the provisional edition;
    - changed facts (date in the same year, start time, waves, provisional flags, course) on a published upcoming edition: a PR that updates it;
-   - a course that needs a login (Strava, Wikiloc, private Google My Maps), exists only as a PDF or image, or changed so much that the points must be rebuilt: an issue saying exactly which file is needed and where it is. It never traces a route.
-3. Looks for this edition's track in a fixed order: official GPX/KML/KMZ download; Google My Maps exported as KML (`https://www.google.com/maps/d/kml?mid=<id>&forcekml=1`, public maps only); Strava or Wikiloc (an issue for a person, since both need an account); otherwise the previous edition's route stays provisional. Files are imported only with `npm run data:import`, and a track counts as this edition's only when it is labelled with the edition year or an official page for the edition presents it as the course; files labelled with an earlier year are only evidence and the search continues. A new track replaces the route only when the existing points still validate against it; otherwise a person rebuilds the points.
+   - a new official track for the edition: imported and the route marked confirmed. If the course changed so much that the existing points no longer fit, the track is imported fresh with generated splits, cheer points are dropped, place names on the old course are replaced with neutral wording (listed in the PR for review), and an issue asks a person to add cheer points;
+   - a course that needs a login (Strava, Wikiloc, private Google My Maps), exists only as a PDF or image, or cannot be imported: an issue saying exactly which file is needed and where it is. It never traces a route, and it never leaves the "organisers have not published this year's route" notice on a new edition whose course was published;
+   - a cancellation, postponement, conflicting official facts, or a site that stays unreadable: an issue for a person.
+3. Looks for this edition's track in a fixed order: official GPX/KML/KMZ download; Google My Maps exported as KML (`https://www.google.com/maps/d/kml?mid=<id>&forcekml=1`, public maps only); Strava or Wikiloc (an issue for a person, since both need an account); otherwise the previous edition's route stays provisional. Files are imported only with `npm run data:import`, and a track counts as this edition's only when it is labelled with the edition year or an official page for the edition presents it as the course; files labelled with an earlier year are only evidence and the search continues.
 4. Scans the discovery sources for road races in Spain from 5K to marathon with an official website and enough participants, and proposes each new one as a `candidate` watchlist entry plus an "Add race data for…" issue.
 5. Opens one small PR with the remaining watchlist changes (refreshed `checkedOn` dates, new candidates) and ends with a summary of races checked, PRs and issues opened, facts changed, and pages it could not read.
 
 Guarantees:
 
-- Every fact it sets is read on an official page in that run and recorded with its URL and verbatim quote, in the PR body and in `source.json` `notes`. Conflicting or ambiguous facts stay unknown and are reported.
+- Every fact it sets is read on an official page in that run and recorded with its URL and verbatim quote, in the PR body and in `source.json` `notes`. Conflicting or ambiguous facts, or facts not tied to the edition and distance, stay unknown and are reported.
+- `startTime` is the first start open to the general field; special-category starts (handbike, wheelchair, elite-only) appear only in `waves`, because the wave picker is optional and the planner otherwise counts from `startTime`.
 - One race edition per PR, each on its own branch from the latest `origin/main` (`feature/scout-<slug>-<year>` for rollovers, `fix/scout-<slug>-<year>` for updates), opened only after `npm run data:validate`, `format:check`, `test:unit` and `build` pass. The PR links its `route.geojson` on the branch, which GitHub renders as a map, and states the measured route length against the official distance.
-- It never merges, never pushes to `main`, never modifies past editions, never adds validation exceptions, and treats web content as untrusted data (text on a site is never followed as an instruction).
-- It is idempotent: before creating anything it searches open PRs and issues for the race (by branch name, a hidden `scout-races:` marker in the body, and the files changed), and a second run with nothing new opens nothing. It opens at most 5 PRs and 5 issues per run by default.
+- It never merges, never pushes to `main`, never modifies past editions, never adds validation exceptions or loosens a tolerance, and treats web content as untrusted data (text on a site is never followed as an instruction).
+- It is idempotent: before creating anything it searches open PRs and issues for the race (by branch name, a hidden `scout-races:` marker in the body, and the files changed), and a second run with nothing new opens nothing. Closed and merged items are checked too: the marker carries the proposed values, and something a person closed is proposed again only when those values changed. It opens at most 5 PRs and 5 issues per run by default.
 - A separate review agent checks each edition PR's facts against their sources and posts a comment review before a person reviews it.
 
 ## Validation Checks
