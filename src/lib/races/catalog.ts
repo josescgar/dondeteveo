@@ -37,6 +37,18 @@ export type RaceSummary = {
 
 const DATA_DIRECTORY = path.join(process.cwd(), "data");
 
+// Test-only: an extra data root (same `<country>/<race>/<year>/` layout) merged
+// into the catalog. Playwright sets it so e2e tests can cover edition states,
+// such as provisional editions, that the real catalog may not contain.
+export const FIXTURE_DATA_DIRECTORY_ENV = "RACE_DATA_FIXTURES_DIR";
+
+const getDataDirectories = (): string[] => {
+  const fixtureDirectory = process.env[FIXTURE_DATA_DIRECTORY_ENV];
+  return fixtureDirectory
+    ? [DATA_DIRECTORY, path.resolve(fixtureDirectory)]
+    : [DATA_DIRECTORY];
+};
+
 const readJson = async <T>(filePath: string): Promise<T> =>
   JSON.parse(await readFile(filePath, "utf8")) as T;
 
@@ -61,12 +73,13 @@ const getDirectories = async (directory: string): Promise<string[]> => {
 };
 
 const loadRaceEdition = async (
+  dataDirectory: string,
   countryCode: string,
   raceSlug: string,
   year: string,
 ): Promise<RaceEdition> => {
   const editionDirectory = path.join(
-    DATA_DIRECTORY,
+    dataDirectory,
     countryCode,
     raceSlug,
     year,
@@ -104,17 +117,21 @@ const loadRaceEdition = async (
 };
 
 export const getAllRaceEditions = async (): Promise<RaceEdition[]> => {
-  const countryCodes = await getDirectories(DATA_DIRECTORY);
   const editions: RaceEdition[] = [];
 
-  for (const countryCode of countryCodes) {
-    const races = await getDirectories(path.join(DATA_DIRECTORY, countryCode));
-    for (const raceSlug of races) {
-      const years = await getDirectories(
-        path.join(DATA_DIRECTORY, countryCode, raceSlug),
-      );
-      for (const year of years) {
-        editions.push(await loadRaceEdition(countryCode, raceSlug, year));
+  for (const dataDirectory of getDataDirectories()) {
+    const countryCodes = await getDirectories(dataDirectory);
+    for (const countryCode of countryCodes) {
+      const races = await getDirectories(path.join(dataDirectory, countryCode));
+      for (const raceSlug of races) {
+        const years = await getDirectories(
+          path.join(dataDirectory, countryCode, raceSlug),
+        );
+        for (const year of years) {
+          editions.push(
+            await loadRaceEdition(dataDirectory, countryCode, raceSlug, year),
+          );
+        }
       }
     }
   }

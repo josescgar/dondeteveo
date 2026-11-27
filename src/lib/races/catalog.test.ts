@@ -1,6 +1,7 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
+  FIXTURE_DATA_DIRECTORY_ENV,
   getAllRaceEditions,
   getDistinctRaces,
   getMostRelevantEdition,
@@ -36,5 +37,33 @@ describe("race catalog", () => {
     );
 
     expect(edition?.year).toBe("2026");
+  });
+});
+
+describe("race catalog test fixtures", () => {
+  const FIXTURE_RACE = "e2e-provisional-10k";
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("ignores fixtures unless the fixture directory is configured", async () => {
+    vi.stubEnv(FIXTURE_DATA_DIRECTORY_ENV, "");
+
+    expect(await getDistinctRaces()).not.toContain(FIXTURE_RACE);
+  });
+
+  it("merges valid fixture editions, including a provisional one", async () => {
+    vi.stubEnv(FIXTURE_DATA_DIRECTORY_ENV, "tests/fixtures/data");
+
+    const provisional = await getRaceEdition(FIXTURE_RACE, "2099");
+    expect(provisional?.meta.provisional).toEqual({
+      route: true,
+      startTime: true,
+    });
+    expect((await getMostRelevantEdition(FIXTURE_RACE))?.year).toBe("2099");
+    expect(
+      (await getRaceEdition(FIXTURE_RACE, "2025"))?.meta.provisional,
+    ).toBeUndefined();
   });
 });

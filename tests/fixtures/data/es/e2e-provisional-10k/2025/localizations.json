@@ -1,0 +1,14 @@
+{
+  "es": {
+    "meta": {
+      "name": "10K Provisional E2E",
+      "city": "Sevilla",
+      "summary": "Carrera solo para pruebas que Playwright usa para cubrir ediciones provisionales. No forma parte del catálogo publicado.",
+      "heroNote": "Nota de prueba para animar."
+    },
+    "pointLabels": {
+      "start": "Salida",
+      "finish": "Meta"
+    }
+  }
+}

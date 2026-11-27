@@ -1,7 +1,9 @@
 import { useRef, useState } from "preact/hooks";
 
+import { ProvisionalNotice } from "../../components/ProvisionalNotice";
 import type { Locale } from "../../lib/config";
 import { getDictionary } from "../../lib/i18n";
+import type { ProvisionalFact } from "../../lib/races/provisional";
 import type { ShareMode } from "../../lib/share/share-state";
 import {
   buildShareHref,
@@ -17,6 +19,7 @@ type Props = {
   raceSlug: string;
   year: string;
   waves?: Array<{ label: string; startTime: string }>;
+  provisionalFacts?: ProvisionalFact[];
 };
 
 const fieldInputClass =
@@ -27,6 +30,7 @@ export default function SharePlannerIsland({
   raceSlug,
   year,
   waves,
+  provisionalFacts = [],
 }: Props) {
   const dictionary = getDictionary(locale);
   const [mode, setMode] = useState<ShareMode>("pace");
@@ -112,6 +116,13 @@ export default function SharePlannerIsland({
       <p class="text-muted mt-2 font-mono text-sm leading-7">
         {dictionary.shareIntro}
       </p>
+      <ProvisionalNotice
+        locale={locale}
+        facts={provisionalFacts}
+        compact
+        showShareTimesNote
+        class="mt-4"
+      />
       <div class="mt-5 grid gap-4 md:grid-cols-2">
         <label class="flex flex-col gap-1.5">
           <span class="text-muted font-mono text-[10px] tracking-[0.26em] uppercase">

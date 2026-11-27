@@ -1,0 +1,26 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "e2e-provisional-10k-route",
+        "name": "E2E Provisional 10K route"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-5.9965, 37.3805],
+          [-5.9985, 37.3905],
+          [-6.0005, 37.4005],
+          [-5.9985, 37.3905],
+          [-5.9965, 37.3805],
+          [-5.9945, 37.3705],
+          [-5.9925, 37.3605],
+          [-5.9945, 37.3705],
+          [-5.9965, 37.3805]
+        ]
+      }
+    }
+  ]
+}

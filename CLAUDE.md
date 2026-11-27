@@ -13,6 +13,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Every race edition has a dedicated SEO page.
 - Share pages are public by URL and always `noindex`.
 - Only race local time is shown. Never show viewer local time.
+- An edition may go live with its route and/or start time still provisional (`meta.json` `provisional`); race and share pages then show a "pending confirmation" notice.
 
 ## Commands
 

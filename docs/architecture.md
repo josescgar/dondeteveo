@@ -23,7 +23,7 @@
 - Public URLs do not include country.
 - Page route builders return final slash-terminated URLs. Asset and sitemap filenames remain extension-terminated.
 - Race slugs must be globally unique.
-- Convenience race URLs redirect to the next upcoming edition if available, otherwise the most recent past edition.
+- Convenience race URLs redirect to the next upcoming edition if available (including a provisional one), otherwise the most recent past edition.
 - Language switching should map directly to the equivalent page in the other locale.
 
 ## SEO Rules
@@ -31,6 +31,7 @@
 - Indexable: localized homepages, listing pages, race edition pages, About/Contact, Privacy Policy
 - Non-indexable: share pages, search states, filter states
 - Past editions remain public and indexable.
+- Provisional editions (route and/or start time pending confirmation) are indexable like any other edition; the date and the race are real.
 - Canonical domain: `https://dondeteveo.com`
 - Canonical, locale alternate, Open Graph, internal page links, and sitemap entries use final slash-terminated page URLs.
 - Public pages emit centralized metadata and generated `og:image` assets without altering extension-terminated asset URLs.

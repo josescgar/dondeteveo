@@ -1,0 +1,45 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "start",
+        "label": "Start",
+        "kind": "split",
+        "distanceKm": 0
+      },
+      "geometry": { "type": "Point", "coordinates": [-5.9965, 37.3805] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-5",
+        "label": "5K split",
+        "kind": "split",
+        "distanceKm": 5
+      },
+      "geometry": { "type": "Point", "coordinates": [-5.9965, 37.3805] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-river",
+        "label": "Cheer point: River",
+        "kind": "cheer-point",
+        "distanceKm": 2.5
+      },
+      "geometry": { "type": "Point", "coordinates": [-6.0005, 37.4005] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "finish",
+        "label": "Finish",
+        "kind": "split",
+        "distanceKm": 10
+      },
+      "geometry": { "type": "Point", "coordinates": [-5.9965, 37.3805] }
+    }
+  ]
+}

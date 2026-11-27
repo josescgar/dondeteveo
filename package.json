@@ -12,6 +12,7 @@
     "astro": "astro",
     "prepare": "husky",
     "check": "astro check",
+    "data:rollover": "node scripts/rollover-edition.ts",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
