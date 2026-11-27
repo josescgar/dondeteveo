@@ -1,5 +1,13 @@
 import { z } from "zod";
 
+// Facts that may still be pending confirmation for an edition, e.g. when the
+// route and start time are carried over from the previous edition. Each flag
+// is optional; `false` or a missing key means the fact is confirmed.
+export const provisionalSchema = z.strictObject({
+  route: z.boolean().optional(),
+  startTime: z.boolean().optional(),
+});
+
 export const metaSchema = z.object({
   name: z.string().min(1),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
@@ -20,6 +28,7 @@ export const metaSchema = z.object({
     )
     .min(2)
     .optional(),
+  provisional: provisionalSchema.optional(),
 });
 
 export const sourceSchema = z.object({
@@ -94,6 +103,7 @@ export const localizationsSchema = z.record(
 export type RaceLocalizations = z.infer<typeof localizationsSchema>;
 
 export type RaceMeta = z.infer<typeof metaSchema>;
+export type RaceProvisional = z.infer<typeof provisionalSchema>;
 export type RaceSource = z.infer<typeof sourceSchema>;
 export type RaceRouteFeature = z.infer<typeof routeFeatureSchema>;
 export type RacePointFeature = z.infer<

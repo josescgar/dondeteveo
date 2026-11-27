@@ -38,6 +38,7 @@ See `data/es/carrera-triana-los-remedios-10k/2026/` for a complete working examp
 | `summary`            | string              | yes      | 1–2 sentence description for race pages                       |
 | `heroNote`           | string              | yes      | Spectator-specific note for share pages                       |
 | `specialNote`        | string              | no       | Prominent race-day note for important logistics or exceptions |
+| `provisional`        | object              | no       | `route`/`startTime` flags while unconfirmed (see docs)        |
 
 Example:
 

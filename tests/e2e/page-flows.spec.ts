@@ -84,6 +84,14 @@ test("share planner with empty pace falls back to a default pace", async ({
   await page.goto("/en/races/carrera-triana-los-remedios-10k/2026/");
 
   const valueInput = page.getByLabel(/Pace per km/i);
+  // Wait for hydration: the focus handler that clears the field is client-side.
+  await expect
+    .poll(() =>
+      valueInput.evaluate(
+        (element) => !element.closest("astro-island")?.hasAttribute("ssr"),
+      ),
+    )
+    .toBe(true);
   await valueInput.click();
   // Focus clears the field; submit without typing a value.
   await page.getByLabel(/Optional nickname/i).fill("Maria");

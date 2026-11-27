@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import { ProvisionalNotice } from "../../../../components/ProvisionalNotice";
 import RaceMapIsland from "../../../../features/race-map/RaceMapIsland";
 import SharePlannerIsland from "../../../../features/share-planner/SharePlannerIsland";
 
@@ -10,6 +11,7 @@ import { getDictionary } from "../../../../lib/i18n";
 import { getAllRaceEditions } from "../../../../lib/races/catalog";
 import { localizeRaceEdition } from "../../../../lib/races/localized";
 import { getPointSummaries } from "../../../../lib/races/points";
+import { getProvisionalFacts } from "../../../../lib/races/provisional";
 
 export const getStaticPaths = async () => {
   const editions = await getAllRaceEditions();
@@ -32,6 +34,7 @@ const dictionary = getDictionary(locale);
 const { edition: rawEdition } = Astro.props;
 const edition = localizeRaceEdition(rawEdition, locale);
 const points = getPointSummaries(edition.points);
+const provisionalFacts = getProvisionalFacts(edition.meta.provisional);
 const pathname = buildRacePath(locale, edition.raceSlug, edition.year);
 const raceInfoFields = buildRaceInfoFields(
   edition.meta,
@@ -65,6 +68,9 @@ const raceInfoFields = buildRaceInfoFields(
       <p class="text-muted font-mono text-sm leading-7">
         {edition.meta.summary}
       </p>
+      {provisionalFacts.length > 0 && (
+        <ProvisionalNotice locale={locale} facts={provisionalFacts} />
+      )}
       {edition.meta.specialNote && (
         <div class="banner-warning">
           <div class="text-warning font-mono text-[10px] tracking-[0.28em] uppercase">
@@ -105,6 +111,7 @@ const raceInfoFields = buildRaceInfoFields(
       raceSlug={edition.raceSlug}
       year={edition.year}
       waves={edition.meta.waves}
+      {...(provisionalFacts.length > 0 ? { provisionalFacts } : {})}
       client:load
     />
   </section>

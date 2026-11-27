@@ -6,12 +6,14 @@ import {
   useState,
 } from "preact/hooks";
 
+import { ProvisionalNotice } from "../../components/ProvisionalNotice";
 import { Tooltip } from "../../components/Tooltip";
 import type { Locale } from "../../lib/config";
 import { formatDistance } from "../../lib/format";
 import { getDictionary } from "../../lib/i18n";
 import type { RaceEdition } from "../../lib/races/catalog";
 import { getPointSummaries, resolveStartTime } from "../../lib/races/points";
+import { getProvisionalFacts } from "../../lib/races/provisional";
 import {
   DEFAULT_PACE_VALUE,
   parseShareState,
@@ -146,6 +148,10 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
   const points = useMemo(
     () => getPointSummaries(edition.points),
     [edition.points],
+  );
+  const provisionalFacts = useMemo(
+    () => getProvisionalFacts(edition.meta.provisional),
+    [edition.meta.provisional],
   );
   const paceMinutesPerKm = useMemo(
     () =>
@@ -379,6 +385,12 @@ export default function ShareExperienceIsland({ locale, edition }: Props) {
             </a>
           </div>
         )}
+        <ProvisionalNotice
+          locale={locale}
+          facts={provisionalFacts}
+          showShareTimesNote
+          class="mt-4"
+        />
         {edition.meta.specialNote && (
           <div class="banner-warning mt-4">
             <div class="text-warning font-mono text-[10px] tracking-[0.28em] uppercase">

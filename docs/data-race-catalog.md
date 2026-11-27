@@ -44,9 +44,53 @@
 | `waves`              | array of objects    | optional | Wave start definitions (min 2 if present)                     |
 | `waves[].label`      | string              | required | Wave display name (e.g. `"Elite"`, `"Wave 1"`)                |
 | `waves[].startTime`  | string `HH:MM`      | required | Wave gun time in race local timezone                          |
+| `provisional`        | object              | optional | Facts still pending confirmation; see Provisional Editions    |
 
 - Omit `specialNote` entirely when a race does not need an extra highlighted callout.
 - Omit `waves` for races with a single start time. If present, `waves` must contain at least 2 entries. Each wave has a `label` and a `startTime` in the same `HH:MM` format as the main `startTime`.
+
+## Provisional Editions
+
+An edition can go live as soon as its date is announced, before the organizers publish the course or the start time. `meta.json` marks what is still unconfirmed:
+
+```json
+"provisional": {
+  "route": true,
+  "startTime": true
+}
+```
+
+| Key         | Meaning when `true`                                                           |
+| ----------- | ----------------------------------------------------------------------------- |
+| `route`     | `route.geojson` and `points.geojson` are carried over from a previous edition |
+| `startTime` | `startTime` is not confirmed for this edition                                 |
+
+- Both keys are optional booleans; unknown keys are rejected. `false` or a missing key means confirmed.
+- Editions without `provisional` (or with every flag `false`) render exactly as fully confirmed editions.
+- To confirm a fact, set its flag to `false` (a one-line diff), updating the data in the same change when it differs. Remove the whole object once everything is confirmed.
+- Race pages, the share planner, and share pages show a localized "pending confirmation" notice while any flag is `true`. Share links keep their URL, so links shared while provisional show the confirmed times after the update.
+- Provisional editions are indexed by search engines like any other edition, and the convenience race URL redirects to them when they are the next upcoming edition.
+
+## Yearly Rollover
+
+```bash
+npm run data:rollover -- <race-slug> <YYYY-MM-DD> [--start-time HH:MM [--start-time-provisional]] [--dry-run] [--data-dir <dir>]
+```
+
+Creates `<data-dir>/<iso-country>/<race-slug>/<year>/` (`--data-dir` defaults to `data`; the year is taken from the new date) from the latest edition of the race:
+
+- Copies `route.geojson` and `points.geojson` byte for byte, and `localizations.json` when present (without `waveLabels`).
+- Sets the new `date`, drops `waves`, and sets `provisional.route` to `true`.
+- Start time:
+  - Without `--start-time`: keeps the previous `startTime` and marks it provisional.
+  - `--start-time HH:MM`: the organizers announced the start time; it is written and marked confirmed (`provisional.startTime: false`).
+  - `--start-time HH:MM --start-time-provisional`: the time is written but stays marked provisional (e.g. announced as tentative).
+- Writes `source.json` with the previous source fields and notes stating that the route was carried over, followed by the previous notes.
+- Refuses to run if the target folder exists, the new year is not later than the latest edition, or the latest edition fails its schemas, and never writes to the previous edition. Problems such as a missing data directory or an unwritable race folder are reported as one-line errors with exit code 1.
+- Prints warnings for carried-over text (`name`, `summary`, `heroNote`, `specialNote`, their localized versions, the source name, and route feature names) that mentions a year or the previous race date, for any copied `specialNote`, and for suspicious dates. Text is never rewritten automatically: review each warning before committing.
+- Ends with a reminder to validate the new edition and to update the race's watchlist entry.
+
+The logic lives in `scripts/rollover/` (`rollover.logic.ts`, `rollover-files.ts`, tests beside them); the CLI is `scripts/rollover-edition.ts`.
 
 ## `source.json` Schema
 
@@ -203,6 +247,7 @@ Community members can contribute new races via pull request. See [`CONTRIBUTING.
 - Every race in `data/` needs a watchlist entry. When adding a new race, create or update `watchlist/races/<race-slug>.json` with `catalogStatus: "in-catalog"` and its `trackSource` taken from the edition's `source.json` (see [Race Watchlist and Discovery Sources](#race-watchlist-and-discovery-sources)). `npm run test:unit` fails until the entry exists.
 
 - Preserve past editions rather than overwriting them.
+- When a new date is announced before the course or start time, roll the race over (`npm run data:rollover`), review its warnings, validate the new edition with `npm run data:validate -- data/<iso-country>/<race-slug>/<year>`, and publish the provisional edition; flip `provisional` flags to `false` as facts are confirmed.
 
 ## Validation Checks
 

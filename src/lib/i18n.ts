@@ -109,6 +109,10 @@ type Dictionary = {
   startWave: string;
   selectWave: string;
   includePastRaces: string;
+  provisionalNoticeTitle: string;
+  provisionalRouteNotice: string;
+  provisionalStartTimeNotice: string;
+  provisionalShareTimesNotice: string;
 };
 
 const DICTIONARIES: Record<Locale, Dictionary> = {
@@ -240,6 +244,13 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     startWave: "Start wave",
     selectWave: "Select your wave (optional)",
     includePastRaces: "Include past races",
+    provisionalNoticeTitle: "Pending confirmation",
+    provisionalRouteNotice:
+      "Course from the previous edition, pending confirmation. The organizers have not published this year’s route yet, so the map, splits, and cheer points may change.",
+    provisionalStartTimeNotice:
+      "Start time pending confirmation. The organizers have not confirmed this year’s start time yet, so the time shown may change.",
+    provisionalShareTimesNotice:
+      "Predicted times are based on these provisional details. Links shared now will show the updated times once they are confirmed.",
   },
   es: {
     about: "Acerca de",
@@ -371,6 +382,13 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     startWave: "Cajón de salida",
     selectWave: "Selecciona tu cajón (opcional)",
     includePastRaces: "Incluir carreras pasadas",
+    provisionalNoticeTitle: "Pendiente de confirmación",
+    provisionalRouteNotice:
+      "Recorrido de la edición anterior, pendiente de confirmación. La organización aún no ha publicado el recorrido de este año, así que el mapa, los puntos oficiales y los puntos para animar pueden cambiar.",
+    provisionalStartTimeNotice:
+      "Hora de salida pendiente de confirmación. La organización aún no ha confirmado la hora de salida de este año, así que la hora indicada puede cambiar.",
+    provisionalShareTimesNotice:
+      "Las horas previstas se basan en estos datos provisionales. Los enlaces que compartas ahora mostrarán las horas actualizadas cuando se confirmen.",
   },
 };
 

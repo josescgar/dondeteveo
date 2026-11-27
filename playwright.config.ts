@@ -25,7 +25,13 @@ export default defineConfig({
   ],
   webServer: {
     command: `npm run dev -- --host 127.0.0.1 --port ${PORT}`,
-    env: { ...process.env, ASTRO_DEV_BACKGROUND: "0" },
+    env: {
+      ...process.env,
+      ASTRO_DEV_BACKGROUND: "0",
+      // Test-only race editions (e.g. a provisional edition) merged into the
+      // catalog served to e2e tests. See src/lib/races/catalog.ts.
+      RACE_DATA_FIXTURES_DIR: "tests/fixtures/data",
+    },
     url: BASE_URL,
     reuseExistingServer: false,
   },

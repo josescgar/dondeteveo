@@ -1,0 +1,6 @@
+{
+  "officialSourceName": "Test fixture",
+  "officialSourceUrl": "https://example.com/",
+  "routeSourceType": "manual-trace",
+  "notes": "Test-only fixture loaded by Playwright through RACE_DATA_FIXTURES_DIR. Approximate straight-line route along the Guadalquivir in Seville."
+}

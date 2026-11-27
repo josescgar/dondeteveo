@@ -1,0 +1,6 @@
+{
+  "officialSourceName": "Test fixture",
+  "officialSourceUrl": "https://example.com/",
+  "routeSourceType": "manual-trace",
+  "notes": "Route and points carried over unchanged from the 2025 edition; the 2099 course had not been published at rollover time, so the route is marked provisional in meta.json. Start time 09:00 carried over from 2025 and marked provisional. Previous edition notes: Test-only fixture loaded by Playwright through RACE_DATA_FIXTURES_DIR. Approximate straight-line route along the Guadalquivir in Seville."
+}
