@@ -15,7 +15,7 @@
     "url": "https://www.google.com/maps/d/u/0/edit?mid=1nwo3MO94wSrQ55ApPaJVnFEWAf2YygA&usp=sharing",
     "loginRequired": false,
     "checkedOn": "2026-11-27",
-    "notes": "The official course page links a public Google My Maps map titled \"Circuito Homologado Media Maratón Mérida 2027\" (this edition), plus a KMZ \"Circuito Homologado Media Maratón Mérida 2026\" and a 2026 Wikiloc trail. The 2027 map exported as KML on 2026-11-27 measures 21.195 km (+0.46%); the 2026 KMZ measures 21.331 km (+1.11%). Both differ from the route in data/ (from the 2024 Wikiloc track, 21.097 km) and the existing points do not fit them, so the 2027 route was not imported."
+    "notes": "The official course page links a public Google My Maps map titled \"Circuito Homologado Media Maratón Mérida 2027\" (this edition), plus a KMZ \"Circuito Homologado Media Maratón Mérida 2026\" and a 2026 Wikiloc trail. The 2027 map, exported as KML on 2026-11-27 (21.195 km, +0.46%), is the source of the 2027 edition's route, imported fresh with generated splits because the earlier points did not fit it."
   },
   "nextEdition": {
     "year": 2027,
@@ -40,5 +40,5 @@
       "checkedOn": "2026-11-27"
     }
   },
-  "notes": "On 2026-11-27 the 2027 date, start time and the 2027 course map were published; the route in data/es/media-maraton-merida/2027 is still the carried-over 2024 Wikiloc track, pending a person rebuilding the points for the 2027 course."
+  "notes": "On 2026-11-27 the 2027 date, start time and the 2027 course map were published. The 2027 edition uses the organiser's 2027 map with generated splits; cheer points and location-specific wording are tracked in #151."
 }
