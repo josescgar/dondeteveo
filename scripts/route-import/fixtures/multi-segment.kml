@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
+  <Document>
+    <name>Fixture course</name>
+    <Placemark>
+      <name>Start line</name>
+      <Point><coordinates>1.4300,38.9990,0</coordinates></Point>
+    </Placemark>
+    <Folder>
+      <name>Course</name>
+      <Placemark>
+        <name>First half</name>
+        <LineString>
+          <tessellate>1</tessellate>
+          <coordinates>
+            1.4300,38.9990,0 1.4310,38.9990,0
+            1.4320,38.9990,0
+          </coordinates>
+        </LineString>
+      </Placemark>
+      <Placemark>
+        <name>Second half</name>
+        <MultiGeometry>
+          <LineString>
+            <coordinates>1.4320,38.9990,0 1.4330,38.9990,0</coordinates>
+          </LineString>
+          <LineString>
+            <coordinates>1.4330,38.9990,0 1.4340,38.9990,0</coordinates>
+          </LineString>
+        </MultiGeometry>
+      </Placemark>
+    </Folder>
+  </Document>
+</kml>

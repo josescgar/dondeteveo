@@ -30,6 +30,10 @@ npm run test:unit    # Vitest unit tests
 npm run test:e2e     # Playwright e2e smoke tests
 npm run test         # Unit tests + Playwright e2e smoke tests
 
+npm run data:validate                    # Validate every race edition (runs in CI)
+npm run data:validate -- <edition-dir>   # Validate one edition
+npm run data:import -- <file.gpx|kml> <edition-dir> --distance <km>  # Import a route
+
 # Run a single unit test file
 npx vitest run src/features/share-planner/share-planner.test.ts
 

@@ -113,15 +113,57 @@ Community members can contribute new races via pull request. See [`CONTRIBUTING.
 ## Curation Workflow
 
 - Add or update one edition at a time.
-- Validate required files and fields.
-- Check that the route, points, and metadata align.
+- Import GPX/KML routes with the import script instead of converting them by hand:
+
+  ```bash
+  npm run data:import -- <route.gpx|route.kml> data/<iso-country>/<race-slug>/<year> --distance <official-km> [--name "<race name>"]
+  ```
+
+  - Reads GPX tracks (all `trkseg`s; routes only when the file has no usable track, so a course exported as both is not doubled), and KML `LineString` / `gx:Track` geometries, including `MultiGeometry`. Several lines are joined in document order only when each starts where the previous one ended (within 0.25 km, `--max-join-gap-km`); otherwise the import fails and lists the lines so one can be picked with `--line <n>`. KMZ must be unzipped first.
+  - Writes `route.geojson` (one `LineString`, elevation and source metadata removed, coordinates rounded to six decimals, consecutive duplicates dropped) and a starter `points.geojson` with `start`, `km-<n>` splits every 5 km (`--split-interval`), `halfway` for marathons, and `finish`. Cheer points are not generated.
+  - Point `distanceKm` values are official distances; positions are interpolated at the same fraction of the measured route length. The script prints the measured length and its difference from the official distance: record both in `source.json` `notes`. If the difference is more than the validator's 3%, the import fails without writing anything unless `--allow-length-mismatch` is passed.
+  - Refuses to write into an existing edition folder unless `--force` is passed (which overwrites only `route.geojson` and `points.geojson`), and refuses any target that does not resolve to `<data-dir>/<iso-country>/<race-slug>/<year>` (`--data-dir`, default `data`).
+  - Then add `meta.json` and `source.json`, add location suffixes to split labels (e.g. `"5K split - Plaza Nueva"`), and add cheer points.
+
+- Validate the edition (or omit the folder to validate the whole catalog; CI does this on every push):
+
+  ```bash
+  npm run data:validate -- data/<iso-country>/<race-slug>/<year>
+  ```
+
 - Preserve past editions rather than overwriting them.
+
+## Validation Checks
+
+`npm run data:validate` exits non-zero on any error. `--list-checks` prints the checks; tolerances are configurable with `--length-tolerance`, `--max-jump-km`, `--max-point-offset-m`, `--point-position-km` and `--point-position-pct`.
+
+| Check                       | Rule                                                                                                                                                                     |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `required-files`            | `meta.json`, `source.json`, `route.geojson` and `points.geojson` exist                                                                                                   |
+| `schema`                    | Every file (and `localizations.json`, if present) is valid JSON matching the Zod schemas                                                                                 |
+| `edition-year`              | `meta.date` is in the edition folder's year                                                                                                                              |
+| `timezone`                  | `meta.timezone` is a valid IANA time zone (not a UTC offset)                                                                                                             |
+| `waves`                     | `meta.waves`, if present, has at least two entries                                                                                                                       |
+| `route-single-line`         | `route.geojson` has exactly one `LineString` feature                                                                                                                     |
+| `route-length`              | Measured route length is within 3% of `distanceKm`                                                                                                                       |
+| `route-jumps`               | No gap over 2 km between consecutive route coordinates                                                                                                                   |
+| `points-on-route`           | Every point is within 50 m of the route line                                                                                                                             |
+| `point-distance-range`      | Every point `distanceKm` is between 0 and the race `distanceKm` (points use official distances)                                                                          |
+| `point-ids-unique`          | Point ids are unique within the edition                                                                                                                                  |
+| `point-position`            | Each point's along-route position, scaled to the official distance, is within max(1 km, 5%) of its `distanceKm`; on out-and-back legs and laps the matching pass is used |
+| `start-finish-points`       | There is a point at `distanceKm` 0 and one at the race `distanceKm`                                                                                                      |
+| `localization-point-labels` | Every `pointLabels` key in `localizations.json` is an existing point id                                                                                                  |
+| `folder-names`              | Every folder under `data/` is `<iso-country>/<race-slug>/<year>` (two-letter lowercase country, kebab-case slug, four-digit year), since the site loads them all         |
+| `slug-unique`               | A race slug is used in only one country folder                                                                                                                           |
+
+Accepted exceptions for committed editions live in `scripts/edition-validation/known-issues.ts`. Each one names an edition, a check and looser limits for that check (for example `lengthTolerancePercent: 3.5`). Errors within those limits are reported as warnings, anything beyond them is still an error, and the validator warns when an exception is no longer needed. Exceptions for past editions are permanent, because past editions are preserved as published; never add one to get a new edition through.
 
 ## QA Checklist
 
-- Required files present
+- Route imported with `npm run data:import` when a GPX/KML file exists
+- `npm run data:validate` passes for the edition
 - Required metadata present
-- Slug globally unique
 - Timezone present and correct
-- Source information present
+- Source information present, including the measured route length for imports
+- Split labels carry location suffixes; cheer points added where useful
 - Route and points load correctly

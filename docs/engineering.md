@@ -54,7 +54,7 @@ Prevents lint and format regressions from reaching CI.
 
 ## CI/CD Baseline
 
-- Branch pushes run `quality` only (lint, typecheck, unit tests, build) — fast feedback, no browser overhead
+- Branch pushes run `quality` only (lint, typecheck, unit tests, race data validation, build) — fast feedback, no browser overhead
 - PRs run the full suite: `quality` → `e2e-smoke` (depends on `quality`)
 - All jobs run on `ubuntu-latest`; no macOS runners
 - Deploy is currently disabled (stubbed in `ci.yml`)
