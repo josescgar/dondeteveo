@@ -1,0 +1,44 @@
+{
+  "slug": "carrera-triana-los-remedios-10k",
+  "countryCode": "es",
+  "name": "Triana - Los Remedios 10K \"Torre Sevilla\"",
+  "city": "Seville",
+  "distanceKm": 10,
+  "catalogStatus": "in-catalog",
+  "trackingIssue": null,
+  "usualMonth": 3,
+  "officialWebsiteUrl": "https://imd.sevilla.org/programas-deportivos/circuito-carreras-sevilla10/calendario-del-circuito/carrera-popular-triana",
+  "coursePageUrl": "https://imd.sevilla.org/programas-deportivos/circuito-carreras-sevilla10/calendario-del-circuito/carrera-popular-triana",
+  "regulationsUrl": null,
+  "trackSource": {
+    "type": "manual-trace",
+    "url": "https://imd.sevilla.org/programas-deportivos/circuito-carreras-sevilla10/archivos/PlanoCarrera10K.pdf",
+    "loginRequired": false,
+    "checkedOn": "2026-11-27",
+    "notes": "Route manually traced from the official street-by-street description and this course PDF linked on the IMD race page. The PDF downloads without login."
+  },
+  "nextEdition": {
+    "year": 2027,
+    "date": {
+      "value": null,
+      "sourceUrl": "https://imd.sevilla.org/programas-deportivos/circuito-carreras-sevilla10/calendario-del-circuito/carrera-popular-triana",
+      "checkedOn": "2026-11-27"
+    },
+    "startTime": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    },
+    "waves": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    },
+    "routeConfirmed": {
+      "value": false,
+      "sourceUrl": "https://imd.sevilla.org/programas-deportivos/circuito-carreras-sevilla10/calendario-del-circuito/carrera-popular-triana",
+      "checkedOn": "2026-11-27"
+    }
+  },
+  "notes": "On 2026-11-27 the IMD race page still described the 2026 edition; no 2027 date published."
+}

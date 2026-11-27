@@ -1,0 +1,44 @@
+{
+  "slug": "san-sebastian-marathon",
+  "countryCode": "es",
+  "name": "Zurich Maratón de San Sebastián",
+  "city": "San Sebastian",
+  "distanceKm": 42.195,
+  "catalogStatus": "candidate",
+  "trackingIssue": 101,
+  "usualMonth": 11,
+  "officialWebsiteUrl": "https://zurichmaratonsansebastian.com/en/",
+  "coursePageUrl": "https://zurichmaratonsansebastian.com/en/i-am-a-runner/course/",
+  "regulationsUrl": "https://zurichmaratonsansebastian.com/en/i-am-a-runner/regulation/",
+  "trackSource": {
+    "type": "none",
+    "url": null,
+    "loginRequired": null,
+    "checkedOn": "2026-11-27",
+    "notes": "The course page offers a PDF map of the 2026 course and no GPX, KML, My Maps, Strava or Wikiloc link."
+  },
+  "nextEdition": {
+    "year": 2027,
+    "date": {
+      "value": null,
+      "sourceUrl": "https://zurichmaratonsansebastian.com/en/",
+      "checkedOn": "2026-11-27"
+    },
+    "startTime": {
+      "value": null,
+      "sourceUrl": "https://zurichmaratonsansebastian.com/en/",
+      "checkedOn": "2026-11-27"
+    },
+    "waves": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    },
+    "routeConfirmed": {
+      "value": false,
+      "sourceUrl": "https://zurichmaratonsansebastian.com/en/i-am-a-runner/course/",
+      "checkedOn": "2026-11-27"
+    }
+  },
+  "notes": "The 2026 edition was held on 22 November 2026 at 09:00; no 2027 date was published on 2026-11-27."
+}

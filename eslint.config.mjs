@@ -32,4 +32,31 @@ export default [
       ],
     },
   },
+  {
+    // The race watchlist is internal sourcing state and must never reach the
+    // site bundle or a public page. Only the registry's own module (and its
+    // tests) may import it.
+    files: [
+      "src/pages/**",
+      "src/layouts/**",
+      "src/components/**",
+      "src/features/**",
+      "src/lib/**",
+    ],
+    ignores: ["src/lib/watchlist/**"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["**/watchlist", "**/watchlist/**"],
+              message:
+                "The race watchlist is internal tooling data and must not be used by site code.",
+            },
+          ],
+        },
+      ],
+    },
+  },
 ];

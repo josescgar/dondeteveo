@@ -1,0 +1,44 @@
+{
+  "slug": "san-silvestre-vallecana-10k",
+  "countryCode": "es",
+  "name": "Nationale-Nederlanden San Silvestre Vallecana",
+  "city": "Madrid",
+  "distanceKm": 10,
+  "catalogStatus": "in-catalog",
+  "trackingIssue": null,
+  "usualMonth": 12,
+  "officialWebsiteUrl": "https://www.sansilvestrevallecana.com/",
+  "coursePageUrl": "https://www.sansilvestrevallecana.com/recorrido_popular.php",
+  "regulationsUrl": "https://www.sansilvestrevallecana.com/reglamento_popular.php",
+  "trackSource": {
+    "type": "official-kml",
+    "url": "https://www.sansilvestrevallecana.com/",
+    "loginRequired": null,
+    "checkedOn": "2026-05-05",
+    "notes": "Official KMZ \"San Silvestre Vallecana Popular 2025\" published by the organizers, used for the 2026 edition until a 2026 file is published."
+  },
+  "nextEdition": {
+    "year": 2026,
+    "date": {
+      "value": "2026-12-31",
+      "sourceUrl": "https://www.sansilvestrevallecana.com/",
+      "checkedOn": "2026-05-05"
+    },
+    "startTime": {
+      "value": "17:30",
+      "sourceUrl": "https://www.sansilvestrevallecana.com/",
+      "checkedOn": "2026-05-05"
+    },
+    "waves": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    },
+    "routeConfirmed": {
+      "value": false,
+      "sourceUrl": "https://www.sansilvestrevallecana.com/",
+      "checkedOn": "2026-05-05"
+    }
+  },
+  "notes": "On 2026-11-27 the Popular course page (headed \"SAN SILVESTRE VALLECANA 2026\") linked a Google My Maps viewer (https://www.google.com/maps/d/u/1/viewer?mid=1u0o01wS8evVtiMX2ibAqLQPekoNCJqo); check whether it is the 2026 course."
+}

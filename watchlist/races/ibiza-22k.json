@@ -1,0 +1,44 @@
+{
+  "slug": "ibiza-22k",
+  "countryCode": "es",
+  "name": "Santa Eulària Ibiza 22K",
+  "city": "Ibiza",
+  "distanceKm": 22,
+  "catalogStatus": "in-catalog",
+  "trackingIssue": null,
+  "usualMonth": 4,
+  "officialWebsiteUrl": "https://ibizamarathon.es/en/",
+  "coursePageUrl": "https://ibizamarathon.es/en/22k-2/",
+  "regulationsUrl": null,
+  "trackSource": {
+    "type": "official-kml",
+    "url": "https://ibizamarathon.es/en/",
+    "loginRequired": null,
+    "checkedOn": "2026-03-16",
+    "notes": "Official KML downloaded from the race website for the 2026 edition; the exact file URL was not recorded. No KML or GPX link was visible on the homepage on 2026-11-27."
+  },
+  "nextEdition": {
+    "year": 2027,
+    "date": {
+      "value": "2027-04-10",
+      "sourceUrl": "https://ibizamarathon.es/en/",
+      "checkedOn": "2026-11-27"
+    },
+    "startTime": {
+      "value": null,
+      "sourceUrl": "https://ibizamarathon.es/en/",
+      "checkedOn": "2026-11-27"
+    },
+    "waves": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    },
+    "routeConfirmed": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    }
+  },
+  "notes": "No regulations page found on 2026-11-27; the 2026 runner's guides (PDF) were the closest documents."
+}

@@ -1,0 +1,81 @@
+{
+  "slug": "valencia-marathon",
+  "countryCode": "es",
+  "name": "Valencia Marathon Trinidad Alfonso Zurich",
+  "city": "Valencia",
+  "distanceKm": 42.195,
+  "catalogStatus": "candidate",
+  "trackingIssue": 91,
+  "usualMonth": 12,
+  "officialWebsiteUrl": "https://www.valenciaciudaddelrunning.com/en/marathon/presentation/",
+  "coursePageUrl": "https://www.valenciaciudaddelrunning.com/en/marathon/official-route-marathon/",
+  "regulationsUrl": "https://www.valenciaciudaddelrunning.com/en/marathon/regulations-valencia-marathon/",
+  "trackSource": {
+    "type": "none",
+    "url": null,
+    "loginRequired": null,
+    "checkedOn": "2026-11-27",
+    "notes": "The course page offers a PDF map (https://cdn1.valenciaciudaddelrunning.com/wp-content/uploads/2026/11/plano-recorrido-42k-2026.pdf) and says the course is on Google Maps, but links no GPX, KML, My Maps or Strava route."
+  },
+  "nextEdition": {
+    "year": 2026,
+    "date": {
+      "value": "2026-12-06",
+      "sourceUrl": "https://www.valenciaciudaddelrunning.com/en/marathon/regulations-valencia-marathon/",
+      "checkedOn": "2026-11-27"
+    },
+    "startTime": {
+      "value": "08:15",
+      "sourceUrl": "https://www.valenciaciudaddelrunning.com/en/marathon/regulations-valencia-marathon/",
+      "checkedOn": "2026-11-27"
+    },
+    "waves": {
+      "value": [
+        {
+          "label": "Wave 1 (under 2:50)",
+          "startTime": "08:15"
+        },
+        {
+          "label": "Wave 2 (2:50-2:59)",
+          "startTime": "08:25"
+        },
+        {
+          "label": "Wave 3 (3:00-3:11)",
+          "startTime": "08:35"
+        },
+        {
+          "label": "Wave 4 (3:12-3:19)",
+          "startTime": "08:45"
+        },
+        {
+          "label": "Wave 5 (3:20-3:31)",
+          "startTime": "08:55"
+        },
+        {
+          "label": "Wave 6 (3:32-3:42)",
+          "startTime": "09:05"
+        },
+        {
+          "label": "Wave 7 (3:43-3:55)",
+          "startTime": "09:15"
+        },
+        {
+          "label": "Wave 8 (3:56-4:09)",
+          "startTime": "09:25"
+        },
+        {
+          "label": "Wave 9 (4:10 and over)",
+          "startTime": "09:35"
+        }
+      ],
+      "sourceUrl": "https://www.valenciaciudaddelrunning.com/en/marathon/regulations-valencia-marathon/",
+      "checkedOn": "2026-11-27"
+    },
+    "routeConfirmed": {
+      "value": true,
+      "sourceUrl": "https://www.valenciaciudaddelrunning.com/en/marathon/official-route-marathon/",
+      "checkedOn": "2026-11-27"
+    }
+  },
+  "notes": "Wheelchair athletes start early within the third wave, per the regulations."
+}

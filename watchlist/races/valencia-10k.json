@@ -1,0 +1,44 @@
+{
+  "slug": "valencia-10k",
+  "countryCode": "es",
+  "name": "10K Valencia Ibercaja by Kiprun",
+  "city": "Valencia",
+  "distanceKm": 10,
+  "catalogStatus": "candidate",
+  "trackingIssue": 98,
+  "usualMonth": 1,
+  "officialWebsiteUrl": "https://10kvalencia.com/en/",
+  "coursePageUrl": "https://10kvalencia.com/en/circuitos/",
+  "regulationsUrl": "https://10kvalencia.com/en/10k-regulations/",
+  "trackSource": {
+    "type": "none",
+    "url": null,
+    "loginRequired": null,
+    "checkedOn": "2026-11-27",
+    "notes": "The circuits page shows 2027 map images only; no GPX, KML, My Maps, Strava or Wikiloc link."
+  },
+  "nextEdition": {
+    "year": 2027,
+    "date": {
+      "value": "2027-01-10",
+      "sourceUrl": "https://10kvalencia.com/en/10k-regulations/",
+      "checkedOn": "2026-11-27"
+    },
+    "startTime": {
+      "value": null,
+      "sourceUrl": "https://10kvalencia.com/en/10k-regulations/",
+      "checkedOn": "2026-11-27"
+    },
+    "waves": {
+      "value": null,
+      "sourceUrl": "https://10kvalencia.com/en/10k-regulations/",
+      "checkedOn": "2026-11-27"
+    },
+    "routeConfirmed": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    }
+  },
+  "notes": "On 2026-11-27 the regulations gave conflicting first start times (09:25 in Art. 1, 09:30 in Art. 7.1) followed by 15 more waves, so start time and waves are left unknown."
+}

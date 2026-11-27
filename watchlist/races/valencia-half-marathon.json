@@ -1,0 +1,44 @@
+{
+  "slug": "valencia-half-marathon",
+  "countryCode": "es",
+  "name": "Valencia Half Marathon Trinidad Alfonso Zurich",
+  "city": "Valencia",
+  "distanceKm": 21.097,
+  "catalogStatus": "candidate",
+  "trackingIssue": 95,
+  "usualMonth": 10,
+  "officialWebsiteUrl": "https://www.valenciaciudaddelrunning.com/en/half/presentation-half-marathon/",
+  "coursePageUrl": null,
+  "regulationsUrl": "https://www.valenciaciudaddelrunning.com/en/half/reglamento-21k-valencia-2027/",
+  "trackSource": {
+    "type": "none",
+    "url": null,
+    "loginRequired": null,
+    "checkedOn": "2026-11-27",
+    "notes": "No half marathon course page or route file linked from the presentation page or the 2027 regulations."
+  },
+  "nextEdition": {
+    "year": 2027,
+    "date": {
+      "value": "2027-10-24",
+      "sourceUrl": "https://www.valenciaciudaddelrunning.com/en/half/reglamento-21k-valencia-2027/",
+      "checkedOn": "2026-11-27"
+    },
+    "startTime": {
+      "value": "08:25",
+      "sourceUrl": "https://www.valenciaciudaddelrunning.com/en/half/reglamento-21k-valencia-2027/",
+      "checkedOn": "2026-11-27"
+    },
+    "waves": {
+      "value": null,
+      "sourceUrl": "https://www.valenciaciudaddelrunning.com/en/half/reglamento-21k-valencia-2027/",
+      "checkedOn": "2026-11-27"
+    },
+    "routeConfirmed": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    }
+  },
+  "notes": "The 2027 regulations describe eight waves from 08:25 to 09:25; per-wave times were not recorded."
+}

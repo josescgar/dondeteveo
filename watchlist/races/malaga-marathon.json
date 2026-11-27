@@ -1,0 +1,44 @@
+{
+  "slug": "malaga-marathon",
+  "countryCode": "es",
+  "name": "Generali Malaga Marathon",
+  "city": "Malaga",
+  "distanceKm": 42.195,
+  "catalogStatus": "in-catalog",
+  "trackingIssue": null,
+  "usualMonth": 11,
+  "officialWebsiteUrl": "https://www.generalimaratonmalaga.com/marathon-malaga-en/",
+  "coursePageUrl": "https://www.generalimaratonmalaga.com/road-marathon-malaga/",
+  "regulationsUrl": "https://www.generalimaratonmalaga.com/regulations-marathon-malaga/",
+  "trackSource": {
+    "type": "wikiloc",
+    "url": "https://www.wikiloc.com/running-trails/generali-maraton-malaga-2025-236011261",
+    "loginRequired": true,
+    "checkedOn": "2026-08-03",
+    "notes": "\"GENERALI Maratón Málaga 2025\" track published on Wikiloc by Atletismo Málaga and linked by the organizer as the 2026 42K course. Wikiloc requires a signed-in account to download a track."
+  },
+  "nextEdition": {
+    "year": 2027,
+    "date": {
+      "value": null,
+      "sourceUrl": "https://www.generalimaratonmalaga.com/marathon-malaga-en/",
+      "checkedOn": "2026-11-27"
+    },
+    "startTime": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    },
+    "waves": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    },
+    "routeConfirmed": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    }
+  },
+  "notes": "On 2026-11-27 the official site said 2027 registration was \"coming soon\" and linked a different Wikiloc short link for the 42K road course (https://loc.wiki/t/293700127?wa=sc), not yet reviewed."
+}

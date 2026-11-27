@@ -1,0 +1,44 @@
+{
+  "slug": "sevilla-marathon",
+  "countryCode": "es",
+  "name": "Zurich Seville Marathon",
+  "city": "Seville",
+  "distanceKm": 42.195,
+  "catalogStatus": "in-catalog",
+  "trackingIssue": null,
+  "usualMonth": 2,
+  "officialWebsiteUrl": "https://www.zurichmaratonsevilla.es/en/",
+  "coursePageUrl": null,
+  "regulationsUrl": "https://www.zurichmaratonsevilla.es/en/zms-regulations",
+  "trackSource": {
+    "type": "strava-route",
+    "url": "https://www.strava.com/routes/3446449712738703246",
+    "loginRequired": true,
+    "checkedOn": "2026-08-03",
+    "notes": "\"Zurich Maratón de Sevilla 2026\" Strava route by Dani Quintero (not the organizer); the 2027 regulations publish the same itinerary. Strava requires a signed-in account to export a route as GPX."
+  },
+  "nextEdition": {
+    "year": 2027,
+    "date": {
+      "value": "2027-02-21",
+      "sourceUrl": "https://www.zurichmaratonsevilla.es/en/zms-regulations",
+      "checkedOn": "2026-08-03"
+    },
+    "startTime": {
+      "value": "08:30",
+      "sourceUrl": "https://www.zurichmaratonsevilla.es/en/zms-regulations",
+      "checkedOn": "2026-08-03"
+    },
+    "waves": {
+      "value": null,
+      "sourceUrl": "https://www.zurichmaratonsevilla.es/en/zms-regulations",
+      "checkedOn": "2026-08-03"
+    },
+    "routeConfirmed": {
+      "value": true,
+      "sourceUrl": "https://www.zurichmaratonsevilla.es/en/zms-regulations",
+      "checkedOn": "2026-08-03"
+    }
+  },
+  "notes": "Wave details were pending when the 2027 edition was added; only the 08:29 wheelchair start was known."
+}
