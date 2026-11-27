@@ -187,8 +187,9 @@ describe("buildRolloverEdition", () => {
     expect(edition.source.officialSourceUrl).toBe("https://example.com/");
     expect(edition.source.routeSourceType).toBe("gpx-import");
     expect(edition.source.notes).toContain(
-      "Route and points carried over unchanged from the 2026 edition",
+      "Route and points carried over unchanged from the 2026 edition and not yet confirmed against the 2027 course",
     );
+    expect(edition.source.notes).not.toMatch(/had not been published/);
     expect(edition.source.notes).toContain(
       "Start time 08:30 carried over from 2026 and marked provisional",
     );

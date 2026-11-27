@@ -276,7 +276,7 @@ export const buildRolloverSourceNotes = ({
   previousNotes: string;
 }): string =>
   [
-    `Route and points carried over unchanged from the ${previousYear} edition; the ${year} course had not been published at rollover time, so the route is marked provisional in meta.json.`,
+    `Route and points carried over unchanged from the ${previousYear} edition and not yet confirmed against the ${year} course, so the route is marked provisional in meta.json.`,
     startTimeNote,
     `Previous edition notes: ${previousNotes}`,
   ].join(" ");

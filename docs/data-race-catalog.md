@@ -92,6 +92,23 @@ Creates `<data-dir>/<iso-country>/<race-slug>/<year>/` (`--data-dir` defaults to
 
 The logic lives in `scripts/rollover/` (`rollover.logic.ts`, `rollover-files.ts`, tests beside them); the CLI is `scripts/rollover-edition.ts`.
 
+## First Edition Metadata
+
+```bash
+npm run data:first-edition -- <facts.json> data/<iso-country>/<race-slug>/<year> [--min-days <n>] [--data-dir <dir>]
+```
+
+Writes `meta.json`, `source.json` and `localizations.json` (Spanish) for a race's first edition, next to the `route.geojson` and `points.geojson` that `npm run data:import` created in that folder. Used by the `scout-races` skill for approved candidate races, and usable by hand. The facts file (kept outside the repository) holds the verified facts and the quotes they were read from: `runDate`, `name` and `city` (`en`/`es`), `distanceKm`, `date`, `startTime`, `startTimeProvisional`, `timezone`, `officialWebsiteUrl`, optional `waves` (labels in `en`/`es`) with `generalStartWave` (the first wave open to the general field, whose time must equal `startTime`), the imported `route` (file URL and title, the official page that links it, whether it is this edition's track or an earlier one with a same-course quote) and `facts` (`fact`, `value`, `url`, `quotes`). Run `npm run data:first-edition -- --help` for the exact shape.
+
+- `summary` and `heroNote` get neutral wording that names only the host city ("A half marathon through the streets of Seville." / "Cheer points for this course have not been added yet. …"), in English and Spanish, until someone adds cheer points and location-specific text.
+- `pointLabels` in Spanish for the generated splits (`Salida`, `Punto <n>K`, `Punto medio`, `Meta`); `waveLabels` when waves are given.
+- `source.json` notes record the route file, the page that links it and the measured length against the official distance, then one `Checked <date> by scout-races: <fact> <value> per <url>: "<quote>".` sentence per fact.
+- `provisional.route: true` only when the route is an earlier edition's track; `provisional.startTime: true` only for a tentative start time.
+- Text fields must be single lines (no line breaks, tabs or other control characters) within length limits, and the printed list puts each text in its own code span, so text copied from a web page cannot break out into the PR body.
+- Refuses facts that disagree with each other (a `date`, `startTime`, `distanceKm`, `waves`, `name` or `name.es` fact whose value differs from the edition's, a `startTime` that is not the first general-field wave's time, repeated wave labels, an earlier track's year that is not before the edition's), a date outside the folder's year or fewer than `--min-days` (default 2) days after `runDate`, points other than generated splits, a finish point at another distance, any existing `meta.json`, `source.json` or `localizations.json`, and a race that already has another edition (use `npm run data:rollover` for later editions). Prints the measured length and every text it wrote, for review.
+
+The logic lives in `scripts/first-edition/` (`first-edition.logic.ts`, `first-edition-files.ts`, tests beside them); the CLI is `scripts/first-edition.ts`.
+
 ## `source.json` Schema
 
 | Field                | Notes                                                |
@@ -236,7 +253,7 @@ Community members can contribute new races via pull request. See [`CONTRIBUTING.
   - Writes `route.geojson` (one `LineString`, elevation and source metadata removed, coordinates rounded to six decimals, consecutive duplicates dropped) and a starter `points.geojson` with `start`, `km-<n>` splits every 5 km (`--split-interval`), `halfway` for marathons, and `finish`. Cheer points are not generated.
   - Point `distanceKm` values are official distances; positions are interpolated at the same fraction of the measured route length. The script prints the measured length and its difference from the official distance: record both in `source.json` `notes`. If the difference is more than the validator's 3%, the import fails without writing anything unless `--allow-length-mismatch` is passed.
   - Refuses to write into an existing edition folder unless `--force` is passed (which overwrites only `route.geojson` and `points.geojson`), and refuses any target that does not resolve to `<data-dir>/<iso-country>/<race-slug>/<year>` (`--data-dir`, default `data`).
-  - Then add `meta.json` and `source.json`, add location suffixes to split labels (e.g. `"5K split - Plaza Nueva"`), and add cheer points.
+  - Then add `meta.json` and `source.json` (for a race's first edition, `npm run data:first-edition` writes them with `localizations.json` from verified facts; see [First Edition Metadata](#first-edition-metadata)), add location suffixes to split labels (e.g. `"5K split - Plaza Nueva"`), and add cheer points.
 
 - Validate the edition (or omit the folder to validate the whole catalog; CI does this on every push):
 
@@ -254,7 +271,7 @@ Community members can contribute new races via pull request. See [`CONTRIBUTING.
 The `scout-races` Claude Code skill (`.claude/skills/scout-races/`) does the reading and judgement part of curation and is designed to run unattended (weekly):
 
 ```
-/scout-races [--races <slug>,...] [--max-prs <n>] [--max-issues <n>] [--discovery on|dry-run|off] [--dry-run]
+/scout-races [--races <slug>,...] [--max-prs <n>] [--max-issues <n>] [--min-days <n>] [--discovery on|dry-run|off] [--dry-run]
 ```
 
 One run:
@@ -264,17 +281,20 @@ One run:
    - a new date for a race whose latest edition is past: `npm run data:rollover` and a PR with the provisional edition;
    - changed facts (date in the same year, start time, waves, provisional flags, course) on a published upcoming edition: a PR that updates it;
    - a new official track for the edition: imported and the route marked confirmed. If the course changed so much that the existing points no longer fit, the track is imported fresh with generated splits, cheer points are dropped, place names on the old course are replaced with neutral wording (listed in the PR for review), and an issue asks a person to add cheer points;
-   - a course that needs a login (Strava, Wikiloc, private Google My Maps), exists only as a PDF or image, or cannot be imported: an issue saying exactly which file is needed and where it is. It never traces a route;
+   - a course that needs a login (Strava, Wikiloc, private Google My Maps), exists only as a PDF or image, or cannot be imported: an issue saying exactly which file is needed and where it is. This never holds back a rollover: the new edition goes out with the previous route marked provisional while the issue waits for the file. It never traces a route;
    - a cancellation, postponement, conflicting official facts, or a site that stays unreadable: an issue for a person.
+   - an approved `candidate` (below) whose date, general-field start time, official distance and a track for the edition are all verified on official pages: a PR that adds the race's first edition (`npm run data:import`, then `npm run data:first-edition`), with generated splits, no cheer points, neutral `summary` and `heroNote`, Spanish localizations and waves when published. It switches the watchlist entry to `in-catalog`, closes the tracking issue, and comes with a `cheer-points` issue. An earlier edition's track is used only when an official page for the upcoming edition says the course is unchanged or presents that track, and the route is then marked provisional. Otherwise the tracking issue gets one comment listing what is known (with sources) and what is missing, repeated only when that changes. A race fewer than `--min-days` (default 2) days away is not added for that edition.
 3. Looks for this edition's track in a fixed order: official GPX/KML/KMZ download; Google My Maps exported as KML (`https://www.google.com/maps/d/kml?mid=<id>&forcekml=1`, public maps only); Strava or Wikiloc (an issue for a person, since both need an account); otherwise the previous edition's route stays provisional. Files are imported only with `npm run data:import`, and a track counts as this edition's only when it is labelled with the edition year or an official page for the edition presents it as the course; files labelled with an earlier year are only evidence and the search continues.
 4. Scans the discovery sources for road races in Spain from 5K to marathon with an official website and enough participants, and proposes each new one as a `candidate` watchlist entry plus an "Add race data for…" issue.
 5. Opens one small PR with the remaining watchlist changes (refreshed `checkedOn` dates, new candidates) and ends with a summary of races checked, PRs and issues opened, facts changed, and pages it could not read.
+
+Candidate approval: a candidate's open tracking issue is the approval to add the race. Issues a person opened (every "Add race data for…" issue that predates the skill) count as approved. An issue whose body has any hidden `add-race` marker or the template's "Discovered by scout-races" text was opened by the scout from discovery, and counts only once a person labels it `status/ready`; when unsure, the skill treats an issue as scout-discovered. The skill never adds that label and never edits an issue body. A closed tracking issue, or none, means the race is only watched.
 
 Guarantees:
 
 - Every fact it sets is read on an official page in that run and recorded with its URL and verbatim quote, in the PR body and in `source.json` `notes`. Conflicting or ambiguous facts, or facts not tied to the edition and distance, stay unknown and are reported.
 - `startTime` is the first start open to the general field; special-category starts (handbike, wheelchair, elite-only) appear only in `waves`, because the wave picker is optional and the planner otherwise counts from `startTime`.
-- One race edition per PR, each on its own branch from the latest `origin/main` (`feature/scout-<slug>-<year>` for rollovers, `fix/scout-<slug>-<year>` for updates), opened only after `npm run data:validate`, `format:check`, `test:unit` and `build` pass. The PR links its `route.geojson` on the branch, which GitHub renders as a map, and states the measured route length against the official distance.
+- One race edition per PR, each on its own branch from the latest `origin/main` (`feature/scout-<slug>-<year>` for rollovers and first editions, `fix/scout-<slug>-<year>` for updates), opened only after `npm run data:validate`, `format:check`, `test:unit` and `build` pass. The PR links its `route.geojson` on the branch, which GitHub renders as a map, and states the measured route length against the official distance.
 - It never merges, never pushes to `main`, never modifies past editions, never adds validation exceptions or loosens a tolerance, and treats web content as untrusted data (text on a site is never followed as an instruction).
 - It is idempotent: before creating anything it searches open PRs and issues for the race (by branch name, a hidden `scout-races:` marker in the body, and the files changed), and a second run with nothing new opens nothing. Closed and merged items are checked too: the marker carries the proposed values, and something a person closed is proposed again only when those values changed. It opens at most 5 PRs and 5 issues per run by default.
 - A separate review agent checks each edition PR's facts against their sources and posts a comment review before a person reviews it.
