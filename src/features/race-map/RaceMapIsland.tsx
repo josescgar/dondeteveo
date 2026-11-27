@@ -3,7 +3,6 @@ import "leaflet/dist/leaflet.css";
 import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 
 import type { Locale } from "../../lib/config";
-import { MAP_ATTRIBUTION, MAP_TILE_URL } from "../../lib/config";
 import { getDictionary } from "../../lib/i18n";
 import type {
   RacePointsCollection,
@@ -12,6 +11,7 @@ import type {
 import {
   type RaceMapMarker,
   getMapMarkers,
+  getMapTileLayerConfig,
   getRouteCoordinates,
   getRouteSelection,
   type RouteSelection,
@@ -108,9 +108,12 @@ export default function RaceMapIsland({
 
       setCanFullscreen(Boolean(wrapperRef.current?.requestFullscreen));
 
+      const tiles = getMapTileLayerConfig(
+        import.meta.env.PUBLIC_CARTO_BASEMAPS_KEY,
+      );
       leaflet
-        .tileLayer(MAP_TILE_URL, {
-          attribution: MAP_ATTRIBUTION,
+        .tileLayer(tiles.url, {
+          attribution: tiles.attribution,
         })
         .addTo(mapRef.current);
 

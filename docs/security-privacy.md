@@ -28,7 +28,8 @@
 
 - GitHub Pages for hosting
 - Cloudflare in front of GitHub Pages
-- Map provider exposure is expected and should be disclosed
+- Map provider exposure is expected and should be disclosed: the visitor's browser requests map tiles (sending IP and referrer) from CARTO (`basemaps.cartocdn.com`) when `PUBLIC_CARTO_BASEMAPS_KEY` is set, otherwise from the OpenStreetMap Foundation (`tile.openstreetmap.org`). The CARTO key is public by design (it is in every tile URL); restrict it to the site's domains in the CARTO dashboard.
+- Do not set a `Referrer-Policy` that stops the referrer reaching `tile.openstreetmap.org`, and do not prefetch tiles: both are required by the OpenStreetMap tile usage policy.
 
 ## Dependency Posture
 

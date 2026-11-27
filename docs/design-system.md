@@ -62,7 +62,9 @@ All color tokens are redefined inside `html[data-theme="dark"] { ... }` in `glob
 | `--shadow-sm`             | `0 1px 4px rgba(30,111,160,0.08)`  | `0 1px 4px rgba(0,0,0,0.2)`  |
 | `--shadow-md`             | `0 4px 16px rgba(30,111,160,0.12)` | `0 4px 16px rgba(0,0,0,0.3)` |
 
-Map tiles always use the light CARTO tileset for better street name contrast. Marker colors remain fixed (light-mode values) regardless of theme.
+Map tiles are always light, in both themes, for better street name contrast. With `PUBLIC_CARTO_BASEMAPS_KEY` set, they use the CARTO light (Positron, `light_all`) raster tileset with `?key=` on every tile URL. Without it, they use the standard OpenStreetMap tiles (`tile.openstreetmap.org`), which are also light, so the dark theme needs no tile filter. The choice is made in `getMapTileLayerConfig()` in `src/features/race-map/race-map.logic.ts`. Marker colors remain fixed (light-mode values) regardless of theme.
+
+After changing the tile provider or its key, verify tiles in a browser, not just in CI: open a race page and its fullscreen map, and confirm real streets render under the route. A keyless CARTO request returns HTTP 200 with an "API key required" watermark image, so status codes alone do not catch it. The e2e test `race map requests OpenStreetMap or keyed CARTO tiles` guards the URL shape.
 
 ## Typography
 

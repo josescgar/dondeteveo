@@ -10,9 +10,17 @@ export const REQUIRED_CHECK_NAMES = [
   "e2e-smoke",
   "visual-regression",
 ] as const;
-export const MAP_TILE_URL =
-  "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
-export const MAP_ATTRIBUTION = "&copy; OpenStreetMap contributors &copy; CARTO";
+// CARTO Positron ("light_all") raster tiles, in the Leaflet form documented at
+// https://carto.com/basemaps/ . CARTO requires `?key=` on every tile URL.
+export const CARTO_LIGHT_TILE_URL =
+  "https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}{r}.png";
+export const CARTO_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attribution/">CARTO</a>';
+// Standard OpenStreetMap tiles, used when no CARTO key is configured. Single
+// host, no retina suffix: https://operations.osmfoundation.org/policies/tiles/
+export const OSM_TILE_URL = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
+export const OSM_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 export const DISCOVERY_PAGE_SIZE = 12;
 export const THEME_STORAGE_KEY = "dtv-theme";
 
