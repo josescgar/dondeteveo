@@ -1,0 +1,44 @@
+{
+  "slug": "barcelona-marathon",
+  "countryCode": "es",
+  "name": "Zurich Marató Barcelona",
+  "city": "Barcelona",
+  "distanceKm": 42.195,
+  "catalogStatus": "in-catalog",
+  "trackingIssue": null,
+  "usualMonth": 3,
+  "officialWebsiteUrl": "https://www.zurichmaratobarcelona.es/en/",
+  "coursePageUrl": "https://zurichmaratobarcelona.es/en/i-am-a-runner/course/",
+  "regulationsUrl": "https://zurichmaratobarcelona.es/en/i-am-a-runner/regulation/",
+  "trackSource": {
+    "type": "strava-route",
+    "url": null,
+    "loginRequired": null,
+    "checkedOn": "2026-04-22",
+    "notes": "Official Strava GPX (\"Zurich Marató Barcelona\", creator RPM SPORTS) was attached to issue #94; the Strava route URL was not recorded. On 2026-11-27 the official homepage linked only the Strava club page, not a route."
+  },
+  "nextEdition": {
+    "year": 2027,
+    "date": {
+      "value": "2027-03-14",
+      "sourceUrl": "https://www.zurichmaratobarcelona.es/en/",
+      "checkedOn": "2026-11-27"
+    },
+    "startTime": {
+      "value": null,
+      "sourceUrl": "https://www.zurichmaratobarcelona.es/en/",
+      "checkedOn": "2026-11-27"
+    },
+    "waves": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    },
+    "routeConfirmed": {
+      "value": false,
+      "sourceUrl": "https://www.zurichmaratobarcelona.es/en/",
+      "checkedOn": "2026-04-22"
+    }
+  },
+  "notes": "The catalog's 2027 edition carries the 2026 route, start time and box gun times forward because the organizer had not published 2027 details. Replace them once 2027 materials are out."
+}

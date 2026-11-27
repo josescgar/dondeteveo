@@ -1,0 +1,43 @@
+{
+  "slug": "barcelona-half-marathon",
+  "countryCode": "es",
+  "name": "Hyundai Barcelona Half Marathon by Brooks",
+  "city": "Barcelona",
+  "distanceKm": 21.097,
+  "catalogStatus": "in-catalog",
+  "trackingIssue": null,
+  "usualMonth": 2,
+  "officialWebsiteUrl": "https://www.mitjamarato.barcelona/en/",
+  "coursePageUrl": "https://www.mitjamarato.barcelona/soc-corredor-a/recorregut/",
+  "regulationsUrl": "https://www.mitjamarato.barcelona/en/i-am-a-runner/regulation/",
+  "trackSource": {
+    "type": "strava-route",
+    "url": "https://www.strava.com/routes/3314658373496892858",
+    "loginRequired": true,
+    "checkedOn": "2026-08-07",
+    "notes": "Strava route by RPM SPORTS linked from the official course page; imported for the 2027 edition. Strava requires a signed-in account to export a route as GPX."
+  },
+  "nextEdition": {
+    "year": 2027,
+    "date": {
+      "value": "2027-02-14",
+      "sourceUrl": "https://www.mitjamarato.barcelona/en/",
+      "checkedOn": "2026-11-27"
+    },
+    "startTime": {
+      "value": "08:30",
+      "sourceUrl": "https://www.mitjamarato.barcelona/soc-corredor-a/recorregut/",
+      "checkedOn": "2026-08-07"
+    },
+    "waves": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    },
+    "routeConfirmed": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "slug": "rocknroll-madrid-marathon",
+  "countryCode": "es",
+  "name": "Zurich Rock 'n' Roll Madrid Marathon",
+  "city": "Madrid",
+  "distanceKm": 42.195,
+  "catalogStatus": "in-catalog",
+  "trackingIssue": null,
+  "usualMonth": 4,
+  "officialWebsiteUrl": "https://rocknrollmadridrun.com/",
+  "coursePageUrl": "https://rocknrollmadridrun.com/recorridos/",
+  "regulationsUrl": "https://rocknrollmadridrun.com/reglamento/",
+  "trackSource": {
+    "type": "official-gpx",
+    "url": "https://rocknrollmadridrun.com/",
+    "loginRequired": null,
+    "checkedOn": "2026-03-16",
+    "notes": "Official GPX file (zrnrrsm-42k-2026.gpx) downloaded from the race website; the exact file URL was not recorded."
+  },
+  "nextEdition": {
+    "year": 2027,
+    "date": {
+      "value": null,
+      "sourceUrl": "https://rocknrollmadridrun.com/",
+      "checkedOn": "2026-11-27"
+    },
+    "startTime": {
+      "value": null,
+      "sourceUrl": "https://rocknrollmadridrun.com/",
+      "checkedOn": "2026-11-27"
+    },
+    "waves": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    },
+    "routeConfirmed": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    }
+  },
+  "notes": "On 2026-11-27 the homepage advertised 2027 registration but gave no 2027 date."
+}

@@ -1,0 +1,44 @@
+{
+  "slug": "movistar-madrid-medio-maraton",
+  "countryCode": "es",
+  "name": "Movistar Madrid Half Marathon",
+  "city": "Madrid",
+  "distanceKm": 21.097,
+  "catalogStatus": "in-catalog",
+  "trackingIssue": null,
+  "usualMonth": 3,
+  "officialWebsiteUrl": "https://www.mediomaratonmadrid.es/",
+  "coursePageUrl": "https://www.mediomaratonmadrid.es/mm4-recorrido",
+  "regulationsUrl": "https://www.mediomaratonmadrid.es/mm4-reglamento",
+  "trackSource": {
+    "type": "official-gpx",
+    "url": "https://www.mediomaratonmadrid.es/",
+    "loginRequired": null,
+    "checkedOn": "2026-03-15",
+    "notes": "Official GPX downloaded from the race website; the 2026 edition reused the 2025 course. The exact file URL was not recorded."
+  },
+  "nextEdition": {
+    "year": 2027,
+    "date": {
+      "value": "2027-04-04",
+      "sourceUrl": "https://www.mediomaratonmadrid.es/",
+      "checkedOn": "2026-11-27"
+    },
+    "startTime": {
+      "value": null,
+      "sourceUrl": "https://www.mediomaratonmadrid.es/",
+      "checkedOn": "2026-11-27"
+    },
+    "waves": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    },
+    "routeConfirmed": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    }
+  },
+  "notes": "The 2026 edition was in March; the announced 2027 date is in April."
+}

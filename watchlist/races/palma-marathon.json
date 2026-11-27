@@ -1,0 +1,44 @@
+{
+  "slug": "palma-marathon",
+  "countryCode": "es",
+  "name": "TUI Palma Marathon Mallorca",
+  "city": "Palma",
+  "distanceKm": 42.195,
+  "catalogStatus": "candidate",
+  "trackingIssue": 102,
+  "usualMonth": 10,
+  "officialWebsiteUrl": "https://www.palmademallorcamarathon.com/",
+  "coursePageUrl": "https://www.palmademallorcamarathon.com/english/race-info/schedule-and-maps",
+  "regulationsUrl": "https://www.palmademallorcamarathon.com/english/race-info/rules-and-regulations",
+  "trackSource": {
+    "type": "none",
+    "url": null,
+    "loginRequired": null,
+    "checkedOn": "2026-11-27",
+    "notes": "The schedule and maps page has a marathon map image and a PDF whose file name refers to a 2025 10K; no route file."
+  },
+  "nextEdition": {
+    "year": 2027,
+    "date": {
+      "value": "2027-10-17",
+      "sourceUrl": "https://www.palmademallorcamarathon.com/",
+      "checkedOn": "2026-11-27"
+    },
+    "startTime": {
+      "value": "08:05",
+      "sourceUrl": "https://www.palmademallorcamarathon.com/english/race-info/schedule-and-maps",
+      "checkedOn": "2026-11-27"
+    },
+    "waves": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    },
+    "routeConfirmed": {
+      "value": null,
+      "sourceUrl": "https://www.palmademallorcamarathon.com/english/race-info/schedule-and-maps",
+      "checkedOn": "2026-11-27"
+    }
+  },
+  "notes": "Marathon and half marathon share the 08:05 start."
+}

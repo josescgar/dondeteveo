@@ -1,0 +1,67 @@
+{
+  "sources": [
+    {
+      "id": "rfea-calendar",
+      "name": "RFEA competition calendar",
+      "url": "https://www.atletismorfea.es/calendario",
+      "countryCode": "es",
+      "coverage": "Official calendar of the Spanish athletics federation (RFEA). Includes the Ruta (road) discipline with 10 km, half marathon and marathon categories; seasons 2016 to 2027 are selectable.",
+      "howToRead": "Filter Disciplina = Ruta, then Categoría = 10 km, Medio Maratón or Maratón, and pick the season. The calendar can be exported as PDF or Excel. Only federation-registered races appear, so it is authoritative for dates of big races but misses many small popular races.",
+      "verifiedOn": "2026-11-27"
+    },
+    {
+      "id": "finishers-spain",
+      "name": "Finishers: races in Spain",
+      "url": "https://www.finishers.com/es/d/europa/espana",
+      "countryCode": "es",
+      "coverage": "Multi-sport race listing for Spain (about 500 events): road running, trail, triathlon, cycling and walking, with date and available distances.",
+      "howToRead": "Narrow to road races with the discipline=road query parameter on the /es/eventos search (also month=1..12 and dmin/dmax in metres, e.g. dmin=42195&dmax=42195 for marathons). Listings link to Finishers event pages, not to official sites, so follow through to find the organizer URL.",
+      "verifiedOn": "2026-11-27"
+    },
+    {
+      "id": "correrjuntos",
+      "name": "Correr Juntos race calendar",
+      "url": "https://correrjuntos.com/carreras",
+      "countryCode": "es",
+      "coverage": "Calendar of races in Spain plus some Latin American countries: marathons, half marathons, 10K, popular races and trail.",
+      "howToRead": "Use the Maratones, Medias maratón and 10K tabs and the province filter (Spain only). Each card shows name, distance, date and city; \"Fecha por confirmar\" means the date is not set yet. No month filter.",
+      "verifiedOn": "2026-11-27"
+    },
+    {
+      "id": "hdsports-spain",
+      "name": "HDsports: running calendar for Spain",
+      "url": "https://www.hdsports.org/running/correr-espana-calendario-de-carreras",
+      "countryCode": "es",
+      "coverage": "Date-ordered list of running races in Spain (with some triathlon and cycling), from short races to marathons and ultras. Each entry shows the current and next year dates.",
+      "howToRead": "The page is a summary of about 50 entries that links to a full calendar. Each date carries a check mark or a question mark; treat a question mark as unconfirmed. Race names link to HDsports pages, not official sites.",
+      "verifiedOn": "2026-11-27"
+    },
+    {
+      "id": "carreraspopulares",
+      "name": "CarrerasPopulares.com",
+      "url": "https://www.carreraspopulares.com/",
+      "countryCode": "es",
+      "coverage": "National calendar of popular running races in Spain, with a marathon-only section.",
+      "howToRead": "The homepage lists races by date under month headings with town and province; \"Busca tu carrera\" lists the next 30 days across Spain. Distances are not shown in the list. The /calendario path returned HTTP 403 to a scripted request, so start from the homepage.",
+      "verifiedOn": "2026-11-27"
+    },
+    {
+      "id": "sportmaniacs",
+      "name": "Sportmaniacs races",
+      "url": "https://sportmaniacs.com/es/races",
+      "countryCode": "es",
+      "coverage": "Registration and results platform listing upcoming races, mostly in Spain: road, trail, cross-country, triathlon and other events.",
+      "howToRead": "Filter by province or search by name; entries show only name, date and town, with no distance, so open each race to check it is a road race. Low signal for road races; scan after the other sources.",
+      "verifiedOn": "2026-11-27"
+    },
+    {
+      "id": "visitvalencia-races",
+      "name": "Visit València race and marathon calendar",
+      "url": "https://www.visitvalencia.com/en/events-valencia/race-and-marathon-calendar-valencia",
+      "countryCode": "es",
+      "coverage": "Tourism board calendar of road races in Valencia city for the current season, with date, time window and start location.",
+      "howToRead": "Short list for one city only; use it to catch Valencia 10K and 15K races that national listings miss.",
+      "verifiedOn": "2026-11-27"
+    }
+  ]
+}

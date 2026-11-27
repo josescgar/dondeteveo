@@ -1,0 +1,43 @@
+{
+  "slug": "media-maraton-merida",
+  "countryCode": "es",
+  "name": "Media Maratón de Mérida",
+  "city": "Mérida",
+  "distanceKm": 21.097,
+  "catalogStatus": "in-catalog",
+  "trackingIssue": null,
+  "usualMonth": 4,
+  "officialWebsiteUrl": "https://www.mediamaratonmerida.com/",
+  "coursePageUrl": "https://www.mediamaratonmerida.com/mer-recorridos",
+  "regulationsUrl": "https://www.mediamaratonmerida.com/mer-reglamento",
+  "trackSource": {
+    "type": "wikiloc",
+    "url": "https://www.wikiloc.com/running-trails/xviii-media-maraton-merida-patrimonio-de-la-humanidad-gran-premio-santander-162623144",
+    "loginRequired": true,
+    "checkedOn": "2026-03-16",
+    "notes": "Wikiloc track of the 2024 (XIX) edition; the 2026 edition follows the same loop. Wikiloc requires a signed-in account to download a track."
+  },
+  "nextEdition": {
+    "year": 2027,
+    "date": {
+      "value": "2027-04-10",
+      "sourceUrl": "https://www.mediamaratonmerida.com/",
+      "checkedOn": "2026-11-27"
+    },
+    "startTime": {
+      "value": "19:00",
+      "sourceUrl": "https://www.mediamaratonmerida.com/",
+      "checkedOn": "2026-11-27"
+    },
+    "waves": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    },
+    "routeConfirmed": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    }
+  }
+}

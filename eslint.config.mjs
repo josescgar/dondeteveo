@@ -32,4 +32,28 @@ export default [
       ],
     },
   },
+  {
+    // The race watchlist is internal sourcing state and must never reach the
+    // site bundle or a public page.
+    files: [
+      "src/pages/**",
+      "src/layouts/**",
+      "src/components/**",
+      "src/features/**",
+    ],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["**/watchlist", "**/watchlist/**"],
+              message:
+                "The race watchlist is internal tooling data and must not be used by site code.",
+            },
+          ],
+        },
+      ],
+    },
+  },
 ];

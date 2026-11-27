@@ -106,6 +106,68 @@ Example:
 - Record whether route data came from GPX/KML or manual tracing.
 - Record enough notes to audit or update the edition later.
 
+## Race Watchlist and Discovery Sources
+
+The registry under `watchlist/` records which races we follow and where to look for new ones. It is internal sourcing state for maintainers and the race-scouting agent: it is never imported by site code (an ESLint rule blocks imports from pages, layouts, components and features) and never appears on a public page.
+
+It lives outside `data/` on purpose: the catalog loader treats every folder in `data/` as a country, and the watchlist also holds races that have no edition yet.
+
+```
+watchlist/
+  races/<race-slug>.json    # one file per watched race
+  discovery-sources.json    # calendar and listing sites to scan
+```
+
+The Zod schemas are in `src/lib/watchlist/schemas.ts` and the loader in `src/lib/watchlist/watchlist.ts`. `src/lib/watchlist/watchlist.test.ts` validates the real files in CI (`npm run test:unit`) and checks that every race folder in `data/` has a watchlist entry with status `in-catalog`, and that no other entry claims that status.
+
+### Watched race fields (`watchlist/races/<race-slug>.json`)
+
+| Field                | Type                            | Notes                                                                                                                 |
+| -------------------- | ------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `slug`               | string                          | Must match the file name, and the `data/` slug when the race is in the catalog. One distance per slug, as in `data/`. |
+| `countryCode`        | string                          | ISO 3166-1 alpha-2, lowercase                                                                                         |
+| `name`               | string                          | Display name                                                                                                          |
+| `city`               | string                          | Host city                                                                                                             |
+| `distanceKm`         | number                          |                                                                                                                       |
+| `catalogStatus`      | `"in-catalog"` \| `"candidate"` | `in-catalog` if and only if `data/<country>/<slug>/` exists                                                           |
+| `trackingIssue`      | number \| null                  | GitHub issue that tracks adding or updating the race                                                                  |
+| `usualMonth`         | 1–12 \| null                    | Month the race is usually held                                                                                        |
+| `officialWebsiteUrl` | URL                             |                                                                                                                       |
+| `coursePageUrl`      | URL \| null                     | Official course or route page                                                                                         |
+| `regulationsUrl`     | URL \| null                     | Official regulations page                                                                                             |
+| `trackSource`        | object                          | Where the track file was found last time (see below)                                                                  |
+| `nextEdition`        | object                          | Last-known facts for the next edition (see below)                                                                     |
+| `notes`              | string                          | Optional free text for anything a later check should know                                                             |
+
+`trackSource`:
+
+| Field           | Type            | Notes                                                                                                          |
+| --------------- | --------------- | -------------------------------------------------------------------------------------------------------------- |
+| `type`          | enum            | `official-gpx`, `official-kml`, `google-my-maps`, `strava-route`, `wikiloc`, `manual-trace`, `other` or `none` |
+| `url`           | URL \| null     | The file, or the page that links it. `null` when it was not recorded; always `null` for `none`                 |
+| `loginRequired` | boolean \| null | Whether downloading needs an account. `null` when unknown                                                      |
+| `checkedOn`     | date \| null    | When the source was last looked at                                                                             |
+| `notes`         | string          | What was found, file names, and anything that changed since the last import                                    |
+
+`nextEdition` has `year` (number or `null`) and four facts: `date` (`YYYY-MM-DD`), `startTime` (`HH:MM`, race local time), `waves` (array of `{ label, startTime }`, at least 2) and `routeConfirmed` (boolean). Each fact is `{ value, sourceUrl, checkedOn }`:
+
+- `value` is `null` while the fact is unknown. Never guess a value.
+- A known `value` must have the `sourceUrl` it was read from and the `checkedOn` date.
+- An unknown `value` may still carry `sourceUrl` and `checkedOn` to record that the page was checked and the fact was not published yet.
+- `date` must fall in `year`.
+
+### Discovery source fields (`watchlist/discovery-sources.json`)
+
+`{ "sources": [...] }`, where each source has `id` (unique kebab-case), `name`, `url`, `countryCode`, `coverage` (what it lists), `howToRead` (filters, quirks, how reliable it is) and `verifiedOn` (date the URL was last confirmed reachable). Only add sources you have opened and confirmed.
+
+### Adding or updating a watched race
+
+1. Create `watchlist/races/<race-slug>.json` with the slug you would use in `data/`. Use `catalogStatus: "candidate"` until an edition exists in `data/`.
+2. Fill official URLs only from pages you opened. Leave unknown URLs and facts as `null`.
+3. For each fact you read, set `sourceUrl` to the exact page and `checkedOn` to today.
+4. When you add the race's first edition to `data/`, switch it to `in-catalog` and update `trackSource` from the edition's `source.json` in the same PR.
+5. Run `npm run test:unit`.
+
 ## Community Contributions
 
 Community members can contribute new races via pull request. See [`CONTRIBUTING.md`](../CONTRIBUTING.md) for the full guide, including data schemas, folder structure, and QA checklist.

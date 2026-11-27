@@ -1,0 +1,44 @@
+{
+  "slug": "jean-bouin-10k",
+  "countryCode": "es",
+  "name": "Allianz Jean Bouin Open 10K",
+  "city": "Barcelona",
+  "distanceKm": 10,
+  "catalogStatus": "candidate",
+  "trackingIssue": 99,
+  "usualMonth": 11,
+  "officialWebsiteUrl": "https://allianzjeanbouin.mundodeportivo.com/",
+  "coursePageUrl": "https://allianzjeanbouin.mundodeportivo.com/circuit-10k/",
+  "regulationsUrl": "https://allianzjeanbouin.mundodeportivo.com/reglament-10/",
+  "trackSource": {
+    "type": "none",
+    "url": null,
+    "loginRequired": null,
+    "checkedOn": "2026-11-27",
+    "notes": "The 10K circuit page shows the 2026 course as an image; the only linked file is a 2023 PDF map."
+  },
+  "nextEdition": {
+    "year": 2026,
+    "date": {
+      "value": "2026-11-29",
+      "sourceUrl": "https://allianzjeanbouin.mundodeportivo.com/reglament-10/",
+      "checkedOn": "2026-11-27"
+    },
+    "startTime": {
+      "value": "10:00",
+      "sourceUrl": "https://allianzjeanbouin.mundodeportivo.com/reglament-10/",
+      "checkedOn": "2026-11-27"
+    },
+    "waves": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    },
+    "routeConfirmed": {
+      "value": true,
+      "sourceUrl": "https://allianzjeanbouin.mundodeportivo.com/circuit-10k/",
+      "checkedOn": "2026-11-27"
+    }
+  },
+  "notes": "Issue #99 links jeanbouin.mundodeportivo.com, which redirects to allianzjeanbouin.mundodeportivo.com. The 2026 Open start was moved one hour later to 10:00 because of the general election."
+}

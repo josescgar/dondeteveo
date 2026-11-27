@@ -1,0 +1,44 @@
+{
+  "slug": "media-maraton-malaga",
+  "countryCode": "es",
+  "name": "Málaga Half Marathon",
+  "city": "Malaga",
+  "distanceKm": 21.097,
+  "catalogStatus": "in-catalog",
+  "trackingIssue": null,
+  "usualMonth": 3,
+  "officialWebsiteUrl": "https://www.mediamaratonmalaga.com/",
+  "coursePageUrl": "https://www.mediamaratonmalaga.com/mlg-recorrido",
+  "regulationsUrl": "https://www.mediamaratonmalaga.com/mlg-reglamento",
+  "trackSource": {
+    "type": "other",
+    "url": null,
+    "loginRequired": null,
+    "checkedOn": "2026-03-13",
+    "notes": "GPX sourced via plotaroute.com, based on the official 2026 course; the plotaroute URL was not recorded."
+  },
+  "nextEdition": {
+    "year": 2027,
+    "date": {
+      "value": "2027-03-07",
+      "sourceUrl": "https://www.mediamaratonmalaga.com/mlg-noticia/leer/2026-03-23-el-totalenergies-medio-maraton-de-malaga-2027-ya-tiene-fecha-y-abre-inscripciones",
+      "checkedOn": "2026-11-27"
+    },
+    "startTime": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    },
+    "waves": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    },
+    "routeConfirmed": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    }
+  },
+  "notes": "Wave details are published on https://www.mediamaratonmalaga.com/mlg-cajones-de-salida-oleadas-y-liebres (not read on 2026-11-27)."
+}

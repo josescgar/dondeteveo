@@ -1,0 +1,44 @@
+{
+  "slug": "sevilla-half-marathon",
+  "countryCode": "es",
+  "name": "EDP Medio Maratón de Sevilla",
+  "city": "Seville",
+  "distanceKm": 21.097,
+  "catalogStatus": "candidate",
+  "trackingIssue": 104,
+  "usualMonth": null,
+  "officialWebsiteUrl": "https://edpmediomaratonsevilla.es/",
+  "coursePageUrl": null,
+  "regulationsUrl": null,
+  "trackSource": {
+    "type": "none",
+    "url": null,
+    "loginRequired": null,
+    "checkedOn": "2026-11-27",
+    "notes": "No official site reachable, so no route source found."
+  },
+  "nextEdition": {
+    "year": null,
+    "date": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": "2026-11-27"
+    },
+    "startTime": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    },
+    "waves": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    },
+    "routeConfirmed": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    }
+  },
+  "notes": "The official URL from issue #104 did not resolve (DNS failure) on 2026-11-27, and no other official site was found. Third-party listings disagree on the next date, so nothing is recorded until an official source confirms it."
+}
