@@ -11,34 +11,34 @@
   "coursePageUrl": "https://ibizamarathon.es/en/marathon/",
   "regulationsUrl": null,
   "trackSource": {
-    "type": "official-kml",
-    "url": "https://ibizamarathon.es/en/",
+    "type": "official-gpx",
+    "url": "https://ibizamarathon.es/en/marathon/",
     "loginRequired": null,
-    "checkedOn": "2026-03-16",
-    "notes": "Official KML downloaded from the race website for the 2026 edition; the exact file URL was not recorded. No KML or GPX link was visible on the homepage on 2026-11-27."
+    "checkedOn": "2026-11-27",
+    "notes": "On 2026-11-27 the marathon page linked Google Drive GPX and KMZ downloads and a PDF map named SEIM-2026-MAPA-MARATON.pdf; the GPX returned HTTP 404 and the KMZ link returned an HTML page instead of a file, so no track could be checked. The 2026 route came from an official KML whose URL was not recorded."
   },
   "nextEdition": {
     "year": 2027,
     "date": {
       "value": "2027-04-10",
-      "sourceUrl": "https://ibizamarathon.es/en/",
+      "sourceUrl": "https://ibizamarathon.es/en/marathon-regulations/",
       "checkedOn": "2026-11-27"
     },
     "startTime": {
       "value": null,
-      "sourceUrl": "https://ibizamarathon.es/en/",
+      "sourceUrl": "https://ibizamarathon.es/en/marathon-regulations/",
       "checkedOn": "2026-11-27"
     },
     "waves": {
       "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "sourceUrl": "https://ibizamarathon.es/en/marathon-regulations/",
+      "checkedOn": "2026-11-27"
     },
     "routeConfirmed": {
-      "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "value": false,
+      "sourceUrl": "https://ibizamarathon.es/en/marathon/",
+      "checkedOn": "2026-11-27"
     }
   },
-  "notes": "No regulations page found on 2026-11-27; the 2026 runner's guides (PDF) were the closest documents."
+  "notes": "On 2026-11-27 the marathon regulations page (https://ibizamarathon.es/en/marathon-regulations/) named the 2027 edition and gave a 3:45 p.m. start in a sentence without the year, while the marathon page said \"Time: Soon.\", so the start time was left unknown."
 }
