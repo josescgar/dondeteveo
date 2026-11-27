@@ -1,0 +1,6 @@
+{
+  "routeSourceType": "gpx-import",
+  "officialSourceName": "Behobia-San Sebastian official route page",
+  "officialSourceUrl": "https://www.behobia-sansebastian.com/en/race/route",
+  "notes": "Route and points carried over unchanged from the 2026 edition; the 2027 course had not been published at rollover time, so the route is marked provisional in meta.json. Start time 10:00 carried over from 2026 and marked provisional. Previous edition notes: Route imported from the supplied tracks_recorrido_bss.gpx, matching the organizer's tracks_recorrido_bss_2024 download currently linked from the official route page. The organizer confirms the 2026 race date and 20 km distance, but notes that the 2026 route section is still pending and currently displays 2025 course materials. GPX metadata and waypoints were removed. Split and spectator-point positions were normalized from the approximately 20.1575 km GPX geometry to the official 20 km race distance. Checked 2026-11-27 by scout-races: date 2027-11-14 per https://www.behobia-sansebastian.com/en/: \"62 2027.11.14\". Checked 2026-11-27: startTime left unknown because no 2027 start time is published; the linked regulations are the 2026 PDFs (https://www.behobia-sansebastian.com/en/regulations)."
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Behobia-San Sebastian 20K",
+  "date": "2027-11-14",
+  "distanceKm": 20,
+  "city": "San Sebastian",
+  "startTime": "10:00",
+  "timezone": "Europe/Madrid",
+  "officialWebsiteUrl": "https://www.behobia-sansebastian.com/en/",
+  "summary": "An iconic and demanding 20K road race from Behobia to central San Sebastian, crossing Irun, Gaintxurizketa, Errenteria, Pasaia, Miracruz, and Gros before finishing on Alameda del Boulevard.",
+  "heroNote": "The strongest cheering stretches are at Gaintxurizketa, central Errenteria, Miracruz, and from Gros and Zurriola beach through to the Boulevard finish.",
+  "provisional": {
+    "route": true,
+    "startTime": true
+  }
+}
