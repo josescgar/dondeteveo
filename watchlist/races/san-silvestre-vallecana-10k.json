@@ -11,34 +11,59 @@
   "coursePageUrl": "https://www.sansilvestrevallecana.com/recorrido_popular.php",
   "regulationsUrl": "https://www.sansilvestrevallecana.com/reglamento_popular.php",
   "trackSource": {
-    "type": "official-kml",
-    "url": "https://www.sansilvestrevallecana.com/",
-    "loginRequired": null,
-    "checkedOn": "2026-05-05",
-    "notes": "Official KMZ \"San Silvestre Vallecana Popular 2025\" published by the organizers, used for the 2026 edition until a 2026 file is published."
+    "type": "google-my-maps",
+    "url": "https://www.google.com/maps/d/u/1/viewer?mid=1u0o01wS8evVtiMX2ibAqLQPekoNCJqo",
+    "loginRequired": false,
+    "checkedOn": "2026-11-27",
+    "notes": "The Popular course page links a public Google My Maps map titled \"San Silvestre Vallecana Popular 2025\" (an earlier track). Exported as KML on 2026-11-27 and imported into scratch only: 10.043 km, matching the route in data/ (10.042 km), and the existing points still validate. No 2026 file is published yet."
   },
   "nextEdition": {
     "year": 2026,
     "date": {
       "value": "2026-12-31",
-      "sourceUrl": "https://www.sansilvestrevallecana.com/",
-      "checkedOn": "2026-05-05"
+      "sourceUrl": "https://www.sansilvestrevallecana.com/reglamento_popular.php",
+      "checkedOn": "2026-11-27"
     },
     "startTime": {
-      "value": "17:30",
-      "sourceUrl": "https://www.sansilvestrevallecana.com/",
-      "checkedOn": "2026-05-05"
+      "value": "17:00",
+      "sourceUrl": "https://www.sansilvestrevallecana.com/reglamento_popular.php",
+      "checkedOn": "2026-11-27"
     },
     "waves": {
-      "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "value": [
+        {
+          "label": "Handbike and wheelchair",
+          "startTime": "16:50"
+        },
+        {
+          "label": "Wave 1 (accredited under 50 min)",
+          "startTime": "17:00"
+        },
+        {
+          "label": "Wave 2 (accredited 50-60 min)",
+          "startTime": "17:15"
+        },
+        {
+          "label": "Wave 3 (no accredited time or over 60 min)",
+          "startTime": "17:35"
+        },
+        {
+          "label": "Wave 4 (no accredited time or over 60 min)",
+          "startTime": "17:55"
+        },
+        {
+          "label": "Wave 5 (no accredited time or over 60 min)",
+          "startTime": "18:20"
+        }
+      ],
+      "sourceUrl": "https://www.sansilvestrevallecana.com/reglamento_popular.php",
+      "checkedOn": "2026-11-27"
     },
     "routeConfirmed": {
       "value": false,
-      "sourceUrl": "https://www.sansilvestrevallecana.com/",
-      "checkedOn": "2026-05-05"
+      "sourceUrl": "https://www.sansilvestrevallecana.com/recorrido_popular.php",
+      "checkedOn": "2026-11-27"
     }
   },
-  "notes": "On 2026-11-27 the Popular course page (headed \"SAN SILVESTRE VALLECANA 2026\") linked a Google My Maps viewer (https://www.google.com/maps/d/u/1/viewer?mid=1u0o01wS8evVtiMX2ibAqLQPekoNCJqo); check whether it is the 2026 course."
+  "notes": "On 2026-11-27 the 2026 regulations (reglamento_popular.php) published six start times from 16:50; the course page still links the 2025 Google My Maps map, so routeConfirmed stays false."
 }
