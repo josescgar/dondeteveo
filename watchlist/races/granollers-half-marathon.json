@@ -1,0 +1,44 @@
+{
+  "slug": "granollers-half-marathon",
+  "countryCode": "es",
+  "name": "Mitja Marató Internacional de Granollers",
+  "city": "Granollers",
+  "distanceKm": 21.097,
+  "catalogStatus": "candidate",
+  "trackingIssue": 164,
+  "usualMonth": 1,
+  "officialWebsiteUrl": "https://lamitja.cat/",
+  "coursePageUrl": null,
+  "regulationsUrl": "https://lamitja.cat/reglament-la-mitja/",
+  "trackSource": {
+    "type": "none",
+    "url": null,
+    "loginRequired": null,
+    "checkedOn": "2026-11-27",
+    "notes": "The official site has an interactive circuits map (https://app-circuits.lamitja.cat/) with no readable text or file link; no GPX, KML or My Maps link was found on 2026-11-27."
+  },
+  "nextEdition": {
+    "year": 2027,
+    "date": {
+      "value": "2027-01-24",
+      "sourceUrl": "https://lamitja.cat/reglament-la-mitja/",
+      "checkedOn": "2026-11-27"
+    },
+    "startTime": {
+      "value": null,
+      "sourceUrl": "https://lamitja.cat/reglament-la-mitja/",
+      "checkedOn": "2026-11-27"
+    },
+    "waves": {
+      "value": null,
+      "sourceUrl": "https://lamitja.cat/reglament-la-mitja/",
+      "checkedOn": "2026-11-27"
+    },
+    "routeConfirmed": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    }
+  },
+  "notes": "Found by scout-races discovery on 2026-11-27 via the HDsports Spain calendar. Size evidence: the half marathon regulations close entries at 8,000. Article 3 of the regulations lists the half marathon corral starts from 10:30 to 10:35, but the article does not name the edition, so start time and waves were not recorded. The 10K and El Quart are separate distances and are not followed."
+}

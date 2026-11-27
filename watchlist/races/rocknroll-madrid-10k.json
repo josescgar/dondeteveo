@@ -21,7 +21,7 @@
     "year": 2027,
     "date": {
       "value": null,
-      "sourceUrl": "https://rocknrollmadridrun.com/",
+      "sourceUrl": "https://rocknrollmadridrun.com/reglamento/",
       "checkedOn": "2026-11-27"
     },
     "startTime": {
@@ -40,5 +40,5 @@
       "checkedOn": null
     }
   },
-  "notes": "On 2026-11-27 the homepage advertised 2027 registration but gave no 2027 date."
+  "notes": "On 2026-11-27 the 2027 regulations covered only the marathon and the half marathon (both on 25 April 2027); no 2027 10K date was published. The course page's 10K GPX link (rnrrsm-2023-10km.gpx) returned HTTP 404."
 }

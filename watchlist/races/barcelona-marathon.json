@@ -12,33 +12,33 @@
   "regulationsUrl": "https://zurichmaratobarcelona.es/en/i-am-a-runner/regulation/",
   "trackSource": {
     "type": "strava-route",
-    "url": null,
-    "loginRequired": null,
-    "checkedOn": "2026-04-22",
-    "notes": "Official Strava GPX (\"Zurich Marató Barcelona\", creator RPM SPORTS) was attached to issue #94; the Strava route URL was not recorded. On 2026-11-27 the official homepage linked only the Strava club page, not a route."
+    "url": "https://www.strava.com/routes/3314660708901242298",
+    "loginRequired": true,
+    "checkedOn": "2026-11-27",
+    "notes": "Strava route linked as \"View on Strava\" on the official course page on 2026-11-27, next to a PDF map named 6.5-Mapa-Circuit-ZMB26.pdf (2026). Which edition the Strava route is for could not be read; Strava requires a signed-in account to export GPX. The 2027 route came from the official Strava GPX attached to issue #94."
   },
   "nextEdition": {
     "year": 2027,
     "date": {
       "value": "2027-03-14",
-      "sourceUrl": "https://www.zurichmaratobarcelona.es/en/",
+      "sourceUrl": "https://zurichmaratobarcelona.es/en/i-am-a-runner/regulation/",
       "checkedOn": "2026-11-27"
     },
     "startTime": {
       "value": null,
-      "sourceUrl": "https://www.zurichmaratobarcelona.es/en/",
+      "sourceUrl": "https://zurichmaratobarcelona.es/en/i-am-a-runner/regulation/",
       "checkedOn": "2026-11-27"
     },
     "waves": {
       "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "sourceUrl": "https://zurichmaratobarcelona.es/en/i-am-a-runner/regulation/",
+      "checkedOn": "2026-11-27"
     },
     "routeConfirmed": {
       "value": false,
-      "sourceUrl": "https://www.zurichmaratobarcelona.es/en/",
-      "checkedOn": "2026-04-22"
+      "sourceUrl": "https://zurichmaratobarcelona.es/en/i-am-a-runner/course/",
+      "checkedOn": "2026-11-27"
     }
   },
-  "notes": "The catalog's 2027 edition carries the 2026 route, start time and box gun times forward because the organizer had not published 2027 details. Replace them once 2027 materials are out."
+  "notes": "The catalog's 2027 edition carries the 2026 route, start time and box gun times forward because the organizer had not published 2027 details. On 2026-11-27 the regulations named the 2027 race day and gave an 08:30 start (wheelchair 8:25) in an article that does not name the edition, so the start time stays unknown; no 2027 box times were published."
 }

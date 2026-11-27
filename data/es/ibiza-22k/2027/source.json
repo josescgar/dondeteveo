@@ -1,0 +1,6 @@
+{
+  "routeSourceType": "kml-import",
+  "officialSourceName": "Santa Eulària Ibiza Marathon official website",
+  "officialSourceUrl": "https://ibizamarathon.es/en/",
+  "notes": "Route and points carried over unchanged from the 2026 edition; the 2027 course had not been published at rollover time, so the route is marked provisional in meta.json. Start time 17:15 carried over from 2026 and marked provisional. Previous edition notes: Route imported from official KML file downloaded from the race website. Checked 2026-11-27 by scout-races: date 2027-04-10 per https://ibizamarathon.es/en/22k-regulations/: \"Talentum Group is organizing the 10th edition of the Santa Eulària Ibiza Marathon on Saturday, April 10, 2027.\". Checked 2026-11-27: startTime left unknown because the regulations give the time only in a sentence that does not name the edition (\"The 22K will start at 5:15 p.m. from Santa Gertrudis.\") and the race page says \"Time: Soon.\" (https://ibizamarathon.es/en/22k-regulations/)."
+}

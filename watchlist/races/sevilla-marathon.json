@@ -22,17 +22,17 @@
     "date": {
       "value": "2027-02-21",
       "sourceUrl": "https://www.zurichmaratonsevilla.es/en/zms-regulations",
-      "checkedOn": "2026-08-03"
+      "checkedOn": "2026-11-27"
     },
     "startTime": {
       "value": "08:30",
       "sourceUrl": "https://www.zurichmaratonsevilla.es/en/zms-regulations",
-      "checkedOn": "2026-08-03"
+      "checkedOn": "2026-11-27"
     },
     "waves": {
       "value": null,
-      "sourceUrl": "https://www.zurichmaratonsevilla.es/en/zms-regulations",
-      "checkedOn": "2026-08-03"
+      "sourceUrl": "https://www.zurichmaratonsevilla.es/en/zms-start-corrals-waves-and-pacers",
+      "checkedOn": "2026-11-27"
     },
     "routeConfirmed": {
       "value": true,
@@ -40,5 +40,5 @@
       "checkedOn": "2026-08-03"
     }
   },
-  "notes": "Wave details were pending when the 2027 edition was added; only the 08:29 wheelchair start was known."
+  "notes": "On 2026-11-27 the start corrals page said the 2027 wave start times will be announced soon; only the 08:29 wheelchair start is published."
 }

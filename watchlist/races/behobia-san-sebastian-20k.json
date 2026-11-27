@@ -11,11 +11,11 @@
   "coursePageUrl": "https://www.behobia-sansebastian.com/en/race/route",
   "regulationsUrl": "https://www.behobia-sansebastian.com/en/regulations",
   "trackSource": {
-    "type": "official-gpx",
-    "url": "https://www.behobia-sansebastian.com/en/race/route",
-    "loginRequired": null,
-    "checkedOn": "2026-08-05",
-    "notes": "tracks_recorrido_bss_2024 GPX download linked from the official route page; used for the 2026 edition."
+    "type": "official-kml",
+    "url": "https://www.behobia-sansebastian.com/images/la-carrera/recorrido/tracks_recorrido_bss_especial_obras.kml?v1",
+    "loginRequired": false,
+    "checkedOn": "2026-11-27",
+    "notes": "KML tracks_recorrido_bss_especial_obras.kml (document \"BSS_2024_RECORRIDO.kml\") linked as \"KML DOWNLOAD\" on the official route page on 2026-11-27, next to a GPX ZIP of the same name and a Google My Maps map titled \"BSS 2024\". It is the 2024 track (an earlier one): it measures 20.158 km, the same as the route carried into the 2027 edition, and the existing points fit it."
   },
   "nextEdition": {
     "year": 2027,
@@ -31,13 +31,13 @@
     },
     "waves": {
       "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "sourceUrl": "https://www.behobia-sansebastian.com/en/regulations",
+      "checkedOn": "2026-11-27"
     },
     "routeConfirmed": {
-      "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "value": false,
+      "sourceUrl": "https://www.behobia-sansebastian.com/en/race/route",
+      "checkedOn": "2026-11-27"
     }
   },
   "notes": "On 2026-11-27 the homepage showed \"62 2027.11.14\", read as the 62nd edition on 14 November 2027."

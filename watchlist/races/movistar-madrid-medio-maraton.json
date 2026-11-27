@@ -12,33 +12,33 @@
   "regulationsUrl": "https://www.mediomaratonmadrid.es/mm4-reglamento",
   "trackSource": {
     "type": "official-gpx",
-    "url": "https://www.mediomaratonmadrid.es/",
-    "loginRequired": null,
-    "checkedOn": "2026-03-15",
-    "notes": "Official GPX downloaded from the race website; the 2026 edition reused the 2025 course. The exact file URL was not recorded."
+    "url": "https://deporticket.blob.core.windows.net/awebs/movistar-madrid-medio-maraton/movistar-mmm25-638790904617714249.gpx",
+    "loginRequired": false,
+    "checkedOn": "2026-11-27",
+    "notes": "GPX \"Movistar MMM25\" (track \"MMMM2025  ACTUALIZADA paso Centro\") linked as \"Track del recorrido (.GPX)\" on the official course page on 2026-11-27. It is the 2025 track (an earlier one): it measures 21.447 km, the same as the route carried into the 2027 edition, and the existing points fit it."
   },
   "nextEdition": {
     "year": 2027,
     "date": {
       "value": "2027-04-04",
-      "sourceUrl": "https://www.mediomaratonmadrid.es/",
+      "sourceUrl": "https://www.mediomaratonmadrid.es/mm4-reglamento",
       "checkedOn": "2026-11-27"
     },
     "startTime": {
-      "value": null,
-      "sourceUrl": "https://www.mediomaratonmadrid.es/",
+      "value": "09:15",
+      "sourceUrl": "https://www.mediomaratonmadrid.es/mm4-reglamento",
       "checkedOn": "2026-11-27"
     },
     "waves": {
       "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "sourceUrl": "https://www.mediomaratonmadrid.es/mm4-cajones-de-salida",
+      "checkedOn": "2026-11-27"
     },
     "routeConfirmed": {
-      "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "value": false,
+      "sourceUrl": "https://www.mediomaratonmadrid.es/mm4-recorrido",
+      "checkedOn": "2026-11-27"
     }
   },
-  "notes": "The 2026 edition was in March; the announced 2027 date is in April."
+  "notes": "The 2026 edition was in March; the announced 2027 date is in April. On 2026-11-27 the 2027 regulations also gave a 9:10 wheelchair start, in a sentence that does not name the edition; wave times were not published."
 }

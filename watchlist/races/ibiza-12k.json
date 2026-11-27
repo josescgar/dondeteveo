@@ -11,34 +11,34 @@
   "coursePageUrl": "https://ibizamarathon.es/en/12k-2/",
   "regulationsUrl": null,
   "trackSource": {
-    "type": "official-kml",
-    "url": "https://ibizamarathon.es/en/",
-    "loginRequired": null,
-    "checkedOn": "2026-03-16",
-    "notes": "Official KML downloaded from the race website for the 2026 edition; the exact file URL was not recorded. No KML or GPX link was visible on the homepage on 2026-11-27."
+    "type": "official-gpx",
+    "url": "https://docs.google.com/uc?export=download&id=1FLdKzOxCof7Oaj9pY29aJNvqO1ICIomQ",
+    "loginRequired": false,
+    "checkedOn": "2026-11-27",
+    "notes": "GPX \"Eivissa 12K 2026\" linked as \"Download track GPX\" on the 12K page on 2026-11-27. It is labelled 2026 (an earlier track): it measures 12.251 km against 12.235 km for the carried route, and the existing points fit it. The KMZ linked next to it (line \"12K IBIZA MARATHON\") names no year."
   },
   "nextEdition": {
     "year": 2027,
     "date": {
       "value": "2027-04-10",
-      "sourceUrl": "https://ibizamarathon.es/en/",
+      "sourceUrl": "https://ibizamarathon.es/en/12k-regulations/",
       "checkedOn": "2026-11-27"
     },
     "startTime": {
       "value": null,
-      "sourceUrl": "https://ibizamarathon.es/en/",
+      "sourceUrl": "https://ibizamarathon.es/en/12k-regulations/",
       "checkedOn": "2026-11-27"
     },
     "waves": {
       "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "sourceUrl": "https://ibizamarathon.es/en/12k-regulations/",
+      "checkedOn": "2026-11-27"
     },
     "routeConfirmed": {
-      "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "value": false,
+      "sourceUrl": "https://ibizamarathon.es/en/12k-2/",
+      "checkedOn": "2026-11-27"
     }
   },
-  "notes": "No regulations page found on 2026-11-27; the 2026 runner's guides (PDF) were the closest documents."
+  "notes": "On 2026-11-27 the 12K regulations page (https://ibizamarathon.es/en/12k-regulations/) named the 2027 edition and gave a provisional 4:00 p.m. start in a sentence without the year, while the 12K page said \"Time: Soon.\", so the start time was left unknown."
 }

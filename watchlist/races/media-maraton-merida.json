@@ -11,11 +11,11 @@
   "coursePageUrl": "https://www.mediamaratonmerida.com/mer-recorridos",
   "regulationsUrl": "https://www.mediamaratonmerida.com/mer-reglamento",
   "trackSource": {
-    "type": "wikiloc",
-    "url": "https://www.wikiloc.com/running-trails/xviii-media-maraton-merida-patrimonio-de-la-humanidad-gran-premio-santander-162623144",
-    "loginRequired": true,
-    "checkedOn": "2026-03-16",
-    "notes": "Wikiloc track of the 2024 (XIX) edition; the 2026 edition follows the same loop. Wikiloc requires a signed-in account to download a track."
+    "type": "google-my-maps",
+    "url": "https://www.google.com/maps/d/u/0/edit?mid=1nwo3MO94wSrQ55ApPaJVnFEWAf2YygA&usp=sharing",
+    "loginRequired": false,
+    "checkedOn": "2026-11-27",
+    "notes": "The official course page links a public Google My Maps map titled \"Circuito Homologado Media Maratón Mérida 2027\" (this edition), plus a KMZ \"Circuito Homologado Media Maratón Mérida 2026\" and a 2026 Wikiloc trail. The 2027 map, exported as KML on 2026-11-27 (21.195 km, +0.46%), is the source of the 2027 edition's route, imported fresh with generated splits because the earlier points did not fit it."
   },
   "nextEdition": {
     "year": 2027,
@@ -31,13 +31,14 @@
     },
     "waves": {
       "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "sourceUrl": "https://www.mediamaratonmerida.com/mer-reglamento",
+      "checkedOn": "2026-11-27"
     },
     "routeConfirmed": {
-      "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "value": true,
+      "sourceUrl": "https://www.mediamaratonmerida.com/mer-recorridos",
+      "checkedOn": "2026-11-27"
     }
-  }
+  },
+  "notes": "On 2026-11-27 the 2027 date, start time and the 2027 course map were published. The 2027 edition uses the organiser's 2027 map with generated splits; cheer points and location-specific wording are tracked in #151."
 }

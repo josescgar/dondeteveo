@@ -68,7 +68,7 @@ An edition can go live as soon as its date is announced, before the organizers p
 - Both keys are optional booleans; unknown keys are rejected. `false` or a missing key means confirmed.
 - Editions without `provisional` (or with every flag `false`) render exactly as fully confirmed editions.
 - To confirm a fact, set its flag to `false` (a one-line diff), updating the data in the same change when it differs. Remove the whole object once everything is confirmed.
-- Race pages, the share planner, and share pages show a localized "pending confirmation" notice while any flag is `true`. Share links keep their URL, so links shared while provisional show the confirmed times after the update.
+- Race pages, the share planner, and share pages show a localized "pending confirmation" notice while any flag is `true`. The notice says only what we know: the course is carried over from the previous edition or the start time is not confirmed yet, so details may change. It makes no claim about what the organisers have or have not published, so it stays true when they have published a course we could not import yet. Share links keep their URL, so links shared while provisional show the confirmed times after the update.
 - Provisional editions are indexed by search engines like any other edition, and the convenience race URL redirects to them when they are the next upcoming edition.
 
 ## Yearly Rollover
@@ -264,7 +264,7 @@ One run:
    - a new date for a race whose latest edition is past: `npm run data:rollover` and a PR with the provisional edition;
    - changed facts (date in the same year, start time, waves, provisional flags, course) on a published upcoming edition: a PR that updates it;
    - a new official track for the edition: imported and the route marked confirmed. If the course changed so much that the existing points no longer fit, the track is imported fresh with generated splits, cheer points are dropped, place names on the old course are replaced with neutral wording (listed in the PR for review), and an issue asks a person to add cheer points;
-   - a course that needs a login (Strava, Wikiloc, private Google My Maps), exists only as a PDF or image, or cannot be imported: an issue saying exactly which file is needed and where it is. It never traces a route, and it never leaves the "organisers have not published this year's route" notice on a new edition whose course was published;
+   - a course that needs a login (Strava, Wikiloc, private Google My Maps), exists only as a PDF or image, or cannot be imported: an issue saying exactly which file is needed and where it is. It never traces a route;
    - a cancellation, postponement, conflicting official facts, or a site that stays unreadable: an issue for a person.
 3. Looks for this edition's track in a fixed order: official GPX/KML/KMZ download; Google My Maps exported as KML (`https://www.google.com/maps/d/kml?mid=<id>&forcekml=1`, public maps only); Strava or Wikiloc (an issue for a person, since both need an account); otherwise the previous edition's route stays provisional. Files are imported only with `npm run data:import`, and a track counts as this edition's only when it is labelled with the edition year or an official page for the edition presents it as the course; files labelled with an earlier year are only evidence and the search continues.
 4. Scans the discovery sources for road races in Spain from 5K to marathon with an official website and enough participants, and proposes each new one as a `candidate` watchlist entry plus an "Add race data for…" issue.

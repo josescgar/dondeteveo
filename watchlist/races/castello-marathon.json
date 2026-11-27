@@ -1,0 +1,44 @@
+{
+  "slug": "castello-marathon",
+  "countryCode": "es",
+  "name": "Marató bp Castelló",
+  "city": "Castelló de la Plana",
+  "distanceKm": 42.195,
+  "catalogStatus": "candidate",
+  "trackingIssue": 163,
+  "usualMonth": 2,
+  "officialWebsiteUrl": "https://www.maratonbpcastellon.com/",
+  "coursePageUrl": "https://www.maratonbpcastellon.com/recorrido/",
+  "regulationsUrl": "https://www.maratonbpcastellon.com/reglamento-marato-bp-castello/",
+  "trackSource": {
+    "type": "wikiloc",
+    "url": "https://es.wikiloc.com/rutas-carrera/maraton2022-2-1-95036470",
+    "loginRequired": true,
+    "checkedOn": "2026-11-27",
+    "notes": "Wikiloc track linked as \"Track Wikiloc Maratón bp Castellón 2027\" on the official course page on 2026-11-27; its URL refers to 2022. Wikiloc requires a signed-in account to download a track."
+  },
+  "nextEdition": {
+    "year": 2027,
+    "date": {
+      "value": "2027-02-14",
+      "sourceUrl": "https://www.maratonbpcastellon.com/",
+      "checkedOn": "2026-11-27"
+    },
+    "startTime": {
+      "value": null,
+      "sourceUrl": "https://www.maratonbpcastellon.com/reglamento-marato-bp-castello/",
+      "checkedOn": "2026-11-27"
+    },
+    "waves": {
+      "value": null,
+      "sourceUrl": null,
+      "checkedOn": null
+    },
+    "routeConfirmed": {
+      "value": null,
+      "sourceUrl": "https://www.maratonbpcastellon.com/recorrido/",
+      "checkedOn": "2026-11-27"
+    }
+  },
+  "notes": "Found by scout-races discovery on 2026-11-27 via the HDsports Spain calendar. Size evidence: the homepage says the race holds a World Athletics Road Race Label. The 2027 regulations are a PDF, so the start time was not read."
+}
