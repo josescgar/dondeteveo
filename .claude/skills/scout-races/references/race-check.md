@@ -24,7 +24,7 @@ Let `L` be the latest edition folder in `data/<cc>/<slug>/` (highest year) and `
 2. Fetch the raw HTML and extract the text and links:
    ```bash
    mkdir -p "$RUN_DIR/pages/<slug>"
-   curl -sS -L --proto =https --proto-redir =https --max-time 30 -A "Mozilla/5.0 (compatible; dondeteveo-scout)" \
+   curl -sS -L --proto '=https' --proto-redir '=https' --max-time 30 -A "Mozilla/5.0 (compatible; dondeteveo-scout)" \
      -o "$RUN_DIR/pages/<slug>/<n>.html" -w "%{http_code} %{url_effective}\n" "<url>"
    node "$REPO_ROOT/scripts/page-text.ts" "$RUN_DIR/pages/<slug>/<n>.html" --base "<url_effective>"
    ```
@@ -77,7 +77,7 @@ When steps 1 to 3 found only an earlier track and it matched the route in `data/
 - Download only `https://` URLs on public host names (no IP addresses, `localhost`, or `.local`/`.internal` names), each into its own new empty folder:
   ```bash
   mkdir -p "$RUN_DIR/downloads/<slug>/<n>"
-  curl -sS -L --proto =https --proto-redir =https --max-time 60 --max-filesize 20000000 \
+  curl -sS -L --proto '=https' --proto-redir '=https' --max-time 60 --max-filesize 20000000 \
     -o "$RUN_DIR/downloads/<slug>/<n>/<file-name>" -w "%{http_code} %{content_type}\n" "<url>"
   ```
 - KMZ or ZIP: unzip into another new empty folder, then accept the result only if it holds regular files and folders and nothing else:
@@ -217,7 +217,7 @@ The organiser's track for this edition imports cleanly but the existing points d
    ```bash
    npm run data:import -- <file> data/<cc>/<slug>/<year> --distance <meta.distanceKm> --name "<meta.name>" --force
    ```
-   This writes the new `route.geojson` and a starter `points.geojson` (`start`, `km-<n>` splits every 5 km, `halfway` for marathons, `finish`). No cheer points are carried over.
+   This writes the new `route.geojson` and a starter `points.geojson` (`start`, `km-<n>` splits every 5 km, `halfway` for marathons, `finish`). No cheer points are carried over. Rollover warnings about the route feature `id` or `name` are superseded by the new file; say so in the PR body.
 2. `meta.json`: set `provisional.route` to `false` (remove `provisional` if every flag is now `false`).
 3. `localizations.json`: in every locale, replace `pointLabels` with exactly one entry per point id in the new `points.geojson`, with no location suffix (old labels may name streets on the old course, even for ids that still exist). Spanish: `start` "Salida", `km-<n>` "Punto <n>K", `halfway` "Punto medio", `finish` "Meta". Other locales: the same meaning in that language.
 4. Wording: in `meta.json` and every locale of `localizations.json`, replace `summary`, `heroNote` and `specialNote` text that names places on the old course (streets, landmarks, cheer spots, start or finish areas; the host city is fine) with neutral wording that names no locations:
