@@ -17,7 +17,9 @@
     "format:check": "prettier --check .",
     "test": "npm run test:unit && npm run test:e2e",
     "test:unit": "vitest run",
-    "test:e2e": "playwright test tests/e2e"
+    "test:e2e": "playwright test tests/e2e",
+    "data:import": "node scripts/import-route.ts",
+    "data:validate": "node scripts/validate-editions.ts"
   },
   "dependencies": {
     "@astrojs/preact": "^6.1.6",

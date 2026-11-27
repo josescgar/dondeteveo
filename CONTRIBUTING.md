@@ -91,7 +91,17 @@ You don't need specialized software to create race routes. These free online too
 - **[plotaroute.com](https://www.plotaroute.com)** — Trace a route along roads with automatic snap-to-path. Great for accuracy since it follows real streets. Export as GPX, then convert to GeoJSON using geojson.io (import the GPX file there).
 - **[mapstogpx.com](https://mapstogpx.com)** — Convert Google Maps directions into a GPX file. Useful if the race route follows a path you can replicate with Google Maps directions. Convert the resulting GPX to GeoJSON via geojson.io.
 
-**Tip:** Many official race websites publish route maps or GPX/KML files. Check the race's official site first — you may be able to download the route directly and convert it to GeoJSON.
+**Tip:** Many official race websites publish route maps or GPX/KML files. Check the race's official site first — you may be able to download the route directly.
+
+### Importing a GPX or KML file
+
+If you have a GPX or KML file, let the import script build `route.geojson` and a starter `points.geojson` for you:
+
+```bash
+npm run data:import -- path/to/route.gpx data/<iso-country>/<race-slug>/<year> --distance 42.195 --name "Example Marathon"
+```
+
+It strips elevation and metadata, rounds coordinates to six decimals, joins multi-segment files, and adds `start`, a split every 5 km (plus `halfway` for marathons) and `finish`, with distances normalised to the official distance. It prints the measured route length; mention it in `source.json` `notes`. It will not overwrite an existing folder unless you pass `--force`. Run `npm run data:import -- --help` for all options. Afterwards add `meta.json`, `source.json`, location suffixes for split labels, and cheer points.
 
 ## Step-by-Step PR Instructions
 
@@ -101,6 +111,7 @@ You don't need specialized software to create race routes. These free online too
 4. **Add the four required files** following the schemas above.
 5. **Run validation**:
    ```bash
+   npm run data:validate -- data/<iso-country>/<race-slug>/<year>  # Checks files, schemas, route and points
    npm run build        # Confirms the data loads correctly
    npm run check        # Type checking
    npm run lint         # Linting
@@ -117,6 +128,7 @@ Before submitting, verify:
 - [ ] Race slug is globally unique (not used by another race)
 - [ ] Timezone is present and uses an IANA timezone identifier
 - [ ] Source information is present and accurate
+- [ ] `npm run data:validate` passes for the new edition (route length within 3% of `distanceKm`, points on the route, unique point ids)
 - [ ] Route and points load correctly (`npm run build` passes)
 - [ ] Points include at least `start` and `finish`
 

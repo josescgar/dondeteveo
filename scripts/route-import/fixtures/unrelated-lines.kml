@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <Placemark>
+      <name>Marathon</name>
+      <LineString><coordinates>1.4300,38.9990 1.4400,38.9990</coordinates></LineString>
+    </Placemark>
+    <Placemark>
+      <name>10K</name>
+      <LineString><coordinates>1.5300,38.9000 1.5400,38.9000</coordinates></LineString>
+    </Placemark>
+  </Document>
+</kml>
