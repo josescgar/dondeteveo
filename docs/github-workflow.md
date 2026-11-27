@@ -69,3 +69,4 @@
 - `create-issue`
 - `implement`
 - `release`
+- `scout-races` — checks watched races and discovery sources, then opens one PR per race edition, issues for anything that needs a person, and a watchlist refresh PR (see `docs/data-race-catalog.md`, Race Scouting). Branches `feature/scout-<slug>-<year>`, `fix/scout-<slug>-<year>` and `chore/scout-watchlist-<date>`; it never merges.
