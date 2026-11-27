@@ -1,0 +1,122 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "start",
+        "label": "Start - Paseo de Roma",
+        "kind": "split",
+        "distanceKm": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.349457, 38.916674]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-lusitania",
+        "label": "Cheer point - Avenida Reina Sofía, near Puente Lusitania",
+        "kind": "cheer-point",
+        "distanceKm": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.34066, 38.910808]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-5",
+        "label": "5K split - Avenida Reina Sofía",
+        "kind": "split",
+        "distanceKm": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.327824, 38.922965]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-10",
+        "label": "10K split - Calle Río Albarrenal",
+        "kind": "split",
+        "distanceKm": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.341026, 38.922868]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-acueducto",
+        "label": "Cheer point - Avenida Emérita Augusta, near Acueducto de los Milagros",
+        "kind": "cheer-point",
+        "distanceKm": 12
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.355003, 38.925823]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-15",
+        "label": "15K split - Paseo de los Rosales",
+        "kind": "split",
+        "distanceKm": 15
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.354276, 38.908166]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-teatro-romano",
+        "label": "Cheer point - Calle José Ramón Mélida, near Teatro Romano",
+        "kind": "cheer-point",
+        "distanceKm": 19
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.336939, 38.916879]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-20",
+        "label": "20K split - Calle Romero Leal",
+        "kind": "split",
+        "distanceKm": 20
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.344305, 38.916194]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "finish",
+        "label": "Finish - Paseo de Roma",
+        "kind": "split",
+        "distanceKm": 21.097
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.349488, 38.916704]
+      }
+    }
+  ]
+}
