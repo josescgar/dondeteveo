@@ -1,0 +1,15 @@
+{
+  "name": "Movistar Madrid Half Marathon",
+  "date": "2027-04-04",
+  "distanceKm": 21.097,
+  "city": "Madrid",
+  "startTime": "09:15",
+  "timezone": "Europe/Madrid",
+  "officialWebsiteUrl": "https://www.mediomaratonmadrid.es/",
+  "summary": "Iconic half marathon through the heart of Madrid, running along Paseo de la Castellana to Plaza de Castilla and returning through Gran Vía, Puerta del Sol, and Paseo del Prado.",
+  "heroNote": "Great cheering spots along Paseo de la Castellana, near Puerta de Alcalá, and around the bustling Puerta del Sol.",
+  "provisional": {
+    "route": true,
+    "startTime": false
+  }
+}
