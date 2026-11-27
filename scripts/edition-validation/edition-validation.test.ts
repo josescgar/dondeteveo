@@ -1,14 +1,21 @@
+import path from "node:path";
+
 import { describe, expect, it } from "vitest";
 
-import type { EditionRef } from "../lib/edition-path.ts";
-import { parseEditionPath } from "../lib/edition-path.ts";
+import {
+  parseEditionPath,
+  resolveEditionDirectory,
+  type EditionRef,
+} from "../lib/edition-path.ts";
 import {
   CHECK_IDS,
   DEFAULT_VALIDATION_OPTIONS,
-  applyKnownIssues,
   isValidIanaTimeZone,
   validateCatalog,
   validateEdition,
+  validateKnownIssues,
+  type CatalogListing,
+  type KnownIssue,
   type RawEdition,
 } from "./edition-validation.logic.ts";
 
@@ -258,13 +265,208 @@ describe("isValidIanaTimeZone", () => {
   });
 });
 
+describe("point checks", () => {
+  // Two kilometres north of the start.
+  const TWO_KM_LATITUDE = 40 + 2 / 111.19508;
+  const FIVE_KM_LATITUDE = 40 + 5 / 111.19508;
+
+  it("rejects a point whose position does not match its distanceKm", () => {
+    const points = {
+      ...validPoints,
+      features: [
+        point("start", 0, [-3.7, 40]),
+        // Placed at about km 8 but labelled km 5.
+        point("km-5", 5, [-3.7, 40 + 8 / 111.19508]),
+        point("finish", 10, [-3.7, ROUTE_END_LATITUDE]),
+      ],
+    };
+    const findings = validateEdition(makeEdition({ points }));
+    expect(findings.map((finding) => finding.checkId)).toEqual([
+      CHECK_IDS.pointPosition,
+    ]);
+    expect(findings[0].message).toMatch(
+      /"km-5" has distanceKm 5 but sits about 8\.000 km along the route .*tolerance 1\.000 km/,
+    );
+  });
+
+  it("uses the larger of 1 km and 5% of the race distance", () => {
+    const points = {
+      ...validPoints,
+      features: [
+        point("start", 0, [-3.7, 40]),
+        point("km-5", 5, [-3.7, 40 + 5.9 / 111.19508]),
+        point("finish", 10, [-3.7, ROUTE_END_LATITUDE]),
+      ],
+    };
+    expect(checkIds(makeEdition({ points }))).toEqual([]);
+    expect(
+      validateEdition(makeEdition({ points }), {
+        ...DEFAULT_VALIDATION_OPTIONS,
+        pointPositionToleranceKm: 0.5,
+      }).map((finding) => finding.checkId),
+    ).toEqual([CHECK_IDS.pointPosition]);
+  });
+
+  it("matches the right pass on an out-and-back course", () => {
+    const route = routeOf([
+      [-3.7, 40],
+      [-3.7, 40.015],
+      [-3.7, 40.03],
+      [-3.7, FIVE_KM_LATITUDE],
+      [-3.7, 40.03],
+      [-3.7, 40.015],
+      [-3.7, 40],
+    ]);
+    const pointsWith = (...extra: ReturnType<typeof point>[]) => ({
+      type: "FeatureCollection",
+      features: [
+        point("start", 0, [-3.7, 40]),
+        ...extra,
+        // The finish is back at the start: matched to the end, not km 0.
+        point("finish", 10, [-3.7, 40]),
+      ],
+    });
+    const outbound = point("km-2", 2, [-3.7, TWO_KM_LATITUDE]);
+    const inbound = point("km-8", 8, [-3.7, TWO_KM_LATITUDE]);
+    expect(
+      checkIds(makeEdition({ route, points: pointsWith(outbound, inbound) })),
+    ).toEqual([]);
+    const wrong = point("km-5", 5, [-3.7, TWO_KM_LATITUDE]);
+    expect(checkIds(makeEdition({ route, points: pointsWith(wrong) }))).toEqual(
+      [CHECK_IDS.pointPosition],
+    );
+  });
+
+  it("requires start and finish points", () => {
+    const points = {
+      ...validPoints,
+      features: [point("km-5", 5, [-3.7, 40.044966])],
+    };
+    const findings = validateEdition(makeEdition({ points }));
+    expect(findings.map((finding) => finding.message)).toEqual([
+      "No point at distanceKm 0 (start).",
+      "No point at distanceKm 10 (finish, the official distance).",
+    ]);
+    expect(
+      findings.every((f) => f.checkId === CHECK_IDS.startFinishPoints),
+    ).toBe(true);
+  });
+
+  it("rejects pointLabels keys that are not point ids", () => {
+    const raw = makeEdition();
+    raw.files["localizations.json"] = JSON.stringify({
+      es: { pointLabels: { start: "Salida", ghost: "Fantasma" } },
+    });
+    const findings = validateEdition(raw);
+    expect(findings).toEqual([
+      expect.objectContaining({
+        checkId: CHECK_IDS.localizationPointLabels,
+        severity: "error",
+        message:
+          'localizations.json "es" pointLabels has "ghost", which is not a point id.',
+      }),
+    ]);
+  });
+});
+
+describe("known issues", () => {
+  const pointsFinishingAt = (distanceKm: number) => ({
+    type: "FeatureCollection",
+    features: [
+      point("start", 0, [-3.7, 40]),
+      point("finish", distanceKm, [-3.7, ROUTE_END_LATITUDE]),
+    ],
+  });
+  const editionWithDistance = (distanceKm: number) =>
+    makeEdition({
+      meta: { ...validMeta, distanceKm },
+      points: pointsFinishingAt(distanceKm),
+    });
+  const exception: KnownIssue = {
+    edition: "es/fixture-10k/2026",
+    checkId: CHECK_IDS.routeLength,
+    options: { lengthTolerancePercent: 4 },
+    reason: "legacy trace",
+  };
+
+  it("downgrades errors within the exception's limits to warnings", () => {
+    // 10.000 km measured against 10.4 km official: -3.85%.
+    const report = validateCatalog({
+      editions: [editionWithDistance(10.4)],
+      catalog: { editions: [REF], topLevelFolders: ["es"] },
+      knownIssues: [exception],
+    });
+    expect(report.errorCount).toBe(0);
+    expect(report.warningCount).toBe(1);
+    expect(report.editions[0].findings[0].message).toMatch(
+      /-3\.85% \(tolerance ±3%\)\. \[accepted exception \(lengthTolerancePercent 4\): legacy trace\]$/,
+    );
+  });
+
+  it("keeps errors beyond the exception's limits", () => {
+    // 10.000 km measured against 12 km official: -16.67%.
+    const report = validateCatalog({
+      editions: [editionWithDistance(12)],
+      catalog: { editions: [REF], topLevelFolders: ["es"] },
+      knownIssues: [exception],
+    });
+    expect(report.errorCount).toBe(1);
+    expect(report.editions[0].findings[0]).toMatchObject({
+      checkId: CHECK_IDS.routeLength,
+      severity: "error",
+    });
+    expect(report.editions[0].findings[0].message).toMatch(
+      /-16\.67% \(tolerance ±4%\)\. \[exceeds the accepted exception/,
+    );
+  });
+
+  it("warns when an exception is no longer needed", () => {
+    const findings = validateEdition(
+      makeEdition(),
+      DEFAULT_VALIDATION_OPTIONS,
+      undefined,
+      [exception],
+    );
+    expect(findings).toEqual([
+      expect.objectContaining({
+        checkId: CHECK_IDS.knownIssues,
+        severity: "warning",
+      }),
+    ]);
+  });
+
+  it("ignores exceptions for other editions", () => {
+    expect(
+      validateEdition(makeEdition(), DEFAULT_VALIDATION_OPTIONS, undefined, [
+        { ...exception, edition: "es/other/2026" },
+      ]),
+    ).toEqual([]);
+  });
+
+  it("rejects unbounded or unknown exceptions", () => {
+    expect(
+      validateKnownIssues([
+        { ...exception, options: {} },
+        { ...exception, checkId: CHECK_IDS.slugUnique },
+      ]).map((finding) => finding.message),
+    ).toEqual([
+      "Known issue for es/fixture-10k/2026 is invalid: it has no limits in options, so it would be unbounded.",
+      'Known issue for es/fixture-10k/2026 is invalid: check "slug-unique" is not an edition check.',
+    ]);
+  });
+});
+
 describe("validateCatalog", () => {
   const otherCountry: EditionRef = { ...REF, countryCode: "pt" };
+  const listing = (...editions: EditionRef[]): CatalogListing => ({
+    editions,
+    topLevelFolders: [...new Set(editions.map((ref) => ref.countryCode))],
+  });
 
   it("reports slugs reused across countries", () => {
     const report = validateCatalog({
       editions: [makeEdition()],
-      catalog: [REF, otherCountry],
+      catalog: listing(REF, otherCountry),
     });
     expect(report.errorCount).toBe(1);
     expect(report.editions[0].findings[0]).toMatchObject({
@@ -277,77 +479,48 @@ describe("validateCatalog", () => {
     const nextYear = { ...REF, year: "2027" };
     const report = validateCatalog({
       editions: [makeEdition()],
-      catalog: [REF, nextYear],
+      catalog: listing(REF, nextYear),
     });
     expect(report.errorCount).toBe(0);
   });
 
-  it("only reports catalog findings for the editions being validated", () => {
+  it("only reports edition findings for the editions being validated", () => {
     const report = validateCatalog({
       editions: [makeEdition()],
-      catalog: [
+      catalog: listing(
         REF,
         { countryCode: "es", raceSlug: "dup", year: "2026" },
         { countryCode: "fr", raceSlug: "dup", year: "2026" },
-      ],
+      ),
     });
     expect(report.errorCount).toBe(0);
   });
 
-  it("downgrades known issues to warnings and keeps exit-relevant counts", () => {
-    const meta = { ...validMeta, distanceKm: 10.4 };
+  it("rejects top-level folders that are not country codes", () => {
     const report = validateCatalog({
-      editions: [makeEdition({ meta })],
-      catalog: [REF],
-      knownIssues: [
-        {
-          edition: "es/fixture-10k/2026",
-          checkId: CHECK_IDS.routeLength,
-          reason: "legacy trace",
-        },
-      ],
+      editions: [makeEdition()],
+      catalog: { editions: [REF], topLevelFolders: ["ES", "es", "watchlist"] },
     });
-    expect(report.errorCount).toBe(0);
-    expect(report.warningCount).toBe(1);
-    expect(report.editions[0].findings[0].message).toMatch(
-      /\[known issue: legacy trace\]$/,
-    );
-  });
-});
-
-describe("applyKnownIssues", () => {
-  it("warns when a known issue no longer reproduces", () => {
-    const findings = applyKnownIssues(
-      REF,
-      [],
-      [
-        {
-          edition: "es/fixture-10k/2026",
-          checkId: "route-length",
-          reason: "x",
-        },
-      ],
-    );
-    expect(findings).toEqual([
-      expect.objectContaining({
-        checkId: CHECK_IDS.knownIssues,
-        severity: "warning",
-      }),
+    expect(report.errorCount).toBe(2);
+    expect(report.catalogFindings.map((finding) => finding.message)).toEqual([
+      "data/ES is not a two-letter lowercase country code; the site loads every folder under data/ as a country. Move or rename it.",
+      "data/watchlist is not a two-letter lowercase country code; the site loads every folder under data/ as a country. Move or rename it.",
     ]);
   });
 
-  it("ignores known issues for other editions", () => {
+  it("rejects badly named race and year folders", () => {
+    const ref = { countryCode: "es", raceSlug: "Bad_Slug", year: "26" };
+    const report = validateCatalog({
+      editions: [makeEdition({ ref })],
+      catalog: listing(ref),
+    });
     expect(
-      applyKnownIssues(
-        REF,
-        [],
-        [{ edition: "es/other/2026", checkId: "route-length", reason: "x" }],
-      ),
-    ).toEqual([]);
+      report.editions[0].findings.map((finding) => finding.checkId),
+    ).toContain(CHECK_IDS.folderNames);
   });
 });
 
-describe("parseEditionPath", () => {
+describe("edition paths", () => {
   it("reads the country, slug and year", () => {
     expect(parseEditionPath("data/es/sevilla-marathon/2027/")).toEqual({
       countryCode: "es",
@@ -362,5 +535,36 @@ describe("parseEditionPath", () => {
     );
     expect(() => parseEditionPath("data/ESP/race/2027")).toThrow();
     expect(() => parseEditionPath("data/es/Race_Name/2027")).toThrow();
+  });
+
+  it("resolves editions inside the data directory", () => {
+    const { ref, directory } = resolveEditionDirectory(
+      "/repo/data",
+      "/repo/data/es/./sevilla-marathon/2027/",
+    );
+    expect(ref).toEqual({
+      countryCode: "es",
+      raceSlug: "sevilla-marathon",
+      year: "2027",
+    });
+    expect(directory).toBe(path.resolve("/repo/data/es/sevilla-marathon/2027"));
+  });
+
+  it("refuses targets outside the data directory", () => {
+    expect(() =>
+      resolveEditionDirectory(
+        "/repo/data",
+        "/repo/data/../escape/es/evil/2027",
+      ),
+    ).toThrow(/not an edition folder inside the data directory/);
+    expect(() =>
+      resolveEditionDirectory("data", "../escape/es/evil-race/2027"),
+    ).toThrow(/not an edition folder inside the data directory/);
+    expect(() =>
+      resolveEditionDirectory("/repo/data", "/repo/data/es/race/2027/extra"),
+    ).toThrow(/not an edition folder inside the data directory/);
+    expect(() =>
+      resolveEditionDirectory("/repo/data", "/repo/data/es/race"),
+    ).toThrow(/not an edition folder inside the data directory/);
   });
 });

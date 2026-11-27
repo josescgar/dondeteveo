@@ -101,7 +101,7 @@ If you have a GPX or KML file, let the import script build `route.geojson` and a
 npm run data:import -- path/to/route.gpx data/<iso-country>/<race-slug>/<year> --distance 42.195 --name "Example Marathon"
 ```
 
-It strips elevation and metadata, rounds coordinates to six decimals, joins multi-segment files, and adds `start`, a split every 5 km (plus `halfway` for marathons) and `finish`, with distances normalised to the official distance. It prints the measured route length; mention it in `source.json` `notes`. It will not overwrite an existing folder unless you pass `--force`. Run `npm run data:import -- --help` for all options. Afterwards add `meta.json`, `source.json`, location suffixes for split labels, and cheer points.
+It strips elevation and metadata, rounds coordinates to six decimals, joins multi-segment files, and adds `start`, a split every 5 km (plus `halfway` for marathons) and `finish`, with distances normalised to the official distance. It prints the measured route length; mention it in `source.json` `notes`. If that length is more than 3% off the official distance, it stops without writing anything (check the file and the distance first; `--allow-length-mismatch` overrides). It will not overwrite an existing folder unless you pass `--force`. Run `npm run data:import -- --help` for all options. Afterwards add `meta.json`, `source.json`, location suffixes for split labels, and cheer points.
 
 ## Step-by-Step PR Instructions
 
@@ -128,7 +128,7 @@ Before submitting, verify:
 - [ ] Race slug is globally unique (not used by another race)
 - [ ] Timezone is present and uses an IANA timezone identifier
 - [ ] Source information is present and accurate
-- [ ] `npm run data:validate` passes for the new edition (route length within 3% of `distanceKm`, points on the route, unique point ids)
+- [ ] `npm run data:validate` passes for the new edition (route length within 3% of `distanceKm`, points on the route where their `distanceKm` says, `start` and `finish` points, unique point ids)
 - [ ] Route and points load correctly (`npm run build` passes)
 - [ ] Points include at least `start` and `finish`
 

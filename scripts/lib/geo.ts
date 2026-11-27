@@ -113,22 +113,28 @@ export const positionAlongLine = (
   return coordinates[coordinates.length - 1];
 };
 
+export type LineProjection = {
+  /** Distance from the point to its projection on one segment, in km. */
+  offsetKm: number;
+  /** Distance along the line from its start to the projection, in km. */
+  alongKm: number;
+};
+
 /**
- * Shortest distance in km from a position to a polyline.
+ * Projects a point onto every segment of a polyline.
  *
  * Each segment is projected onto a local equirectangular plane centred on the
  * point. That is accurate to well under a metre for the short distances that
- * matter here (is a point on, or a few metres from, the route?).
+ * matter here (is a point on, or a few metres from, the route?). Returning one
+ * projection per segment lets callers handle routes that pass the same place
+ * more than once (out-and-back legs, laps).
  */
-export const distanceToLineKm = (
+export const projectOntoLine = (
   point: Position,
   coordinates: readonly Position[],
-): number => {
-  if (coordinates.length === 0) {
-    return Number.POSITIVE_INFINITY;
-  }
+): LineProjection[] => {
   if (coordinates.length === 1) {
-    return haversineKm(point, coordinates[0]);
+    return [{ offsetKm: haversineKm(point, coordinates[0]), alongKm: 0 }];
   }
   const longitudeScale = Math.cos(toRadians(point[1]));
   const kmPerDegree = toRadians(1) * EARTH_RADIUS_KM;
@@ -136,8 +142,9 @@ export const distanceToLineKm = (
     (position[0] - point[0]) * longitudeScale * kmPerDegree,
     (position[1] - point[1]) * kmPerDegree,
   ];
+  const distances = cumulativeDistancesKm(coordinates);
 
-  let best = Number.POSITIVE_INFINITY;
+  const projections: LineProjection[] = [];
   for (let index = 1; index < coordinates.length; index += 1) {
     const [ax, ay] = toPlane(coordinates[index - 1]);
     const [bx, by] = toPlane(coordinates[index]);
@@ -148,7 +155,25 @@ export const distanceToLineKm = (
       lengthSquared === 0
         ? 0
         : Math.min(1, Math.max(0, -(ax * dx + ay * dy) / lengthSquared));
-    best = Math.min(best, Math.hypot(ax + ratio * dx, ay + ratio * dy));
+    projections.push({
+      offsetKm: Math.hypot(ax + ratio * dx, ay + ratio * dy),
+      alongKm:
+        distances[index - 1] +
+        ratio * (distances[index] - distances[index - 1]),
+    });
   }
-  return best;
+  return projections;
 };
+
+/** Shortest distance in km from a position to a polyline. */
+export const distanceToLineKm = (
+  point: Position,
+  coordinates: readonly Position[],
+): number =>
+  coordinates.length === 0
+    ? Number.POSITIVE_INFINITY
+    : Math.min(
+        ...projectOntoLine(point, coordinates).map(
+          (projection) => projection.offsetKm,
+        ),
+      );

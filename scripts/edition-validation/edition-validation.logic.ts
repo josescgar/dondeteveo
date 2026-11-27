@@ -15,10 +15,17 @@ import {
 import {
   distanceToLineKm,
   lineLengthKm,
+  projectOntoLine,
   segmentLengths,
   type Position,
 } from "../lib/geo.ts";
-import { editionKey, type EditionRef } from "../lib/edition-path.ts";
+import {
+  COUNTRY_CODE_PATTERN,
+  RACE_SLUG_PATTERN,
+  YEAR_PATTERN,
+  editionKey,
+  type EditionRef,
+} from "../lib/edition-path.ts";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -34,7 +41,8 @@ export type Issue = {
 
 export type Finding = Issue & {
   checkId: string;
-  edition: EditionRef;
+  /** Absent for catalog-wide findings that belong to no single edition. */
+  edition?: EditionRef;
 };
 
 export const REQUIRED_EDITION_FILES = [
@@ -70,12 +78,20 @@ export type ValidationOptions = {
   maxJumpKm: number;
   /** Largest allowed distance from a point to the route line. */
   maxPointOffsetKm: number;
+  /**
+   * A point's position along the route, scaled to the official distance, may
+   * differ from its `distanceKm` by the larger of these two limits.
+   */
+  pointPositionToleranceKm: number;
+  pointPositionTolerancePercent: number;
 };
 
 export const DEFAULT_VALIDATION_OPTIONS: ValidationOptions = {
   lengthTolerancePercent: 3,
   maxJumpKm: 2,
   maxPointOffsetKm: 0.05,
+  pointPositionToleranceKm: 1,
+  pointPositionTolerancePercent: 5,
 };
 
 /** A check that looks at one fully parsed edition. */
@@ -85,21 +101,33 @@ export type EditionCheck = {
   run: (edition: ParsedEdition, options: ValidationOptions) => Issue[];
 };
 
-/** A check that looks across every edition in the catalog. */
+/** What the data directory contains, for cross-edition checks. */
+export type CatalogListing = {
+  /** Every `<top>/<slug>/<year>` folder under the data directory. */
+  editions: EditionRef[];
+  /** Every top-level folder under the data directory. */
+  topLevelFolders: string[];
+};
+
+/** A check that looks across the whole catalog. */
 export type CatalogCheck = {
   id: string;
   description: string;
-  run: (catalog: EditionRef[], options: ValidationOptions) => Finding[];
+  run: (catalog: CatalogListing, options: ValidationOptions) => Finding[];
 };
 
 /**
- * A finding that is known and accepted for now. Matching errors are reported
- * as warnings instead of failing validation, so the problem stays visible.
+ * A bounded, accepted exception for one edition and one edition check. The
+ * check is re-run with `options` (looser limits): if the edition passes them,
+ * the original errors are reported as warnings; anything beyond them is still
+ * an error. The validator warns when the exception is no longer needed.
  */
 export type KnownIssue = {
   /** Edition key, e.g. `es/media-maraton-malaga/2026`. */
   edition: string;
   checkId: string;
+  /** The looser limits this edition is allowed; must not be empty. */
+  options: Partial<ValidationOptions>;
   reason: string;
 };
 
@@ -110,6 +138,8 @@ export type EditionReport = {
 
 export type ValidationReport = {
   editions: EditionReport[];
+  /** Findings that belong to the catalog as a whole. */
+  catalogFindings: Finding[];
   errorCount: number;
   warningCount: number;
 };
@@ -126,6 +156,10 @@ export const CHECK_IDS = {
   pointsOnRoute: "points-on-route",
   pointDistanceRange: "point-distance-range",
   pointIdsUnique: "point-ids-unique",
+  pointPosition: "point-position",
+  startFinishPoints: "start-finish-points",
+  localizationPointLabels: "localization-point-labels",
+  folderNames: "folder-names",
   slugUnique: "slug-unique",
   knownIssues: "known-issues",
 } as const;
@@ -384,7 +418,110 @@ export const EDITION_CHECKS: readonly EditionCheck[] = [
         );
     },
   },
+  {
+    id: CHECK_IDS.pointPosition,
+    description:
+      "each point sits where its distanceKm says along the route (nearest matching pass for out-and-back legs and laps)",
+    run: (edition, options) => {
+      const coordinates = routeCoordinates(edition);
+      const measuredKm = lineLengthKm(coordinates);
+      const officialKm = edition.meta.distanceKm;
+      const toleranceKm = Math.max(
+        options.pointPositionToleranceKm,
+        (officialKm * options.pointPositionTolerancePercent) / PERCENT,
+      );
+      return edition.points.features.flatMap((feature) => {
+        const expectedKm = feature.properties.distanceKm;
+        const alongKm = pointPositionKm(
+          feature.geometry.coordinates,
+          coordinates,
+          measuredKm,
+          officialKm,
+          expectedKm,
+          options.maxPointOffsetKm,
+        );
+        return Math.abs(alongKm - expectedKm) <= toleranceKm
+          ? []
+          : [
+              error(
+                `Point "${feature.properties.id}" has distanceKm ${expectedKm} but sits about ${alongKm.toFixed(3)} km along the route (scaled to the official distance; tolerance ${toleranceKm.toFixed(3)} km).`,
+              ),
+            ];
+      });
+    },
+  },
+  {
+    id: CHECK_IDS.startFinishPoints,
+    description:
+      "points include one at distance 0 and one at the official distance",
+    run: ({ meta, points }) => {
+      const distances = points.features.map(
+        (feature) => feature.properties.distanceKm,
+      );
+      const has = (target: number) =>
+        distances.some(
+          (distance) => Math.abs(distance - target) <= DISTANCE_EPSILON_KM,
+        );
+      return [
+        ...(has(0) ? [] : [error("No point at distanceKm 0 (start).")]),
+        ...(has(meta.distanceKm)
+          ? []
+          : [
+              error(
+                `No point at distanceKm ${meta.distanceKm} (finish, the official distance).`,
+              ),
+            ]),
+      ];
+    },
+  },
+  {
+    id: CHECK_IDS.localizationPointLabels,
+    description: "localizations.json pointLabels keys are existing point ids",
+    run: ({ localizations, points }) => {
+      const ids = new Set(
+        points.features.map((feature) => feature.properties.id),
+      );
+      return Object.entries(localizations ?? {}).flatMap(([locale, entry]) =>
+        Object.keys(entry.pointLabels ?? {})
+          .filter((id) => !ids.has(id))
+          .map((id) =>
+            error(
+              `localizations.json "${locale}" pointLabels has "${id}", which is not a point id.`,
+            ),
+          ),
+      );
+    },
+  },
 ];
+
+/**
+ * Along-route position of a point, scaled to the official distance. Of the
+ * passes that come within `maxOffsetKm` of the closest one, the one nearest to
+ * `expectedKm` wins, so a point on an out-and-back road or a lap course is
+ * matched to the pass its `distanceKm` refers to.
+ */
+export const pointPositionKm = (
+  point: Position,
+  coordinates: readonly Position[],
+  measuredKm: number,
+  officialKm: number,
+  expectedKm: number,
+  maxOffsetKm: number,
+): number => {
+  const projections = projectOntoLine(point, coordinates);
+  const closestKm = Math.min(
+    ...projections.map((projection) => projection.offsetKm),
+  );
+  const scale = measuredKm === 0 ? 0 : officialKm / measuredKm;
+  return projections
+    .filter((projection) => projection.offsetKm <= closestKm + maxOffsetKm)
+    .map((projection) => projection.alongKm * scale)
+    .reduce((best, candidate) =>
+      Math.abs(candidate - expectedKm) < Math.abs(best - expectedKm)
+        ? candidate
+        : best,
+    );
+};
 
 // ---------------------------------------------------------------------------
 // Catalog checks
@@ -392,17 +529,46 @@ export const EDITION_CHECKS: readonly EditionCheck[] = [
 
 export const CATALOG_CHECKS: readonly CatalogCheck[] = [
   {
+    id: CHECK_IDS.folderNames,
+    description:
+      "every folder under data/ is <iso-country>/<race-slug>/<year> (the site loads them all)",
+    run: ({ editions, topLevelFolders }) => [
+      ...topLevelFolders
+        .filter((folder) => !COUNTRY_CODE_PATTERN.test(folder))
+        .map((folder) => ({
+          checkId: CHECK_IDS.folderNames,
+          ...error(
+            `data/${folder} is not a two-letter lowercase country code; the site loads every folder under data/ as a country. Move or rename it.`,
+          ),
+        })),
+      ...editions
+        .filter(
+          (ref) =>
+            COUNTRY_CODE_PATTERN.test(ref.countryCode) &&
+            (!RACE_SLUG_PATTERN.test(ref.raceSlug) ||
+              !YEAR_PATTERN.test(ref.year)),
+        )
+        .map((ref) => ({
+          checkId: CHECK_IDS.folderNames,
+          edition: ref,
+          ...error(
+            "Folder name must be a kebab-case race slug followed by a four-digit year.",
+          ),
+        })),
+    ],
+  },
+  {
     id: CHECK_IDS.slugUnique,
     description: "race slugs are globally unique across countries",
-    run: (catalog) => {
+    run: ({ editions }) => {
       const countriesBySlug = new Map<string, Set<string>>();
-      for (const ref of catalog) {
+      for (const ref of editions) {
         const countries =
           countriesBySlug.get(ref.raceSlug) ?? new Set<string>();
         countries.add(ref.countryCode);
         countriesBySlug.set(ref.raceSlug, countries);
       }
-      return catalog
+      return editions
         .filter((ref) => (countriesBySlug.get(ref.raceSlug)?.size ?? 0) > 1)
         .map((ref) => ({
           checkId: CHECK_IDS.slugUnique,
@@ -419,10 +585,65 @@ export const CATALOG_CHECKS: readonly CatalogCheck[] = [
 // Runner
 // ---------------------------------------------------------------------------
 
+const describeLimits = (options: Partial<ValidationOptions>): string =>
+  Object.entries(options)
+    .map(([name, value]) => `${name} ${value}`)
+    .join(", ");
+
+/**
+ * Runs one check, applying a bounded known issue when there is one: errors
+ * within the exception's looser limits become warnings, errors beyond them
+ * stay errors, and an exception that is no longer needed is reported.
+ */
+const runCheck = (
+  check: EditionCheck,
+  edition: ParsedEdition,
+  options: ValidationOptions,
+  known: KnownIssue | undefined,
+): Finding[] => {
+  const toFinding = (issue: Issue, checkId = check.id): Finding => ({
+    ...issue,
+    checkId,
+    edition: edition.ref,
+  });
+  const issues = check.run(edition, options);
+  if (!known) {
+    return issues.map((issue) => toFinding(issue));
+  }
+  if (!issues.some((issue) => issue.severity === "error")) {
+    return [
+      ...issues.map((issue) => toFinding(issue)),
+      toFinding(
+        warning(
+          `Accepted exception for check "${check.id}" is no longer needed; remove it from known-issues.ts.`,
+        ),
+        CHECK_IDS.knownIssues,
+      ),
+    ];
+  }
+  const limits = describeLimits(known.options);
+  const looserIssues = check.run(edition, { ...options, ...known.options });
+  if (looserIssues.some((issue) => issue.severity === "error")) {
+    return looserIssues.map((issue) =>
+      toFinding({
+        ...issue,
+        message: `${issue.message} [exceeds the accepted exception (${limits}): ${known.reason}]`,
+      }),
+    );
+  }
+  return issues.map((issue) =>
+    toFinding({
+      severity: "warning",
+      message: `${issue.message} [accepted exception (${limits}): ${known.reason}]`,
+    }),
+  );
+};
+
 export const validateEdition = (
   raw: RawEdition,
   options: ValidationOptions = DEFAULT_VALIDATION_OPTIONS,
   checks: readonly EditionCheck[] = EDITION_CHECKS,
+  knownIssues: readonly KnownIssue[] = [],
 ): Finding[] => {
   const { edition, issues } = parseEdition(raw);
   const findings: Finding[] = issues.map((issue) => ({
@@ -432,54 +653,41 @@ export const validateEdition = (
   if (!edition) {
     return findings;
   }
+  const key = editionKey(raw.ref);
   for (const check of checks) {
-    for (const issue of check.run(edition, options)) {
-      findings.push({ ...issue, checkId: check.id, edition: raw.ref });
-    }
+    const known = knownIssues.find(
+      (item) => item.edition === key && item.checkId === check.id,
+    );
+    findings.push(...runCheck(check, edition, options, known));
   }
   return findings;
 };
 
-/**
- * Downgrades errors covered by a known issue to warnings, and warns about
- * known issues that no longer reproduce so the list does not go stale.
- */
-export const applyKnownIssues = (
-  ref: EditionRef,
-  findings: Finding[],
+/** Known issues must name an edition check and carry at least one limit. */
+export const validateKnownIssues = (
   knownIssues: readonly KnownIssue[],
-): Finding[] => {
-  const key = editionKey(ref);
-  const relevant = knownIssues.filter((known) => known.edition === key);
-  const adjusted = findings.map((finding) => {
-    const known = relevant.find((item) => item.checkId === finding.checkId);
-    return known && finding.severity === "error"
-      ? {
-          ...finding,
-          severity: "warning" as const,
-          message: `${finding.message} [known issue: ${known.reason}]`,
-        }
-      : finding;
-  });
-  const stale = relevant
-    .filter(
-      (known) => !findings.some((finding) => finding.checkId === known.checkId),
-    )
-    .map((known) => ({
+  checks: readonly EditionCheck[] = EDITION_CHECKS,
+): Finding[] =>
+  knownIssues.flatMap((known) => {
+    const problems = [
+      ...(checks.some((check) => check.id === known.checkId)
+        ? []
+        : [`check "${known.checkId}" is not an edition check`]),
+      ...(Object.keys(known.options).length > 0
+        ? []
+        : ["it has no limits in options, so it would be unbounded"]),
+    ];
+    return problems.map((problem) => ({
       checkId: CHECK_IDS.knownIssues,
-      edition: ref,
-      ...warning(
-        `Known issue for check "${known.checkId}" no longer reproduces; remove it from the known-issues list.`,
-      ),
+      ...error(`Known issue for ${known.edition} is invalid: ${problem}.`),
     }));
-  return [...adjusted, ...stale];
-};
+  });
 
 export type ValidateCatalogInput = {
   /** Editions to validate in full. */
   editions: RawEdition[];
-  /** Every edition in the catalog, for cross-edition checks. */
-  catalog: EditionRef[];
+  /** Everything in the data directory, for catalog checks. */
+  catalog: CatalogListing;
   options?: ValidationOptions;
   knownIssues?: readonly KnownIssue[];
   editionChecks?: readonly EditionCheck[];
@@ -494,25 +702,32 @@ export const validateCatalog = ({
   editionChecks = EDITION_CHECKS,
   catalogChecks = CATALOG_CHECKS,
 }: ValidateCatalogInput): ValidationReport => {
-  const catalogFindings = catalogChecks.flatMap((check) =>
+  const catalogWide = catalogChecks.flatMap((check) =>
     check.run(catalog, options),
   );
   const reports = editions.map((raw) => {
     const key = editionKey(raw.ref);
-    const findings = [
-      ...validateEdition(raw, options, editionChecks),
-      ...catalogFindings.filter(
-        (finding) => editionKey(finding.edition) === key,
-      ),
-    ];
     return {
       ref: raw.ref,
-      findings: applyKnownIssues(raw.ref, findings, knownIssues),
+      findings: [
+        ...validateEdition(raw, options, editionChecks, knownIssues),
+        ...catalogWide.filter(
+          (finding) => finding.edition && editionKey(finding.edition) === key,
+        ),
+      ],
     };
   });
-  const all = reports.flatMap((report) => report.findings);
+  const catalogFindings = [
+    ...validateKnownIssues(knownIssues, editionChecks),
+    ...catalogWide.filter((finding) => !finding.edition),
+  ];
+  const all = [
+    ...catalogFindings,
+    ...reports.flatMap((report) => report.findings),
+  ];
   return {
     editions: reports,
+    catalogFindings,
     errorCount: all.filter((finding) => finding.severity === "error").length,
     warningCount: all.filter((finding) => finding.severity === "warning")
       .length,

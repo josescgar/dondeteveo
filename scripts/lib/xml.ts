@@ -31,16 +31,28 @@ const NAMED_ENTITIES: Record<string, string> = {
   apos: "'",
 };
 
+const MAX_CODE_POINT = 0x10ffff;
+const HEX_RADIX = 16;
+const DECIMAL_RADIX = 10;
+
+const decodeCharacterReference = (reference: string): string => {
+  const hex = reference.startsWith("#x") || reference.startsWith("#X");
+  const codePoint = Number.parseInt(
+    reference.slice(hex ? 2 : 1),
+    hex ? HEX_RADIX : DECIMAL_RADIX,
+  );
+  if (!Number.isSafeInteger(codePoint) || codePoint > MAX_CODE_POINT) {
+    throw new XmlParseError(`Invalid character reference &${reference};.`);
+  }
+  return String.fromCodePoint(codePoint);
+};
+
 const decodeEntities = (value: string): string =>
-  value.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (match, entity: string) => {
-    if (entity.startsWith("#x") || entity.startsWith("#X")) {
-      return String.fromCodePoint(Number.parseInt(entity.slice(2), 16));
-    }
-    if (entity.startsWith("#")) {
-      return String.fromCodePoint(Number.parseInt(entity.slice(1), 10));
-    }
-    return NAMED_ENTITIES[entity] ?? match;
-  });
+  value.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (match, entity: string) =>
+    entity.startsWith("#")
+      ? decodeCharacterReference(entity)
+      : (NAMED_ENTITIES[entity] ?? match),
+  );
 
 const localName = (qualifiedName: string): string => {
   const separator = qualifiedName.indexOf(":");

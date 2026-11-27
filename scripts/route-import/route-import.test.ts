@@ -52,7 +52,7 @@ describe("detectRouteFormat", () => {
 describe("extractLines", () => {
   it("reads GPX track segments, ignoring waypoints and elevation", () => {
     const { content } = fixture("track-two-segments.gpx");
-    const lines = extractLines("gpx", content);
+    const { lines } = extractLines("gpx", content);
     expect(lines.map((line) => line.label)).toEqual([
       'track 1 "Fixture track" segment 1',
       'track 1 "Fixture track" segment 2',
@@ -62,7 +62,8 @@ describe("extractLines", () => {
   });
 
   it("reads GPX routes", () => {
-    const lines = extractLines("gpx", fixture("route.gpx").content);
+    const { lines, notes } = extractLines("gpx", fixture("route.gpx").content);
+    expect(notes).toEqual([]);
     expect(lines).toHaveLength(1);
     expect(lines[0].label).toBe('route 1 "Fixture route"');
     expect(lines[0].coordinates).toEqual([
@@ -73,7 +74,7 @@ describe("extractLines", () => {
   });
 
   it("reads KML LineStrings in document order, including MultiGeometry", () => {
-    const lines = extractLines("kml", fixture("multi-segment.kml").content);
+    const { lines } = extractLines("kml", fixture("multi-segment.kml").content);
     expect(lines.map((line) => line.label)).toEqual([
       'LineString 1 "First half"',
       'LineString 2 "Second half"',
@@ -83,7 +84,7 @@ describe("extractLines", () => {
   });
 
   it("reads gx:Track coordinates", () => {
-    const lines = extractLines(
+    const { lines } = extractLines(
       "kml",
       `<kml xmlns:gx="x"><Placemark><gx:Track>
         <when>2025-01-01T00:00:00Z</when><gx:coord>1.5 39.0 10</gx:coord>
@@ -106,6 +107,32 @@ describe("extractLines", () => {
         "<gpx><trk><trkseg><trkpt lat='95' lon='1'/></trkseg></trk></gpx>",
       ),
     ).toThrow(/track 1 segment 1, point 1/);
+  });
+
+  it("uses tracks only when a GPX has both tracks and routes", () => {
+    const { lines, notes } = extractLines(
+      "gpx",
+      fixture("track-and-route.gpx").content,
+    );
+    expect(lines.map((line) => line.label)).toEqual([
+      'track 1 "Loop" segment 1',
+    ]);
+    expect(notes).toEqual([
+      'GPX has both tracks and routes; using tracks only and ignoring route 1 "Loop".',
+    ]);
+  });
+
+  it("falls back to routes when no track is usable", () => {
+    const { lines, notes } = extractLines(
+      "gpx",
+      `<gpx><trk><trkseg><trkpt lat="1" lon="1"/></trkseg></trk>
+        <rte><rtept lat="1" lon="1"/><rtept lat="1.01" lon="1"/></rte></gpx>`,
+    );
+    expect(lines.map((line) => line.label)).toEqual([
+      "track 1 segment 1",
+      "route 1",
+    ]);
+    expect(notes).toEqual([]);
   });
 
   it("rejects a document with the wrong root", () => {
@@ -334,6 +361,37 @@ describe("importRoute", () => {
         distanceKm: 1,
       }),
     ).toThrow(/do not join[\s\S]*"Marathon"[\s\S]*"10K"/);
+  });
+
+  it("does not double a loop exported as both a track and a route", () => {
+    const result = importRoute({
+      ...fixture("track-and-route.gpx"),
+      ...baseOptions,
+      distanceKm: 0.39,
+    });
+    expect(result.usedLines).toEqual(['track 1 "Loop" segment 1']);
+    expect(result.measuredKm).toBeCloseTo(0.392, 3);
+    expect(result.notes[0]).toMatch(/using tracks only/);
+  });
+
+  it("fails without writing when the length is out of tolerance", () => {
+    const options = {
+      ...fixture("track-two-segments.gpx"),
+      ...baseOptions,
+      distanceKm: 0.45,
+    };
+    expect(() => importRoute(options)).toThrow(
+      /0\.502 km differs from the official 0\.45 km by \+11\.49%, more than the ±3%[\s\S]*Nothing was written[\s\S]*--allow-length-mismatch/,
+    );
+    expect(() =>
+      importRoute({ ...options, lengthTolerancePercent: 12 }),
+    ).not.toThrow();
+
+    const result = importRoute({ ...options, allowLengthMismatch: true });
+    expect(result.differencePercent).toBeCloseTo(11.49, 2);
+    expect(result.notes).toEqual([
+      expect.stringMatching(/Imported anyway \(--allow-length-mismatch\)/),
+    ]);
   });
 
   it("is deterministic", () => {

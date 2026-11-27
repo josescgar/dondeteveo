@@ -1,10 +1,11 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
-import { COUNTRY_CODE_PATTERN, type EditionRef } from "../lib/edition-path.ts";
+import type { EditionRef } from "../lib/edition-path.ts";
 import {
   OPTIONAL_EDITION_FILES,
   REQUIRED_EDITION_FILES,
+  type CatalogListing,
   type RawEdition,
 } from "./edition-validation.logic.ts";
 
@@ -17,28 +18,26 @@ const listDirectories = async (directory: string): Promise<string[]> => {
 };
 
 /**
- * Every `<country>/<slug>/<year>` folder under the data directory. Only
- * two-letter lowercase country folders are editions; other top-level folders
- * under `data/` (registries and similar) are not part of the catalog.
+ * Everything the site's catalog loader would read: every top-level folder and
+ * every `<top>/<slug>/<year>` folder under the data directory, whatever their
+ * names. The `folder-names` check reports the ones that break conventions.
  */
-export const discoverEditions = async (
+export const discoverCatalog = async (
   dataDirectory: string,
-): Promise<EditionRef[]> => {
-  const refs: EditionRef[] = [];
-  const countries = (await listDirectories(dataDirectory)).filter((name) =>
-    COUNTRY_CODE_PATTERN.test(name),
-  );
-  for (const countryCode of countries) {
+): Promise<CatalogListing> => {
+  const editions: EditionRef[] = [];
+  const topLevelFolders = await listDirectories(dataDirectory);
+  for (const countryCode of topLevelFolders) {
     const countryDirectory = path.join(dataDirectory, countryCode);
     for (const raceSlug of await listDirectories(countryDirectory)) {
       for (const year of await listDirectories(
         path.join(countryDirectory, raceSlug),
       )) {
-        refs.push({ countryCode, raceSlug, year });
+        editions.push({ countryCode, raceSlug, year });
       }
     }
   }
-  return refs;
+  return { editions, topLevelFolders };
 };
 
 const readIfPresent = async (filePath: string): Promise<string | undefined> => {

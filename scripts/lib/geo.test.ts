@@ -6,6 +6,7 @@ import {
   haversineKm,
   lineLengthKm,
   positionAlongLine,
+  projectOntoLine,
   roundPosition,
   roundTo,
   segmentLengths,
@@ -71,5 +72,17 @@ describe("line measurements", () => {
     expect(distanceToLineKm([0.0005, 0.02], line)).toBeCloseTo(0.0556, 3);
     // Beyond the end of the line the nearest point is the last vertex.
     expect(distanceToLineKm([0, 0.04], line)).toBeCloseTo(1.11195, 4);
+  });
+
+  it("projects a point onto every segment with its along-line distance", () => {
+    const outAndBack: Position[] = [
+      [0, 0],
+      [0, 0.02],
+      [0, 0],
+    ];
+    const projections = projectOntoLine([0, 0.01], outAndBack);
+    expect(projections.map((p) => p.offsetKm)).toEqual([0, 0]);
+    expect(projections[0].alongKm).toBeCloseTo(1.11195, 4);
+    expect(projections[1].alongKm).toBeCloseTo(3.33585, 4);
   });
 });

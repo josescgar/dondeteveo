@@ -16,11 +16,12 @@ import {
   DEFAULT_VALIDATION_OPTIONS,
   EDITION_CHECKS,
   validateCatalog,
+  type Finding,
   type ValidationOptions,
 } from "./edition-validation/edition-validation.logic.ts";
 import { KNOWN_ISSUES } from "./edition-validation/known-issues.ts";
 import {
-  discoverEditions,
+  discoverCatalog,
   readEdition,
 } from "./edition-validation/load-editions.ts";
 
@@ -38,6 +39,8 @@ Options:
   --length-tolerance <pct>    Allowed route length difference from distanceKm (default ${DEFAULT_VALIDATION_OPTIONS.lengthTolerancePercent})
   --max-jump-km <km>          Largest gap between consecutive route coordinates (default ${DEFAULT_VALIDATION_OPTIONS.maxJumpKm})
   --max-point-offset-m <m>    Largest distance from a point to the route (default ${DEFAULT_VALIDATION_OPTIONS.maxPointOffsetKm * METRES_PER_KM})
+  --point-position-km <km>    Allowed gap between a point's position and its distanceKm (default ${DEFAULT_VALIDATION_OPTIONS.pointPositionToleranceKm})
+  --point-position-pct <pct>  ...or this percentage of the race distance, if larger (default ${DEFAULT_VALIDATION_OPTIONS.pointPositionTolerancePercent})
   --list-checks               Print the checks and exit
   --help                      Show this help`;
 
@@ -64,6 +67,8 @@ const run = async (): Promise<number> => {
       "length-tolerance": { type: "string" },
       "max-jump-km": { type: "string" },
       "max-point-offset-m": { type: "string" },
+      "point-position-km": { type: "string" },
+      "point-position-pct": { type: "string" },
       "list-checks": { type: "boolean", default: false },
       help: { type: "boolean", default: false },
     },
@@ -75,7 +80,7 @@ const run = async (): Promise<number> => {
   }
   if (values["list-checks"]) {
     for (const check of [...EDITION_CHECKS, ...CATALOG_CHECKS]) {
-      console.log(`${check.id.padEnd(22)} ${check.description}`);
+      console.log(`${check.id.padEnd(27)} ${check.description}`);
     }
     return 0;
   }
@@ -97,25 +102,38 @@ const run = async (): Promise<number> => {
         "--max-point-offset-m",
         DEFAULT_VALIDATION_OPTIONS.maxPointOffsetKm * METRES_PER_KM,
       ) / METRES_PER_KM,
+    pointPositionToleranceKm: parsePositiveNumber(
+      values["point-position-km"],
+      "--point-position-km",
+      DEFAULT_VALIDATION_OPTIONS.pointPositionToleranceKm,
+    ),
+    pointPositionTolerancePercent: parsePositiveNumber(
+      values["point-position-pct"],
+      "--point-position-pct",
+      DEFAULT_VALIDATION_OPTIONS.pointPositionTolerancePercent,
+    ),
   };
 
   const dataDirectory = values["data-dir"];
-  const catalog = await discoverEditions(dataDirectory);
+  const catalog = await discoverCatalog(dataDirectory);
   const targets =
     positionals.length > 0
       ? positionals.map((directory) => ({
           ref: parseEditionPath(directory),
           dataDirectory: path.resolve(directory, ...EDITION_DEPTH),
         }))
-      : catalog.map((ref) => ({ ref, dataDirectory }));
+      : catalog.editions.map((ref) => ({ ref, dataDirectory }));
 
-  const catalogKeys = new Set(catalog.map(editionKey));
-  const fullCatalog = [
+  const catalogKeys = new Set(catalog.editions.map(editionKey));
+  const fullCatalog = {
     ...catalog,
-    ...targets
-      .map((target) => target.ref)
-      .filter((ref) => !catalogKeys.has(editionKey(ref))),
-  ];
+    editions: [
+      ...catalog.editions,
+      ...targets
+        .map((target) => target.ref)
+        .filter((ref) => !catalogKeys.has(editionKey(ref))),
+    ],
+  };
 
   const report = validateCatalog({
     editions: await Promise.all(
@@ -126,16 +144,23 @@ const run = async (): Promise<number> => {
     knownIssues: KNOWN_ISSUES,
   });
 
+  const printFinding = (finding: Finding) =>
+    console.log(
+      `     ${finding.severity} [${finding.checkId}] ${finding.message.replaceAll("\n", "\n       ")}`,
+    );
+  if (report.catalogFindings.length > 0) {
+    const hasError = report.catalogFindings.some(
+      (finding) => finding.severity === "error",
+    );
+    console.log(`${hasError ? "FAIL" : "ok  "} catalog (${dataDirectory})`);
+    report.catalogFindings.forEach(printFinding);
+  }
   for (const edition of report.editions) {
     const hasError = edition.findings.some(
       (finding) => finding.severity === "error",
     );
     console.log(`${hasError ? "FAIL" : "ok  "} ${editionKey(edition.ref)}`);
-    for (const finding of edition.findings) {
-      console.log(
-        `     ${finding.severity} [${finding.checkId}] ${finding.message.replaceAll("\n", "\n       ")}`,
-      );
-    }
+    edition.findings.forEach(printFinding);
   }
   console.log(
     `\nValidated ${report.editions.length} edition(s): ${report.errorCount} error(s), ${report.warningCount} warning(s).`,

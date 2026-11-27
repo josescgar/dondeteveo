@@ -4,6 +4,7 @@ import {
   type RacePointsCollection,
   type RaceRouteCollection,
 } from "../../src/lib/races/schemas.ts";
+import { DEFAULT_VALIDATION_OPTIONS } from "../edition-validation/edition-validation.logic.ts";
 import {
   haversineKm,
   isValidPosition,
@@ -118,24 +119,45 @@ const gpxPoints = (
     ),
   );
 
-/** GPX tracks (one line per `trkseg`) and routes, in document order. */
-export const extractGpxLines = (root: XmlElement): SourceLine[] => {
+/** Candidate lines found in a file, plus notes on what was ignored. */
+export type ExtractedLines = {
+  lines: SourceLine[];
+  notes: string[];
+};
+
+const isUsableLine = (line: SourceLine): boolean =>
+  line.coordinates.length >= 2;
+
+/**
+ * GPX tracks (one line per `trkseg`) or, when the file has no usable track,
+ * routes. Tools often export the same course as both a track and a route, so
+ * the two are never mixed: tracks win and routes are ignored with a note.
+ */
+export const extractGpxLines = (root: XmlElement): ExtractedLines => {
   if (root.name !== "gpx") {
     throw new RouteImportError("Not a GPX document: missing <gpx> root.");
   }
-  const lines: SourceLine[] = [];
+  const tracks: SourceLine[] = [];
   findChildren(root, "trk").forEach((track, trackIndex) => {
     const trackLabel = describe("track", trackIndex + 1, elementName(track));
     findChildren(track, "trkseg").forEach((segment, segmentIndex) => {
       const label = `${trackLabel} segment ${segmentIndex + 1}`;
-      lines.push({ label, coordinates: gpxPoints(segment, "trkpt", label) });
+      tracks.push({ label, coordinates: gpxPoints(segment, "trkpt", label) });
     });
   });
-  findChildren(root, "rte").forEach((route, routeIndex) => {
+  const routes = findChildren(root, "rte").map((route, routeIndex) => {
     const label = describe("route", routeIndex + 1, elementName(route));
-    lines.push({ label, coordinates: gpxPoints(route, "rtept", label) });
+    return { label, coordinates: gpxPoints(route, "rtept", label) };
   });
-  return lines;
+  if (tracks.some(isUsableLine) && routes.length > 0) {
+    return {
+      lines: tracks,
+      notes: [
+        `GPX has both tracks and routes; using tracks only and ignoring ${routes.map((route) => route.label).join(", ")}.`,
+      ],
+    };
+  }
+  return { lines: [...tracks, ...routes], notes: [] };
 };
 
 const parseKmlTuple = (tuple: string, separator: RegExp): Position => {
@@ -160,7 +182,7 @@ export const parseKmlCoordinates = (
     );
 
 /** KML `LineString` and `gx:Track` geometries, in document order. */
-export const extractKmlLines = (root: XmlElement): SourceLine[] => {
+export const extractKmlLines = (root: XmlElement): ExtractedLines => {
   if (root.name !== "kml") {
     throw new RouteImportError("Not a KML document: missing <kml> root.");
   }
@@ -197,13 +219,13 @@ export const extractKmlLines = (root: XmlElement): SourceLine[] => {
     element.children.forEach((child) => visit(child, name));
   };
   visit(root);
-  return lines;
+  return { lines, notes: [] };
 };
 
 export const extractLines = (
   format: RouteFormat,
   content: string,
-): SourceLine[] => {
+): ExtractedLines => {
   const root = parseXml(content);
   return format === "gpx" ? extractGpxLines(root) : extractKmlLines(root);
 };
@@ -240,7 +262,7 @@ export const selectRouteLine = (
     maxJoinGapKm = DEFAULT_MAX_JOIN_GAP_KM,
   }: LineSelectionOptions = {},
 ): LineSelection => {
-  const usable = lines.filter((line) => line.coordinates.length >= 2);
+  const usable = lines.filter(isUsableLine);
   if (usable.length === 0) {
     throw new RouteImportError(
       "No usable line found: the file needs a GPX track or route, or a KML LineString, with at least two points.",
@@ -378,6 +400,10 @@ export type ImportRouteOptions = {
   /** Race display name used for the route feature name. */
   raceName?: string;
   splitIntervalKm?: number;
+  /** Largest accepted length difference; defaults to the validator's. */
+  lengthTolerancePercent?: number;
+  /** Import even when the length difference exceeds the tolerance. */
+  allowLengthMismatch?: boolean;
 } & LineSelectionOptions;
 
 export type ImportRouteResult = {
@@ -388,8 +414,13 @@ export type ImportRouteResult = {
   /** Signed difference of the measured length from the official distance. */
   differencePercent: number;
   usedLines: string[];
+  /** What was ignored or overridden, for the import report. */
+  notes: string[];
   sourcePointCount: number;
 };
+
+const formatSignedPercent = (value: number): string =>
+  `${value >= 0 ? "+" : ""}${value.toFixed(2)}%`;
 
 export const importRoute = ({
   fileName,
@@ -401,9 +432,12 @@ export const importRoute = ({
   splitIntervalKm,
   lineIndex,
   maxJoinGapKm,
+  lengthTolerancePercent = DEFAULT_VALIDATION_OPTIONS.lengthTolerancePercent,
+  allowLengthMismatch = false,
 }: ImportRouteOptions): ImportRouteResult => {
   const format = detectRouteFormat(fileName, content);
-  const selection = selectRouteLine(extractLines(format, content), {
+  const extracted = extractLines(format, content);
+  const selection = selectRouteLine(extracted.lines, {
     lineIndex,
     maxJoinGapKm,
   });
@@ -415,6 +449,19 @@ export const importRoute = ({
   }
 
   const measuredKm = lineLengthKm(coordinates);
+  const differencePercent = ((measuredKm - distanceKm) / distanceKm) * PERCENT;
+  const notes = [...extracted.notes];
+  if (Math.abs(differencePercent) > lengthTolerancePercent) {
+    const summary = `Measured length ${measuredKm.toFixed(3)} km differs from the official ${distanceKm} km by ${formatSignedPercent(differencePercent)}, more than the ±${lengthTolerancePercent}% the validator accepts (lines used: ${selection.usedLines.join(", ")}).`;
+    if (!allowLengthMismatch) {
+      throw new RouteImportError(
+        `${summary} Nothing was written. Check the source file and --distance, pick a line with --line, or pass --allow-length-mismatch to import anyway.`,
+      );
+    }
+    notes.push(
+      `${summary} Imported anyway (--allow-length-mismatch); validation will fail on route-length.`,
+    );
+  }
   const plan = planSplits(distanceKm, splitIntervalKm);
   const toMeasuredKm = (officialKm: number): number =>
     (officialKm / distanceKm) * measuredKm;
@@ -457,8 +504,9 @@ export const importRoute = ({
     route,
     points,
     measuredKm,
-    differencePercent: ((measuredKm - distanceKm) / distanceKm) * PERCENT,
+    differencePercent,
     usedLines: selection.usedLines,
+    notes,
     sourcePointCount: selection.coordinates.length,
   };
 };

@@ -42,6 +42,14 @@ describe("parseXml", () => {
     expect(() => parseXml("just text")).toThrow(/one root/);
   });
 
+  it("rejects out-of-range character references with its own error", () => {
+    expect(() => parseXml("<a>&#x110000;</a>")).toThrow(XmlParseError);
+    expect(() => parseXml("<a b='&#99999999999999999999;'/>")).toThrow(
+      "Invalid character reference &#99999999999999999999;.",
+    );
+    expect(parseXml("<a>&#x10FFFF;</a>").text).toBe("\u{10FFFF}");
+  });
+
   it("refuses inline DTDs", () => {
     expect(() => parseXml('<!DOCTYPE a [<!ENTITY x "y">]><a>&x;</a>')).toThrow(
       /DTD/,
