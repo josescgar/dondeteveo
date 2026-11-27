@@ -35,6 +35,20 @@ const HALF_MARATHON_TOLERANCE_KM = 0.05;
 const PERCENT = 100;
 /** Longest quote kept in source.json notes, as in the scout-races skill. */
 const MAX_QUOTE_LENGTH = 300;
+/** Longest race name, city or wave label written to meta.json. */
+const MAX_NAME_LENGTH = 120;
+const MAX_CITY_LENGTH = 60;
+const MAX_LABEL_LENGTH = 60;
+/** Fewest days between the run date and race day, as `--min-days` in the skill. */
+export const DEFAULT_MIN_DAYS = 2;
+const MS_PER_DAY = 86_400_000;
+/**
+ * Control characters, including line breaks and tabs, and the Unicode line
+ * and paragraph separators. Single-line fields must not contain any: they
+ * end up in meta.json and in markdown code spans in PR bodies.
+ */
+// eslint-disable-next-line no-control-regex
+const CONTROL_CHARACTERS = /[\u0000-\u001f\u007f-\u009f\u2028\u2029]/;
 /** Facts every first edition must have quoted, with the value they set. */
 export const REQUIRED_FACTS = ["date", "startTime", "distanceKm"] as const;
 
@@ -60,7 +74,18 @@ const isTimeZone = (value: string): boolean => {
   }
 };
 
-const text = z.string().trim().min(1);
+/** A one-line text: no line breaks or other control characters. */
+const singleLine = (maxLength: number) =>
+  z
+    .string()
+    .trim()
+    .min(1)
+    .max(maxLength, `at most ${maxLength} characters`)
+    .refine(
+      (value) => !CONTROL_CHARACTERS.test(value),
+      "must be a single line without line breaks, tabs or other control characters",
+    );
+const text = singleLine(MAX_QUOTE_LENGTH);
 const calendarDate = z
   .string()
   .refine(isCalendarDate, "expected a real calendar date as YYYY-MM-DD");
@@ -70,11 +95,9 @@ const startTime = z
 const httpsUrl = z
   .url()
   .refine((value) => value.startsWith("https://"), "expected an https:// URL");
-const localized = z.strictObject({ en: text, es: text });
-const quote = text.max(
-  MAX_QUOTE_LENGTH,
-  `quotes are at most ${MAX_QUOTE_LENGTH} characters`,
-);
+const localized = (maxLength: number) =>
+  z.strictObject({ en: singleLine(maxLength), es: singleLine(maxLength) });
+const quote = singleLine(MAX_QUOTE_LENGTH);
 
 const factSchema = z.strictObject({
   /** Fact name, e.g. `date`, `startTime`, `distanceKm`, `waves`, `name`. */
@@ -92,11 +115,11 @@ const routeSchema = z
     /** The GPX, KML or My Maps export that was imported. */
     fileUrl: httpsUrl,
     /** File, map or document title, as read with the skill's name check. */
-    title: text.max(MAX_QUOTE_LENGTH),
+    title: text,
     /** Official page that links or embeds the file. */
     pageUrl: httpsUrl,
     /** `officialSourceName`, e.g. "Valencia Marathon official course page". */
-    sourceName: text,
+    sourceName: singleLine(MAX_NAME_LENGTH + 40),
     /** Whose track it is: this edition's, or an earlier edition's. */
     edition: z.enum(["this", "earlier"]),
     /** With `edition: "earlier"`: the year the track is labelled with. */
@@ -131,8 +154,8 @@ const routeSchema = z
 export const firstEditionFactsSchema = z.strictObject({
   /** Day the facts were read (the scout run date), YYYY-MM-DD. */
   runDate: calendarDate,
-  name: localized,
-  city: localized,
+  name: localized(MAX_NAME_LENGTH),
+  city: localized(MAX_CITY_LENGTH),
   distanceKm: z.number().positive(),
   date: calendarDate,
   startTime,
@@ -143,12 +166,17 @@ export const firstEditionFactsSchema = z.strictObject({
   waves: z
     .array(
       z.strictObject({
-        label: localized,
+        label: localized(MAX_LABEL_LENGTH),
         startTime,
       }),
     )
     .min(2)
     .optional(),
+  /**
+   * With `waves`: the 1-based position of the first wave open to the general
+   * field (after any special-category starts). Its time must equal `startTime`.
+   */
+  generalStartWave: z.number().int().min(1).optional(),
   route: routeSchema,
   facts: z.array(factSchema).min(1),
 });
@@ -157,6 +185,8 @@ export type FirstEditionFacts = z.infer<typeof firstEditionFactsSchema>;
 
 export type FirstEditionInput = {
   facts: FirstEditionFacts;
+  /** Fewest calendar days from `runDate` to race day (default 2). */
+  minDays?: number;
   /** Year folder the edition lives in. */
   year: string;
   route: RaceRouteCollection;
@@ -273,6 +303,22 @@ const requireFactValues = (facts: FirstEditionFacts) => {
   };
   if (facts.waves) {
     expected.waves = facts.waves.map((wave) => wave.startTime).join(",");
+  } else if (facts.facts.some((fact) => fact.fact === "waves")) {
+    throw new FirstEditionError(
+      'facts has a "waves" entry but the facts file has no waves; add the waves or remove the fact.',
+    );
+  }
+  for (const [name, value] of [
+    ["name", facts.name.en],
+    ["name.es", facts.name.es],
+  ] as const) {
+    for (const entry of facts.facts.filter((fact) => fact.fact === name)) {
+      if (entry.value !== value) {
+        throw new FirstEditionError(
+          `The "${name}" fact says ${entry.value}, but the edition would get ${value}.`,
+        );
+      }
+    }
   }
   for (const [name, value] of Object.entries(expected)) {
     const entries = facts.facts.filter((fact) => fact.fact === name);
@@ -303,11 +349,46 @@ const requireOrderedWaves = (facts: FirstEditionFacts) => {
       );
     }
   }
-  const labels = new Set(waves.map((wave) => wave.label.en));
-  if (labels.size !== waves.length) {
-    throw new FirstEditionError("Wave labels must be distinct.");
+  for (const locale of ["en", "es"] as const) {
+    const labels = new Set(waves.map((wave) => wave.label[locale]));
+    if (labels.size !== waves.length) {
+      throw new FirstEditionError(
+        `Wave labels must be distinct in every locale; "${locale}" repeats one.`,
+      );
+    }
+  }
+  if (facts.generalStartWave === undefined) {
+    throw new FirstEditionError(
+      "With waves, set generalStartWave to the position (from 1) of the first wave open to the general field; its time must equal startTime.",
+    );
+  }
+  const general = waves[facts.generalStartWave - 1];
+  if (!general) {
+    throw new FirstEditionError(
+      `generalStartWave ${facts.generalStartWave} is out of range; there are ${waves.length} waves.`,
+    );
+  }
+  if (general.startTime !== facts.startTime) {
+    throw new FirstEditionError(
+      `startTime ${facts.startTime} is not the time of the first general-field wave "${general.label.en}" (${general.startTime}).`,
+    );
   }
 };
+
+const requireNoWaveOptions = (facts: FirstEditionFacts) => {
+  if (!facts.waves && facts.generalStartWave !== undefined) {
+    throw new FirstEditionError(
+      "generalStartWave is only for facts with waves.",
+    );
+  }
+};
+
+/** Calendar days from `from` to `to`, both `YYYY-MM-DD`. */
+export const daysBetween = (from: string, to: string): number =>
+  Math.round(
+    (Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) /
+      MS_PER_DAY,
+  );
 
 const requireMatchingPoints = (
   points: RacePointsCollection,
@@ -341,18 +422,29 @@ export const buildFirstEdition = ({
   year,
   route,
   points,
+  minDays = DEFAULT_MIN_DAYS,
 }: FirstEditionInput): FirstEdition => {
   if (facts.date.slice(0, 4) !== year) {
     throw new FirstEditionError(
       `date ${facts.date} is not in the edition folder's year ${year}.`,
     );
   }
-  if (facts.date < facts.runDate) {
+  const daysAway = daysBetween(facts.runDate, facts.date);
+  if (daysAway < minDays) {
     throw new FirstEditionError(
-      `date ${facts.date} is before runDate ${facts.runDate}; a first edition is always an upcoming one.`,
+      `date ${facts.date} is ${daysAway} day(s) after runDate ${facts.runDate}; a first edition needs at least ${minDays} (--min-days), so target the following edition.`,
+    );
+  }
+  if (
+    facts.route.earlierYear !== undefined &&
+    facts.route.earlierYear >= Number(year)
+  ) {
+    throw new FirstEditionError(
+      `route.earlierYear ${facts.route.earlierYear} must be before the edition year ${year}.`,
     );
   }
   requireFactValues(facts);
+  requireNoWaveOptions(facts);
   requireOrderedWaves(facts);
   requireMatchingPoints(points, facts.distanceKm);
   if (route.features.length !== 1) {
@@ -463,13 +555,26 @@ export const buildFirstEdition = ({
   };
 };
 
+/**
+ * Makes untrusted text safe inside a markdown code span: whitespace and
+ * control characters become single spaces, backticks become quotes, and long
+ * text is cut at the quote limit.
+ */
+export const toCodeSpanText = (value: string): string => {
+  const flat = value
+    .replace(new RegExp(CONTROL_CHARACTERS.source, "g"), " ")
+    .replace(/\s+/g, " ")
+    .replaceAll("`", "'")
+    .trim();
+  return flat.length > MAX_QUOTE_LENGTH
+    ? `${flat.slice(0, MAX_QUOTE_LENGTH - 1)}…`
+    : flat;
+};
+
 /** Markdown list for the PR body; texts go in code spans (they may come from web pages). */
 export const formatAuthoredTexts = (texts: AuthoredText[]): string =>
   texts
-    .map(
-      ({ field, text: value }) =>
-        `- ${field}: \`${value.replaceAll("`", "'")}\``,
-    )
+    .map(({ field, text: value }) => `- ${field}: \`${toCodeSpanText(value)}\``)
     .join("\n");
 
 export const serializeJson = (value: unknown): string =>

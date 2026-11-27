@@ -15,6 +15,7 @@ import { parseArgs } from "node:util";
 import { editionKey } from "./lib/edition-path.ts";
 import { writeFirstEdition } from "./first-edition/first-edition-files.ts";
 import {
+  DEFAULT_MIN_DAYS,
   FirstEditionError,
   formatAuthoredTexts,
   formatPercent,
@@ -31,7 +32,9 @@ Summary and hero note get neutral wording that names no places.
 
 The facts file (keep it outside the repository) is JSON with: runDate,
 name {en, es}, city {en, es}, distanceKm, date, startTime, startTimeProvisional,
-timezone, officialWebsiteUrl, waves [{label {en, es}, startTime}] (optional),
+timezone, officialWebsiteUrl, waves [{label {en, es}, startTime}] (optional)
+with generalStartWave (position of the first general-field wave, whose time
+must equal startTime),
 route {sourceType, fileUrl, title, pageUrl, sourceName, edition "this" |
 "earlier", earlierYear, sameCourse {url, quote}}, and facts [{fact, value, url,
 quotes}] with at least date, startTime and distanceKm (and waves when given).
@@ -41,6 +44,8 @@ Arguments:
   <edition-dir>      Folder written by npm run data:import, e.g. data/es/valencia-marathon/2026
 
 Options:
+  --min-days <n>     Fewest days from runDate to race day (default ${DEFAULT_MIN_DAYS}),
+                     as the scout-races --min-days argument.
   --data-dir <dir>   Catalog root (default ${DEFAULT_DATA_DIRECTORY}).
   -h, --help         Show this help.`;
 
@@ -49,6 +54,7 @@ const main = async (): Promise<number> => {
     allowPositionals: true,
     options: {
       "data-dir": { type: "string", default: DEFAULT_DATA_DIRECTORY },
+      "min-days": { type: "string", default: String(DEFAULT_MIN_DAYS) },
       help: { type: "boolean", short: "h", default: false },
     },
   });
@@ -63,10 +69,17 @@ const main = async (): Promise<number> => {
     return 1;
   }
 
+  const minDays = Number(values["min-days"]);
+  if (!Number.isInteger(minDays) || minDays < 0) {
+    throw new FirstEditionError(
+      `--min-days must be a whole number of days, got "${values["min-days"]}".`,
+    );
+  }
   const report = await writeFirstEdition({
     factsFile,
     editionDirectory,
     dataDirectory: values["data-dir"],
+    minDays,
   });
   const relative = path.relative(process.cwd(), report.directory);
   console.log(`Wrote the first edition ${editionKey(report.edition)}:`);

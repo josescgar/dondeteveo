@@ -29,12 +29,14 @@ import {
 import { writeFirstEdition } from "./first-edition-files.ts";
 import {
   buildFirstEdition,
+  daysBetween,
   FirstEditionError,
   firstEditionFactsSchema,
   formatAuthoredTexts,
   NEUTRAL_HERO_NOTE,
   neutralSummary,
   spanishPointLabel,
+  toCodeSpanText,
   type FirstEditionFacts,
 } from "./first-edition.logic.ts";
 
@@ -206,6 +208,7 @@ describe("buildFirstEdition", () => {
     const edition = build({
       startTime: "09:00",
       waves: WAVES,
+      generalStartWave: 2,
       facts: [
         ...(rawFacts().facts as unknown[]),
         {
@@ -266,6 +269,7 @@ describe("buildFirstEdition", () => {
   it("lists every authored text for review", () => {
     const edition = build({
       waves: WAVES,
+      generalStartWave: 2,
       facts: [
         ...(rawFacts().facts as unknown[]),
         {
@@ -310,7 +314,11 @@ describe("buildFirstEdition", () => {
       { startTime: "09:30" },
       /"startTime" fact says 09:00, but the edition would get 09:30/,
     ],
-    ["waves have no quoted fact", { waves: WAVES }, /no "waves" entry/],
+    [
+      "waves have no quoted fact",
+      { waves: WAVES, generalStartWave: 2 },
+      /no "waves" entry/,
+    ],
     [
       "the date is in another year",
       {
@@ -330,7 +338,7 @@ describe("buildFirstEdition", () => {
     [
       "the race day is before the run date",
       { runDate: "2026-12-14" },
-      /before runDate/,
+      /-1 day\(s\) after runDate/,
     ],
     [
       "the points were imported for another distance",
@@ -393,6 +401,196 @@ describe("buildFirstEdition", () => {
         },
       }),
     ).toThrow(/cheer points/);
+  });
+});
+
+const WAVES_FACT = {
+  fact: "waves",
+  value: "08:55,09:00",
+  url: "https://example.com/rules/",
+  quotes: ["Élite: 8:55", "Oleada 1: 9:00"],
+};
+
+const withWaves = (overrides: Record<string, unknown> = {}) => ({
+  waves: WAVES,
+  generalStartWave: 2,
+  facts: [...(rawFacts().facts as unknown[]), WAVES_FACT],
+  ...overrides,
+});
+
+describe("buildFirstEdition consistency checks", () => {
+  it("refuses a race day fewer than minDays after the run date", () => {
+    expect(() => build({ runDate: "2026-12-12" })).toThrow(
+      /1 day\(s\) after runDate 2026-12-12; a first edition needs at least 2/,
+    );
+    expect(() => build({ runDate: "2026-12-11" })).not.toThrow();
+    expect(() =>
+      buildFirstEdition({
+        facts: facts({ runDate: "2026-12-12" }),
+        year: YEAR,
+        route: imported.route,
+        points: imported.points,
+        minDays: 1,
+      }),
+    ).not.toThrow();
+  });
+
+  it("counts calendar days", () => {
+    expect(daysBetween("2026-11-27", "2026-11-29")).toBe(2);
+    expect(daysBetween("2026-12-31", "2027-01-01")).toBe(1);
+    expect(daysBetween("2026-03-28", "2026-03-30")).toBe(2);
+  });
+
+  it.each([
+    [
+      "waves without generalStartWave",
+      withWaves({ generalStartWave: undefined }),
+      /set generalStartWave/,
+    ],
+    [
+      "a startTime that is not the first general-field wave's time",
+      withWaves({ generalStartWave: 1 }),
+      /startTime 09:00 is not the time of the first general-field wave "Elite" \(08:55\)/,
+    ],
+    [
+      "a generalStartWave out of range",
+      withWaves({ generalStartWave: 3 }),
+      /generalStartWave 3 is out of range/,
+    ],
+    [
+      "generalStartWave without waves",
+      { generalStartWave: 1 },
+      /generalStartWave is only for facts with waves/,
+    ],
+    [
+      "a waves fact without waves",
+      { facts: [...(rawFacts().facts as unknown[]), WAVES_FACT] },
+      /"waves" entry but the facts file has no waves/,
+    ],
+    [
+      "repeated Spanish wave labels",
+      withWaves({
+        waves: [
+          { label: { en: "Elite", es: "Salida" }, startTime: "08:55" },
+          { label: { en: "Wave 1", es: "Salida" }, startTime: "09:00" },
+        ],
+      }),
+      /distinct in every locale; "es" repeats one/,
+    ],
+    [
+      "a name fact that differs from name.en",
+      {
+        facts: [
+          ...(rawFacts().facts as unknown[]),
+          {
+            fact: "name",
+            value: "Another 10K",
+            url: "https://example.com/",
+            quotes: ["Another 10K"],
+          },
+        ],
+      },
+      /"name" fact says Another 10K, but the edition would get Example 10K/,
+    ],
+    [
+      "a name.es fact that differs from name.es",
+      {
+        facts: [
+          ...(rawFacts().facts as unknown[]),
+          {
+            fact: "name.es",
+            value: "Otra 10K",
+            url: "https://example.com/es/",
+            quotes: ["Otra 10K"],
+          },
+        ],
+      },
+      /"name.es" fact says Otra 10K/,
+    ],
+    [
+      "an earlier track from the edition year or later",
+      {
+        route: {
+          ...(rawFacts().route as object),
+          edition: "earlier",
+          earlierYear: 2031,
+          sameCourse: {
+            url: "https://example.com/",
+            quote: "Mismo recorrido.",
+          },
+        },
+      },
+      /route.earlierYear 2031 must be before the edition year 2026/,
+    ],
+  ])("refuses %s", (_name, overrides, message) => {
+    expect(() => build(overrides)).toThrow(message);
+  });
+});
+
+describe("single-line fields", () => {
+  const injected = "Prueba\n## Encabezado\n- [x] item";
+
+  it.each([
+    [
+      "a line break in name.es (review reproduction)",
+      { name: { en: "Example 10K", es: injected } },
+    ],
+    ["a tab in city", { city: { en: "Valencia\tCity", es: "València" } }],
+    [
+      "a line separator in a wave label",
+      withWaves({
+        waves: [
+          { label: { en: "Elite ## x", es: "Élite" }, startTime: "08:55" },
+          WAVES[1],
+        ],
+      }),
+    ],
+    [
+      "a carriage return in the route title",
+      {
+        route: { ...(rawFacts().route as object), title: "Map\r## injected" },
+      },
+    ],
+    [
+      "a line break in a quote",
+      {
+        facts: [
+          {
+            fact: "date",
+            value: "2026-12-13",
+            url: "https://example.com/",
+            quotes: ["13 de diciembre\n- [x] done"],
+          },
+        ],
+      },
+    ],
+    ["a name over 120 characters", { name: { en: "x".repeat(121), es: "x" } }],
+  ])("rejects %s", (_name, overrides) => {
+    const result = firstEditionFactsSchema.safeParse({
+      ...rawFacts(),
+      ...overrides,
+    });
+    expect(result.success).toBe(false);
+    expect(JSON.stringify(result.error?.issues)).toMatch(/single line|at most/);
+  });
+
+  it("keeps untrusted text inside one code span", () => {
+    const list = formatAuthoredTexts([
+      { field: "localizations.json es.meta.name", text: injected },
+      { field: "meta.json name", text: "A `b`\u0007 c" },
+      { field: "meta.json summary", text: "y".repeat(400) },
+    ]);
+    const lines = list.split("\n");
+    expect(lines).toHaveLength(3);
+    expect(lines[0]).toBe(
+      "- localizations.json es.meta.name: `Prueba ## Encabezado - [x] item`",
+    );
+    expect(lines[1]).toBe("- meta.json name: `A 'b' c`");
+    expect(lines[2]).toMatch(/^- meta\.json summary: `y{299}…`$/);
+    for (const line of lines) {
+      expect(line.match(/`/g)).toHaveLength(2);
+    }
+    expect(toCodeSpanText("  a \n\t b  ")).toBe("a b");
   });
 });
 
@@ -534,6 +732,24 @@ describe("writeFirstEdition", () => {
         dataDirectory,
       }),
     ).rejects.toBeInstanceOf(FirstEditionError);
+  });
+
+  it("passes minDays through to the race-day check", async () => {
+    await writeFacts({ ...rawFacts(), runDate: "2026-12-12" });
+
+    await expect(
+      writeFirstEdition({ factsFile, editionDirectory, dataDirectory }),
+    ).rejects.toThrow(/at least 2 \(--min-days\)/);
+    await expect(
+      writeFirstEdition({
+        factsFile,
+        editionDirectory,
+        dataDirectory,
+        minDays: 1,
+      }),
+    ).resolves.toMatchObject({
+      files: ["meta.json", "source.json", "localizations.json"],
+    });
   });
 
   it("reports every invalid field of the facts file", async () => {

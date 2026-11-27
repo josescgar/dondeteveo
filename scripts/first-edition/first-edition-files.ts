@@ -37,6 +37,8 @@ export type FirstEditionRequest = {
   editionDirectory: string;
   /** Catalog root with `<country>/<race>/<year>/` folders. */
   dataDirectory: string;
+  /** Fewest calendar days from the run date to race day (default 2). */
+  minDays?: number;
 };
 
 export type FirstEditionReport = {
@@ -132,7 +134,13 @@ export const writeFirstEdition = async (
     "points.geojson",
   );
 
-  const edition = buildFirstEdition({ facts, year: ref.year, route, points });
+  const edition = buildFirstEdition({
+    facts,
+    year: ref.year,
+    route,
+    points,
+    minDays: request.minDays,
+  });
   const contents: Record<(typeof WRITTEN_FILES)[number], unknown> = {
     "meta.json": edition.meta,
     "source.json": edition.source,

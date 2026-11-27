@@ -95,16 +95,17 @@ The logic lives in `scripts/rollover/` (`rollover.logic.ts`, `rollover-files.ts`
 ## First Edition Metadata
 
 ```bash
-npm run data:first-edition -- <facts.json> data/<iso-country>/<race-slug>/<year> [--data-dir <dir>]
+npm run data:first-edition -- <facts.json> data/<iso-country>/<race-slug>/<year> [--min-days <n>] [--data-dir <dir>]
 ```
 
-Writes `meta.json`, `source.json` and `localizations.json` (Spanish) for a race's first edition, next to the `route.geojson` and `points.geojson` that `npm run data:import` created in that folder. Used by the `scout-races` skill for approved candidate races, and usable by hand. The facts file (kept outside the repository) holds the verified facts and the quotes they were read from: `runDate`, `name` and `city` (`en`/`es`), `distanceKm`, `date`, `startTime`, `startTimeProvisional`, `timezone`, `officialWebsiteUrl`, optional `waves` (labels in `en`/`es`), the imported `route` (file URL and title, the official page that links it, whether it is this edition's track or an earlier one with a same-course quote) and `facts` (`fact`, `value`, `url`, `quotes`). Run `npm run data:first-edition -- --help` for the exact shape.
+Writes `meta.json`, `source.json` and `localizations.json` (Spanish) for a race's first edition, next to the `route.geojson` and `points.geojson` that `npm run data:import` created in that folder. Used by the `scout-races` skill for approved candidate races, and usable by hand. The facts file (kept outside the repository) holds the verified facts and the quotes they were read from: `runDate`, `name` and `city` (`en`/`es`), `distanceKm`, `date`, `startTime`, `startTimeProvisional`, `timezone`, `officialWebsiteUrl`, optional `waves` (labels in `en`/`es`) with `generalStartWave` (the first wave open to the general field, whose time must equal `startTime`), the imported `route` (file URL and title, the official page that links it, whether it is this edition's track or an earlier one with a same-course quote) and `facts` (`fact`, `value`, `url`, `quotes`). Run `npm run data:first-edition -- --help` for the exact shape.
 
 - `summary` and `heroNote` get neutral wording that names only the host city ("A half marathon through the streets of Seville." / "Cheer points for this course have not been added yet. …"), in English and Spanish, until someone adds cheer points and location-specific text.
 - `pointLabels` in Spanish for the generated splits (`Salida`, `Punto <n>K`, `Punto medio`, `Meta`); `waveLabels` when waves are given.
 - `source.json` notes record the route file, the page that links it and the measured length against the official distance, then one `Checked <date> by scout-races: <fact> <value> per <url>: "<quote>".` sentence per fact.
 - `provisional.route: true` only when the route is an earlier edition's track; `provisional.startTime: true` only for a tentative start time.
-- Refuses facts that disagree with each other (a `date`, `startTime`, `distanceKm` or `waves` fact whose value differs from the edition's), a date outside the folder's year or before `runDate`, points other than generated splits, a finish point at another distance, any existing `meta.json`, `source.json` or `localizations.json`, and a race that already has another edition (use `npm run data:rollover` for later editions). Prints the measured length and every text it wrote, for review.
+- Text fields must be single lines (no line breaks, tabs or other control characters) within length limits, and the printed list puts each text in its own code span, so text copied from a web page cannot break out into the PR body.
+- Refuses facts that disagree with each other (a `date`, `startTime`, `distanceKm`, `waves`, `name` or `name.es` fact whose value differs from the edition's, a `startTime` that is not the first general-field wave's time, repeated wave labels, an earlier track's year that is not before the edition's), a date outside the folder's year or fewer than `--min-days` (default 2) days after `runDate`, points other than generated splits, a finish point at another distance, any existing `meta.json`, `source.json` or `localizations.json`, and a race that already has another edition (use `npm run data:rollover` for later editions). Prints the measured length and every text it wrote, for review.
 
 The logic lives in `scripts/first-edition/` (`first-edition.logic.ts`, `first-edition-files.ts`, tests beside them); the CLI is `scripts/first-edition.ts`.
 
@@ -287,7 +288,7 @@ One run:
 4. Scans the discovery sources for road races in Spain from 5K to marathon with an official website and enough participants, and proposes each new one as a `candidate` watchlist entry plus an "Add race data for…" issue.
 5. Opens one small PR with the remaining watchlist changes (refreshed `checkedOn` dates, new candidates) and ends with a summary of races checked, PRs and issues opened, facts changed, and pages it could not read.
 
-Candidate approval: a candidate's open tracking issue is the approval to add the race. Issues a person opened (every "Add race data for…" issue that predates the skill, and any without the scout's hidden `add-race` marker) count as approved; issues the scout opened from discovery count only once a person labels them `status/ready`. The skill never adds that label. A closed tracking issue, or none, means the race is only watched.
+Candidate approval: a candidate's open tracking issue is the approval to add the race. Issues a person opened (every "Add race data for…" issue that predates the skill) count as approved. An issue whose body has any hidden `add-race` marker or the template's "Discovered by scout-races" text was opened by the scout from discovery, and counts only once a person labels it `status/ready`; when unsure, the skill treats an issue as scout-discovered. The skill never adds that label and never edits an issue body. A closed tracking issue, or none, means the race is only watched.
 
 Guarantees:
 
