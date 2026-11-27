@@ -1,0 +1,18 @@
+{
+  "es": {
+    "meta": {
+      "name": "Media Maratón de Mérida",
+      "city": "Mérida",
+      "summary": "Una media maratón por las calles de Mérida.",
+      "heroNote": "Todavía no hay puntos para animar en este recorrido. Usa el mapa y los tiempos de paso previstos para elegir dónde verlo."
+    },
+    "pointLabels": {
+      "start": "Salida",
+      "km-5": "Punto 5K",
+      "km-10": "Punto 10K",
+      "km-15": "Punto 15K",
+      "km-20": "Punto 20K",
+      "finish": "Meta"
+    }
+  }
+}

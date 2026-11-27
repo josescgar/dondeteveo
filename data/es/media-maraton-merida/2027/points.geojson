@@ -1,0 +1,83 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "start",
+        "label": "Start",
+        "kind": "split",
+        "distanceKm": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.34946, 38.916715]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-5",
+        "label": "5K split",
+        "kind": "split",
+        "distanceKm": 5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.353278, 38.906859]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-10",
+        "label": "10K split",
+        "kind": "split",
+        "distanceKm": 10
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.341308, 38.919023]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-15",
+        "label": "15K split",
+        "kind": "split",
+        "distanceKm": 15
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.356516, 38.913145]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "km-20",
+        "label": "20K split",
+        "kind": "split",
+        "distanceKm": 20
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.340792, 38.917356]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "finish",
+        "label": "Finish",
+        "kind": "split",
+        "distanceKm": 21.097
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.349473, 38.916705]
+      }
+    }
+  ]
+}
