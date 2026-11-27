@@ -176,6 +176,29 @@ test("share page loads leaflet CSS so map tiles render correctly", async ({
     .toBe("absolute");
 });
 
+test("race map requests OpenStreetMap or keyed CARTO tiles", async ({
+  page,
+}) => {
+  // Do not fetch real tiles from CI: only the requested URL matters here.
+  await page.route(
+    /^https:\/\/(tile\.openstreetmap\.org|basemaps\.cartocdn\.com)\//,
+    (route) => route.abort(),
+  );
+  await page.goto("/en/races/carrera-triana-los-remedios-10k/2026/");
+  // The map hydrates with client:visible, so bring it into view first.
+  await page.locator("[data-race-map]").scrollIntoViewIfNeeded();
+
+  const tile = page.locator("[data-race-map] img.leaflet-tile").first();
+  await tile.waitFor({ state: "attached" });
+
+  // A keyless CARTO URL returns an "API key required" watermark with HTTP
+  // 200, so assert the URL shape rather than the response status.
+  await expect(tile).toHaveAttribute(
+    "src",
+    /^(https:\/\/tile\.openstreetmap\.org\/\d+\/\d+\/\d+\.png|https:\/\/basemaps\.cartocdn\.com\/rastertiles\/light_all\/\d+\/\d+\/\d+(@2x)?\.png\?key=[^&]+)$/,
+  );
+});
+
 test("race page emits open graph and twitter metadata", async ({ page }) => {
   await page.goto("/en/races/carrera-triana-los-remedios-10k/2026/");
 

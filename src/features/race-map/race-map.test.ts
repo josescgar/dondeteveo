@@ -4,6 +4,7 @@ import type { RaceRouteCollection } from "../../lib/races/schemas";
 
 import {
   DEFAULT_ROUTE_SELECTION_TOLERANCE_METERS,
+  getMapTileLayerConfig,
   getRouteCoordinates,
   getRouteSelection,
 } from "./race-map.logic";
@@ -164,5 +165,34 @@ describe("race map logic", () => {
     expect(selection).not.toBeNull();
     expect(selection?.distanceKm).toBeDefined();
     expect(selection?.returnPassDistanceKm).toBeUndefined();
+  });
+});
+
+describe("getMapTileLayerConfig", () => {
+  it.each([undefined, "", "   "])(
+    "uses OpenStreetMap tiles when the CARTO key is %j",
+    (key) => {
+      expect(getMapTileLayerConfig(key)).toEqual({
+        provider: "openstreetmap",
+        url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      });
+    },
+  );
+
+  it("uses the keyed CARTO light tileset when a key is configured", () => {
+    expect(getMapTileLayerConfig("abc123")).toEqual({
+      provider: "carto",
+      url: "https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}{r}.png?key=abc123",
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attribution/">CARTO</a>',
+    });
+  });
+
+  it("trims and URL-encodes the CARTO key", () => {
+    expect(getMapTileLayerConfig("  a b&c=d \n").url).toBe(
+      "https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}{r}.png?key=a%20b%26c%3Dd",
+    );
   });
 });

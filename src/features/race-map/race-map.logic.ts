@@ -1,3 +1,9 @@
+import {
+  CARTO_ATTRIBUTION,
+  CARTO_LIGHT_TILE_URL,
+  OSM_ATTRIBUTION,
+  OSM_TILE_URL,
+} from "../../lib/config";
 import type {
   RacePointsCollection,
   RaceRouteCollection,
@@ -293,3 +299,31 @@ export const getMapMarkers = (
     ],
     detail: details?.[feature.properties.id],
   }));
+
+export type MapTileLayerConfig = {
+  provider: "carto" | "openstreetmap";
+  url: string;
+  attribution: string;
+};
+
+// Picks the base map tiles. CARTO needs a key on every tile URL; without one
+// it serves an "API key required" watermark, so fall back to OpenStreetMap.
+export const getMapTileLayerConfig = (
+  cartoKey: string | undefined,
+): MapTileLayerConfig => {
+  const key = cartoKey?.trim();
+
+  if (!key) {
+    return {
+      provider: "openstreetmap",
+      url: OSM_TILE_URL,
+      attribution: OSM_ATTRIBUTION,
+    };
+  }
+
+  return {
+    provider: "carto",
+    url: `${CARTO_LIGHT_TILE_URL}?key=${encodeURIComponent(key)}`,
+    attribution: CARTO_ATTRIBUTION,
+  };
+};

@@ -43,6 +43,13 @@
 
 - Node.js `>=26.13.1 <27`
 
+## Build Variables
+
+Public build-time variables are listed in `.env.example`. Each one is passed to the deploy build in `.github/workflows/ci.yml` from a GitHub Actions secret with exactly the same name. The site must build and run with every one of them unset.
+
+- `PUBLIC_CF_ANALYTICS_TOKEN`: Cloudflare Web Analytics beacon; unset disables analytics.
+- `PUBLIC_CARTO_BASEMAPS_KEY`: CARTO Basemaps key for the light map tiles; unset falls back to OpenStreetMap tiles.
+
 ## Pre-commit Hooks
 
 Configured via Husky + lint-staged. Runs automatically on `git commit`:
