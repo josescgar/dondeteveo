@@ -80,7 +80,13 @@ const main = async (): Promise<number> => {
   console.log("\nAuthored texts (list them in the PR body for review):");
   console.log(formatAuthoredTexts(report.authoredTexts));
   console.log("\nNext steps:");
-  console.log(`  - Validate it: npm run data:validate -- ${relative}`);
+  const dataDirectoryOption =
+    values["data-dir"] === DEFAULT_DATA_DIRECTORY
+      ? ""
+      : ` --data-dir ${values["data-dir"]}`;
+  console.log(
+    `  - Validate it: npm run data:validate --${dataDirectoryOption} ${relative}`,
+  );
   console.log(
     `  - Switch watchlist/races/${report.edition.raceSlug}.json to in-catalog and fill trackSource and nextEdition.`,
   );

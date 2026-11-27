@@ -33,7 +33,7 @@ Stable names and a hidden marker in every body make the duplicate and prior-item
 | `first-import` (first edition)                        | the measured length from the import output, 3 decimals            |
 | `first-import-earlier` (first edition, provisional)   | `earlier-<measured length, 3 decimals>`                           |
 
-**Candidate key** (status comment): what the run knew, so the comment is repeated only when something changed: `date=<YYYY-MM-DD|unknown>;start=<HH:MM|unknown>;distance=<km|unknown>;track=<code>`, where `<code>` is `none` (no file or map), `pdf-or-image`, `login` (Strava, Wikiloc, or a private My Maps map), `failed` (import or validation failed), `earlier-<measured km, 3 decimals>` (`earlier-only`) or `ok-<measured km, 3 decimals>` (a usable track while a fact is missing). For example `date=2026-12-13;start=09:00;distance=21.097;track=none`.
+**Candidate key** (status comment): what the run knew, so the comment is repeated only when something changed: `date=<YYYY-MM-DD|unknown>;start=<HH:MM|unknown>;distance=<km|unknown>;track=<code>`, where `<code>` is `none` (no GPX, KML or map export: nothing, a PDF, an image, or a map viewer without export), `login` (Strava, Wikiloc, or a private My Maps map), `failed` (import or validation failed), `earlier-<measured km, 3 decimals>` (`earlier-only`) or `ok-<measured km, 3 decimals>` (a usable track while a fact is missing). For example `date=2026-12-13;start=09:00;distance=21.097;track=none`.
 
 Every edition branch name is fixed by slug and year. Use a dated variant (`-<RUN_DATE without dashes>`, for example `fix/scout-ibiza-12k-2027-20270104`) only when the prior-item check allows a new proposal and the plain branch name already exists on `origin` (`git -C "$REPO_ROOT" ls-remote --heads origin <branch>`).
 
@@ -212,7 +212,7 @@ no docs needed
 
 ## Issue templates
 
-All scout issues follow the `create-issue` conventions: the chore template sections and labels `type/chore`, `area/data`, `status/planned`, and `priority/p1` when the race is within 45 days (or the section 4 notice rule says so), else `priority/p2`. Do not ask questions (the run is unattended). Each ends with its marker and the attribution line.
+All scout issues follow the `create-issue` conventions: the chore template sections and labels `type/chore`, `area/data`, `status/planned`, and `priority/p1` when the race is within 45 days, else `priority/p2`. Do not ask questions (the run is unattended). Each ends with its marker and the attribution line.
 
 ### `route-file`
 
@@ -221,8 +221,8 @@ All scout issues follow the `create-issue` conventions: the chore template secti
 
 scout-races checked <name> (<slug>) for the <year> edition on <RUN_DATE>. <What was found, e.g. "The official course page links a Strava route as this edition's course." / "The 2027 course is published only as a PDF map." / "The 2027 file measures 22.4 km against the official 21.097 km, so the import refused it.">
 
-<For kind `next` (decision row 8): "The rollover is waiting for this file. Facts already found:" followed by the Facts table (fact, value, source, quote, read on).>
-<For a published edition with a provisional route: "The race page still says the organisers have not published this year's route, which is no longer true.">
+<For kind `next` (decision row 8): "The <year> edition was rolled over with the <prev year> route marked provisional in #<PR>; this file replaces it." (or "is being rolled over in the same run") followed by the Facts table (fact, value, source, quote, read on).>
+<For a published edition with a provisional route: "The <year> edition still shows the <prev year> route, marked provisional, until this file is imported.">
 
 ## Tasks
 
@@ -314,15 +314,34 @@ no docs needed
 
 ## Comments
 
-When decision row 3 or an existing open issue applies and this run found something new, add one comment:
+Pick the template by what is commented on.
+
+**Open PR** (decision row 3), when this run found values that differ from what it proposes:
 
 ```markdown
-scout-races run <RUN_DATE> found values that differ from this <PR|issue>:
+scout-races run <RUN_DATE> found values that differ from this PR:
 
 | Fact | Here | Now on the official page | Source | Quote |
 | ---- | ---- | ------------------------ | ------ | ----- |
 
 Not pushed to this branch; a person should decide whether to update it.
+
+<!-- scout-races-comment: <RUN_DATE> -->
+```
+
+**Open issue** (a scout `route-file`, `cheer-points` or `needs-person` issue, or a race's tracking issue), when this run found something the issue does not say yet: new or changed facts, a track, or a change in what is missing. An approved candidate's tracking issue uses the "Candidate status comment" below instead.
+
+```markdown
+scout-races run <RUN_DATE> checked <name> (<slug>) for the <year> edition:
+
+Facts found:
+
+| Fact | Value | Source | Quote (verbatim) |
+| ---- | ----- | ------ | ---------------- |
+
+Track: <what was found and where (URL, title in a code span, measured length if imported in scratch) | nothing new>
+
+Still missing: <what this issue is waiting for, or "nothing; <what happens next>">
 
 <!-- scout-races-comment: <RUN_DATE> -->
 ```
