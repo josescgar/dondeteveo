@@ -15,8 +15,17 @@ export const DISCOVERY_SOURCES_FILE = path.join(
   "discovery-sources.json",
 );
 
-const readJson = async (filePath: string): Promise<unknown> =>
-  JSON.parse(await readFile(filePath, "utf8"));
+const readJson = async (filePath: string): Promise<unknown> => {
+  const contents = await readFile(filePath, "utf8");
+  try {
+    return JSON.parse(contents);
+  } catch (error: unknown) {
+    const reason = error instanceof Error ? error.message : String(error);
+    throw new Error(`Malformed JSON in ${filePath}: ${reason}`, {
+      cause: error,
+    });
+  }
+};
 
 /**
  * Loads and validates every watched race. Each race lives in

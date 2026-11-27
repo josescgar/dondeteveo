@@ -35,9 +35,9 @@
       "checkedOn": null
     },
     "routeConfirmed": {
-      "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "value": false,
+      "sourceUrl": "https://zurichmaratonsansebastian.com/en/i-am-a-runner/course/",
+      "checkedOn": "2026-11-27"
     }
   },
   "notes": "The 2026 edition was held on 22 November 2026 at 09:00; no 2027 date was published on 2026-11-27."

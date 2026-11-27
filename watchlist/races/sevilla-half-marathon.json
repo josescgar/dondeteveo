@@ -1,44 +1,61 @@
 {
   "slug": "sevilla-half-marathon",
   "countryCode": "es",
-  "name": "EDP Medio Maratón de Sevilla",
+  "name": "Medio Maratón de Sevilla",
   "city": "Seville",
   "distanceKm": 21.097,
   "catalogStatus": "candidate",
   "trackingIssue": 104,
   "usualMonth": null,
-  "officialWebsiteUrl": "https://edpmediomaratonsevilla.es/",
-  "coursePageUrl": null,
-  "regulationsUrl": null,
+  "officialWebsiteUrl": "https://www.mediomaratondesevilla.es/",
+  "coursePageUrl": "https://www.mediomaratondesevilla.es/mms-circuito",
+  "regulationsUrl": "https://www.mediomaratondesevilla.es/mms-reglamento",
   "trackSource": {
     "type": "none",
     "url": null,
     "loginRequired": null,
     "checkedOn": "2026-11-27",
-    "notes": "No official site reachable, so no route source found."
+    "notes": "The course page has no route content or file links in its HTML; the regulations describe the homologated 21.097 km circuit (start and finish on Paseo de las Delicias) but link no route file."
   },
   "nextEdition": {
-    "year": null,
+    "year": 2026,
     "date": {
-      "value": null,
-      "sourceUrl": null,
+      "value": "2026-12-13",
+      "sourceUrl": "https://www.mediomaratondesevilla.es/mms-reglamento",
       "checkedOn": "2026-11-27"
     },
     "startTime": {
-      "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "value": "09:00",
+      "sourceUrl": "https://www.mediomaratondesevilla.es/mms-reglamento",
+      "checkedOn": "2026-11-27"
     },
     "waves": {
-      "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "value": [
+        {
+          "label": "Wheelchair, Elite box and Box 1",
+          "startTime": "09:00"
+        },
+        {
+          "label": "Boxes 2 and 3",
+          "startTime": "09:05"
+        },
+        {
+          "label": "Boxes 4 and 5",
+          "startTime": "09:10"
+        },
+        {
+          "label": "Box 6",
+          "startTime": "09:15"
+        }
+      ],
+      "sourceUrl": "https://www.mediomaratondesevilla.es/mms-reglamento",
+      "checkedOn": "2026-11-27"
     },
     "routeConfirmed": {
       "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "sourceUrl": "https://www.mediomaratondesevilla.es/mms-circuito",
+      "checkedOn": "2026-11-27"
     }
   },
-  "notes": "The official URL from issue #104 did not resolve (DNS failure) on 2026-11-27, and no other official site was found. Third-party listings disagree on the next date, so nothing is recorded until an official source confirms it."
+  "notes": "Issue #104 links edpmediomaratonsevilla.es, which did not resolve (DNS failure) on 2026-11-27; the working official site is www.mediomaratondesevilla.es. The 2026 (32nd) edition was moved to Sunday 13 December 2026, per the homepage, so usualMonth is left unknown. Box time targets are to be announced once total entries are known."
 }

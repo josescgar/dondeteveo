@@ -97,6 +97,21 @@ describe("watched race schema", () => {
     expect(result.success).toBe(true);
   });
 
+  it("rejects an unknown fact with only one of sourceUrl and checkedOn", () => {
+    const race = buildRace();
+    for (const startTime of [
+      { value: null, sourceUrl: "https://example.com/", checkedOn: null },
+      { value: null, sourceUrl: null, checkedOn: "2026-11-27" },
+    ]) {
+      expect(
+        watchedRaceSchema.safeParse({
+          ...race,
+          nextEdition: { ...race.nextEdition, startTime },
+        }).success,
+      ).toBe(false);
+    }
+  });
+
   it("rejects a next edition date outside the next edition year", () => {
     const race = buildRace();
     const result = watchedRaceSchema.safeParse({
@@ -201,6 +216,14 @@ describe("watchlist loader", () => {
     );
     await expect(loadWatchedRaces(directory)).rejects.toThrow(
       /must be named after its slug/,
+    );
+  });
+
+  it("names the file when its JSON is malformed", async () => {
+    directory = await mkdtemp(path.join(tmpdir(), "watchlist-"));
+    await writeFile(path.join(directory, "broken-10k.json"), "{ not json");
+    await expect(loadWatchedRaces(directory)).rejects.toThrow(
+      /Malformed JSON in .*broken-10k\.json/,
     );
   });
 

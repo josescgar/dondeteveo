@@ -35,7 +35,12 @@ const waveSchema = z.object({
  * is unknown. A known value must say where it was read and when, so a later
  * run can re-check the same page and detect changes. An unknown value may
  * still carry `sourceUrl` and `checkedOn` to record that a page was checked
- * and the fact was not published yet.
+ * and the fact was not published yet. `sourceUrl` and `checkedOn` are always
+ * both set or both `null`.
+ *
+ * `routeConfirmed`: `true` = the organiser has published this edition's
+ * course; `false` = checked, and the organiser has not confirmed this
+ * edition's course; `null` = not checked, or checked but unclear.
  */
 const factSchema = <T extends z.ZodType>(valueSchema: T) =>
   z
@@ -68,6 +73,13 @@ export const nextEditionSchema = z
           code: "custom",
           path: [key],
           message: "A known fact needs sourceUrl and checkedOn",
+        });
+      }
+      if ((fact.sourceUrl === null) !== (fact.checkedOn === null)) {
+        context.addIssue({
+          code: "custom",
+          path: [key],
+          message: "sourceUrl and checkedOn must be both set or both null",
         });
       }
     }

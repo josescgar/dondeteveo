@@ -108,9 +108,9 @@ Example:
 
 ## Race Watchlist and Discovery Sources
 
-The registry under `watchlist/` records which races we follow and where to look for new ones. It is internal sourcing state for maintainers and the race-scouting agent: it is never imported by site code (an ESLint rule blocks imports from pages, layouts, components and features) and never appears on a public page.
+The registry under `watchlist/` records which races we follow and where to look for new ones. It is internal sourcing state for maintainers and the race-scouting agent: it is never imported by site code (an ESLint rule blocks imports from pages, layouts, components, features and every `src/lib/` module outside `src/lib/watchlist/`) and never appears on a public page.
 
-It lives outside `data/` on purpose: the catalog loader treats every folder in `data/` as a country, and the watchlist also holds races that have no edition yet.
+It lives outside `data/` on purpose. A `data/watchlist/` folder would not break the catalog today, but every tool that walks `data/` (the catalog loader, validation and rollover scripts, tests) treats its subfolders as countries, so keeping the registry outside `data/` avoids it being misread as one.
 
 ```
 watchlist/
@@ -154,7 +154,14 @@ The Zod schemas are in `src/lib/watchlist/schemas.ts` and the loader in `src/lib
 - `value` is `null` while the fact is unknown. Never guess a value.
 - A known `value` must have the `sourceUrl` it was read from and the `checkedOn` date.
 - An unknown `value` may still carry `sourceUrl` and `checkedOn` to record that the page was checked and the fact was not published yet.
+- `sourceUrl` and `checkedOn` are always both set or both `null`.
 - `date` must fall in `year`.
+
+`routeConfirmed` values:
+
+- `true`: the organiser has published this edition's course.
+- `false`: checked, and the organiser has not confirmed this edition's course (for example, the course page still shows last year's route).
+- `null`: not checked, or checked but unclear.
 
 ### Discovery source fields (`watchlist/discovery-sources.json`)
 

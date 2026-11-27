@@ -35,9 +35,9 @@
       "checkedOn": null
     },
     "routeConfirmed": {
-      "value": null,
-      "sourceUrl": null,
-      "checkedOn": null
+      "value": false,
+      "sourceUrl": "https://imd.sevilla.org/programas-deportivos/circuito-carreras-sevilla10/calendario-del-circuito/carrera-popular-triana",
+      "checkedOn": "2026-11-27"
     }
   },
   "notes": "On 2026-11-27 the IMD race page still described the 2026 edition; no 2027 date published."
