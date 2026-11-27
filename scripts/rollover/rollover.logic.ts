@@ -1,7 +1,5 @@
 // Pure logic for rolling a race over to its next edition. File I/O lives in
 // `rollover-files.ts`; the CLI entry point is `scripts/rollover-edition.ts`.
-// Relative imports use explicit `.ts` extensions so the CLI can run under
-// Node's built-in TypeScript support without a build step.
 import {
   metaSchema,
   sourceSchema,
@@ -9,7 +7,8 @@ import {
   type RaceMeta,
   type RaceRouteCollection,
   type RaceSource,
-} from "./schemas.ts";
+} from "../../src/lib/races/schemas.ts";
+import { RACE_SLUG_PATTERN, YEAR_PATTERN } from "../lib/edition-path.ts";
 
 export class RolloverError extends Error {
   constructor(message: string) {
@@ -29,8 +28,13 @@ export type RolloverPreviousEdition = {
 export type RolloverOptions = {
   /** New race date, `YYYY-MM-DD`. Its year becomes the new edition folder. */
   date: string;
-  /** Confirmed start time, `HH:MM`. Omit to carry over the previous one as provisional. */
+  /** Start time, `HH:MM`. Omit to carry over the previous one as provisional. */
   startTime?: string;
+  /**
+   * Keep a given `startTime` marked provisional (e.g. announced as tentative).
+   * Without it, a given `startTime` is treated as announced and confirmed.
+   */
+  startTimeProvisional?: boolean;
   /** Reference instant used to warn about dates in the past. */
   now?: Date;
 };
@@ -48,8 +52,6 @@ export type RolloverEdition = {
 
 const DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 const START_TIME_PATTERN = /^([01]\d|2[0-3]):[0-5]\d$/;
-const EDITION_YEAR_PATTERN = /^\d{4}$/;
-const RACE_SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const YEAR_MENTION_PATTERN = /\b(?:19|20)\d{2}\b/g;
 const SNIPPET_RADIUS = 40;
 
@@ -115,7 +117,7 @@ export const selectLatestEditionYear = (
   folderNames: string[],
 ): string | undefined =>
   folderNames
-    .filter((name) => EDITION_YEAR_PATTERN.test(name))
+    .filter((name) => YEAR_PATTERN.test(name))
     .toSorted((left, right) => Number(right) - Number(left))[0];
 
 const getTodayInTimeZone = (timeZone: string, now: Date): string =>
@@ -229,24 +231,53 @@ const collectReviewedTexts = (
   return texts;
 };
 
+/** How the new edition's start time was chosen. */
+export type StartTimeSource =
+  "carried-over" | "given-confirmed" | "given-provisional";
+
+export const resolveStartTimeSource = (
+  options: Pick<RolloverOptions, "startTime" | "startTimeProvisional">,
+): StartTimeSource => {
+  if (options.startTime === undefined) {
+    if (options.startTimeProvisional) {
+      throw new RolloverError(
+        "--start-time-provisional needs --start-time HH:MM; without --start-time the previous start time is already kept as provisional.",
+      );
+    }
+    return "carried-over";
+  }
+  return options.startTimeProvisional ? "given-provisional" : "given-confirmed";
+};
+
+export const describeStartTime = (
+  source: StartTimeSource,
+  startTime: string,
+  previousYear: string,
+): string => {
+  switch (source) {
+    case "carried-over":
+      return `Start time ${startTime} carried over from ${previousYear} and marked provisional.`;
+    case "given-provisional":
+      return `Start time ${startTime} set at rollover and marked provisional.`;
+    case "given-confirmed":
+      return `Start time ${startTime} set at rollover and marked confirmed.`;
+  }
+};
+
 export const buildRolloverSourceNotes = ({
   previousYear,
   year,
-  startTime,
-  startTimeProvisional,
+  startTimeNote,
   previousNotes,
 }: {
   previousYear: string;
   year: string;
-  startTime: string;
-  startTimeProvisional: boolean;
+  startTimeNote: string;
   previousNotes: string;
 }): string =>
   [
     `Route and points carried over unchanged from the ${previousYear} edition; the ${year} course had not been published at rollover time, so the route is marked provisional in meta.json.`,
-    startTimeProvisional
-      ? `Start time ${startTime} carried over from ${previousYear} and marked provisional.`
-      : `Start time ${startTime} set at rollover.`,
+    startTimeNote,
     `Previous edition notes: ${previousNotes}`,
   ].join(" ");
 
@@ -288,8 +319,14 @@ export const buildRolloverEdition = (
     );
   }
 
-  const startTimeProvisional = startTime === undefined;
+  const startTimeSource = resolveStartTimeSource(options);
+  const startTimeProvisional = startTimeSource !== "given-confirmed";
   const nextStartTime = startTime ?? previous.meta.startTime;
+  const startTimeNote = describeStartTime(
+    startTimeSource,
+    nextStartTime,
+    previous.year,
+  );
 
   const meta: RaceMeta = {
     ...previous.meta,
@@ -305,8 +342,7 @@ export const buildRolloverEdition = (
     notes: buildRolloverSourceNotes({
       previousYear: previous.year,
       year,
-      startTime: nextStartTime,
-      startTimeProvisional,
+      startTimeNote,
       previousNotes: previous.source.notes,
     }),
   };
@@ -346,11 +382,7 @@ export const buildRolloverEdition = (
   ) {
     notes.push("Dropped waveLabels from localizations.json with the waves.");
   }
-  notes.push(
-    startTimeProvisional
-      ? `Start time ${nextStartTime} carried over from ${previous.year} and marked provisional.`
-      : `Start time set to ${nextStartTime} and marked confirmed.`,
-  );
+  notes.push(startTimeNote);
   notes.push("Route and points copied unchanged and marked provisional.");
 
   // Validate, but return the objects as built: Zod output follows schema key

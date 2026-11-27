@@ -9,7 +9,10 @@
         "kind": "split",
         "distanceKm": 0
       },
-      "geometry": { "type": "Point", "coordinates": [-5.9965, 37.3805] }
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.9965, 37.3605]
+      }
     },
     {
       "type": "Feature",
@@ -19,7 +22,10 @@
         "kind": "split",
         "distanceKm": 5
       },
-      "geometry": { "type": "Point", "coordinates": [-5.9965, 37.3805] }
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.9965, 37.405466]
+      }
     },
     {
       "type": "Feature",
@@ -29,7 +35,10 @@
         "kind": "cheer-point",
         "distanceKm": 2.5
       },
-      "geometry": { "type": "Point", "coordinates": [-6.0005, 37.4005] }
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.9965, 37.382983]
+      }
     },
     {
       "type": "Feature",
@@ -39,7 +48,10 @@
         "kind": "split",
         "distanceKm": 10
       },
-      "geometry": { "type": "Point", "coordinates": [-5.9965, 37.3805] }
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5.9965, 37.450432]
+      }
     }
   ]
 }

@@ -1,4 +1,5 @@
 import {
+  chmod,
   mkdir,
   mkdtemp,
   readdir,
@@ -11,17 +12,47 @@ import path from "node:path";
 
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-import { rolloverEdition } from "./rollover-files";
-import { RolloverError } from "./rollover";
-import { metaSchema, sourceSchema } from "./schemas";
+import { metaSchema, sourceSchema } from "../../src/lib/races/schemas.ts";
+import { validateCatalog } from "../edition-validation/edition-validation.logic.ts";
+import { KNOWN_ISSUES } from "../edition-validation/known-issues.ts";
+import {
+  discoverCatalog,
+  readEdition,
+} from "../edition-validation/load-editions.ts";
+import { rolloverEdition } from "./rollover-files.ts";
+import { RolloverError } from "./rollover.logic.ts";
 
 const RACE = "example-10k";
+const DISTANCE_KM = 10;
+const START: [number, number] = [-5.99, 37.38];
+// Degrees of latitude per km on the validator's spherical Earth.
+const KM_PER_DEGREE_LATITUDE = 111.19508;
 
+/** A point `km` along a straight route due north from START. */
+const at = (km: number): [number, number] => [
+  START[0],
+  Number((START[1] + km / KM_PER_DEGREE_LATITUDE).toFixed(6)),
+];
+
+const toJson = (value: unknown) => `${JSON.stringify(value, null, 2)}\n`;
+
+const point = (
+  id: string,
+  label: string,
+  kind: "split" | "cheer-point",
+  distanceKm: number,
+) => ({
+  type: "Feature",
+  properties: { id, label, kind, distanceKm },
+  geometry: { type: "Point", coordinates: at(distanceKm) },
+});
+
+// A previous edition that passes `npm run data:validate` as is.
 const files = {
   "meta.json": `{
   "name": "Example 10K",
   "date": "2026-03-15",
-  "distanceKm": 10,
+  "distanceKm": ${DISTANCE_KM},
   "city": "Seville",
   "startTime": "09:00",
   "timezone": "Europe/Madrid",
@@ -41,36 +72,36 @@ const files = {
   "notes": "Imported from the official KML."
 }
 `,
-  "route.geojson": `{
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": {},
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [-5.99, 37.38],
-          [-5.98, 37.39]
-        ]
-      }
-    }
-  ]
-}
-`,
-  "points.geojson": `{
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": { "id": "start", "label": "Start", "kind": "split", "distanceKm": 0 },
-      "geometry": { "type": "Point", "coordinates": [-5.99, 37.38] }
-    }
-  ]
-}
-`,
+  "route.geojson": toJson({
+    type: "FeatureCollection",
+    features: [
+      {
+        type: "Feature",
+        properties: { id: "example-10k-2026-route" },
+        geometry: {
+          type: "LineString",
+          coordinates: Array.from({ length: DISTANCE_KM + 1 }, (_, km) =>
+            at(km),
+          ),
+        },
+      },
+    ],
+  }),
+  "points.geojson": toJson({
+    type: "FeatureCollection",
+    features: [
+      point("start", "Start", "split", 0),
+      point("cheer-river", "Cheer point: River", "cheer-point", 2.5),
+      point("km-5", "5K split", "split", 5),
+      point("finish", "Finish", "split", DISTANCE_KM),
+    ],
+  }),
   "localizations.json": `{
-  "es": { "meta": { "name": "10K de Ejemplo" }, "waveLabels": ["A", "B"] }
+  "es": {
+    "meta": { "name": "10K de Ejemplo" },
+    "pointLabels": { "start": "Salida", "finish": "Meta" },
+    "waveLabels": ["A", "B"]
+  }
 }
 `,
 };
@@ -88,21 +119,49 @@ const readEditionFiles = async (directory: string) =>
     ),
   );
 
+/** Runs the same validation as `npm run data:validate` over the data dir. */
+const validateDataDirectory = async (directory: string) => {
+  const catalog = await discoverCatalog(directory);
+  return validateCatalog({
+    editions: await Promise.all(
+      catalog.editions.map((ref) => readEdition(directory, ref)),
+    ),
+    catalog,
+    knownIssues: KNOWN_ISSUES,
+  });
+};
+
+const findingsOf = (
+  report: Awaited<ReturnType<typeof validateDataDirectory>>,
+) =>
+  [
+    ...report.catalogFindings,
+    ...report.editions.flatMap((edition) => edition.findings),
+  ].map(
+    (finding) => `${finding.severity} [${finding.checkId}] ${finding.message}`,
+  );
+
 beforeEach(async () => {
   dataDirectory = await mkdtemp(path.join(tmpdir(), "rollover-"));
   previousDirectory = path.join(dataDirectory, "es", RACE, "2026");
   await mkdir(previousDirectory, { recursive: true });
-  await mkdir(path.join(dataDirectory, "pt"));
   for (const [name, content] of Object.entries(files)) {
     await writeFile(path.join(previousDirectory, name), content);
   }
 });
 
 afterEach(async () => {
+  await chmod(path.join(dataDirectory, "es", RACE), 0o755).catch(() => {});
   await rm(dataDirectory, { recursive: true, force: true });
 });
 
 describe("rolloverEdition", () => {
+  it("starts from a previous edition that passes the edition validator", async () => {
+    const report = await validateDataDirectory(dataDirectory);
+
+    expect(findingsOf(report)).toEqual([]);
+  });
+
   it("creates the next edition folder from the latest edition", async () => {
     const report = await rolloverEdition({
       dataDirectory,
@@ -145,8 +204,30 @@ describe("rolloverEdition", () => {
     );
 
     expect(JSON.parse(created["localizations.json"])).toEqual({
-      es: { meta: { name: "10K de Ejemplo" } },
+      es: {
+        meta: { name: "10K de Ejemplo" },
+        pointLabels: { start: "Salida", finish: "Meta" },
+      },
     });
+  });
+
+  it("produces an edition that passes the edition validator", async () => {
+    await rolloverEdition({
+      dataDirectory,
+      raceSlug: RACE,
+      date: "2027-03-14",
+      startTime: "09:15",
+      startTimeProvisional: true,
+    });
+
+    const report = await validateDataDirectory(dataDirectory);
+
+    expect(report.editions.map((edition) => edition.ref.year)).toEqual([
+      "2026",
+      "2027",
+    ]);
+    expect(findingsOf(report)).toEqual([]);
+    expect(report.errorCount).toBe(0);
   });
 
   it("never modifies the previous edition", async () => {
@@ -237,9 +318,76 @@ describe("rolloverEdition", () => {
     await writeFile(path.join(previousDirectory, "meta.json"), "{}");
     await expect(
       rolloverEdition({ dataDirectory, raceSlug: RACE, date: "2027-03-14" }),
-    ).rejects.toThrow(/is not a valid edition file/);
+    ).rejects.toThrow(/latest edition .* is not valid/);
     expect(await readdir(path.join(dataDirectory, "es", RACE))).toEqual([
       "2026",
     ]);
   });
+
+  it("reports a missing data directory as a rollover error", async () => {
+    await expect(
+      rolloverEdition({
+        dataDirectory: path.join(dataDirectory, "nope"),
+        raceSlug: RACE,
+        date: "2027-03-14",
+      }),
+    ).rejects.toThrow(
+      new RolloverError(
+        `Data directory ${path.join(dataDirectory, "nope")} does not exist or is not a directory.`,
+      ),
+    );
+  });
+
+  it("warns when the previous edition relies on an accepted validator exception", async () => {
+    const report = await rolloverEdition({
+      dataDirectory,
+      raceSlug: RACE,
+      date: "2027-03-14",
+      dryRun: true,
+      knownIssues: [
+        {
+          edition: `es/${RACE}/2026`,
+          checkId: "route-length",
+          options: { lengthTolerancePercent: 4 },
+          reason: "test exception",
+        },
+      ],
+    });
+
+    expect(report.warnings).toEqual(
+      expect.arrayContaining([
+        expect.stringMatching(
+          /^es\/example-10k\/2026 passes "route-length" only through an accepted exception/,
+        ),
+      ]),
+    );
+  });
+
+  it("keeps the e2e fixture catalog, including its rolled-over edition, valid", async () => {
+    const report = await validateDataDirectory(
+      path.resolve("tests/fixtures/data"),
+    );
+
+    expect(report.editions.map((edition) => edition.ref.year)).toEqual([
+      "2025",
+      "2099",
+    ]);
+    expect(findingsOf(report)).toEqual([]);
+  });
+
+  it.skipIf(process.getuid?.() === 0)(
+    "reports an unwritable race folder as a rollover error",
+    async () => {
+      await chmod(path.join(dataDirectory, "es", RACE), 0o555);
+
+      const attempt = rolloverEdition({
+        dataDirectory,
+        raceSlug: RACE,
+        date: "2027-03-14",
+      });
+
+      await expect(attempt).rejects.toThrow(RolloverError);
+      await expect(attempt).rejects.toThrow(/Could not create .*2027/);
+    },
+  );
 });

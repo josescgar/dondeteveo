@@ -66,4 +66,12 @@ describe("race catalog test fixtures", () => {
       (await getRaceEdition(FIXTURE_RACE, "2025"))?.meta.provisional,
     ).toBeUndefined();
   });
+
+  it("ignores the fixture directory outside dev mode, as in astro build", async () => {
+    vi.stubEnv(FIXTURE_DATA_DIRECTORY_ENV, "tests/fixtures/data");
+    vi.stubEnv("DEV", false);
+    vi.stubEnv("PROD", true);
+
+    expect(await getDistinctRaces()).not.toContain(FIXTURE_RACE);
+  });
 });

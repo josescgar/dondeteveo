@@ -10,7 +10,7 @@ import {
   selectLatestEditionYear,
   serializeJson,
   type RolloverPreviousEdition,
-} from "./rollover";
+} from "./rollover.logic.ts";
 
 const previousEdition = (): RolloverPreviousEdition => ({
   year: "2026",
@@ -136,7 +136,38 @@ describe("buildRolloverEdition", () => {
       route: true,
       startTime: false,
     });
-    expect(edition.source.notes).toContain("Start time 09:00 set at rollover");
+    expect(edition.source.notes).toContain(
+      "Start time 09:00 set at rollover and marked confirmed.",
+    );
+  });
+
+  it("keeps a given start time provisional when asked to", () => {
+    const edition = buildRolloverEdition(previousEdition(), {
+      date: "2027-02-21",
+      startTime: "09:00",
+      startTimeProvisional: true,
+    });
+
+    expect(edition.meta.startTime).toBe("09:00");
+    expect(edition.meta.provisional).toEqual({
+      route: true,
+      startTime: true,
+    });
+    expect(edition.source.notes).toContain(
+      "Start time 09:00 set at rollover and marked provisional.",
+    );
+    expect(edition.notes).toContain(
+      "Start time 09:00 set at rollover and marked provisional.",
+    );
+  });
+
+  it("rejects --start-time-provisional without a start time", () => {
+    expect(() =>
+      buildRolloverEdition(previousEdition(), {
+        date: "2027-02-21",
+        startTimeProvisional: true,
+      }),
+    ).toThrow(/needs --start-time/);
   });
 
   it("re-marks the route provisional when rolling over a confirmed or provisional edition", () => {

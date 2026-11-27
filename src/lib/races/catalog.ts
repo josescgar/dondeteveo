@@ -38,12 +38,18 @@ export type RaceSummary = {
 const DATA_DIRECTORY = path.join(process.cwd(), "data");
 
 // Test-only: an extra data root (same `<country>/<race>/<year>/` layout) merged
-// into the catalog. Playwright sets it so e2e tests can cover edition states,
-// such as provisional editions, that the real catalog may not contain.
+// into the catalog. Playwright sets it for its dev server so e2e tests can
+// cover edition states, such as provisional editions, that the real catalog
+// may not contain. Honoured only in dev mode (`astro dev`, Vitest): a
+// production `astro build` ignores it even when the variable is set, and so
+// does plain Node (e.g. the Playwright runner), where `import.meta.env` is
+// undefined.
 export const FIXTURE_DATA_DIRECTORY_ENV = "RACE_DATA_FIXTURES_DIR";
 
 const getDataDirectories = (): string[] => {
-  const fixtureDirectory = process.env[FIXTURE_DATA_DIRECTORY_ENV];
+  const fixtureDirectory = import.meta.env?.DEV
+    ? process.env[FIXTURE_DATA_DIRECTORY_ENV]
+    : undefined;
   return fixtureDirectory
     ? [DATA_DIRECTORY, path.resolve(fixtureDirectory)]
     : [DATA_DIRECTORY];

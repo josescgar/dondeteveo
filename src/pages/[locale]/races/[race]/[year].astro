@@ -68,7 +68,9 @@ const raceInfoFields = buildRaceInfoFields(
       <p class="text-muted font-mono text-sm leading-7">
         {edition.meta.summary}
       </p>
-      <ProvisionalNotice locale={locale} facts={provisionalFacts} />
+      {provisionalFacts.length > 0 && (
+        <ProvisionalNotice locale={locale} facts={provisionalFacts} />
+      )}
       {edition.meta.specialNote && (
         <div class="banner-warning">
           <div class="text-warning font-mono text-[10px] tracking-[0.28em] uppercase">
@@ -109,7 +111,7 @@ const raceInfoFields = buildRaceInfoFields(
       raceSlug={edition.raceSlug}
       year={edition.year}
       waves={edition.meta.waves}
-      provisionalFacts={provisionalFacts}
+      {...(provisionalFacts.length > 0 ? { provisionalFacts } : {})}
       client:load
     />
   </section>

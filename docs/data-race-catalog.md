@@ -74,19 +74,23 @@ An edition can go live as soon as its date is announced, before the organizers p
 ## Yearly Rollover
 
 ```bash
-npm run data:rollover -- <race-slug> <YYYY-MM-DD> [--start-time HH:MM] [--dry-run]
+npm run data:rollover -- <race-slug> <YYYY-MM-DD> [--start-time HH:MM [--start-time-provisional]] [--dry-run] [--data-dir <dir>]
 ```
 
-Creates `data/<iso-country>/<race-slug>/<year>/` (year taken from the new date) from the latest edition of the race:
+Creates `<data-dir>/<iso-country>/<race-slug>/<year>/` (`--data-dir` defaults to `data`; the year is taken from the new date) from the latest edition of the race:
 
 - Copies `route.geojson` and `points.geojson` byte for byte, and `localizations.json` when present (without `waveLabels`).
 - Sets the new `date`, drops `waves`, and sets `provisional.route` to `true`.
-- Keeps the previous `startTime` and marks it provisional, unless `--start-time` is given, in which case that time is written and marked confirmed.
+- Start time:
+  - Without `--start-time`: keeps the previous `startTime` and marks it provisional.
+  - `--start-time HH:MM`: the organizers announced the start time; it is written and marked confirmed (`provisional.startTime: false`).
+  - `--start-time HH:MM --start-time-provisional`: the time is written but stays marked provisional (e.g. announced as tentative).
 - Writes `source.json` with the previous source fields and notes stating that the route was carried over, followed by the previous notes.
-- Refuses to run if the target folder exists or the new year is not later than the latest edition, and never writes to the previous edition.
+- Refuses to run if the target folder exists, the new year is not later than the latest edition, or the latest edition fails its schemas, and never writes to the previous edition. Problems such as a missing data directory or an unwritable race folder are reported as one-line errors with exit code 1.
 - Prints warnings for carried-over text (`name`, `summary`, `heroNote`, `specialNote`, their localized versions, the source name, and route feature names) that mentions a year or the previous race date, for any copied `specialNote`, and for suspicious dates. Text is never rewritten automatically: review each warning before committing.
+- Ends with a reminder to validate the new edition and to update the race's watchlist entry.
 
-The pure logic lives in `src/lib/races/rollover.ts` and the file handling in `src/lib/races/rollover-files.ts`; the CLI is `scripts/rollover-edition.ts`.
+The logic lives in `scripts/rollover/` (`rollover.logic.ts`, `rollover-files.ts`, tests beside them); the CLI is `scripts/rollover-edition.ts`.
 
 ## `source.json` Schema
 
@@ -243,7 +247,7 @@ Community members can contribute new races via pull request. See [`CONTRIBUTING.
 - Every race in `data/` needs a watchlist entry. When adding a new race, create or update `watchlist/races/<race-slug>.json` with `catalogStatus: "in-catalog"` and its `trackSource` taken from the edition's `source.json` (see [Race Watchlist and Discovery Sources](#race-watchlist-and-discovery-sources)). `npm run test:unit` fails until the entry exists.
 
 - Preserve past editions rather than overwriting them.
-- When a new date is announced before the course or start time, roll the race over (`npm run data:rollover`) and publish the provisional edition; flip `provisional` flags to `false` as facts are confirmed.
+- When a new date is announced before the course or start time, roll the race over (`npm run data:rollover`), review its warnings, validate the new edition with `npm run data:validate -- data/<iso-country>/<race-slug>/<year>`, and publish the provisional edition; flip `provisional` flags to `false` as facts are confirmed.
 
 ## Validation Checks
 
