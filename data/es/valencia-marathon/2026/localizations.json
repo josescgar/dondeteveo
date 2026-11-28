@@ -3,7 +3,7 @@
     "meta": {
       "name": "Maratón Valencia Trinidad Alfonso Zurich",
       "city": "Valencia",
-      "summary": "Anima en el Paseo de la Alameda (km 14 y 25), la Plaza del Ayuntamiento, la Plaza de Tetuán y la Porta de la Mar (km 29 y 40), y vive la llegada sobre el agua en la Ciudad de las Artes y las Ciencias.",
+      "summary": "Anima en el Paseo de la Alameda (km 14 y 25), la Plaza de Tetuán (km 29), la Plaza del Ayuntamiento (km 30,5) y la Porta de la Mar (km 40), y vive la llegada sobre el agua en la Ciudad de las Artes y las Ciencias.",
       "heroNote": "Los corredores pasan por el Paseo de la Alameda en el km 14 y de nuevo en el km 25, y la Plaza de Tetuán (km 29) está a un paso de la Porta de la Mar (km 40). Tras la meta, los puntos de encuentro oficiales son la rotonda del Palau de les Arts, la rotonda del centro comercial Aqua y la zona junto al centro comercial El Saler.",
       "officialWebsiteUrl": "https://www.valenciaciudaddelrunning.com/maraton/presentacion/"
     },
@@ -23,7 +23,7 @@
       "cheer-juan-verdeguer": "Punto para animar - Calle de Juan Verdeguer",
       "km-5": "Punto 5K - Avenida de los Naranjos",
       "km-10": "Punto 10K - Ronda Norte",
-      "cheer-paseo-alameda": "Punto para animar - Paseo de la Alameda",
+      "cheer-paseo-alameda": "Punto para animar - Paseo de la Alameda (Plaza de Zaragoza)",
       "km-15": "Punto 15K - Avenida de Aragón",
       "km-20": "Punto 20K - Avenida de los Naranjos",
       "halfway": "Punto medio - Calle de la Reina",
@@ -34,7 +34,7 @@
       "cheer-plaza-ayuntamiento": "Punto para animar - Plaza del Ayuntamiento",
       "cheer-valle-de-la-ballestera": "Punto para animar - Calle del Valle de la Ballestera",
       "km-35": "Punto 35K - Avenida de las Tres Cruces",
-      "km-40": "Punto 40K - Plaza de la Porta de la Mar",
+      "km-40": "Punto 40K - Porta de la Mar",
       "finish": "Meta - Ciudad de las Artes y las Ciencias"
     }
   }

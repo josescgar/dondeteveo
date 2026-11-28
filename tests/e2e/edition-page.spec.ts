@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-// Valencia 2026 has 9 waves, no cheer points and a Spanish official site
+// Valencia 2026 has 9 waves, six cheer points and a Spanish official site
 // override. `e2e-provisional-10k` (tests/fixtures/data) has a past 2025
 // edition and an upcoming 2099 edition, so the past/upcoming links stay
 // deterministic whatever the date.
@@ -43,9 +43,10 @@ test("edition page has spectator sections under H2s in race local time", async (
   await expect(startTimes).toContainText("Oleada 1 (menos de 2:50)");
   await expect(startTimes).toContainText("09:35");
 
-  await expect(
-    page.locator('[data-edition-section="where-to-watch"]'),
-  ).toContainText("Todavía no hemos marcado puntos para animar");
+  const whereToWatch = page.locator('[data-edition-section="where-to-watch"]');
+  await expect(whereToWatch).toContainText("Plaza del Ayuntamiento");
+  await expect(whereToWatch).toContainText("30,5 km");
+  await expect(whereToWatch).not.toContainText("Punto para animar - ");
 
   await expect(page.locator('[data-edition-section="faq"] h3')).toHaveCount(5);
 

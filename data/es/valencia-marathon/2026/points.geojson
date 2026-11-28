@@ -57,7 +57,7 @@
       "type": "Feature",
       "properties": {
         "id": "cheer-paseo-alameda",
-        "label": "Cheer point - Paseo de la Alameda",
+        "label": "Cheer point - Paseo de la Alameda (Plaza de Zaragoza)",
         "kind": "cheer-point",
         "distanceKm": 14.2
       },
@@ -200,7 +200,7 @@
       "type": "Feature",
       "properties": {
         "id": "km-40",
-        "label": "40K split - Plaza de la Porta de la Mar",
+        "label": "40K split - Porta de la Mar",
         "kind": "split",
         "distanceKm": 40
       },
