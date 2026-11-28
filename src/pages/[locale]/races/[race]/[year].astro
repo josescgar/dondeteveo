@@ -5,17 +5,40 @@ import RaceMapIsland from "../../../../features/race-map/RaceMapIsland";
 import SharePlannerIsland from "../../../../features/share-planner/SharePlannerIsland";
 
 import { type Locale, SUPPORTED_LOCALES } from "../../../../lib/config";
-import { buildRaceInfoFields, formatDistance } from "../../../../lib/format";
+import {
+  buildRaceInfoFields,
+  fillTemplate,
+  formatDistance,
+  formatRaceDate,
+} from "../../../../lib/format";
 import { buildRacePath } from "../../../../lib/routes";
 import { getDictionary } from "../../../../lib/i18n";
 import { getAllRaceEditions } from "../../../../lib/races/catalog";
+import {
+  buildEditionDescription,
+  buildEditionFaq,
+  buildEditionTitle,
+  buildStartTimeRows,
+  stripPointKindPrefix,
+} from "../../../../lib/races/edition-page";
+import {
+  getRelatedEditions,
+  getSiblingEditions,
+  isUpcomingEdition,
+} from "../../../../lib/races/editions";
 import { localizeRaceEdition } from "../../../../lib/races/localized";
-import { getPointSummaries } from "../../../../lib/races/points";
+import {
+  getCheerPoints,
+  getPointSummaries,
+} from "../../../../lib/races/points";
 import { getProvisionalFacts } from "../../../../lib/races/provisional";
 import { buildEditionStructuredData } from "../../../../lib/structured-data";
 
 export const getStaticPaths = async () => {
   const editions = await getAllRaceEditions();
+  // One reference date for the whole build, so "past" and "upcoming" are
+  // decided once and every page agrees.
+  const buildDate = new Date();
   return SUPPORTED_LOCALES.flatMap((locale) =>
     editions.map((edition) => ({
       params: {
@@ -25,6 +48,8 @@ export const getStaticPaths = async () => {
       },
       props: {
         edition,
+        allEditions: editions,
+        buildDate,
       },
     })),
   );
@@ -32,9 +57,11 @@ export const getStaticPaths = async () => {
 
 const locale = Astro.params.locale as Locale;
 const dictionary = getDictionary(locale);
-const { edition: rawEdition } = Astro.props;
+const strings = dictionary.editionPage;
+const { edition: rawEdition, allEditions, buildDate } = Astro.props;
 const edition = localizeRaceEdition(rawEdition, locale);
 const points = getPointSummaries(edition.points);
+const cheerPoints = getCheerPoints(edition.points);
 const provisionalFacts = getProvisionalFacts(edition.meta.provisional);
 const pathname = buildRacePath(locale, edition.raceSlug, edition.year);
 const raceInfoFields = buildRaceInfoFields(
@@ -46,13 +73,74 @@ const raceInfoFields = buildRaceInfoFields(
   },
   locale,
 );
+const upcoming = isUpcomingEdition(edition, buildDate);
+const title = buildEditionTitle(
+  { name: edition.meta.name, year: edition.year },
+  strings,
+);
+const description = buildEditionDescription(
+  {
+    meta: edition.meta,
+    cheerPointCount: cheerPoints.length,
+    provisionalFacts,
+    locale,
+  },
+  strings,
+);
+const startTimeRows = buildStartTimeRows(edition.meta, dictionary.startTime);
+const faq = buildEditionFaq(
+  {
+    meta: edition.meta,
+    year: edition.year,
+    cheerPoints,
+    cheerPointPrefix: dictionary.cheerPointLabel,
+    provisionalFacts,
+    upcoming,
+    locale,
+  },
+  strings,
+);
+
+const { siblings, upcomingPointer } = getSiblingEditions(
+  allEditions,
+  rawEdition,
+  buildDate,
+);
+const toEditionLink = (target: (typeof allEditions)[number]) => {
+  const localized = localizeRaceEdition(target, locale);
+  return {
+    href: buildRacePath(locale, target.raceSlug, target.year),
+    name: localized.meta.name,
+    city: localized.meta.city,
+    year: target.year,
+    date: formatRaceDate(target.meta.date, locale),
+    distance: formatDistance(target.meta.distanceKm, locale),
+  };
+};
+const siblingLinks = siblings.map(({ edition: sibling, upcoming }) => ({
+  ...toEditionLink(sibling),
+  upcoming,
+}));
+const upcomingPointerLink = upcomingPointer
+  ? toEditionLink(upcomingPointer)
+  : undefined;
+const relatedLinks = getRelatedEditions(allEditions, rawEdition, buildDate).map(
+  toEditionLink,
+);
+
+const headingClass =
+  "text-muted font-mono text-[10px] font-normal tracking-[0.28em] uppercase before:content-['//_']";
+const rowClass =
+  "border-line flex items-baseline justify-between gap-4 border-b py-2.5 font-mono text-sm";
+const linkRowClass =
+  "group border-line hover:bg-surface flex items-center justify-between gap-4 border-b py-3 pr-2 font-mono text-sm transition-colors";
 ---
 
 <BaseLayout
   locale={locale}
   pathname={pathname}
-  title={`${edition.meta.name} ${edition.year} | Dondeteveo`}
-  description={edition.meta.summary}
+  title={title}
+  description={description}
   jsonLd={buildEditionStructuredData(locale, edition)}
   eyebrow={dictionary.raceDiscovery}
 >
@@ -70,6 +158,32 @@ const raceInfoFields = buildRaceInfoFields(
       <p class="text-muted font-mono text-sm leading-7">
         {edition.meta.summary}
       </p>
+      {upcomingPointerLink && (
+        <a
+          href={upcomingPointerLink.href}
+          class="group border-accent bg-accent-dim hover:bg-surface block border px-4 py-3.5 transition-colors sm:px-5"
+          data-upcoming-edition-pointer
+        >
+          <span class="text-accent block font-mono text-[10px] tracking-[0.28em] uppercase">
+            // {dictionary.upcomingEdition}
+          </span>
+          <span class="text-muted mt-2 block font-mono text-sm leading-6">
+            {strings.pastEditionNotice}
+          </span>
+          <span class="text-text mt-1 block font-mono text-sm leading-6 font-bold">
+            {fillTemplate(strings.viewEdition, {
+              year: upcomingPointerLink.year,
+            })}{" "}
+            ({upcomingPointerLink.date}){" "}
+            <span
+              class="text-accent inline-block transition-transform group-hover:translate-x-0.5"
+              aria-hidden="true"
+            >
+              →
+            </span>
+          </span>
+        </a>
+      )}
       {provisionalFacts.length > 0 && (
         <ProvisionalNotice locale={locale} facts={provisionalFacts} />
       )}
@@ -103,6 +217,7 @@ const raceInfoFields = buildRaceInfoFields(
         target="_blank"
         rel="noopener noreferrer"
         class="text-muted hover:text-accent inline-flex font-mono text-sm tracking-[0.18em] uppercase transition"
+        data-official-website
       >
         {dictionary.officialWebsite} ↗
       </a>
@@ -127,18 +242,18 @@ const raceInfoFields = buildRaceInfoFields(
       mode="distance-only"
       client:visible
     />
-    <div>
-      <div class="text-muted font-mono text-[10px] tracking-[0.28em] uppercase">
-        // {dictionary.routeOverview}
-      </div>
+    <div data-edition-section="route">
+      <h2 class={headingClass}>{dictionary.routeOverview}</h2>
       <p class="text-muted mt-3 font-mono text-sm leading-6">
         {edition.meta.heroNote}
       </p>
       <div class="mt-5">
         {points.map((point) => (
-          <div class="border-line flex items-center justify-between border-b py-2.5 font-mono text-sm">
-            <span class="text-muted">{point.properties.label}</span>
-            <span class="text-accent">
+          <div class="border-line flex items-center justify-between gap-4 border-b py-2.5 font-mono text-sm">
+            <span class="text-muted min-w-0 [overflow-wrap:anywhere]">
+              {point.properties.label}
+            </span>
+            <span class="text-accent shrink-0">
               {formatDistance(point.properties.distanceKm, locale)}
             </span>
           </div>
@@ -146,4 +261,170 @@ const raceInfoFields = buildRaceInfoFields(
       </div>
     </div>
   </section>
+
+  <section class="mt-10 grid gap-10 lg:grid-cols-2 lg:gap-6">
+    <div class="space-y-10">
+      <div data-edition-section="where-to-watch">
+        <h2 class={headingClass}>{strings.whereToWatchHeading}</h2>
+        {cheerPoints.length > 0 ? (
+          <>
+            <p class="text-muted mt-3 font-mono text-sm leading-6">
+              {strings.whereToWatchIntro}
+            </p>
+            <ul class="m-0 mt-4 list-none p-0">
+              {cheerPoints.map((point) => (
+                <li class={rowClass}>
+                  <span class="text-text min-w-0 [overflow-wrap:anywhere]">
+                    {stripPointKindPrefix(
+                      point.properties.label,
+                      dictionary.cheerPointLabel,
+                    )}
+                  </span>
+                  <span class="text-accent shrink-0">
+                    {formatDistance(point.properties.distanceKm, locale)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <p class="text-muted mt-3 font-mono text-sm leading-6">
+            {strings.whereToWatchFallback}
+          </p>
+        )}
+        {provisionalFacts.includes("route") && (
+          <p
+            class="text-warning mt-3 font-mono text-xs leading-5"
+            data-provisional-route-note
+          >
+            {dictionary.provisionalRouteNotice}
+          </p>
+        )}
+      </div>
+
+      <div data-edition-section="start-times">
+        <h2 class={headingClass}>{strings.startTimesHeading}</h2>
+        <p class="text-muted mt-3 font-mono text-sm leading-6">
+          {fillTemplate(strings.startTimesNote, {
+            timezone: edition.meta.timezone,
+          })}
+        </p>
+        <ul class="m-0 mt-4 list-none p-0">
+          {startTimeRows.map((row) => (
+            <li class={rowClass} data-start-time-row>
+              <span class="text-text min-w-0 [overflow-wrap:anywhere]">
+                {row.label}
+              </span>
+              <time class="text-accent shrink-0" datetime={row.startTime}>
+                {row.startTime}
+              </time>
+            </li>
+          ))}
+        </ul>
+        {provisionalFacts.includes("startTime") && (
+          <p class="text-warning mt-3 font-mono text-xs leading-5">
+            {dictionary.provisionalStartTimeNotice}
+          </p>
+        )}
+      </div>
+    </div>
+
+    <div data-edition-section="faq">
+      <h2 class={headingClass}>{strings.faqHeading}</h2>
+      <div class="mt-4">
+        {faq.map((item) => (
+          <div class="border-line border-b py-3.5">
+            <h3 class="text-text m-0 font-mono text-sm leading-6 font-bold">
+              {item.question}
+            </h3>
+            <p class="text-muted mt-1.5 font-mono text-sm leading-6">
+              {item.answer}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {(siblingLinks.length > 0 || relatedLinks.length > 0) && (
+    <section class="mt-10 grid gap-10 lg:grid-cols-2 lg:gap-6">
+      {siblingLinks.length > 0 && (
+        <nav
+          aria-labelledby="other-editions-heading"
+          data-edition-section="other-editions"
+        >
+          <h2 id="other-editions-heading" class={headingClass}>
+            {strings.otherEditionsHeading}
+          </h2>
+          <ul class="m-0 mt-4 list-none p-0">
+            {siblingLinks.map((link) => (
+              <li>
+                <a href={link.href} class={linkRowClass}>
+                  <span class="flex min-w-0 items-center gap-3">
+                    <span
+                      class={`w-0.5 shrink-0 self-stretch ${link.upcoming ? "bg-accent" : "bg-line-solid"}`}
+                    />
+                    <span class="min-w-0">
+                      <span class="text-text block font-bold">{link.year}</span>
+                      <span class="text-muted block text-xs">{link.date}</span>
+                    </span>
+                  </span>
+                  <span class="flex shrink-0 items-center gap-3 text-xs">
+                    <span
+                      class={`bg-surface-raised px-2 py-0.5 text-[10px] tracking-wider ${link.upcoming ? "text-accent" : "text-muted"}`}
+                    >
+                      {link.upcoming
+                        ? dictionary.upcomingEdition
+                        : dictionary.pastEdition}
+                    </span>
+                    <span
+                      class="text-accent transition-transform group-hover:translate-x-0.5"
+                      aria-hidden="true"
+                    >
+                      →
+                    </span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
+      {relatedLinks.length > 0 && (
+        <nav
+          aria-labelledby="more-races-heading"
+          data-edition-section="more-races"
+        >
+          <h2 id="more-races-heading" class={headingClass}>
+            {strings.moreRacesHeading}
+          </h2>
+          <p class="text-muted mt-3 font-mono text-sm leading-6">
+            {strings.moreRacesIntro}
+          </p>
+          <ul class="m-0 mt-4 list-none p-0">
+            {relatedLinks.map((link) => (
+              <li>
+                <a href={link.href} class={linkRowClass}>
+                  <span class="min-w-0">
+                    <span class="text-text block font-bold [overflow-wrap:anywhere]">
+                      {link.name} {link.year}
+                    </span>
+                    <span class="text-muted block text-xs">
+                      {link.city} · {link.date} · {link.distance}
+                    </span>
+                  </span>
+                  <span
+                    class="text-accent shrink-0 transition-transform group-hover:translate-x-0.5"
+                    aria-hidden="true"
+                  >
+                    →
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
+    </section>
+  )}
 </BaseLayout>

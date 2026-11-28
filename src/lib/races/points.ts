@@ -25,3 +25,11 @@ export const getPointSummaries = (
   [...points.features].sort(
     (left, right) => left.properties.distanceKm - right.properties.distanceKm,
   );
+
+/** Cheer points only, ordered by distance from the start. */
+export const getCheerPoints = (
+  points: RacePointsCollection,
+): RacePointFeature[] =>
+  getPointSummaries(points).filter(
+    (point) => point.properties.kind === "cheer-point",
+  );

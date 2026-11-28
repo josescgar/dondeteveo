@@ -131,12 +131,15 @@ The logic lives in `scripts/first-edition/` (`first-edition.logic.ts`, `first-ed
 
 Optional file. Keys are locale codes (e.g. `"es"`). Each locale entry may contain:
 
-| Field         | Type                     | Notes                                                               |
-| ------------- | ------------------------ | ------------------------------------------------------------------- |
-| `meta`        | object (partial)         | Any subset of: `name`, `city`, `summary`, `heroNote`, `specialNote` |
-| `pointLabels` | `Record<string, string>` | Maps point `id` from `points.geojson` to a localized display label  |
+| Field         | Type                     | Notes                                                                                     |
+| ------------- | ------------------------ | ----------------------------------------------------------------------------------------- |
+| `meta`        | object (partial)         | Any subset of: `name`, `city`, `summary`, `heroNote`, `specialNote`, `officialWebsiteUrl` |
+| `pointLabels` | `Record<string, string>` | Maps point `id` from `points.geojson` to a localized display label                        |
+| `waveLabels`  | array of strings         | Localized wave labels, in the same order as `meta.json` `waves`                           |
 
-Both fields are optional per locale. Point IDs that don't match any feature in `points.geojson` are silently ignored.
+All fields are optional per locale. Point IDs that don't match any feature in `points.geojson` are silently ignored.
+
+`meta.officialWebsiteUrl` overrides the official site link for that locale (validated as a URL). Use it when `meta.json` points to a language-specific page, e.g. an `/en/` path, and the official site has a page in that locale. Only set it after confirming the localized URL loads and is in that language.
 
 Example:
 

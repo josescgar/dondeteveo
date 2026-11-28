@@ -13,7 +13,7 @@ import {
   type RaceRouteCollection,
   type RaceSource,
 } from "./schemas";
-import { getTodayInTimeZone } from "../format";
+import { getMostRelevantEditionOf, isUpcomingEdition } from "./editions";
 
 export type RaceEdition = {
   countryCode: string;
@@ -166,7 +166,7 @@ export const getRaceSummaries = async (): Promise<RaceSummary[]> => {
     raceSlug: edition.raceSlug,
     year: edition.year,
     meta: edition.meta,
-    upcoming: edition.meta.date >= getTodayInTimeZone(edition.meta.timezone),
+    upcoming: isUpcomingEdition(edition),
     localizations: edition.localizations,
   }));
 };
@@ -178,19 +178,5 @@ export const getDistinctRaces = async (): Promise<string[]> => {
 
 export const getMostRelevantEdition = async (
   raceSlug: string,
-): Promise<RaceEdition | undefined> => {
-  const editions = (await getAllRaceEditions()).filter(
-    (edition) => edition.raceSlug === raceSlug,
-  );
-  const upcomingEdition = editions.find(
-    (edition) => edition.meta.date >= getTodayInTimeZone(edition.meta.timezone),
-  );
-
-  if (upcomingEdition) {
-    return upcomingEdition;
-  }
-
-  return editions.sort((left, right) =>
-    right.meta.date.localeCompare(left.meta.date),
-  )[0];
-};
+): Promise<RaceEdition | undefined> =>
+  getMostRelevantEditionOf(await getAllRaceEditions(), raceSlug);

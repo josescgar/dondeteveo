@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import type { RaceMeta } from "./schemas";
 import { metaSchema } from "./schemas";
-import { resolveStartTime } from "./points";
+import { getCheerPoints, resolveStartTime } from "./points";
 
 const baseMeta: RaceMeta = {
   name: "Test Race",
@@ -85,5 +85,44 @@ describe("metaSchema waves validation", () => {
       ],
     });
     expect(result.success).toBe(false);
+  });
+});
+
+describe("getCheerPoints", () => {
+  const feature = (
+    id: string,
+    kind: "split" | "cheer-point",
+    distanceKm: number,
+  ) => ({
+    type: "Feature" as const,
+    properties: { id, label: id, kind, distanceKm },
+    geometry: {
+      type: "Point" as const,
+      coordinates: [0, 0] as [number, number],
+    },
+  });
+
+  it("keeps only cheer points, ordered by distance", () => {
+    const result = getCheerPoints({
+      type: "FeatureCollection",
+      features: [
+        feature("late", "cheer-point", 30),
+        feature("start", "split", 0),
+        feature("early", "cheer-point", 5),
+      ],
+    });
+    expect(result.map((point) => point.properties.id)).toEqual([
+      "early",
+      "late",
+    ]);
+  });
+
+  it("returns an empty list when there are no cheer points", () => {
+    expect(
+      getCheerPoints({
+        type: "FeatureCollection",
+        features: [feature("start", "split", 0)],
+      }),
+    ).toEqual([]);
   });
 });
