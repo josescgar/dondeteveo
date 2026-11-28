@@ -4,6 +4,7 @@ import {
   CHECKPOINT_SAFETY_MARGIN_MINUTES,
   buildPredictedPoints,
   buildPredictedRouteSelection,
+  buildSharePageRaceLabel,
   getSharePageConnector,
   getSpanishRaceConnector,
   resolvePaceMinutesPerKm,
@@ -41,6 +42,17 @@ describe("getSharePageConnector", () => {
   it("returns the fallback for en locale", () => {
     expect(getSharePageConnector("en", "Maratón de Sevilla", "for the")).toBe(
       "for the",
+    );
+  });
+});
+
+describe("buildSharePageRaceLabel", () => {
+  it("separates the connector from the race name in both locales", () => {
+    expect(buildSharePageRaceLabel("en el", "Maratón de Sevilla")).toBe(
+      "en el Maratón de Sevilla",
+    );
+    expect(buildSharePageRaceLabel("for the", "Valencia Marathon")).toBe(
+      "for the Valencia Marathon",
     );
   });
 });

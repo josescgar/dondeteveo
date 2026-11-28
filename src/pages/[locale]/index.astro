@@ -7,6 +7,7 @@ import { getDictionary } from "../../lib/i18n";
 import { buildHomePath, buildRacesPath } from "../../lib/routes";
 import { localizeRaceSummary } from "../../lib/races/localized";
 import { getRaceSummaries } from "../../lib/races/catalog";
+import { buildHomeStructuredData } from "../../lib/structured-data";
 
 export const getStaticPaths = () =>
   SUPPORTED_LOCALES.map((locale) => ({ params: { locale } }));
@@ -21,8 +22,9 @@ const races = (await getRaceSummaries()).map((race) =>
 <BaseLayout
   locale={locale}
   pathname={buildHomePath(locale)}
-  title={`Dondeteveo | ${dictionary.directRaceSearch}`}
-  description={dictionary.heroBody}
+  title={dictionary.homeSeoTitle}
+  description={dictionary.homeSeoDescription}
+  jsonLd={buildHomeStructuredData(locale)}
 >
   <!-- Section 1: Hero -->
   <section class="border-line border-b pb-14">

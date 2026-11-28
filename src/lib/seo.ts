@@ -27,8 +27,12 @@ export type SeoInput = {
   ogType?: "website";
 };
 
+export const X_DEFAULT_HREFLANG = "x-default";
+// Visitors whose language matches neither locale are sent to English.
+export const X_DEFAULT_LOCALE: Locale = "en";
+
 type SeoAlternate = {
-  hrefLang: Locale;
+  hrefLang: Locale | typeof X_DEFAULT_HREFLANG;
   href: string;
 };
 
@@ -60,11 +64,18 @@ export const buildAlternateUrl = (locale: Locale, pathname: string): string => {
   return buildCanonicalUrl(`/${locale}${pathWithoutLocale}`);
 };
 
-export const buildAlternates = (locale: Locale, pathname: string) => [
+export const buildAlternates = (
+  locale: Locale,
+  pathname: string,
+): SeoAlternate[] => [
   { hrefLang: locale, href: buildCanonicalUrl(pathname) },
   {
     hrefLang: LOCALE_ALTERNATES[locale],
     href: buildAlternateUrl(LOCALE_ALTERNATES[locale], pathname),
+  },
+  {
+    hrefLang: X_DEFAULT_HREFLANG,
+    href: buildAlternateUrl(X_DEFAULT_LOCALE, pathname),
   },
 ];
 

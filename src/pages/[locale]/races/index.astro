@@ -21,8 +21,8 @@ const races = (await getRaceSummaries()).map((race) =>
 <BaseLayout
   locale={locale}
   pathname={buildRacesPath(locale)}
-  title={`Dondeteveo | ${dictionary.discoverTitle}`}
-  description={dictionary.discoverIntro}
+  title={dictionary.discoverSeoTitle}
+  description={dictionary.discoverSeoDescription}
   eyebrow={dictionary.discoverTitle}
 >
   <div class="max-w-3xl">
@@ -32,6 +32,9 @@ const races = (await getRaceSummaries()).map((race) =>
     >
       {dictionary.discoverTitle}
     </h1>
+    <p class="text-accent mt-4 font-mono text-sm tracking-[0.08em] uppercase">
+      {dictionary.discoverLead}
+    </p>
     <p class="text-muted mt-4 font-mono text-base leading-7">
       {dictionary.discoverIntro}
     </p>

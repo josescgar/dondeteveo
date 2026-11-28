@@ -31,6 +31,9 @@ type Dictionary = {
   directRaceSearch: string;
   discoverIntro: string;
   discoverTitle: string;
+  discoverLead: string;
+  discoverSeoDescription: string;
+  discoverSeoTitle: string;
   distance: string;
   finishTime: string;
   generateShareLink: string;
@@ -38,6 +41,8 @@ type Dictionary = {
   githubLabel: string;
   heroBody: string;
   heroTitle: string;
+  homeSeoDescription: string;
+  homeSeoTitle: string;
   invalidShareState: string;
   language: string;
   latestEditionRedirect: string;
@@ -84,6 +89,8 @@ type Dictionary = {
   checkpointSafetyMargin: string;
   dayOffsetLabel: string;
   footerPunchline: string;
+  footerContribute: string;
+  footerNavigation: string;
   importantRaceNote: string;
   invalidFinishTimeFormat: string;
   invalidNicknameCharacters: string;
@@ -156,6 +163,11 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     discoverIntro:
       "Browse a curated catalog of races and open the exact edition you plan to run.",
     discoverTitle: "Race discovery",
+    discoverLead:
+      "Course maps, cheer points and passing times: where to watch every race.",
+    discoverSeoDescription:
+      "Browse marathons, half marathons and 10Ks with course maps, cheer points and estimated passing times. Find where to watch and plan your race day.",
+    discoverSeoTitle: "Marathon Spectator Guides: Where to Watch | Dondeteveo",
     distance: "Distance",
     finishTime: "Finish time",
     generateShareLink: "Generate share link",
@@ -164,6 +176,9 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     heroBody:
       "Share your race plan in one link — your crew will know exactly where to cheer and when to expect you.",
     heroTitle: "So, where should I see you?",
+    homeSeoDescription:
+      "Spectator guide for marathons and road races: share your pace and your crew will know where to watch along the course and when you will pass each point.",
+    homeSeoTitle: "Where to Cheer at a Marathon or Race | Dondeteveo",
     invalidShareState:
       "This share page needs a valid race target in the URL fragment. Generate it from the race page first.",
     language: "Language",
@@ -216,6 +231,8 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     checkpointSafetyMargin: "(±{minutes}mins, {start} - {end})",
     dayOffsetLabel: "D+{n}",
     footerPunchline: "Made by a runner, for runners",
+    footerContribute: "Contribute",
+    footerNavigation: "Footer",
     importantRaceNote: "Important race note",
     invalidFinishTimeFormat: "Enter a valid finish time (HH:MM:SS)",
     invalidNicknameCharacters:
@@ -294,6 +311,11 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     discoverIntro:
       "Explora un catálogo de carreras y abre la edición exacta que vas a correr.",
     discoverTitle: "Encontrar carreras",
+    discoverLead:
+      "Recorridos, puntos para animar y horarios de paso: dónde ver cada carrera.",
+    discoverSeoDescription:
+      "Maratones, medias maratones y 10K con el mapa del recorrido, puntos para animar y horarios de paso estimados. Descubre dónde ver la carrera.",
+    discoverSeoTitle: "Recorridos y horarios de paso de carreras | Dondeteveo",
     distance: "Distancia",
     finishTime: "Tiempo de llegada",
     generateShareLink: "Crear enlace para compartir",
@@ -302,6 +324,9 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     heroBody:
       "Comparte tu plan de carrera en un enlace: tu gente sabrá exactamente dónde animarte y cuándo esperarte.",
     heroTitle: "Entonces\u2026 ¿dónde te veo?",
+    homeSeoDescription:
+      "Guía para animar en maratones y carreras: comparte tu ritmo y tu gente sabrá dónde animarte en el recorrido y a qué hora pasarás por cada punto.",
+    homeSeoTitle: "Dónde animar en un maratón o carrera | Dondeteveo",
     invalidShareState:
       "Esta página necesita un objetivo válido en la URL. Genérala primero desde la página de la carrera.",
     language: "Idioma",
@@ -355,6 +380,8 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     checkpointSafetyMargin: "(±{minutes} min, {start} - {end})",
     dayOffsetLabel: "D+{n}",
     footerPunchline: "Hecho por un corredor, para corredores",
+    footerContribute: "Colabora",
+    footerNavigation: "Pie de página",
     importantRaceNote: "Nota importante",
     invalidFinishTimeFormat: "Introduce un tiempo válido (HH:MM:SS)",
     invalidNicknameCharacters:

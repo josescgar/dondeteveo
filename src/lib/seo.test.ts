@@ -17,6 +17,24 @@ describe("seo helpers", () => {
     expect(buildAlternates("en", "/en/races/")).toEqual([
       { hrefLang: "en", href: "https://dondeteveo.com/en/races/" },
       { hrefLang: "es", href: "https://dondeteveo.com/es/races/" },
+      { hrefLang: "x-default", href: "https://dondeteveo.com/en/races/" },
+    ]);
+  });
+
+  it("points x-default at the English URL from a Spanish page", () => {
+    expect(buildAlternates("es", "/es/races/valencia-marathon/2026/")).toEqual([
+      {
+        hrefLang: "es",
+        href: "https://dondeteveo.com/es/races/valencia-marathon/2026/",
+      },
+      {
+        hrefLang: "en",
+        href: "https://dondeteveo.com/en/races/valencia-marathon/2026/",
+      },
+      {
+        hrefLang: "x-default",
+        href: "https://dondeteveo.com/en/races/valencia-marathon/2026/",
+      },
     ]);
   });
 
