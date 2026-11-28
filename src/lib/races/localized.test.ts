@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { localizeRaceEdition, localizeRaceSummary } from "./localized";
 import type { RaceEdition, RaceSummary } from "./catalog";
+import { localizationsSchema } from "./schemas";
 
 const baseMeta10k = {
   name: 'Triana - Los Remedios 10K "Torre Sevilla"',
@@ -268,5 +269,35 @@ describe("localizeRaceEdition", () => {
     const result = localizeRaceEdition(editionWithPartialLabels, "es");
     expect(result.points.features[0].properties.label).toBe("Salida");
     expect(result.points.features[1].properties.label).toBe("Finish");
+  });
+
+  it("uses the localized official website URL for the matching locale only", () => {
+    const editionWithUrl: RaceEdition = {
+      ...baseEdition,
+      meta: {
+        ...baseEdition.meta,
+        officialWebsiteUrl: "https://example.com/en/",
+      },
+      localizations: {
+        es: {
+          meta: { officialWebsiteUrl: "https://example.com/es/" },
+        },
+      },
+    };
+
+    expect(
+      localizeRaceEdition(editionWithUrl, "es").meta.officialWebsiteUrl,
+    ).toBe("https://example.com/es/");
+    expect(
+      localizeRaceEdition(editionWithUrl, "en").meta.officialWebsiteUrl,
+    ).toBe("https://example.com/en/");
+  });
+
+  it("rejects an invalid localized official website URL", () => {
+    expect(
+      localizationsSchema.safeParse({
+        es: { meta: { officialWebsiteUrl: "not a url" } },
+      }).success,
+    ).toBe(false);
   });
 });

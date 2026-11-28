@@ -87,6 +87,7 @@ const localizableMetaSchema = metaSchema
     summary: true,
     heroNote: true,
     specialNote: true,
+    officialWebsiteUrl: true,
   })
   .partial();
 

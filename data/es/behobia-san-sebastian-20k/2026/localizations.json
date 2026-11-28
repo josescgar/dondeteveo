@@ -1,11 +1,12 @@
 {
   "es": {
     "meta": {
-      "name": "Behobia-San Sebasti\u00e1n 20K",
-      "city": "San Sebasti\u00e1n",
-      "summary": "Una emblem\u00e1tica y exigente carrera de 20 km desde Behobia hasta el centro de San Sebasti\u00e1n, pasando por Irun, Gaintxurizketa, Errenteria, Pasaia, Miracruz y Gros antes de terminar en la Alameda del Boulevard.",
-      "heroNote": "Los tramos con m\u00e1s ambiente para animar est\u00e1n en Gaintxurizketa, el centro de Errenteria, Miracruz y desde Gros y la playa de la Zurriola hasta la meta del Boulevard.",
-      "specialNote": "Los corredores populares salen por grupos desde las 10:00, as\u00ed que consulta el dorsal para confirmar la hora exacta; las mujeres de \u00e9lite salen a las 09:55."
+      "name": "Behobia-San Sebastián 20K",
+      "city": "San Sebastián",
+      "summary": "Una emblemática y exigente carrera de 20 km desde Behobia hasta el centro de San Sebastián, pasando por Irun, Gaintxurizketa, Errenteria, Pasaia, Miracruz y Gros antes de terminar en la Alameda del Boulevard.",
+      "heroNote": "Los tramos con más ambiente para animar están en Gaintxurizketa, el centro de Errenteria, Miracruz y desde Gros y la playa de la Zurriola hasta la meta del Boulevard.",
+      "specialNote": "Los corredores populares salen por grupos desde las 10:00, así que consulta el dorsal para confirmar la hora exacta; las mujeres de élite salen a las 09:55.",
+      "officialWebsiteUrl": "https://www.behobia-sansebastian.com/es/"
     },
     "pointLabels": {
       "start": "Salida - Behobia",

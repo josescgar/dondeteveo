@@ -1,5 +1,42 @@
 import { DEFAULT_LOCALE, SUPPORTED_LOCALES, type Locale } from "./config";
 
+/**
+ * Strings for the server-rendered sections of a race edition page. Templates
+ * use `{placeholder}` tokens filled by `fillTemplate` in `./format`.
+ */
+export type EditionPageDictionary = {
+  titleIntent: string;
+  titleIntentShort: string;
+  descriptionLead: string;
+  descriptionCheerPointsOne: string;
+  descriptionCheerPointsMany: string;
+  descriptionTail: string;
+  whereToWatchHeading: string;
+  whereToWatchIntro: string;
+  whereToWatchFallback: string;
+  startTimesHeading: string;
+  startTimesNote: string;
+  faqHeading: string;
+  faqWhenQuestion: string;
+  faqWhenAnswerUpcoming: string;
+  faqWhenAnswerPast: string;
+  faqStartQuestion: string;
+  faqStartAnswer: string;
+  faqStartAnswerWaves: string;
+  faqDistanceQuestion: string;
+  faqDistanceAnswer: string;
+  faqWhereQuestion: string;
+  faqWhereAnswer: string;
+  faqWhereAnswerFallback: string;
+  faqShareQuestion: string;
+  faqShareAnswer: string;
+  otherEditionsHeading: string;
+  pastEditionNotice: string;
+  viewEdition: string;
+  moreRacesHeading: string;
+  moreRacesIntro: string;
+};
+
 type Dictionary = {
   about: string;
   cantFindRace: string;
@@ -92,6 +129,7 @@ type Dictionary = {
   footerContribute: string;
   footerNavigation: string;
   importantRaceNote: string;
+  editionPage: EditionPageDictionary;
   invalidFinishTimeFormat: string;
   invalidNicknameCharacters: string;
   invalidNicknameLength: string;
@@ -234,6 +272,47 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     footerContribute: "Contribute",
     footerNavigation: "Footer",
     importantRaceNote: "Important race note",
+    editionPage: {
+      titleIntent: "route & where to watch",
+      titleIntentShort: "where to watch",
+      descriptionLead:
+        "{name}: where to watch on {date} in {city}. {distance}, start at {startTime} (local time){cheerPoints}.",
+      descriptionCheerPointsOne: " and 1 cheer point",
+      descriptionCheerPointsMany: " and {count} cheer points",
+      descriptionTail: "Share your race plan in one link.",
+      whereToWatchHeading: "Where to watch",
+      whereToWatchIntro:
+        "Cheer points marked on the course map, by distance from the start.",
+      whereToWatchFallback:
+        "We have not marked cheer points for this edition yet. Any official split in the route overview is a good place to watch: pick one on the map and use the predicted times to know when to be there.",
+      startTimesHeading: "Start times",
+      startTimesNote: "Race local time ({timezone}).",
+      faqHeading: "Frequently asked questions",
+      faqWhenQuestion: "When is the {name} {year}?",
+      faqWhenAnswerUpcoming: "It takes place on {date} in {city}.",
+      faqWhenAnswerPast: "It took place on {date} in {city}.",
+      faqStartQuestion: "What time does it start?",
+      faqStartAnswer:
+        "The start is at {startTime}, race local time ({timezone}).",
+      faqStartAnswerWaves:
+        "The start is split into {count} waves, from {first} to {last}, race local time ({timezone}).",
+      faqDistanceQuestion: "How long is the course?",
+      faqDistanceAnswer: "The course is {distance} long.",
+      faqWhereQuestion: "Where can I watch the race?",
+      faqWhereAnswer:
+        "Good spots to watch are {points}. They are all marked on the course map.",
+      faqWhereAnswerFallback:
+        "Anywhere along the course. We have not marked cheer points for this edition yet, so pick one of the official splits on the course map.",
+      faqShareQuestion: "How do I share my plan with my supporters?",
+      faqShareAnswer:
+        "Enter your target pace or finish time in the planner on this page and share the link. Your supporters will see when you are expected at each point, in race local time.",
+      otherEditionsHeading: "Other editions",
+      pastEditionNotice: "This edition has already been run.",
+      viewEdition: "See the {year} edition",
+      moreRacesHeading: "More races",
+      moreRacesIntro:
+        "Upcoming races: same city first, then the closest by date.",
+    },
     invalidFinishTimeFormat: "Enter a valid finish time (HH:MM:SS)",
     invalidNicknameCharacters:
       "Only letters, numbers, spaces, and characters (', ., -) allowed",
@@ -383,6 +462,47 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     footerContribute: "Colabora",
     footerNavigation: "Pie de página",
     importantRaceNote: "Nota importante",
+    editionPage: {
+      titleIntent: "recorrido y dónde animar",
+      titleIntentShort: "dónde animar",
+      descriptionLead:
+        "{name}: dónde animar el {date} en {city}. {distance}, salida a las {startTime} (hora local){cheerPoints}.",
+      descriptionCheerPointsOne: " y 1 punto para animar",
+      descriptionCheerPointsMany: " y {count} puntos para animar",
+      descriptionTail: "Comparte tu plan de carrera en un enlace.",
+      whereToWatchHeading: "Dónde animar",
+      whereToWatchIntro:
+        "Puntos para animar marcados en el mapa del recorrido, por distancia desde la salida.",
+      whereToWatchFallback:
+        "Todavía no hemos marcado puntos para animar en esta edición. Cualquier punto oficial de la vista general del recorrido es un buen sitio para verla: elige uno en el mapa y usa los horarios estimados para saber cuándo estar allí.",
+      startTimesHeading: "Horarios de salida",
+      startTimesNote: "Hora local de la carrera ({timezone}).",
+      faqHeading: "Preguntas frecuentes",
+      faqWhenQuestion: "{name} {year}: ¿cuándo se celebra?",
+      faqWhenAnswerUpcoming: "Se celebra el {date} en {city}.",
+      faqWhenAnswerPast: "Se celebró el {date} en {city}.",
+      faqStartQuestion: "¿A qué hora es la salida?",
+      faqStartAnswer:
+        "La salida es a las {startTime}, hora local de la carrera ({timezone}).",
+      faqStartAnswerWaves:
+        "La salida se da en {count} oleadas, de las {first} a las {last}, hora local de la carrera ({timezone}).",
+      faqDistanceQuestion: "¿Qué distancia tiene el recorrido?",
+      faqDistanceAnswer: "El recorrido tiene {distance}.",
+      faqWhereQuestion: "¿Dónde puedo ver la carrera?",
+      faqWhereAnswer:
+        "Algunos buenos sitios para animar son {points}. Todos están marcados en el mapa del recorrido.",
+      faqWhereAnswerFallback:
+        "En cualquier punto del recorrido. Todavía no hemos marcado puntos para animar en esta edición, así que elige uno de los puntos oficiales del mapa.",
+      faqShareQuestion: "¿Cómo comparto mi plan con quienes vienen a animarme?",
+      faqShareAnswer:
+        "Escribe tu ritmo objetivo o tu tiempo de llegada en el planificador de esta página y comparte el enlace. Tu gente verá a qué hora se te espera en cada punto, en hora local de la carrera.",
+      otherEditionsHeading: "Otras ediciones",
+      pastEditionNotice: "Esta edición ya se ha celebrado.",
+      viewEdition: "Ver la edición {year}",
+      moreRacesHeading: "Más carreras",
+      moreRacesIntro:
+        "Próximas carreras: primero las de la misma ciudad y después las más cercanas en fecha.",
+    },
     invalidFinishTimeFormat: "Introduce un tiempo válido (HH:MM:SS)",
     invalidNicknameCharacters:
       "Solo se permiten letras, números, espacios y caracteres (', ., -)",

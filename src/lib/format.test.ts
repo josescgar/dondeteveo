@@ -2,8 +2,10 @@ import { describe, expect, it } from "vitest";
 
 import {
   buildRaceInfoFields,
+  fillTemplate,
   formatCountryName,
   formatDistance,
+  formatList,
   formatRaceDate,
   getTodayInTimeZone,
 } from "./format";
@@ -77,5 +79,16 @@ describe("format helpers", () => {
     expect(getTodayInTimeZone("America/New_York", referenceDate)).toBe(
       "2026-03-15",
     );
+  });
+
+  it("fills template placeholders and keeps unknown ones", () => {
+    expect(
+      fillTemplate("{name} {year}: {missing}", { name: "Behobia", year: 2027 }),
+    ).toBe("Behobia 2027: {missing}");
+  });
+
+  it("formats lists with the locale conjunction", () => {
+    expect(formatList(["A", "B", "C"], "en")).toBe("A, B and C");
+    expect(formatList(["A", "B", "C"], "es")).toBe("A, B y C");
   });
 });

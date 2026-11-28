@@ -4,7 +4,8 @@
       "name": "Santa Eulària Ibiza Maratón",
       "city": "Ibiza",
       "summary": "Un maratón escénico que parte del Puerto de Ibiza y termina en el Passeig Marítim de Santa Eulària des Riu, pasando por Puig d'en Valls, Santa Gertrudis y la costa este de Ibiza.",
-      "heroNote": "Buenos puntos para animar en Eivissa cerca de la salida, en Santa Gertrudis alrededor de la mitad del recorrido y en la zona de meta del Passeig Marítim de Santa Eulària."
+      "heroNote": "Buenos puntos para animar en Eivissa cerca de la salida, en Santa Gertrudis alrededor de la mitad del recorrido y en la zona de meta del Passeig Marítim de Santa Eulària.",
+      "officialWebsiteUrl": "https://ibizamarathon.es/"
     },
     "pointLabels": {
       "start": "Salida - Avinguda de les Andanes, Eivissa",

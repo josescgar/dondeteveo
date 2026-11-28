@@ -70,6 +70,26 @@ export const buildRaceInfoFields = (
   },
 ];
 
+/**
+ * Replaces `{key}` tokens in a dictionary template. Unknown tokens are left
+ * untouched so a missing value is visible rather than silently dropped.
+ */
+export const fillTemplate = (
+  template: string,
+  values: Record<string, string | number>,
+): string =>
+  template.replace(/\{(\w+)\}/g, (token, key: string) =>
+    key in values ? String(values[key]) : token,
+  );
+
+const LIST_FORMATTERS: Record<Locale, Intl.ListFormat> = {
+  en: new Intl.ListFormat("en-GB", { style: "long", type: "conjunction" }),
+  es: new Intl.ListFormat("es-ES", { style: "long", type: "conjunction" }),
+};
+
+export const formatList = (items: readonly string[], locale: Locale): string =>
+  LIST_FORMATTERS[locale].format(items);
+
 export const getTodayInTimeZone = (
   timeZone: string,
   referenceDate = new Date(),

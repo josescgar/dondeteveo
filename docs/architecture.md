@@ -41,6 +41,17 @@
 - Public pages emit centralized metadata and generated `og:image` assets without altering extension-terminated asset URLs.
 - The sitemap excludes `/`, share pages, generated images, convenience race routes, and non-page assets. Search Console should discover every generated sitemap URL; the current 13-edition catalog produces 36 URLs.
 
+## Race Edition Page Content
+
+Edition pages target spectator-intent searches ("where to watch", "dónde animar", "recorrido"). Everything below is server-rendered Astro generated from edition data, with strings in `src/lib/i18n.ts` (`editionPage`) and logic in `src/lib/races/edition-page.ts` and `src/lib/races/editions.ts`:
+
+- Title: `<name> <year>: route & where to watch | Dondeteveo` (ES `recorrido y dónde animar`), at most 65 characters. Long names drop the site name first, then use the short intent (`where to watch` / `dónde animar`), then the bare `<name> <year>`, and only then truncate the name.
+- Meta description: date, city, distance, start time (local) and number of cheer points, plus the edition summary when it fits; 120-160 characters, whole sentences unless nothing else fits.
+- Exactly one H1 (race name) and H2 sections: route overview, where to watch (cheer points, with a fallback when an edition has none), start times (gun start or every wave with its localized label), FAQ (questions as H3, answers as visible text), other editions and more races.
+- Times are race local time only, always labelled with the race IANA timezone.
+- Internal linking: "Other editions" links every other edition of the same race; a past edition with an upcoming sibling also shows a prominent pointer to it near the top. "More races" links up to 6 upcoming editions of other races (one per race: its next edition), same city first, then nearest by date, with the race slug as a stable tie-breaker.
+- Past vs upcoming is decided once per build from the race date in the race timezone (`isUpcomingEdition`), the same rule the catalog and convenience routes use, so the output is deterministic for a given build date. Pages only change classification on the next deploy.
+
 ## Rendering Boundaries
 
 - Use Astro for pages, layouts, SEO metadata, and static sections.
