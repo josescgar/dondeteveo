@@ -8,9 +8,12 @@ export type EditionPageDictionary = {
   titleIntent: string;
   titleIntentShort: string;
   descriptionLead: string;
+  descriptionLeadShort: string;
+  descriptionStart: string;
   descriptionCheerPointsOne: string;
   descriptionCheerPointsMany: string;
   descriptionTail: string;
+  descriptionProvisional: string;
   whereToWatchHeading: string;
   whereToWatchIntro: string;
   whereToWatchFallback: string;
@@ -18,15 +21,21 @@ export type EditionPageDictionary = {
   startTimesNote: string;
   faqHeading: string;
   faqWhenQuestion: string;
+  faqWhenQuestionPast: string;
   faqWhenAnswerUpcoming: string;
   faqWhenAnswerPast: string;
   faqStartQuestion: string;
+  faqStartQuestionPast: string;
   faqStartAnswer: string;
+  faqStartAnswerPast: string;
   faqStartAnswerWaves: string;
+  faqStartAnswerWavesPast: string;
+  faqStartAnswerProvisional: string;
   faqDistanceQuestion: string;
   faqDistanceAnswer: string;
   faqWhereQuestion: string;
   faqWhereAnswer: string;
+  faqWhereAnswerProvisional: string;
   faqWhereAnswerFallback: string;
   faqShareQuestion: string;
   faqShareAnswer: string;
@@ -275,34 +284,46 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     editionPage: {
       titleIntent: "route & where to watch",
       titleIntentShort: "where to watch",
-      descriptionLead:
-        "{name}: where to watch on {date} in {city}. {distance}, start at {startTime} (local time){cheerPoints}.",
-      descriptionCheerPointsOne: " and 1 cheer point",
-      descriptionCheerPointsMany: " and {count} cheer points",
+      descriptionLead: "{name}: where to watch on {date} in {city}.",
+      descriptionLeadShort: "Where to watch on {date} in {city}.",
+      descriptionStart: "start at {startTime} ({timezone})",
+      descriptionCheerPointsOne: "1 cheer point",
+      descriptionCheerPointsMany: "{count} cheer points",
       descriptionTail: "Share your race plan in one link.",
+      descriptionProvisional: "Some details are pending confirmation.",
       whereToWatchHeading: "Where to watch",
       whereToWatchIntro:
         "Cheer points marked on the course map, by distance from the start.",
       whereToWatchFallback:
-        "We have not marked cheer points for this edition yet. Any official split in the route overview is a good place to watch: pick one on the map and use the predicted times to know when to be there.",
+        "We have not marked cheer points for this edition yet. Use the course map and the predicted times to choose a spot you can reach.",
       startTimesHeading: "Start times",
       startTimesNote: "Race local time ({timezone}).",
       faqHeading: "Frequently asked questions",
       faqWhenQuestion: "When is the {name} {year}?",
+      faqWhenQuestionPast: "When was the {name} {year}?",
       faqWhenAnswerUpcoming: "It takes place on {date} in {city}.",
       faqWhenAnswerPast: "It took place on {date} in {city}.",
       faqStartQuestion: "What time does it start?",
+      faqStartQuestionPast: "What time did it start?",
       faqStartAnswer:
         "The start is at {startTime}, race local time ({timezone}).",
+      faqStartAnswerPast:
+        "The start was at {startTime}, race local time ({timezone}).",
       faqStartAnswerWaves:
-        "The start is split into {count} waves, from {first} to {last}, race local time ({timezone}).",
+        "The first start is at {startTime}, race local time ({timezone}). Every start is listed under Start times.",
+      faqStartAnswerWavesPast:
+        "The first start was at {startTime}, race local time ({timezone}). Every start is listed under Start times.",
+      faqStartAnswerProvisional:
+        "Expected start time: {startTime}, race local time ({timezone}), pending confirmation.",
       faqDistanceQuestion: "How long is the course?",
       faqDistanceAnswer: "The course is {distance} long.",
       faqWhereQuestion: "Where can I watch the race?",
       faqWhereAnswer:
         "Good spots to watch are {points}. They are all marked on the course map.",
+      faqWhereAnswerProvisional:
+        "They come from the previous edition’s course, pending confirmation, so they may change.",
       faqWhereAnswerFallback:
-        "Anywhere along the course. We have not marked cheer points for this edition yet, so pick one of the official splits on the course map.",
+        "We have not marked cheer points for this edition yet, so use the course map and the predicted times to choose a spot you can reach.",
       faqShareQuestion: "How do I share my plan with my supporters?",
       faqShareAnswer:
         "Enter your target pace or finish time in the planner on this page and share the link. Your supporters will see when you are expected at each point, in race local time.",
@@ -421,7 +442,7 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     pastEdition: "Edición pasada",
     plannerMode: "Modo",
     primaryNavigation: "Navegación principal",
-    predictedTimes: "Horarios estimados",
+    predictedTimes: "Horas previstas",
     privacy: "Privacidad",
     privacyBody:
       "Hemos querido mantenerlo simple. Las páginas personalizadas son públicas por URL, nunca se indexan y pueden pasar por servicios de terceros como Cloudflare (incluidas analíticas agregadas sin cookies) y proveedores de mapas.",
@@ -465,34 +486,46 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
     editionPage: {
       titleIntent: "recorrido y dónde animar",
       titleIntentShort: "dónde animar",
-      descriptionLead:
-        "{name}: dónde animar el {date} en {city}. {distance}, salida a las {startTime} (hora local){cheerPoints}.",
-      descriptionCheerPointsOne: " y 1 punto para animar",
-      descriptionCheerPointsMany: " y {count} puntos para animar",
+      descriptionLead: "{name}: dónde animar el {date} en {city}.",
+      descriptionLeadShort: "Dónde animar el {date} en {city}.",
+      descriptionStart: "salida a las {startTime} ({timezone})",
+      descriptionCheerPointsOne: "1 punto para animar",
+      descriptionCheerPointsMany: "{count} puntos para animar",
       descriptionTail: "Comparte tu plan de carrera en un enlace.",
+      descriptionProvisional: "Algunos datos están pendientes de confirmación.",
       whereToWatchHeading: "Dónde animar",
       whereToWatchIntro:
         "Puntos para animar marcados en el mapa del recorrido, por distancia desde la salida.",
       whereToWatchFallback:
-        "Todavía no hemos marcado puntos para animar en esta edición. Cualquier punto oficial de la vista general del recorrido es un buen sitio para verla: elige uno en el mapa y usa los horarios estimados para saber cuándo estar allí.",
+        "Todavía no hemos marcado puntos para animar en esta edición. Usa el mapa del recorrido y las horas previstas para elegir un sitio al que puedas llegar.",
       startTimesHeading: "Horarios de salida",
       startTimesNote: "Hora local de la carrera ({timezone}).",
       faqHeading: "Preguntas frecuentes",
       faqWhenQuestion: "{name} {year}: ¿cuándo se celebra?",
+      faqWhenQuestionPast: "{name} {year}: ¿cuándo se celebró?",
       faqWhenAnswerUpcoming: "Se celebra el {date} en {city}.",
       faqWhenAnswerPast: "Se celebró el {date} en {city}.",
       faqStartQuestion: "¿A qué hora es la salida?",
+      faqStartQuestionPast: "¿A qué hora fue la salida?",
       faqStartAnswer:
         "La salida es a las {startTime}, hora local de la carrera ({timezone}).",
+      faqStartAnswerPast:
+        "La salida fue a las {startTime}, hora local de la carrera ({timezone}).",
       faqStartAnswerWaves:
-        "La salida se da en {count} oleadas, de las {first} a las {last}, hora local de la carrera ({timezone}).",
+        "La primera salida es a las {startTime}, hora local de la carrera ({timezone}). Todas las salidas aparecen en Horarios de salida.",
+      faqStartAnswerWavesPast:
+        "La primera salida fue a las {startTime}, hora local de la carrera ({timezone}). Todas las salidas aparecen en Horarios de salida.",
+      faqStartAnswerProvisional:
+        "Hora de salida prevista: {startTime}, hora local de la carrera ({timezone}), pendiente de confirmación.",
       faqDistanceQuestion: "¿Qué distancia tiene el recorrido?",
       faqDistanceAnswer: "El recorrido tiene {distance}.",
       faqWhereQuestion: "¿Dónde puedo ver la carrera?",
       faqWhereAnswer:
         "Algunos buenos sitios para animar son {points}. Todos están marcados en el mapa del recorrido.",
+      faqWhereAnswerProvisional:
+        "Proceden del recorrido de la edición anterior, pendiente de confirmación, así que pueden cambiar.",
       faqWhereAnswerFallback:
-        "En cualquier punto del recorrido. Todavía no hemos marcado puntos para animar en esta edición, así que elige uno de los puntos oficiales del mapa.",
+        "Todavía no hemos marcado puntos para animar en esta edición, así que usa el mapa del recorrido y las horas previstas para elegir un sitio al que puedas llegar.",
       faqShareQuestion: "¿Cómo comparto mi plan con quienes vienen a animarme?",
       faqShareAnswer:
         "Escribe tu ritmo objetivo o tu tiempo de llegada en el planificador de esta página y comparte el enlace. Tu gente verá a qué hora se te espera en cada punto, en hora local de la carrera.",

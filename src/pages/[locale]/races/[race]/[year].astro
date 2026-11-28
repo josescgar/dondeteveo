@@ -19,6 +19,7 @@ import {
   buildEditionFaq,
   buildEditionTitle,
   buildStartTimeRows,
+  stripPointKindPrefix,
 } from "../../../../lib/races/edition-page";
 import {
   getRelatedEditions,
@@ -78,7 +79,12 @@ const title = buildEditionTitle(
   strings,
 );
 const description = buildEditionDescription(
-  { meta: edition.meta, cheerPointCount: cheerPoints.length, locale },
+  {
+    meta: edition.meta,
+    cheerPointCount: cheerPoints.length,
+    provisionalFacts,
+    locale,
+  },
   strings,
 );
 const startTimeRows = buildStartTimeRows(edition.meta, dictionary.startTime);
@@ -87,6 +93,8 @@ const faq = buildEditionFaq(
     meta: edition.meta,
     year: edition.year,
     cheerPoints,
+    cheerPointPrefix: dictionary.cheerPointLabel,
+    provisionalFacts,
     upcoming,
     locale,
   },
@@ -167,7 +175,10 @@ const linkRowClass =
               year: upcomingPointerLink.year,
             })}{" "}
             ({upcomingPointerLink.date}){" "}
-            <span class="text-accent inline-block transition-transform group-hover:translate-x-0.5">
+            <span
+              class="text-accent inline-block transition-transform group-hover:translate-x-0.5"
+              aria-hidden="true"
+            >
               →
             </span>
           </span>
@@ -264,7 +275,10 @@ const linkRowClass =
               {cheerPoints.map((point) => (
                 <li class={rowClass}>
                   <span class="text-text min-w-0 [overflow-wrap:anywhere]">
-                    {point.properties.label}
+                    {stripPointKindPrefix(
+                      point.properties.label,
+                      dictionary.cheerPointLabel,
+                    )}
                   </span>
                   <span class="text-accent shrink-0">
                     {formatDistance(point.properties.distanceKm, locale)}
@@ -276,6 +290,14 @@ const linkRowClass =
         ) : (
           <p class="text-muted mt-3 font-mono text-sm leading-6">
             {strings.whereToWatchFallback}
+          </p>
+        )}
+        {provisionalFacts.includes("route") && (
+          <p
+            class="text-warning mt-3 font-mono text-xs leading-5"
+            data-provisional-route-note
+          >
+            {dictionary.provisionalRouteNotice}
           </p>
         )}
       </div>
@@ -355,7 +377,10 @@ const linkRowClass =
                         ? dictionary.upcomingEdition
                         : dictionary.pastEdition}
                     </span>
-                    <span class="text-accent transition-transform group-hover:translate-x-0.5">
+                    <span
+                      class="text-accent transition-transform group-hover:translate-x-0.5"
+                      aria-hidden="true"
+                    >
                       →
                     </span>
                   </span>
@@ -388,7 +413,10 @@ const linkRowClass =
                       {link.city} · {link.date} · {link.distance}
                     </span>
                   </span>
-                  <span class="text-accent shrink-0 transition-transform group-hover:translate-x-0.5">
+                  <span
+                    class="text-accent shrink-0 transition-transform group-hover:translate-x-0.5"
+                    aria-hidden="true"
+                  >
                     →
                   </span>
                 </a>

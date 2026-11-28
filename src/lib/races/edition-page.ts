@@ -6,6 +6,7 @@ import {
   formatRaceDate,
 } from "../format";
 import type { EditionPageDictionary } from "../i18n";
+import type { ProvisionalFact } from "./provisional";
 import type { RaceMeta, RacePointFeature } from "./schemas";
 
 export const EDITION_TITLE_MAX_LENGTH = 65;
@@ -59,68 +60,104 @@ export const buildEditionTitle = (
   );
 };
 
+const isWithinDescriptionRange = (text: string): boolean =>
+  text.length >= EDITION_DESCRIPTION_MIN_LENGTH &&
+  text.length <= EDITION_DESCRIPTION_MAX_LENGTH;
+
 type DescriptionStrings = Pick<
   EditionPageDictionary,
   | "descriptionLead"
+  | "descriptionLeadShort"
+  | "descriptionStart"
   | "descriptionCheerPointsOne"
   | "descriptionCheerPointsMany"
   | "descriptionTail"
+  | "descriptionProvisional"
 >;
 
 /**
- * Meta description built from edition data plus the edition summary, aimed
- * at 120-160 characters and kept to whole sentences where possible.
+ * Meta description, aimed at 120-160 characters of whole sentences. It
+ * prefers the hand-written summary after a short lead (name, date, city, or
+ * only date and city when the name does not fit) and
+ * only falls back to generated facts (distance, start time, cheer points)
+ * when the summary does not fit. Provisional facts are never stated: a
+ * provisional start time drops the start clause and a provisional route
+ * drops the cheer-point count.
  */
 export const buildEditionDescription = (
   {
     meta,
     cheerPointCount,
+    provisionalFacts,
     locale,
   }: {
     meta: Pick<
       RaceMeta,
-      "name" | "date" | "city" | "distanceKm" | "startTime" | "summary"
+      | "name"
+      | "date"
+      | "city"
+      | "distanceKm"
+      | "startTime"
+      | "timezone"
+      | "summary"
     >;
     cheerPointCount: number;
+    provisionalFacts: readonly ProvisionalFact[];
     locale: Locale;
   },
   strings: DescriptionStrings,
 ): string => {
+  const lead = fillTemplate(strings.descriptionLead, {
+    name: meta.name,
+    date: formatRaceDate(meta.date, locale),
+    city: meta.city,
+  });
+  const summary = meta.summary.trim();
+  const shortLead = fillTemplate(strings.descriptionLeadShort, {
+    date: formatRaceDate(meta.date, locale),
+    city: meta.city,
+  });
+
+  const distance = formatDistance(meta.distanceKm, locale);
+  const start = provisionalFacts.includes("startTime")
+    ? undefined
+    : fillTemplate(strings.descriptionStart, {
+        startTime: meta.startTime,
+        timezone: meta.timezone,
+      });
   const cheerPoints =
-    cheerPointCount === 0
-      ? ""
+    provisionalFacts.includes("route") || cheerPointCount === 0
+      ? undefined
       : cheerPointCount === 1
         ? strings.descriptionCheerPointsOne
         : fillTemplate(strings.descriptionCheerPointsMany, {
             count: cheerPointCount,
           });
-  const lead = fillTemplate(strings.descriptionLead, {
-    name: meta.name,
-    date: formatRaceDate(meta.date, locale),
-    city: meta.city,
-    distance: formatDistance(meta.distanceKm, locale),
-    startTime: meta.startTime,
-    cheerPoints,
-  });
+  const joinFacts = (parts: (string | undefined)[]) =>
+    `${parts.filter(Boolean).join(", ")}.`;
+  const facts = joinFacts([distance, start, cheerPoints]);
+  const factsWithoutCheerPoints = joinFacts([distance, start]);
 
-  const summary = meta.summary.trim();
-  // Whole sentences first: data + summary, padded with the call to action
-  // when short; then data + call to action, or data alone, when the summary
-  // does not fit; a word-boundary cut only as a last resort.
   const candidates = [
     `${lead} ${summary}`,
+    `${shortLead} ${summary}`,
+    `${lead} ${facts} ${summary}`,
     `${lead} ${summary} ${strings.descriptionTail}`,
-    `${lead} ${strings.descriptionTail}`,
-    lead,
+    `${shortLead} ${summary} ${strings.descriptionTail}`,
+    `${lead} ${facts} ${strings.descriptionTail}`,
+    `${lead} ${facts}`,
+    `${lead} ${factsWithoutCheerPoints} ${strings.descriptionTail}`,
+    ...(provisionalFacts.length > 0
+      ? [
+          `${lead} ${facts} ${strings.descriptionProvisional} ${strings.descriptionTail}`,
+          `${lead} ${facts} ${strings.descriptionProvisional}`,
+        ]
+      : []),
+    `${lead} ${factsWithoutCheerPoints}`,
   ];
-  const fitting = candidates.find(
-    (candidate) =>
-      candidate.length >= EDITION_DESCRIPTION_MIN_LENGTH &&
-      candidate.length <= EDITION_DESCRIPTION_MAX_LENGTH,
-  );
 
   return (
-    fitting ??
+    candidates.find(isWithinDescriptionRange) ??
     truncateAtWord(`${lead} ${summary}`, EDITION_DESCRIPTION_MAX_LENGTH)
   );
 };
@@ -139,20 +176,39 @@ export const buildStartTimeRows = (
     ? meta.waves.map(({ label, startTime }) => ({ label, startTime }))
     : [{ label: startLabel, startTime: meta.startTime }];
 
+/**
+ * Point labels carry their kind as a prefix ("Cheer point - Plaza de Cuba").
+ * Lists that hold a single kind drop it so it is not repeated on every row.
+ */
+export const stripPointKindPrefix = (label: string, prefix: string): string => {
+  const escaped = prefix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const stripped = label.replace(
+    new RegExp(`^${escaped}\\s*[-–:]\\s*`, "i"),
+    "",
+  );
+  return stripped.length > 0 ? stripped : label;
+};
+
 export type FaqItem = { question: string; answer: string };
 
 type FaqStrings = Pick<
   EditionPageDictionary,
   | "faqWhenQuestion"
+  | "faqWhenQuestionPast"
   | "faqWhenAnswerUpcoming"
   | "faqWhenAnswerPast"
   | "faqStartQuestion"
+  | "faqStartQuestionPast"
   | "faqStartAnswer"
+  | "faqStartAnswerPast"
   | "faqStartAnswerWaves"
+  | "faqStartAnswerWavesPast"
+  | "faqStartAnswerProvisional"
   | "faqDistanceQuestion"
   | "faqDistanceAnswer"
   | "faqWhereQuestion"
   | "faqWhereAnswer"
+  | "faqWhereAnswerProvisional"
   | "faqWhereAnswerFallback"
   | "faqShareQuestion"
   | "faqShareAnswer"
@@ -160,13 +216,16 @@ type FaqStrings = Pick<
 
 /**
  * Short FAQ generated from edition data. Every time in it is race local time,
- * labelled with the race timezone.
+ * labelled with the race timezone. Past editions use the past tense in the
+ * question and the answer, and provisional facts are always qualified.
  */
 export const buildEditionFaq = (
   {
     meta,
     year,
     cheerPoints,
+    cheerPointPrefix,
+    provisionalFacts,
     upcoming,
     locale,
   }: {
@@ -179,55 +238,80 @@ export const buildEditionFaq = (
       | "startTime"
       | "timezone"
       | "waves"
+      | "specialNote"
     >;
     year: string;
     cheerPoints: readonly RacePointFeature[];
+    /** Localized cheer-point kind label, stripped from point labels. */
+    cheerPointPrefix: string;
+    provisionalFacts: readonly ProvisionalFact[];
     upcoming: boolean;
     locale: Locale;
   },
   strings: FaqStrings,
 ): FaqItem[] => {
   const date = formatRaceDate(meta.date, locale);
-  const waveTimes = (meta.waves ?? []).map((wave) => wave.startTime).toSorted();
+  const hasWaves = (meta.waves?.length ?? 0) > 1;
+  const firstStart = hasWaves
+    ? (meta.waves ?? []).map((wave) => wave.startTime).toSorted()[0]
+    : meta.startTime;
 
-  const startAnswer =
-    waveTimes.length > 1
-      ? fillTemplate(strings.faqStartAnswerWaves, {
-          count: waveTimes.length,
-          first: waveTimes[0],
-          last: waveTimes[waveTimes.length - 1],
-          timezone: meta.timezone,
-        })
-      : fillTemplate(strings.faqStartAnswer, {
-          startTime: meta.startTime,
-          timezone: meta.timezone,
-        });
+  const startTemplate = provisionalFacts.includes("startTime")
+    ? strings.faqStartAnswerProvisional
+    : hasWaves
+      ? upcoming
+        ? strings.faqStartAnswerWaves
+        : strings.faqStartAnswerWavesPast
+      : upcoming
+        ? strings.faqStartAnswer
+        : strings.faqStartAnswerPast;
+  const startAnswer = [
+    fillTemplate(startTemplate, {
+      startTime: firstStart,
+      timezone: meta.timezone,
+    }),
+    meta.specialNote?.trim(),
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   const whereAnswer =
     cheerPoints.length > 0
-      ? fillTemplate(strings.faqWhereAnswer, {
-          points: formatList(
-            cheerPoints.map(
-              (point) =>
-                `${point.properties.label} (${formatDistance(point.properties.distanceKm, locale)})`,
+      ? [
+          fillTemplate(strings.faqWhereAnswer, {
+            points: formatList(
+              cheerPoints.map(
+                (point) =>
+                  `${stripPointKindPrefix(point.properties.label, cheerPointPrefix)} (${formatDistance(point.properties.distanceKm, locale)})`,
+              ),
+              locale,
             ),
-            locale,
-          ),
-        })
+          }),
+          provisionalFacts.includes("route")
+            ? strings.faqWhereAnswerProvisional
+            : undefined,
+        ]
+          .filter(Boolean)
+          .join(" ")
       : strings.faqWhereAnswerFallback;
 
   return [
     {
-      question: fillTemplate(strings.faqWhenQuestion, {
-        name: meta.name,
-        year,
-      }),
+      question: fillTemplate(
+        upcoming ? strings.faqWhenQuestion : strings.faqWhenQuestionPast,
+        { name: meta.name, year },
+      ),
       answer: fillTemplate(
         upcoming ? strings.faqWhenAnswerUpcoming : strings.faqWhenAnswerPast,
         { date, city: meta.city },
       ),
     },
-    { question: strings.faqStartQuestion, answer: startAnswer },
+    {
+      question: upcoming
+        ? strings.faqStartQuestion
+        : strings.faqStartQuestionPast,
+      answer: startAnswer,
+    },
     {
       question: strings.faqDistanceQuestion,
       answer: fillTemplate(strings.faqDistanceAnswer, {
