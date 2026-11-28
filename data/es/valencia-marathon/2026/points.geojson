@@ -5,7 +5,7 @@
       "type": "Feature",
       "properties": {
         "id": "start",
-        "label": "Start",
+        "label": "Start - Plaça de la Marató",
         "kind": "split",
         "distanceKm": 0
       },
@@ -17,8 +17,21 @@
     {
       "type": "Feature",
       "properties": {
+        "id": "cheer-juan-verdeguer",
+        "label": "Cheer point - Calle de Juan Verdeguer",
+        "kind": "cheer-point",
+        "distanceKm": 2.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-0.33811, 39.458905]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "id": "km-5",
-        "label": "5K split",
+        "label": "5K split - Avenida de los Naranjos",
         "kind": "split",
         "distanceKm": 5
       },
@@ -31,7 +44,7 @@
       "type": "Feature",
       "properties": {
         "id": "km-10",
-        "label": "10K split",
+        "label": "10K split - Ronda Norte",
         "kind": "split",
         "distanceKm": 10
       },
@@ -43,8 +56,21 @@
     {
       "type": "Feature",
       "properties": {
+        "id": "cheer-paseo-alameda",
+        "label": "Cheer point - Paseo de la Alameda (Plaza de Zaragoza)",
+        "kind": "cheer-point",
+        "distanceKm": 14.2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-0.36096, 39.469265]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "id": "km-15",
-        "label": "15K split",
+        "label": "15K split - Avenida de Aragón",
         "kind": "split",
         "distanceKm": 15
       },
@@ -57,7 +83,7 @@
       "type": "Feature",
       "properties": {
         "id": "km-20",
-        "label": "20K split",
+        "label": "20K split - Avenida de los Naranjos",
         "kind": "split",
         "distanceKm": 20
       },
@@ -70,7 +96,7 @@
       "type": "Feature",
       "properties": {
         "id": "halfway",
-        "label": "Halfway split",
+        "label": "Halfway split - Calle de la Reina",
         "kind": "split",
         "distanceKm": 21.0975
       },
@@ -83,7 +109,7 @@
       "type": "Feature",
       "properties": {
         "id": "km-25",
-        "label": "25K split",
+        "label": "25K split - Paseo de la Alameda",
         "kind": "split",
         "distanceKm": 25
       },
@@ -95,8 +121,34 @@
     {
       "type": "Feature",
       "properties": {
+        "id": "cheer-guillem-de-castro",
+        "label": "Cheer point - Calle de Guillem de Castro",
+        "kind": "cheer-point",
+        "distanceKm": 28.1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-0.380392, 39.481189]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-plaza-tetuan",
+        "label": "Cheer point - Plaza de Tetuán",
+        "kind": "cheer-point",
+        "distanceKm": 29.4
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-0.369868, 39.47396]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "id": "km-30",
-        "label": "30K split",
+        "label": "30K split - Calle del Poeta Querol",
         "kind": "split",
         "distanceKm": 30
       },
@@ -108,8 +160,34 @@
     {
       "type": "Feature",
       "properties": {
+        "id": "cheer-plaza-ayuntamiento",
+        "label": "Cheer point - Plaza del Ayuntamiento",
+        "kind": "cheer-point",
+        "distanceKm": 30.5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-0.376128, 39.469315]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cheer-valle-de-la-ballestera",
+        "label": "Cheer point - Calle del Valle de la Ballestera",
+        "kind": "cheer-point",
+        "distanceKm": 33.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-0.395213, 39.480303]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "id": "km-35",
-        "label": "35K split",
+        "label": "35K split - Avenida de las Tres Cruces",
         "kind": "split",
         "distanceKm": 35
       },
@@ -122,7 +200,7 @@
       "type": "Feature",
       "properties": {
         "id": "km-40",
-        "label": "40K split",
+        "label": "40K split - Porta de la Mar",
         "kind": "split",
         "distanceKm": 40
       },
@@ -135,7 +213,7 @@
       "type": "Feature",
       "properties": {
         "id": "finish",
-        "label": "Finish",
+        "label": "Finish - City of Arts and Sciences",
         "kind": "split",
         "distanceKm": 42.195
       },
