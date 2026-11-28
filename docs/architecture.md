@@ -34,6 +34,10 @@
 - Provisional editions (route and/or start time pending confirmation) are indexable like any other edition; the date and the race are real.
 - Canonical domain: `https://dondeteveo.com`
 - Canonical, locale alternate, Open Graph, internal page links, and sitemap entries use final slash-terminated page URLs.
+- Every indexable page emits `hreflang` alternates for both locales plus `hreflang="x-default"`, pointing at the English URL. `noindex` pages (share, 404, convenience race routes) emit no alternates; their visible language switch is unaffected.
+- Homepage and listing titles lead with spectator-intent keywords and end with the brand (`<keyword phrase> | Dondeteveo`), at most 60 characters, with 120-160 character descriptions.
+- Structured data (JSON-LD) is built by pure helpers in `src/lib/structured-data.ts` and passed to `BaseLayout.astro` through its `jsonLd` prop: `WebSite` + `Organization` on the localized homepages, `SportsEvent` + `BreadcrumbList` on race edition pages. `SportsEvent.startDate` carries the race timezone's UTC offset on race day (DST-aware), or only the date when the edition's start time is provisional. `Organization.url` is the rendered locale's homepage, never the `/` redirect stub. The layout never emits JSON-LD on `noindex` pages, and serialization escapes `<`, `>` and `&` so race data cannot break out of the script element.
+- Every sitemap URL has a `lastmod`: the last git commit touching the edition's data folder for edition pages, the whole `data/` folder for homepages and listings, and the page source for About, Privacy and Contribute. Template and copy changes do not move `lastmod`. Shallow clones, a missing `data/` folder and unknown URLs fall back to the build time, so CI checks out full history (`fetch-depth: 0`).
 - Public pages emit centralized metadata and generated `og:image` assets without altering extension-terminated asset URLs.
 - The sitemap excludes `/`, share pages, generated images, convenience race routes, and non-page assets. Search Console should discover every generated sitemap URL; the current 13-edition catalog produces 36 URLs.
 

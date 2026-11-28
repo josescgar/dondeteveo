@@ -17,6 +17,24 @@ describe("seo helpers", () => {
     expect(buildAlternates("en", "/en/races/")).toEqual([
       { hrefLang: "en", href: "https://dondeteveo.com/en/races/" },
       { hrefLang: "es", href: "https://dondeteveo.com/es/races/" },
+      { hrefLang: "x-default", href: "https://dondeteveo.com/en/races/" },
+    ]);
+  });
+
+  it("points x-default at the English URL from a Spanish page", () => {
+    expect(buildAlternates("es", "/es/races/valencia-marathon/2026/")).toEqual([
+      {
+        hrefLang: "es",
+        href: "https://dondeteveo.com/es/races/valencia-marathon/2026/",
+      },
+      {
+        hrefLang: "en",
+        href: "https://dondeteveo.com/en/races/valencia-marathon/2026/",
+      },
+      {
+        hrefLang: "x-default",
+        href: "https://dondeteveo.com/en/races/valencia-marathon/2026/",
+      },
     ]);
   });
 
@@ -30,6 +48,11 @@ describe("seo helpers", () => {
 
     expect(buildDefaultSeoImagePath("en")).toBe("/og/en/default.png");
     expect(seo.canonical).toBe("https://dondeteveo.com/en/races/");
+    expect(seo.alternates.map((alternate) => alternate.hrefLang)).toEqual([
+      "en",
+      "es",
+      "x-default",
+    ]);
     expect(seo.openGraph.locale).toBe("en_US");
     expect(seo.openGraph.image.url).toBe(
       "https://dondeteveo.com/og/en/default.png",
@@ -59,6 +82,7 @@ describe("seo helpers", () => {
     });
 
     expect(seo.noindex).toBe(true);
+    expect(seo.alternates).toEqual([]);
     expect(imagePath).toBe(
       "/og/es/races/carrera-triana-los-remedios-10k/2026.png",
     );

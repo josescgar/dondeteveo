@@ -8,7 +8,10 @@ import "leaflet/dist/leaflet.css";
 import BaseLayout from "../../../../layouts/BaseLayout.astro";
 import ShareExperienceIsland from "../../../../features/share-view/ShareExperienceIsland";
 
-import { getSharePageConnector } from "../../../../features/share-view/share-view.logic";
+import {
+  buildSharePageRaceLabel,
+  getSharePageConnector,
+} from "../../../../features/share-view/share-view.logic";
 import { type Locale, SUPPORTED_LOCALES } from "../../../../lib/config";
 import { getDictionary } from "../../../../lib/i18n";
 import { buildSharePath } from "../../../../lib/routes";
@@ -37,10 +40,12 @@ const { edition: rawEdition } = Astro.props;
 const edition = localizeRaceEdition(rawEdition, locale);
 const pathname = buildSharePath(locale, edition.raceSlug, edition.year);
 
-const sharePageRaceConnector = getSharePageConnector(
-  locale,
+// One string so the connector and race name keep their separating space:
+// Astro drops the whitespace between adjacent expressions on separate lines.
+// The name slot's hydrated text carries its own trailing space.
+const sharePageRaceLabel = buildSharePageRaceLabel(
+  getSharePageConnector(locale, edition.meta.name, dictionary.sharePageForThe),
   edition.meta.name,
-  dictionary.sharePageForThe,
 );
 ---
 
@@ -59,8 +64,7 @@ const sharePageRaceConnector = getSharePageConnector(
       style="font-size: clamp(2.5rem, 10vw, 5rem);"
     >
       {dictionary.sharePageTitle} <span id="share-h1-name-slot"></span>
-      {sharePageRaceConnector}
-      {edition.meta.name}
+      {sharePageRaceLabel}
     </h1>
   </div>
 

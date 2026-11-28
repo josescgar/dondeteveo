@@ -12,6 +12,7 @@ import { getAllRaceEditions } from "../../../../lib/races/catalog";
 import { localizeRaceEdition } from "../../../../lib/races/localized";
 import { getPointSummaries } from "../../../../lib/races/points";
 import { getProvisionalFacts } from "../../../../lib/races/provisional";
+import { buildEditionStructuredData } from "../../../../lib/structured-data";
 
 export const getStaticPaths = async () => {
   const editions = await getAllRaceEditions();
@@ -52,6 +53,7 @@ const raceInfoFields = buildRaceInfoFields(
   pathname={pathname}
   title={`${edition.meta.name} ${edition.year} | Dondeteveo`}
   description={edition.meta.summary}
+  jsonLd={buildEditionStructuredData(locale, edition)}
   eyebrow={dictionary.raceDiscovery}
 >
   <section class="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">

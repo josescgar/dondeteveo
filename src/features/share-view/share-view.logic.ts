@@ -125,6 +125,11 @@ export const getSharePageConnector = (
   return fallback;
 };
 
+export const buildSharePageRaceLabel = (
+  connector: string,
+  raceName: string,
+): string => `${connector} ${raceName}`;
+
 export const buildPredictedPoints = (
   points: RacePointFeature[],
   paceMinutesPerKm: number,

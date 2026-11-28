@@ -4,6 +4,14 @@ import { defineConfig } from "astro/config";
 import preact from "@astrojs/preact";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
+import { fileURLToPath } from "node:url";
+
+import { createLastmodResolver } from "./src/lib/sitemap-lastmod.ts";
+
+const resolveLastmod = createLastmodResolver(
+  fileURLToPath(new URL(".", import.meta.url)),
+  new Date(),
+);
 
 // https://astro.build/config
 export default defineConfig({
@@ -33,6 +41,7 @@ export default defineConfig({
 
         return !/\/races\/[^/]+\/$/.test(page);
       },
+      serialize: (item) => ({ ...item, lastmod: resolveLastmod(item.url) }),
     }),
   ],
 
