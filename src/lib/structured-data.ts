@@ -83,11 +83,13 @@ export const buildZonedIsoDateTime = (
   return `${date}T${time}:00${formatOffset(offsetMinutes)}`;
 };
 
-const buildOrganizationNode = (): JsonLdNode => ({
+// `homeUrl` is the indexable homepage of the page being rendered; the bare
+// origin is a noindex redirect stub and must not be declared as the home.
+const buildOrganizationNode = (homeUrl: string): JsonLdNode => ({
   "@type": "Organization",
   "@id": ORGANIZATION_ID,
   name: SITE_NAME,
-  url: buildCanonicalUrl("/"),
+  url: homeUrl,
   logo: LOGO_URL,
   sameAs: [GITHUB_REPOSITORY_URL],
 });
@@ -108,7 +110,7 @@ export const buildHomeStructuredData = (locale: Locale): JsonLdDocument => {
         inLanguage: locale,
         publisher: { "@id": ORGANIZATION_ID },
       },
-      buildOrganizationNode(),
+      buildOrganizationNode(homeUrl),
     ],
   };
 };
@@ -130,7 +132,11 @@ export const buildEditionStructuredData = (
     "@context": SCHEMA_CONTEXT,
     "@type": "SportsEvent",
     name: editionName,
-    startDate: buildZonedIsoDateTime(meta.date, meta.startTime, meta.timezone),
+    // An unconfirmed start time is not published as fact: date only.
+    startDate:
+      meta.provisional?.startTime === true
+        ? meta.date
+        : buildZonedIsoDateTime(meta.date, meta.startTime, meta.timezone),
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     location: {

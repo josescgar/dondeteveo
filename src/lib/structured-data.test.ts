@@ -104,9 +104,18 @@ describe("buildHomeStructuredData", () => {
       "@type": "Organization",
       "@id": "https://dondeteveo.com/#organization",
       name: "Dondeteveo",
-      url: "https://dondeteveo.com/",
+      url: "https://dondeteveo.com/es/",
       logo: "https://dondeteveo.com/logo.png",
     });
+  });
+
+  it("points the Organization at the rendered locale's homepage", () => {
+    const [, organization] = buildHomeStructuredData("en")["@graph"] as Record<
+      string,
+      unknown
+    >[];
+
+    expect(organization.url).toBe("https://dondeteveo.com/en/");
   });
 });
 
@@ -136,6 +145,24 @@ describe("buildEditionStructuredData", () => {
       inLanguage: "en",
       sameAs: "https://www.valenciaciudaddelrunning.com/",
     });
+  });
+
+  it("emits only the date when the start time is provisional", () => {
+    const [event] = buildEditionStructuredData(
+      "en",
+      buildEdition({ provisional: { route: true, startTime: true } }),
+    );
+
+    expect(event.startDate).toBe("2026-12-06");
+  });
+
+  it("keeps the zoned start when only the route is provisional", () => {
+    const [event] = buildEditionStructuredData(
+      "en",
+      buildEdition({ provisional: { route: true } }),
+    );
+
+    expect(event.startDate).toBe("2026-12-06T08:15:00+01:00");
   });
 
   it("emits a Home > Races > Edition breadcrumb in the page locale", () => {

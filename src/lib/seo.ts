@@ -123,7 +123,10 @@ export const buildSeo = (input: SeoInput): SeoOutput => {
   return {
     ...input,
     canonical,
-    alternates: buildAlternates(input.locale, input.pathname),
+    // hreflang only links indexable equivalents; noindex pages emit none.
+    alternates: input.noindex
+      ? []
+      : buildAlternates(input.locale, input.pathname),
     openGraph: {
       title: input.title,
       description: input.description,

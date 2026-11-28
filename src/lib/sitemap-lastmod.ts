@@ -57,10 +57,19 @@ export const listEditionDirectories = (
   repositoryRoot: string,
 ): EditionDirectories => {
   const directories = new Map<string, string>();
-  const subdirectories = (directory: string): string[] =>
-    readdirSync(path.join(repositoryRoot, directory), { withFileTypes: true })
-      .filter((entry) => entry.isDirectory())
-      .map((entry) => entry.name);
+  // An unreadable or missing folder yields no editions, so those URLs fall
+  // back to the build time like any other unresolvable source.
+  const subdirectories = (directory: string): string[] => {
+    try {
+      return readdirSync(path.join(repositoryRoot, directory), {
+        withFileTypes: true,
+      })
+        .filter((entry) => entry.isDirectory())
+        .map((entry) => entry.name);
+    } catch {
+      return [];
+    }
+  };
 
   for (const country of subdirectories(DATA_DIRECTORY)) {
     for (const race of subdirectories(path.join(DATA_DIRECTORY, country))) {

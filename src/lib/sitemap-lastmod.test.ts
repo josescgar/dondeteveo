@@ -1,6 +1,31 @@
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import path from "node:path";
+
 import { describe, expect, it } from "vitest";
 
-import { resolveLastmodSources } from "./sitemap-lastmod";
+import {
+  createLastmodResolver,
+  listEditionDirectories,
+  resolveLastmodSources,
+} from "./sitemap-lastmod";
+
+describe("missing data folder", () => {
+  it("falls back to the build time instead of throwing", () => {
+    const root = mkdtempSync(path.join(tmpdir(), "dtv-lastmod-"));
+    try {
+      const fallback = new Date("2026-11-28T00:00:00Z");
+
+      expect(listEditionDirectories(root).size).toBe(0);
+      const resolve = createLastmodResolver(root, fallback);
+      expect(
+        resolve("https://dondeteveo.com/en/races/valencia-marathon/2026/"),
+      ).toBe(fallback.toISOString());
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+});
 
 const editionDirectories = new Map([
   ["valencia-marathon/2026", "data/es/valencia-marathon/2026"],
